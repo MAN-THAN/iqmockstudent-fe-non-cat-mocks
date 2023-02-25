@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Inder&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  overflow: hidden;
+  background-color: white;
+}
+
+:root {
+  --orange: #ff9000;
+  --green: #00cc2f;
+  --blue: #8d39ff;
+  --button-blue: #1b4a82;
+  --light-background: #e4ecf7;
+  --font-color: #000000;
+  --font-inter: "Inter", sans-serif;
+  --font-inder: "Inder", sans-serif;
+}
