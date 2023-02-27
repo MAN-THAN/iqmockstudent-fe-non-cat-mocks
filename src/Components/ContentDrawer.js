@@ -1,19 +1,18 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Typography } from "@mui/material";
 
 function ContentDrawer(props) {
- 
+  console.log(props.image);
   return (
-    <Box sx={{ padding:2,color:"black"}}>
+    <Box sx={{ padding: 2, color: "black" }}>
       <CssBaseline />
-        <Typography variant="paragraph fw-bold">{props.question}</Typography>
-        <br />
-        <small >
-        {props.content}
-        </small>
-       
+
+      <small>{props.question}</small>
+
+      <div className="container p-2">
+     {props.image}
+     </div>
     </Box>
   );
 }
