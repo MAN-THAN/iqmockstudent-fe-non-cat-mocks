@@ -33,6 +33,7 @@ function CenterMain(props) {
 
   // fetching main data
   useEffect(() => {
+    setLoading(true)
     setSelectedQuestionIndex(0);
     fetch(
       `http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
@@ -43,7 +44,11 @@ function CenterMain(props) {
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
+      }).finally(()=>{
+        setLoading(false)
       });
+
+      console.log(Data)
   }, [params.type]);
 
   // post answers Api trigger on mark and review  button
@@ -129,7 +134,7 @@ function CenterMain(props) {
                   <BootstrapButton
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/quants`)}
-                    npm
+             
                   >
                     Quant
                   </BootstrapButton>
