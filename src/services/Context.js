@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from 'react-router-dom';
-
+import { useParams } from "react-router-dom";
 
 export const Context = React.createContext();
 
@@ -9,22 +8,9 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  const params =useParams();
+  const params = useParams();
   const [attemptID, setattemptID] = useState("");
   const [responseReceived, setResponseReceived] = useState(false);
-
-  // useEffect(() => {
-
-  //   const fetchData = async () => {
-  //     const response = await fetch('http://43.204.36.216:5000/api/admin/v1/mocks/63f7316bb68b3faf642a5c98/varc');
-  //     const data = await response.json();
-  //     console.log(data)
-  //     // SetVarc(data.mocks[0]._id)
-  //     // setLrdi(data.mocks[1]._id)
-  //     // setquants(data.mocks[2]._id)
-  //   };
-  //   fetchData();
-  // }, []);
 
   const createAttemptId = () => {
     const jsonData = {
@@ -50,8 +36,6 @@ export const ContextProvider = ({ children }) => {
       .catch((error) => console.error(error));
   };
 
- 
-
   //Timer code
 
   const [seconds, setSeconds] = useState(2400); // 40 minutes in seconds
@@ -63,13 +47,11 @@ export const ContextProvider = ({ children }) => {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
       }, 1000);
-    } else if (!isActive && seconds !== 0  ) {
+    } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [isActive, seconds]);
-
-
 
   const startTimer = () => {
     setIsActive(true);
@@ -84,14 +66,18 @@ export const ContextProvider = ({ children }) => {
     setIsActive(false);
   };
 
-  
- 
-
   return (
     <>
       <Context.Provider
-        value={{ createAttemptId, responseReceived, 
-        attemptID,seconds, startTimer, stopTimer, resetTimer,  }}
+        value={{
+          createAttemptId,
+          responseReceived,
+          attemptID,
+          seconds,
+          startTimer,
+          stopTimer,
+          resetTimer,
+        }}
       >
         {children}
       </Context.Provider>
