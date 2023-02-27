@@ -94,6 +94,23 @@ function CenterMain(props) {
   }, []);
   console.log(AnswerStatus);
 
+  // fetching answers status
+  const fetchAnswersStatus = async () => {
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const options = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log("data===>", json.data, attemptID);
+    setAnswerStatus(json.data);
+  };
+  useEffect(() => {
+    fetchAnswersStatus();
+  }, []);
+  console.log(AnswerStatus);
+
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
     console.log(clickType);
@@ -321,7 +338,6 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
-
                   onClick={() => {
                     handlePostData("review");
                   }}
@@ -339,7 +355,6 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
-
                   onClick={() => {
                     handlePostData("save");
                   }}
