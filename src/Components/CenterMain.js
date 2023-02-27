@@ -10,29 +10,34 @@ import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
 import Keyboard from "./Keypad";
+import ContentDrawer from "./ContentDrawer";
+import QuestionPaper from "./QuestionPaper";
+import InstructionButton from "./InstructionButton";
 
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-  const{ seconds, stopTimer ,startTimer,resetTimer}=useAuth()
+  const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
-
+  const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
 
-  useEffect(()=>{
-    startTimer()
+  useEffect(() => {
+    startTimer();
+    if(isActive === false){
+      checkSessionAccess()
+    }
+    return () => {
+      resetTimer();
+    };
+  }, [params.type,isActive]);
 
-    return(()=>{
-      resetTimer()
-    })
-  },[params.type])
-  
   const getMinutes = () => {
     return Math.floor(seconds / 60);
   };
@@ -41,7 +46,7 @@ function CenterMain(props) {
     return seconds % 60;
   };
 
-
+ 
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
@@ -49,7 +54,7 @@ function CenterMain(props) {
 
   // fetching main data
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     setSelectedQuestionIndex(0);
     fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
@@ -58,17 +63,34 @@ function CenterMain(props) {
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
-      }).finally(()=>{
-        setLoading(false)
+      })
+      .finally(() => {
+        setLoading(false);
       });
-
-      console.log(Data)
   }, [params.type]);
+  console.log(Data);
+
+  // fetching answers status
+  const fetchAnswersStatus = async () => {
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const options = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log("data===>", json.data, attemptID);
+    setAnswerStatus(json.data);
+  };
+  useEffect(() => {
+    fetchAnswersStatus();
+  }, []);
+  console.log(AnswerStatus);
 
   // post answers Api trigger on mark and review  button
-  const handleMarkAndReview = async () => {
+  const handlePostData = async (clickType) => {
+    console.log(clickType);
     const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
-
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
     // console.log(updatedData[selectedQuestionIndex].selectedAnswer )
@@ -93,6 +115,7 @@ function CenterMain(props) {
     const json = await response.json();
     console.log("data===>", json, attemptID);
     nextInd();
+    fetchAnswersStatus();
   };
 
   // function for get index
@@ -112,21 +135,28 @@ function CenterMain(props) {
   };
 
   // Session access of student checking
+ 
   const checkSessionAccess = async (subject) => {
-     const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     };
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log("data===>", json, attemptID);
-    console.log(json.allow);
-    if (json.allow === true) {
-      navigate(`/main/${params.mockid}/${subject}`);
+
+    // console.log("data===>", json, attemptID);
+    // console.log(json.allow);
+    // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
+ 
+    if (json.allow === true && isActive === false && params.type=="varc") {
+      navigate(`/main/${params.mockid}/lrdi`);
     }
-    else { 
-      alert("You can not move to other sections, Please complete this first")
+    else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
+      navigate(`/main/${params.mockid}/quants`);
+    } 
+    else {
+      alert("You can not move to other sections, Please complete this first");
     }
   };
 
@@ -147,10 +177,16 @@ function CenterMain(props) {
                   <BootstrapButton autoFocus variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess("lrdi")}>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`lrdi`)}
+                  >
                     LR DI
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess("quants")} npm>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`quants`)}
+                  >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -174,8 +210,11 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-            <span className="timer" style={{color:"#FF0103"}}>{getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
-      {seconds === 0 && stopTimer()}</span>
+                  <span className="timer" style={{ color: "#FF0103" }}>
+                    {getMinutes()}:
+                    {getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
+                    {seconds === 0 && stopTimer()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -191,7 +230,31 @@ function CenterMain(props) {
             {/* left side content div */}
             <div className="col-7 overflow-auto ">
               <div className="container leftContent">
-                {/* <ContentDrawer content={"vghbjnk"} question={Data[selectedQuestionIndex].explanations} /> */}
+                {
+                  <ContentDrawer
+                    question={
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
+                    }
+                    image={
+                      Data.length > 0 && // Check if Data array has at least one element
+                      Data[selectedQuestionIndex].image
+                        ? Data[selectedQuestionIndex].image.map((item) => {
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
+                          })
+                        : null
+                    }
+                  />
+                }
               </div>
             </div>
             {/*  right side question  div */}
@@ -209,30 +272,33 @@ function CenterMain(props) {
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
                     ) : (
-                      Data[selectedQuestionIndex].options.map((option, index) => (
-                        <li key={index}>
-                          <input
-                            type="radio"
-                            name="answer"
-                            value={index}
-                            // checked={selectedAnswer === index}
-                            // onChange={(e) =>
-                            //   setSelectedAnswer(parseInt(e.target.value))
-                            // }
-                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
-                            onChange={(e) => {
-                              const value = parseInt(e.target.value);
-                              setSelectedAnswer(value);
-                              const updatedData = [...Data];
-                              updatedData[selectedQuestionIndex].selectedAnswer = value;
-                              setData(updatedData);
-                            }}
-                          />
-                          <label htmlFor={index}>
-                            <small>{option}</small>
-                          </label>
-                        </li>
-                      ))
+                      Data[selectedQuestionIndex].options.map(
+                        (option, index) => (
+                          <li key={index}>
+                            <input
+                              type="radio"
+                              name="answer"
+                              value={index}
+                              checked={
+                                Data[selectedQuestionIndex].selectedAnswer ===
+                                index
+                              }
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                setSelectedAnswer(value);
+                                const updatedData = [...Data];
+                                updatedData[
+                                  selectedQuestionIndex
+                                ].selectedAnswer = value;
+                                setData(updatedData);
+                              }}
+                            />
+                            <label htmlFor={index}>
+                              <small>{option}</small>
+                            </label>
+                          </li>
+                        )
+                      )
                     ))}
                 </ul>
               </div>
@@ -243,7 +309,10 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
-                  onClick={() => handlePostData("review")}
+
+                  onClick={() => {
+                    handlePostData("review");
+                  }}
                 >
                   Mark for Review & Next
                 </MyButton>
@@ -253,7 +322,14 @@ function CenterMain(props) {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained " onClick={nextInd} sx={{ fontSize: "13px", color: "white" }}>
+                <BootstrapButton
+                  variant="contained "
+
+                  onClick={() => {
+                    handlePostData("save");
+                  }}
+                  sx={{ fontSize: "13px", color: "white" }}
+                >
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -291,15 +367,26 @@ function CenterMain(props) {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
-                {Data &&
-                  Data.map((item, index) => {
+                {AnswerStatus &&
+                  AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
                         <Avatar
                           key={item.series}
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            bgcolor: selectedQuestionIndex === index ? "#9169C2" : "#FFFFFF",
+                            bgcolor:
+                              item.stage === 0
+                                ? "white"
+                                : item.stage === 1
+                                ? "var(--green)"
+                                : item.stage === 2
+                                ? "red"
+                                : item.stage === 3
+                                ? "var(--blue)"
+                                : item.stage === 4
+                                ? "black"
+                                : "",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -316,14 +403,11 @@ function CenterMain(props) {
                   })}
               </div>
             </div>
+            {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2 ">
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Question Paper
-              </MyButton>
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Instructions
-              </MyButton>
+              <QuestionPaper question_paper={Data} />
+              <InstructionButton />
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
