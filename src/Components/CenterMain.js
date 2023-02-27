@@ -31,7 +31,7 @@ function CenterMain(props) {
     setInputVal(inputValue);
   }
 
-  // fetching data
+  // fetching main data
   useEffect(() => {
     setSelectedQuestionIndex(0);
     fetch(
@@ -47,14 +47,14 @@ function CenterMain(props) {
   }, [params.type]);
 
   // post answers Api trigger on mark and review  button
-  const handlePostData= async(clickType) => {
-  console.log(clickType)
+  const handlePostData = async (clickType) => {
+    console.log(clickType);
     const studentAnswer = inputVal
       ? inputVal
       : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const updatedData = [...Data];
-     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
+    updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -93,7 +93,6 @@ function CenterMain(props) {
 
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
     setSelectedAnswer(null);
-
   };
 
   return loading ? (
@@ -130,7 +129,8 @@ function CenterMain(props) {
                   <BootstrapButton
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/quants`)}
-                  npm >
+                    npm
+                  >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -228,7 +228,10 @@ function CenterMain(props) {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={()=>handlePostData("review")}>
+                <MyButton
+                  variant="contained"
+                  onClick={() => handlePostData("review")}
+                >
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -242,7 +245,7 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
-                  onClick={()=>handlePostData("save")}
+                  onClick={() => handlePostData("save")}
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next
