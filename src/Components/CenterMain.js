@@ -26,8 +26,9 @@ function CenterMain(props) {
     setInputVal(inputValue);
   }
 
-  // fetching data
+  // fetching main data
   useEffect(() => {
+    setLoading(true)
     setSelectedQuestionIndex(0);
     fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
@@ -36,16 +37,23 @@ function CenterMain(props) {
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
+      }).finally(()=>{
+        setLoading(false)
       });
+
+      console.log(Data)
   }, [params.type]);
 
   // post answers Api trigger on mark and review  button
-  const handleMarkAndReview = async () => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+  const handlePostData = async (clickType) => {
+    console.log(clickType);
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
-    // console.log(updatedData[selectedQuestionIndex].selectedAnswer )
+
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
       question: Data[selectedQuestionIndex].question,
@@ -57,7 +65,7 @@ function CenterMain(props) {
       duration: 30,
     };
 
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/review}`;
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -65,8 +73,8 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-    nextInd();
     console.log("data===>", json, attemptID);
+    nextInd();
   };
 
   // function for get index
@@ -118,13 +126,13 @@ function CenterMain(props) {
               <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton autoFocus variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
+                  <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess("lrdi")}>
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
                     LR DI
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess("quants")} npm>
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -214,7 +222,7 @@ function CenterMain(props) {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={handleMarkAndReview}>
+                <MyButton variant="contained" onClick={() => handlePostData("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton variant="contained" onClick={() => setSelectedAnswer(null)}>
@@ -223,7 +231,7 @@ function CenterMain(props) {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained " onClick={nextInd} sx={{ fontSize: "13px", color: "white" }}>
+                <BootstrapButton variant="contained " onClick={() => handlePostData("save")} sx={{ fontSize: "13px", color: "white" }}>
                   Save & Next
                 </BootstrapButton>
               </div>
