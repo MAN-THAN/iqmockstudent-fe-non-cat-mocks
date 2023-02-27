@@ -20,7 +20,7 @@ import ContentDrawer from "./ContentDrawer";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-  const { seconds, stopTimer, startTimer, resetTimer } = useAuth();
+  const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
@@ -32,11 +32,13 @@ function CenterMain(props) {
 
   useEffect(() => {
     startTimer();
-
+    if(isActive === false){
+      checkSessionAccess()
+    }
     return () => {
       resetTimer();
     };
-  }, [params.type]);
+  }, [params.type,isActive]);
 
   const getMinutes = () => {
     return Math.floor(seconds / 60);
@@ -46,6 +48,7 @@ function CenterMain(props) {
     return seconds % 60;
   };
 
+ 
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
@@ -69,11 +72,11 @@ function CenterMain(props) {
         setLoading(false);
       });
   }, [params.type]);
-  // console.log(Data);
+  console.log(Data);
 
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
-    console.log(clickType);
+    
     const studentAnswer = inputVal
       ? inputVal
       : Data[selectedQuestionIndex].options[selectedAnswer];
@@ -121,6 +124,7 @@ function CenterMain(props) {
   };
 
   // Session access of student checking
+ 
   const checkSessionAccess = async (subject) => {
     const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
@@ -129,11 +133,17 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log("data===>", json, attemptID);
-    console.log(json.allow);
-    if (json.allow === true) {
-      navigate(`/main/${params.mockid}/${subject}`);
-    } else {
+    // console.log("data===>", json, attemptID);
+    // console.log(json.allow);
+    // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
+ 
+    if (json.allow === true && isActive === false && params.type=="varc") {
+      navigate(`/main/${params.mockid}/lrdi`);
+    }
+    else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
+      navigate(`/main/${params.mockid}/quants`);
+    } 
+    else {
       alert("You can not move to other sections, Please complete this first");
     }
   };
