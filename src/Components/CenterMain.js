@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -56,9 +51,7 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true)
     setSelectedQuestionIndex(0);
-    fetch(
-      `http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
-    )
+    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
@@ -121,11 +114,27 @@ function CenterMain(props) {
     setSelectedAnswer(null);
   };
 
+  // Session access of student checking
+  const checkSessionAccess = async (subject) => {
+     const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+    const options = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log("data===>", json, attemptID);
+    console.log(json.allow);
+    if (json.allow === true) {
+      navigate(`/main/${params.mockid}/${subject}`);
+    }
+    else { 
+      alert("You can not move to other sections, Please complete this first")
+    }
+  };
+
   return loading ? (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}
-    >
+    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -135,28 +144,16 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
-                  >
+                  <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
-                  >
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
                     LR DI
                   </BootstrapButton>
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
-             
-                  >
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -210,43 +207,35 @@ function CenterMain(props) {
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
                     ) : (
-                      Data[selectedQuestionIndex].options.map(
-                        (option, index) => (
-                          <li key={index}>
-                            <input
-                              type="radio"
-                              name="answer"
-                              value={index}
-                              // checked={selectedAnswer === index}
-                              // onChange={(e) =>
-                              //   setSelectedAnswer(parseInt(e.target.value))
-                              // }
-                              checked={
-                                Data[selectedQuestionIndex].selectedAnswer ===
-                                index
-                              }
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value);
-                                setSelectedAnswer(value);
-                                const updatedData = [...Data];
-                                updatedData[
-                                  selectedQuestionIndex
-                                ].selectedAnswer = value;
-                                setData(updatedData);
-                              }}
-                            />
-                            <label htmlFor={index}>
-                              <small>{option}</small>
-                            </label>
-                          </li>
-                        )
-                      )
+                      Data[selectedQuestionIndex].options.map((option, index) => (
+                        <li key={index}>
+                          <input
+                            type="radio"
+                            name="answer"
+                            value={index}
+                            // checked={selectedAnswer === index}
+                            // onChange={(e) =>
+                            //   setSelectedAnswer(parseInt(e.target.value))
+                            // }
+                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              setSelectedAnswer(value);
+                              const updatedData = [...Data];
+                              updatedData[selectedQuestionIndex].selectedAnswer = value;
+                              setData(updatedData);
+                            }}
+                          />
+                          <label htmlFor={index}>
+                            <small>{option}</small>
+                          </label>
+                        </li>
+                      ))
                     ))}
                 </ul>
               </div>
@@ -255,26 +244,16 @@ function CenterMain(props) {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton
-                  variant="contained"
-                  onClick={() => handlePostData("review")}
-                >
+                <MyButton variant="contained" onClick={() => handlePostData("review")}>
                   Mark for Review & Next
                 </MyButton>
-                <MyButton
-                  variant="contained"
-                  onClick={() => setSelectedAnswer(null)}
-                >
+                <MyButton variant="contained" onClick={() => setSelectedAnswer(null)}>
                   Clear Response
                 </MyButton>
               </div>
 
               <div className="">
-                <BootstrapButton
-                  variant="contained "
-                  onClick={() => handlePostData("save")}
-                  sx={{ fontSize: "13px", color: "white" }}
-                >
+                <BootstrapButton variant="contained " onClick={() => handlePostData("save")} sx={{ fontSize: "13px", color: "white" }}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -320,10 +299,7 @@ function CenterMain(props) {
                           key={item.series}
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            bgcolor:
-                              selectedQuestionIndex === index
-                                ? "#9169C2"
-                                : "#FFFFFF",
+                            bgcolor: selectedQuestionIndex === index ? "#9169C2" : "#FFFFFF",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -355,43 +331,19 @@ function CenterMain(props) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited</b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
                 </div>
               </div>
             </div>
