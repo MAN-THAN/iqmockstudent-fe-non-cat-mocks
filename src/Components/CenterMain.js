@@ -14,12 +14,33 @@ import Keyboard from "./Keypad";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
+  const{ seconds, stopTimer ,startTimer,resetTimer}=useAuth()
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
+
+
+  //Timer code
+
+  useEffect(()=>{
+    startTimer()
+
+    return(()=>{
+      resetTimer()
+    })
+  },[params.type])
+  
+  const getMinutes = () => {
+    return Math.floor(seconds / 60);
+  };
+
+  const getSeconds = () => {
+    return seconds % 60;
+  };
+
 
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
@@ -153,7 +174,8 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  {/* <span className="timer" style={{color:"#FF0103"}}>{currentTime}</span> */}
+            <span className="timer" style={{color:"#FF0103"}}>{getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
+      {seconds === 0 && stopTimer()}</span>
                 </div>
               </div>
             </div>
