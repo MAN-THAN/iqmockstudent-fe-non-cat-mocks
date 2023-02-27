@@ -47,11 +47,13 @@ export const ContextProvider = ({ children }) => {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
       }, 1000);
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
+    } 
     return () => clearInterval(interval);
   }, [isActive, seconds]);
+  // // else if (!isActive && seconds !== 0) {
+  //   clearInterval(interval);
+
+  // }
 
   const startTimer = () => {
     setIsActive(true);
@@ -62,7 +64,7 @@ export const ContextProvider = ({ children }) => {
   };
 
   const resetTimer = () => {
-    setSeconds(2400);
+    setSeconds(20);
     setIsActive(false);
   };
 
@@ -74,6 +76,7 @@ export const ContextProvider = ({ children }) => {
           responseReceived,
           attemptID,
           seconds,
+          isActive,
           startTimer,
           stopTimer,
           resetTimer,

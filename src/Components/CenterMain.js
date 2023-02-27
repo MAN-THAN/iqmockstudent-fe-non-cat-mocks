@@ -151,7 +151,6 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
