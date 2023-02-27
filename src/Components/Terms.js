@@ -27,7 +27,8 @@ useEffect(()=>{
 const handleClick = async () => {
    console.log(attemptID)
    localStorage.setItem("attemptID",attemptID)
-   navigate(`/main/63f7316bb68b3faf642a5c98/varc`)
+   const ID ="63f7316bb68b3faf642a5c98"
+   navigate(`/main/${ID}/varc`)
 
  };
 
