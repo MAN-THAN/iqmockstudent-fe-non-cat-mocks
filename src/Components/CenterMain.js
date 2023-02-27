@@ -16,6 +16,8 @@ import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
 import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
+import QuestionPaper from "./QuestionPaper";
+import InstructionButton from "./InstructionButton";
 
 function CenterMain(props) {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ function CenterMain(props) {
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
+  const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
 
@@ -74,13 +77,27 @@ function CenterMain(props) {
   }, [params.type]);
   console.log(Data);
 
+  // fetching answers status
+  const fetchAnswersStatus = async () => {
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const options = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log("data===>", json.data, attemptID);
+    setAnswerStatus(json.data);
+  };
+  useEffect(() => {
+    fetchAnswersStatus();
+  }, []);
+  console.log(AnswerStatus);
+
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
-    
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
-
+    console.log(clickType);
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
@@ -105,6 +122,7 @@ function CenterMain(props) {
     const json = await response.json();
     console.log("data===>", json, attemptID);
     nextInd();
+    fetchAnswersStatus();
   };
 
   // function for get index
@@ -133,6 +151,7 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
+
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
@@ -306,7 +325,10 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
-                  onClick={() => handlePostData("review")}
+
+                  onClick={() => {
+                    handlePostData("review");
+                  }}
                 >
                   Mark for Review & Next
                 </MyButton>
@@ -321,7 +343,10 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
-                  onClick={() => handlePostData("save")}
+
+                  onClick={() => {
+                    handlePostData("save");
+                  }}
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next
@@ -361,8 +386,8 @@ function CenterMain(props) {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
-                {Data &&
-                  Data.map((item, index) => {
+                {AnswerStatus &&
+                  AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
                         <Avatar
@@ -370,9 +395,17 @@ function CenterMain(props) {
                           onClick={() => handleQuestionClick(index)}
                           sx={{
                             bgcolor:
-                              selectedQuestionIndex === index
-                                ? "#9169C2"
-                                : "#FFFFFF",
+                              item.stage === 0
+                                ? "white"
+                                : item.stage === 1
+                                ? "var(--green)"
+                                : item.stage === 2
+                                ? "red"
+                                : item.stage === 3
+                                ? "var(--blue)"
+                                : item.stage === 4
+                                ? "black"
+                                : "",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -389,14 +422,11 @@ function CenterMain(props) {
                   })}
               </div>
             </div>
+            {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2 ">
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Question Paper
-              </MyButton>
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Instructions
-              </MyButton>
+              <QuestionPaper question_paper={Data} />
+              <InstructionButton />
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
