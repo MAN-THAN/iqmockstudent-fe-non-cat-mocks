@@ -1,0 +1,29 @@
+/* .keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+ .keyboard  .input-field {
+    width: 300px;
+    margin: 20px;
+  }
+  
+  .keyboard .keys {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+ .keyboard  .row {
+    display: flex;
+    flex-direction:column;
+  }
+  
+  .keyboard button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 5px;
+  }
+   */

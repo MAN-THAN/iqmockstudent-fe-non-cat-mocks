@@ -9,9 +9,9 @@ function Protected(props) {
 
     useEffect(()=>{
 
-      const Mock = localStorage.getItem("mockId")
+      const attemptID = localStorage.getItem("attemptID")
       
-        if(!Mock){
+        if(!attemptID){
             naviagte("/terms")
         }
     },[])

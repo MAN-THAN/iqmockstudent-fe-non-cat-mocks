@@ -14,51 +14,85 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
-
+import Keyboard from "./Keypad";
 
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-  const{varcId,lrdiId,quantsId}=useAuth()
-  const [selectedAnswer, setSelectedAnswer] = useState('');
-
-  // new data function
-
-  const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const mockId=localStorage.getItem("mockId")
+  const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
+  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
+  const [Data, setData] = useState([]); //Main mock data get state
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
+  const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
+
+  // Function for getting a keyboard value from keyboard component
+  function handleKeyboardValue(inputValue) {
+    setInputVal(inputValue);
+  }
+
+  // fetching data
   useEffect(() => {
-       setSelectedQuestionIndex(0)
-    setLoading(true);
+    setSelectedQuestionIndex(0);
     fetch(
-      `http://43.204.36.216:5000/api/admin/v1/mocks/${params.id}/${params.type}`
+      `http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
     )
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
-        // console.log(Data)
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }, [params.type]);
 
- 
+  // post answers Api trigger on mark and review  button
+  const handleMarkAndReview = async () => {
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
 
-console.log(Data)
+    const updatedData = [...Data];
+     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
+    // console.log(updatedData[selectedQuestionIndex].selectedAnswer )
+    const data = {
+      question_id: Data[selectedQuestionIndex]._id,
+      question: Data[selectedQuestionIndex].question,
+      topic: Data[selectedQuestionIndex].topic,
+      subtopic: Data[selectedQuestionIndex].subtopic,
+      difficulty: Data[selectedQuestionIndex].difficulty,
+      correctAnswer: Data[selectedQuestionIndex].correctAnswer,
+      studentAnswer,
+      duration: 30,
+    };
 
-  // set indexing for display the question
- const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/review}`;
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    nextInd();
+    console.log("data===>", json, attemptID);
+  };
+
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
   };
   // button for next func
   const nextInd = () => {
-    setSelectedQuestionIndex(selectedQuestionIndex );
+    if (selectedQuestionIndex === Data.length - 1) {
+      // Show message or disable button
+
+      return;
+    }
+
+    setSelectedQuestionIndex(selectedQuestionIndex + 1);
+    setSelectedAnswer(null);
+
   };
 
   return loading ? (
@@ -82,20 +116,20 @@ console.log(Data)
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
                     variant="contained"
-                    onClick={() => navigate(`/main/${varcId}/varc/${mockId}`)}
+                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
                     variant="contained"
-                    onClick={() => navigate(`/main/${lrdiId}/lrdi/${mockId}`)}
+                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
                   >
                     LR DI
                   </BootstrapButton>
                   <BootstrapButton
                     variant="contained"
-                    onClick={() => navigate(`/main/${quantsId}/quants/${mockId}`)}
-                  >
+                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
+                  npm >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -144,55 +178,48 @@ console.log(Data)
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length>0 && Data[selectedQuestionIndex].question}
+                  {Data.length > 0 && Data[selectedQuestionIndex].question}
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
-                  {/* {Data.length > 0 ? Data[selectedQuestionIndex].type === "0" ? (
-                    <TextField
-                      id="outlined-basic"
-                      label="Enter Answer"
-                      variant="outlined"
-                      sx={{ my: 3, color: "black" }}
-                      fullWidth
-                    />
-                  ) : (
-                    Data[selectedQuestionIndex].options.map((option, index) => (
-                      <li key={index}>
-                        <input
-                          type="radio"
-                          name="answer"
-                          value={option}
-                          checked={selectedAnswer === option.id}
-                          onChange={(e) =>
-                            setSelectedAnswer(parseInt(e.target.value))
-                          }
-                        />
-                        <label htmlFor={index}>
-                          <small>{option}</small>
-                        </label>
-                      </li>
-                    ))
-                  )} */}
-
-                  {Data.length > 0 && Data[selectedQuestionIndex].options.map((option,index)=>{
-                    console.log(index)
-                    return (
-                      <li key={index}>
-                        <input
-                          type="radio"
-                          name="options"
-                          value={index}
-                          checked={selectedAnswer === index}
-                          onChange={(e) =>
-                            setSelectedAnswer(parseInt(e.target.value))
-                          }
-                        />  
-                      
-                          <small>{option}</small>
-                       
-                      </li>
-                    )
-                  })}
+                  {Data.length > 0 &&
+                    (Data[selectedQuestionIndex].type === "0" ||
+                    Data[selectedQuestionIndex].type === null ? (
+                      <>
+                        <Keyboard onValueChange={handleKeyboardValue} />
+                      </>
+                    ) : (
+                      Data[selectedQuestionIndex].options.map(
+                        (option, index) => (
+                          <li key={index}>
+                            <input
+                              type="radio"
+                              name="answer"
+                              value={index}
+                              // checked={selectedAnswer === index}
+                              // onChange={(e) =>
+                              //   setSelectedAnswer(parseInt(e.target.value))
+                              // }
+                              checked={
+                                Data[selectedQuestionIndex].selectedAnswer ===
+                                index
+                              }
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                setSelectedAnswer(value);
+                                const updatedData = [...Data];
+                                updatedData[
+                                  selectedQuestionIndex
+                                ].selectedAnswer = value;
+                                setData(updatedData);
+                              }}
+                            />
+                            <label htmlFor={index}>
+                              <small>{option}</small>
+                            </label>
+                          </li>
+                        )
+                      )
+                    ))}
                 </ul>
               </div>
             </div>
@@ -200,7 +227,7 @@ console.log(Data)
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={nextInd}>
+                <MyButton variant="contained" onClick={handleMarkAndReview}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -214,6 +241,7 @@ console.log(Data)
               <div className="">
                 <BootstrapButton
                   variant="contained "
+                  onClick={nextInd}
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next

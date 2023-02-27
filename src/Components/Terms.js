@@ -8,9 +8,8 @@ import { useAuth } from "../services/Context";
 function Terms() {
 const[handleAgree,setHandleAgree]=useState(false)
 const[handleStartText,setHandleStartText]=useState(true)
-
 const navigate = useNavigate()
-const{varcId,createMock,responseReceived,mockId}=  useAuth()
+const{createAttemptId,responseReceived,attemptID}=  useAuth()
 
 useEffect(()=>{
   if(responseReceived){
@@ -26,9 +25,9 @@ useEffect(()=>{
 // console.log("mock Id", mockId)
 
 const handleClick = async () => {
-   console.log(mockId)
-   localStorage.setItem("mockId",mockId)
-   navigate(`/main/${varcId}/varc/${mockId}`)
+   console.log(attemptID)
+   localStorage.setItem("attemptID",attemptID)
+   navigate(`/main/63f7316bb68b3faf642a5c98/varc`)
 
  };
 
@@ -129,7 +128,7 @@ const handleClick = async () => {
           </div>
         </div>
         <div className="d-flex justify-content-center  align-self-center gap-5 my-3">
-        <BootstrapButton variant="contained mx-auto" disabled={handleAgree} sx={{color:handleAgree?"black":"white",p:2.5,backgroundColor:handleAgree?"#d2d4d6":""}} onClick={()=>createMock()}  >Agree</BootstrapButton>
+        <BootstrapButton variant="contained mx-auto" disabled={handleAgree} sx={{color:handleAgree?"black":"white",p:2.5,backgroundColor:handleAgree?"#d2d4d6":""}} onClick={()=>createAttemptId()}  >Agree</BootstrapButton>
         <BootstrapButton variant="contained mx-auto" disabled={handleStartText} sx={{ color:"white",p:2.5,background:handleStartText ? "#d2d4d6":""}} onClick={handleClick}  >Start Test</BootstrapButton>
 
         </div>

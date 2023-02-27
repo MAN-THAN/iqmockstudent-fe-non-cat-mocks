@@ -8,35 +8,35 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const [varcId, SetVarc] = useState("");
-  const [lrdiId, setLrdi] = useState("");
-  const [quantsId, setquants] = useState("");
-  const[mockId,setMockId]=useState('')
+  const[attemptID,setattemptID]=useState('')
   const [responseReceived, setResponseReceived] = useState(false);
 
-  useEffect(() => {
-    // Read the JSON file and set the state accordingly
-    const fetchData = async () => {
-      const response = await fetch('http://43.204.36.216:5000/api/admin/v1/mocks');
-      const data = await response.json();
-       SetVarc(data.mocks[0]._id)
-      setLrdi(data.mocks[1]._id)
-      setquants(data.mocks[2]._id)
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
 
-  const jsonData=
+  //   const fetchData = async () => {
+  //     const response = await fetch('http://43.204.36.216:5000/api/admin/v1/mocks/63f7316bb68b3faf642a5c98/varc');
+  //     const data = await response.json();
+  //     console.log(data)
+  //     // SetVarc(data.mocks[0]._id)
+  //     // setLrdi(data.mocks[1]._id)
+  //     // setquants(data.mocks[2]._id)
+  //   };
+  //   fetchData();
+  // }, []);
+
+
+ 
+
+  const createAttemptId=()=>{
+    const jsonData=
     {
-    "name": "Anshul",
-    "email": "asdnf@gmail.com",
-    "uid": "2345678098765",
-    "mockId": "ruksdjhfjdksfgkdfg"
+    name: "Gaurav",
+    email: "asdnf@gmail.com",
+    uid: "2345678098765",
+    mockId: "ruksdjhfjdksfgkdfg"
 }
 
-  const createMock=()=>{
-    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks`, {
+    fetch(`http://43.204.36.216:8000/api/student/v1/mocks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -45,24 +45,16 @@ export const ContextProvider = ({ children }) => {
     })
     .then(response => response.json())
     .then(data => {console.log(data)
-    setMockId(data.photo._id)
+    setattemptID(data.answersheet._id )
     setResponseReceived(true)}
     
     )
     .catch(error => console.error(error));
     }
-    
 
-
-
-
-  
-
-  
   return (
     <>
-
-      <Context.Provider value={{lrdiId ,varcId,quantsId ,createMock,responseReceived,mockId}}>{children}</Context.Provider>
+      <Context.Provider value={{createAttemptId,responseReceived,attemptID}}>{children}</Context.Provider>
     </>
   );
 };
