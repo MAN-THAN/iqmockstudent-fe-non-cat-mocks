@@ -178,7 +178,7 @@ function CenterMain(props) {
                   </Tooltip>
 
             <span className="timer" style={{color:"#FF0103"}}>{getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
-      {seconds === 0 && stopTimer()}</span>
+             {seconds === 0 && stopTimer()}</span>
                 </div>
               </div>
             </div>
@@ -218,11 +218,7 @@ function CenterMain(props) {
                             type="radio"
                             name="answer"
                             value={index}
-                            // checked={selectedAnswer === index}
-                            // onChange={(e) =>
-                            //   setSelectedAnswer(parseInt(e.target.value))
-                            // }
-                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
+                              checked={Data[selectedQuestionIndex].selectedAnswer === index}
                             onChange={(e) => {
                               const value = parseInt(e.target.value);
                               setSelectedAnswer(value);
