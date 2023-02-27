@@ -47,14 +47,15 @@ function CenterMain(props) {
   }, [params.type]);
 
   // post answers Api trigger on mark and review  button
-  const handleMarkAndReview = async () => {
+  const handlePostData= async(clickType) => {
+  console.log(clickType)
     const studentAnswer = inputVal
       ? inputVal
       : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const updatedData = [...Data];
      updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
-    // console.log(updatedData[selectedQuestionIndex].selectedAnswer )
+
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
       question: Data[selectedQuestionIndex].question,
@@ -66,7 +67,7 @@ function CenterMain(props) {
       duration: 30,
     };
 
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/review}`;
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -74,8 +75,8 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-    nextInd();
     console.log("data===>", json, attemptID);
+    nextInd();
   };
 
   // function for get index
@@ -227,7 +228,7 @@ function CenterMain(props) {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={handleMarkAndReview}>
+                <MyButton variant="contained" onClick={()=>handlePostData("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -241,7 +242,7 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
-                  onClick={nextInd}
+                  onClick={()=>handlePostData("save")}
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next

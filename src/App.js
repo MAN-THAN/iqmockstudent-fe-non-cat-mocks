@@ -17,6 +17,7 @@ function App() {
       <Route path="/" element={<Instructions/>}/>
       <Route path="/terms" element={<Terms/>}/>
       <Route path="/main/:mockid/:type" element={<Protected Comp={Main}/>} />
+  
     </Routes>
   </BrowserRouter>
   </ThemeProvider>
