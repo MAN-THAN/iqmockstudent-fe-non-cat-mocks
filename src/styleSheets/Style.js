@@ -83,7 +83,6 @@ export const MyButton = styled(Button)({
         backgroundColor: "#0062cc",
     },
     "&:focus": {
-        boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
         color: "white",
     },
 });
