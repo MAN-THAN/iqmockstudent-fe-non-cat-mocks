@@ -33,83 +33,53 @@ function CenterMain(props) {
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
 
   //Timer code
-  const TIMER_KEY = 'timerValue';
-  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
-  
-  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
-  const [timeoutId, setTimeoutId] = useState(null);
-  
-  const resetTimer = () => {
-    localStorage.setItem(TIMER_KEY, timerValue.toString());
-  };
-  
-  const startTimer = () => {
-    if (timerValue > 0) {
-      const startTime = Date.now();
-      const id = setTimeout(() => {
-        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
-        startTimer();
-      }, 1000 - (Date.now() - startTime) % 1000);
-      setTimeoutId(id);
-    }
-  };
-  
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-  
-  useEffect(() => {
-    const storedTimerValue = localStorage.getItem(TIMER_KEY);
-    if (storedTimerValue) {
-      setTimerValue(parseInt(storedTimerValue, 10));
-    } else {
-      setTimerValue(DEFAULT_TIMER_VALUE);
-    }
-  
-    const handleBeforeUnload = () => {
-      localStorage.setItem(TIMER_KEY, timerValue.toString());
-    };
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    clearTimeout(timeoutId);
-  
-    startTimer();
-  
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-  
+ const TIMER_KEY = 'timerValue';
+const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
 
+const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
+const [animationFrameId, setAnimationFrameId] = useState(null);
+
+const resetTimer = () => {
+  setTimerValue(DEFAULT_TIMER_VALUE);
+  localStorage.setItem(TIMER_KEY, DEFAULT_TIMER_VALUE.toString());
+};
+
+const startTimer = (timestamp) => {
+  const elapsedTime = Math.floor(timestamp / 1000);
+  const remainingTime = Math.max(DEFAULT_TIMER_VALUE - elapsedTime, 0);
   
+  if (remainingTime > 0) {
+    setTimerValue(remainingTime);
+    setAnimationFrameId(requestAnimationFrame(startTimer));
+  } else {
+    resetTimer();
+  }
+};
+
+const formatTime = (timeInSeconds) => {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = timeInSeconds % 60;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+};
+
+useEffect(() => {
+  const storedTimerValue = localStorage.getItem(TIMER_KEY);
+  if (storedTimerValue) {
+    const storedElapsedTime = DEFAULT_TIMER_VALUE - (storedTimerValue / 1000);
+    setAnimationFrameId(requestAnimationFrame((timestamp) => startTimer(timestamp + storedElapsedTime * 1000)));
+  } else {
+    setAnimationFrameId(requestAnimationFrame(startTimer));
+  }
   
-
-  
-  // useEffect(() => {
-  //   startTimer();
-  //   if(isActive === false){
-  //     // checkSessionAccess()
-  //     console.log("componrn")
-  //   }
-  //   return () => {
-  //     resetTimer();
-  //   };
-  // }, [params.type,isActive]);
-
-  // const getMinutes = () => {
-  //   return Math.floor(seconds / 60);
-  // };
-
-  // const getSeconds = () => {
-  //   return seconds % 60;
-  // };
-
+  return () => {
+    cancelAnimationFrame(animationFrameId);
+  }
+}, []);
  
-  // Function for getting a keyboard value from keyboard component
+  
+
+  
+ // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
   }
