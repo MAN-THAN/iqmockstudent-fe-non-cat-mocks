@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -31,8 +26,10 @@ function CenterMain(props) {
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
+  const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
+<<<<<<< HEAD
  const TIMER_KEY = 'timerValue';
 const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
 
@@ -80,6 +77,68 @@ useEffect(() => {
 
   
  // Function for getting a keyboard value from keyboard component
+=======
+  const TIMER_KEY = 'timerValue';
+  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
+  
+  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
+  const [timeoutId, setTimeoutId] = useState(null);
+  
+  const resetTimer = () => {
+    localStorage.setItem(TIMER_KEY, timerValue.toString());
+  };
+  
+  const startTimer = () => {
+    if (timerValue > 0) {
+      const startTime = Date.now();
+      const id = setTimeout(() => {
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
+        startTimer();
+      }, 1000 - (Date.now() - startTime) % 1000);
+      setTimeoutId(id);
+    }
+  };
+  
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  
+  useEffect(() => {
+    const storedTimerValue = localStorage.getItem(TIMER_KEY);
+    if (storedTimerValue) {
+      setTimerValue(parseInt(storedTimerValue, 10));
+    } else {
+      setTimerValue(DEFAULT_TIMER_VALUE);
+    }
+  
+    const handleBeforeUnload = () => {
+      localStorage.setItem(TIMER_KEY, timerValue.toString());
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    clearTimeout(timeoutId);
+  
+    startTimer();
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      clearTimeout(timeoutId);
+    };
+    
+  }, []);
+
+  // const getMinutes = () => {
+  //   return Math.floor(seconds / 60);
+  // };
+
+  // const getSeconds = () => {
+  //   return seconds % 60;
+  // };
+
+  // Function for getting a keyboard value from keyboard component
+>>>>>>> 19548967985b0b08b23e1dd9b6af57877809b5f6
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
   }
@@ -88,9 +147,7 @@ useEffect(() => {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(
-      `http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
-    )
+    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
@@ -104,13 +161,27 @@ useEffect(() => {
   }, [params.type]);
   console.log(Data);
 
+  // fetching answers status
+  const fetchAnswersStatus = async () => {
+    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const options = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log("data===>", json.data, attemptID);
+    setAnswerStatus(json.data);
+  };
+  useEffect(() => {
+    fetchAnswersStatus();
+  }, []);
+  console.log(AnswerStatus);
+
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
-    
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
-
+    console.log(clickType);
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
@@ -135,6 +206,7 @@ useEffect(() => {
     const json = await response.json();
     console.log("data===>", json, attemptID);
     nextInd();
+    fetchAnswersStatus();
   };
 
   // function for get index
@@ -154,7 +226,7 @@ useEffect(() => {
   };
 
   // Session access of student checking
- 
+
   const checkSessionAccess = async (subject) => {
     const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
@@ -163,17 +235,16 @@ useEffect(() => {
     };
     const response = await fetch(url, options);
     const json = await response.json();
+
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
-    // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
- 
-    // if (json.allow === true && isActive === false && params.type=="varc") {
+    // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
+
+    // if (json.allow === true && isActive === false && params.type == "varc") {
     //   navigate(`/main/${params.mockid}/lrdi`);
-    // }
-    // else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
+    // } else if (json.allow === true && isActive === false && params.type == "lrdi") {
     //   navigate(`/main/${params.mockid}/quants`);
-    // } 
-    // else {
+    // } else {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
@@ -367,8 +438,8 @@ useEffect(() => {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
-                {Data &&
-                  Data.map((item, index) => {
+                {AnswerStatus &&
+                  AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
                         <Avatar
@@ -376,9 +447,17 @@ useEffect(() => {
                           onClick={() => handleQuestionClick(index)}
                           sx={{
                             bgcolor:
-                              selectedQuestionIndex === index
-                                ? "#9169C2"
-                                : "#FFFFFF",
+                              item.stage === 0
+                                ? "white"
+                                : item.stage === 1
+                                ? "var(--green)"
+                                : item.stage === 2
+                                ? "red"
+                                : item.stage === 3
+                                ? "var(--blue)"
+                                : item.stage === 4
+                                ? "black"
+                                : "",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -395,14 +474,11 @@ useEffect(() => {
                   })}
               </div>
             </div>
+            {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2 ">
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Question Paper
-              </MyButton>
-              <MyButton variant="contained" sx={{ width: "130px" }}>
-                Instructions
-              </MyButton>
+              <QuestionPaper question_paper={Data} />
+              <InstructionButton />
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
