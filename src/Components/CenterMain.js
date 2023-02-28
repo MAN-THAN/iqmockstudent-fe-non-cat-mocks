@@ -41,11 +41,12 @@ function CenterMain(props) {
   
   const startTimer = () => {
     if (timerValue > 0) {
+      const startTime = Date.now();
       const id = setTimeout(() => {
-        setTimerValue((prevValue) => prevValue - 1);
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
         startTimer();
-      }, 1000);
-  
+      }, 1000 - (Date.now() - startTime) % 1000);
       setTimeoutId(id);
     }
   };
@@ -69,6 +70,7 @@ function CenterMain(props) {
     };
   
     window.addEventListener('beforeunload', handleBeforeUnload);
+    clearTimeout(timeoutId);
   
     startTimer();
   
