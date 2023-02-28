@@ -39,7 +39,7 @@ export const ContextProvider = ({ children }) => {
   //Timer code
 
   const [seconds, setSeconds] = useState(2400); // 40 minutes in seconds
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
     let interval = null;

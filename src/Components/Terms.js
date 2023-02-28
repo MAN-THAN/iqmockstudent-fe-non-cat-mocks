@@ -24,13 +24,16 @@ useEffect(()=>{
 },[responseReceived])
 // console.log("mock Id", mockId)
 
-const handleClick = async () => {
-   console.log(attemptID)
-   localStorage.setItem("attemptID",attemptID)
-   const ID ="63f7316bb68b3faf642a5c98"
-   navigate(`/main/${ID}/varc`)
+  const handleClick = async () => {
+    const timerValue = 2400
+    console.log(attemptID)
+    localStorage.setItem("attemptID",attemptID)
+    // localStorage.setItem("timerValue", timerValue.toString());
+    const ID ="63f7316bb68b3faf642a5c98"
+    navigate(`/main/${ID}/varc`)
 
- };
+
+  };
 
 
  
