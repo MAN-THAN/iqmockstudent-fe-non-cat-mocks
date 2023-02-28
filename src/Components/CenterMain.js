@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -30,13 +35,13 @@ function CenterMain(props) {
 
   useEffect(() => {
     startTimer();
-    if(isActive === false){
+    if (isActive === false) {
       checkSessionAccess()
     }
     return () => {
       resetTimer();
     };
-  }, [params.type,isActive]);
+  }, [params.type, isActive]);
 
   const getMinutes = () => {
     return Math.floor(seconds / 60);
@@ -46,7 +51,7 @@ function CenterMain(props) {
     return seconds % 60;
   };
 
- 
+
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
@@ -56,7 +61,9 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(
+      `http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
@@ -87,30 +94,13 @@ function CenterMain(props) {
   }, []);
   console.log(AnswerStatus);
 
-  // fetching answers status
-  const fetchAnswersStatus = async () => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
-    const options = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log("data===>", json.data, attemptID);
-    setAnswerStatus(json.data);
-  };
-  useEffect(() => {
-    fetchAnswersStatus();
-  }, []);
-  console.log(AnswerStatus);
-
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
     console.log(clickType);
     const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
-    // console.log(updatedData[selectedQuestionIndex].selectedAnswer )
+
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
       question: Data[selectedQuestionIndex].question,
@@ -152,7 +142,7 @@ function CenterMain(props) {
   };
 
   // Session access of student checking
- 
+
   const checkSessionAccess = async (subject) => {
     const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
@@ -161,23 +151,27 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
+
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
- 
-    if (json.allow === true && isActive === false && params.type=="varc") {
+
+    if (json.allow === true && isActive === false && params.type == "varc") {
       navigate(`/main/${params.mockid}/lrdi`);
     }
-    else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
+    else if (json.allow === true && isActive === false && params.type == "lrdi") {
       navigate(`/main/${params.mockid}/quants`);
-    } 
+    }
     else {
       alert("You can not move to other sections, Please complete this first");
     }
   };
 
   return loading ? (
-    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -187,10 +181,15 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton autoFocus variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
+                  >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
@@ -250,23 +249,23 @@ function CenterMain(props) {
                   <ContentDrawer
                     question={
                       Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
+                        Data[selectedQuestionIndex].isPara === "Yes"
                         ? Data[selectedQuestionIndex].paragraph
                         : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
-                      Data[selectedQuestionIndex].image
+                        Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
-                          })
+                          return (
+                            <img
+                              src={item}
+                              alt=""
+                              className="img-fluid "
+                              width={150}
+                            />
+                          );
+                        })
                         : null
                     }
                   />
@@ -283,7 +282,8 @@ function CenterMain(props) {
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                    (Data[selectedQuestionIndex].type === "0" ||
+                      Data[selectedQuestionIndex].type === null ? (
                       <>
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
@@ -325,13 +325,17 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
+
                   onClick={() => {
                     handlePostData("review");
                   }}
                 >
                   Mark for Review & Next
                 </MyButton>
-                <MyButton variant="contained" onClick={() => setSelectedAnswer(null)}>
+                <MyButton
+                  variant="contained"
+                  onClick={() => setSelectedAnswer(null)}
+                >
                   Clear Response
                 </MyButton>
               </div>
@@ -339,6 +343,7 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
+
                   onClick={() => {
                     handlePostData("save");
                   }}
@@ -393,14 +398,14 @@ function CenterMain(props) {
                               item.stage === 0
                                 ? "white"
                                 : item.stage === 1
-                                ? "var(--green)"
-                                : item.stage === 2
-                                ? "red"
-                                : item.stage === 3
-                                ? "var(--blue)"
-                                : item.stage === 4
-                                ? "black"
-                                : "",
+                                  ? "var(--green)"
+                                  : item.stage === 2
+                                    ? "red"
+                                    : item.stage === 3
+                                      ? "var(--blue)"
+                                      : item.stage === 4
+                                        ? "black"
+                                        : "",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -429,19 +434,43 @@ function CenterMain(props) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited</b>
                 </div>
               </div>
             </div>
