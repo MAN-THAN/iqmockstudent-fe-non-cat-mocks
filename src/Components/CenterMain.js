@@ -112,8 +112,8 @@ useEffect(() => {
   };
   useEffect(() => {
     fetchAnswersStatus();
+    console.log(AnswerStatus);
   }, []);
-  console.log(AnswerStatus);
 
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
