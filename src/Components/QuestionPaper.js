@@ -37,7 +37,7 @@ export default function QuestionPaper({ question_paper }) {
   function onResultChange(result) {
     console.log(result);
   }
-  console.log(question_paper);
+
 
   return (
     <span>

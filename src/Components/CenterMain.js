@@ -16,7 +16,10 @@ import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
+
+
 function CenterMain(props) {
+
   const navigate = useNavigate();
   const params = useParams();
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
@@ -58,45 +61,48 @@ const formatTime = (timeInSeconds) => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-useEffect(() => {
+
+
+const MainTimer = () => {
   const storedTimerValue = localStorage.getItem(TIMER_KEY);
   if (storedTimerValue) {
     const storedElapsedTime = DEFAULT_TIMER_VALUE - (storedTimerValue / 1000);
-    setAnimationFrameId(requestAnimationFrame((timestamp) => startTimer(timestamp + storedElapsedTime * 1000)));
+    setAnimationFrameId(requestAnimationFrame((timestamp) =>
+      startTimer(timestamp + storedElapsedTime * 1000)
+    ));
   } else {
     setAnimationFrameId(requestAnimationFrame(startTimer));
   }
-  
-  return () => {
-    cancelAnimationFrame(animationFrameId);
-  }
-}, []);
- 
-  
+};
 
-  
- // Function for getting a keyboard value from keyboard component
-  function handleKeyboardValue(inputValue) {
-    setInputVal(inputValue);
-  }
+// Function for getting a keyboard value from keyboard component
+function handleKeyboardValue(inputValue) {
+  setInputVal(inputValue);
+}
 
-  // fetching main data
-  useEffect(() => {
-    setLoading(true);
-    setSelectedQuestionIndex(0);
-    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [params.type]);
-  console.log(Data);
+// fetching main data
+useEffect(() => {
+  setLoading(true);
+  setSelectedQuestionIndex(0);
+  fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    .then((response) => response.json())
+    .then((data) => {
+      setData(data.data);
+      MainTimer(); // Move the timer start function call inside the then method
+    })
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+}, [params.type]);
+;
+  // console.log(Data);
 
   // fetching answers status
   const fetchAnswersStatus = async () => {

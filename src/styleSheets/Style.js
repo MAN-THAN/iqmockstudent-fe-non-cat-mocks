@@ -21,6 +21,12 @@ export const theme = createTheme({
             fontFamily: "var(--font-inter)" ,
             fontSize: "15px",
         },
+        text: {
+            color: "var(--font-color)",
+            fontWeight: 500,
+            fontFamily: "var(--font-inter)" ,
+            fontSize: "15px",
+        },
 
 
     },

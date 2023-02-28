@@ -5,6 +5,7 @@ import { theme } from "./styleSheets/Style";
 import Instructions from './Components/Instructions';
 import Terms from './Components/Terms';
 import Protected from './Components/Protected';
+import Termsandcondition from './Components/Termsandcondition';
 
 
 function App() {
