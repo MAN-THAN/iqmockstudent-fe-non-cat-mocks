@@ -29,7 +29,6 @@ function CenterMain(props) {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
-<<<<<<< HEAD
  const TIMER_KEY = 'timerValue';
 const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
 
@@ -77,68 +76,6 @@ useEffect(() => {
 
   
  // Function for getting a keyboard value from keyboard component
-=======
-  const TIMER_KEY = 'timerValue';
-  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
-  
-  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
-  const [timeoutId, setTimeoutId] = useState(null);
-  
-  const resetTimer = () => {
-    localStorage.setItem(TIMER_KEY, timerValue.toString());
-  };
-  
-  const startTimer = () => {
-    if (timerValue > 0) {
-      const startTime = Date.now();
-      const id = setTimeout(() => {
-        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
-        startTimer();
-      }, 1000 - (Date.now() - startTime) % 1000);
-      setTimeoutId(id);
-    }
-  };
-  
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-  
-  useEffect(() => {
-    const storedTimerValue = localStorage.getItem(TIMER_KEY);
-    if (storedTimerValue) {
-      setTimerValue(parseInt(storedTimerValue, 10));
-    } else {
-      setTimerValue(DEFAULT_TIMER_VALUE);
-    }
-  
-    const handleBeforeUnload = () => {
-      localStorage.setItem(TIMER_KEY, timerValue.toString());
-    };
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    clearTimeout(timeoutId);
-  
-    startTimer();
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      clearTimeout(timeoutId);
-    };
-    
-  }, []);
-
-  // const getMinutes = () => {
-  //   return Math.floor(seconds / 60);
-  // };
-
-  // const getSeconds = () => {
-  //   return seconds % 60;
-  // };
-
-  // Function for getting a keyboard value from keyboard component
->>>>>>> 19548967985b0b08b23e1dd9b6af57877809b5f6
   function handleKeyboardValue(inputValue) {
     setInputVal(inputValue);
   }
