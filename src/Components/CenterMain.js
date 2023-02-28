@@ -19,7 +19,7 @@ import Latex from "react-latex-next";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-  const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
+  // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
@@ -29,24 +29,64 @@ function CenterMain(props) {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
-
-  useEffect(() => {
-    startTimer();
-    if (isActive === false) {
-      checkSessionAccess();
+  const TIMER_KEY = 'timerValue';
+  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
+  
+  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
+  const [timeoutId, setTimeoutId] = useState(null);
+  
+  const resetTimer = () => {
+    localStorage.setItem(TIMER_KEY, timerValue.toString());
+  };
+  
+  const startTimer = () => {
+    if (timerValue > 0) {
+      const startTime = Date.now();
+      const id = setTimeout(() => {
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
+        startTimer();
+      }, 1000 - (Date.now() - startTime) % 1000);
+      setTimeoutId(id);
     }
-    return () => {
-      resetTimer();
+  };
+  
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  
+  useEffect(() => {
+    const storedTimerValue = localStorage.getItem(TIMER_KEY);
+    if (storedTimerValue) {
+      setTimerValue(parseInt(storedTimerValue, 10));
+    } else {
+      setTimerValue(DEFAULT_TIMER_VALUE);
+    }
+  
+    const handleBeforeUnload = () => {
+      localStorage.setItem(TIMER_KEY, timerValue.toString());
     };
-  }, [params.type, isActive]);
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    clearTimeout(timeoutId);
+  
+    startTimer();
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      clearTimeout(timeoutId);
+    };
+    
+  }, []);
 
-  const getMinutes = () => {
-    return Math.floor(seconds / 60);
-  };
+  // const getMinutes = () => {
+  //   return Math.floor(seconds / 60);
+  // };
 
-  const getSeconds = () => {
-    return seconds % 60;
-  };
+  // const getSeconds = () => {
+  //   return seconds % 60;
+  // };
 
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
@@ -150,13 +190,13 @@ function CenterMain(props) {
     // console.log(json.allow);
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
 
-    if (json.allow === true && isActive === false && params.type == "varc") {
-      navigate(`/main/${params.mockid}/lrdi`);
-    } else if (json.allow === true && isActive === false && params.type == "lrdi") {
-      navigate(`/main/${params.mockid}/quants`);
-    } else {
-      alert("You can not move to other sections, Please complete this first");
-    }
+    // if (json.allow === true && isActive === false && params.type == "varc") {
+    //   navigate(`/main/${params.mockid}/lrdi`);
+    // } else if (json.allow === true && isActive === false && params.type == "lrdi") {
+    //   navigate(`/main/${params.mockid}/quants`);
+    // } else {
+    //   alert("You can not move to other sections, Please complete this first");
+    // }
   };
 
   return loading ? (
@@ -204,8 +244,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                    {getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
-                    {seconds === 0 && stopTimer()}
+                 {formatTime(timerValue)}
                   </span>
                 </div>
               </div>
@@ -241,7 +280,7 @@ function CenterMain(props) {
             </div>
             {/*  right side question  div */}
             <div className="col-5  text-justify">
-              <div className="container p-3 rightContent">
+              <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
