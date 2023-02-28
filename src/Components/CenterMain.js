@@ -289,7 +289,7 @@ function CenterMain(props) {
             </div>
             {/*  right side question  div */}
             <div className="col-5  text-justify">
-              <div className="container p-3 rightContent">
+              <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
