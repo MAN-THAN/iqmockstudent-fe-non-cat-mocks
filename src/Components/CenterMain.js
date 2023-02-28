@@ -80,6 +80,7 @@ function handleKeyboardValue(inputValue) {
   setInputVal(inputValue);
 }
 
+<<<<<<< HEAD
 // fetching main data
 useEffect(() => {
   setLoading(true);
@@ -103,10 +104,29 @@ useEffect(() => {
 }, [params.type]);
 ;
   // console.log(Data);
+=======
+  // fetching main data
+  useEffect(() => {
+    setLoading(true);
+    setSelectedQuestionIndex(0);
+    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [params.type]);
+  console.log(Data);
+>>>>>>> 3af72d2fd954168d556f9526efebc5e78c15d203
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -139,7 +159,7 @@ useEffect(() => {
       duration: 30,
     };
 
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -171,7 +191,7 @@ useEffect(() => {
   // Session access of student checking
 
   const checkSessionAccess = async (subject) => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
