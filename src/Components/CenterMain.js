@@ -16,13 +16,10 @@ import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
 import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
-<<<<<<< HEAD
-=======
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
->>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
 
 function CenterMain(props) {
   const navigate = useNavigate();
@@ -256,13 +253,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-<<<<<<< HEAD
-                                 
-                    {formatTime(timerValue)}
-=======
-                    {getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
-                    {seconds === 0 && stopTimer()}
->>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
+                 {formatTime(timerValue)}
                   </span>
                 </div>
               </div>
@@ -344,13 +335,9 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
-<<<<<<< HEAD
-                  onClick={() => handlePostData("review")}
-=======
                   onClick={() => {
                     handlePostData("review");
                   }}
->>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
                 >
                   Mark for Review & Next
                 </MyButton>
@@ -368,13 +355,9 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
-<<<<<<< HEAD
-                  onClick={() => handlePostData("save")}
-=======
                   onClick={() => {
                     handlePostData("save");
                   }}
->>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next
