@@ -84,7 +84,7 @@ useEffect(() => {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
@@ -100,7 +100,7 @@ useEffect(() => {
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -133,7 +133,7 @@ useEffect(() => {
       duration: 30,
     };
 
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -165,7 +165,7 @@ useEffect(() => {
   // Session access of student checking
 
   const checkSessionAccess = async (subject) => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
