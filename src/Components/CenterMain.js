@@ -80,31 +80,6 @@ function handleKeyboardValue(inputValue) {
   setInputVal(inputValue);
 }
 
-<<<<<<< HEAD
-// fetching main data
-useEffect(() => {
-  setLoading(true);
-  setSelectedQuestionIndex(0);
-  fetch(`http://43.204.36.216:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
-    .then((response) => response.json())
-    .then((data) => {
-      setData(data.data);
-      MainTimer(); // Move the timer start function call inside the then method
-    })
-    .catch((error) => {
-      console.error("Error fetching data: ", error);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-}, [params.type]);
-;
-  // console.log(Data);
-=======
   // fetching main data
   useEffect(() => {
     setLoading(true);
@@ -122,7 +97,6 @@ useEffect(() => {
       });
   }, [params.type]);
   console.log(Data);
->>>>>>> 3af72d2fd954168d556f9526efebc5e78c15d203
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
