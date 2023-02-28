@@ -24,34 +24,89 @@ import Latex from "react-latex-next";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-  const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
+  // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
-  const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
-
-  useEffect(() => {
-    startTimer();
-    if(isActive === false){
-      checkSessionAccess()
+  const TIMER_KEY = 'timerValue';
+  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
+  
+  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
+  const [timeoutId, setTimeoutId] = useState(null);
+  
+  const resetTimer = () => {
+    localStorage.setItem(TIMER_KEY, timerValue.toString());
+  };
+  
+  const startTimer = () => {
+    if (timerValue > 0) {
+      const startTime = Date.now();
+      const id = setTimeout(() => {
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        setTimerValue((prevValue) => prevValue - elapsedTime - 1);
+        startTimer();
+      }, 1000 - (Date.now() - startTime) % 1000);
+      setTimeoutId(id);
     }
-    return () => {
-      resetTimer();
+  };
+  
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  
+  useEffect(() => {
+    const storedTimerValue = localStorage.getItem(TIMER_KEY);
+    if (storedTimerValue) {
+      setTimerValue(parseInt(storedTimerValue, 10));
+    } else {
+      setTimerValue(DEFAULT_TIMER_VALUE);
+    }
+  
+    const handleBeforeUnload = () => {
+      localStorage.setItem(TIMER_KEY, timerValue.toString());
     };
-  }, [params.type,isActive]);
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    clearTimeout(timeoutId);
+  
+    startTimer();
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+  
 
-  const getMinutes = () => {
-    return Math.floor(seconds / 60);
-  };
+  
+  
 
-  const getSeconds = () => {
-    return seconds % 60;
-  };
+  
+  // useEffect(() => {
+  //   startTimer();
+  //   if(isActive === false){
+  //     // checkSessionAccess()
+  //     console.log("componrn")
+  //   }
+  //   return () => {
+  //     resetTimer();
+  //   };
+  // }, [params.type,isActive]);
+
+  // const getMinutes = () => {
+  //   return Math.floor(seconds / 60);
+  // };
+
+  // const getSeconds = () => {
+  //   return seconds % 60;
+  // };
 
  
   // Function for getting a keyboard value from keyboard component
@@ -79,27 +134,13 @@ function CenterMain(props) {
   }, [params.type]);
   console.log(Data);
 
-  // fetching answers status
-  const fetchAnswersStatus = async () => {
-    const url = `http://43.204.36.216:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
-    const options = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log("data===>", json.data, attemptID);
-    setAnswerStatus(json.data);
-  };
-  useEffect(() => {
-    fetchAnswersStatus();
-  }, []);
-  console.log(AnswerStatus);
-
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
-    console.log(clickType);
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
+
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
@@ -124,7 +165,6 @@ function CenterMain(props) {
     const json = await response.json();
     console.log("data===>", json, attemptID);
     nextInd();
-    fetchAnswersStatus();
   };
 
   // function for get index
@@ -153,20 +193,19 @@ function CenterMain(props) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type) 
  
-    if (json.allow === true && isActive === false && params.type=="varc") {
-      navigate(`/main/${params.mockid}/lrdi`);
-    }
-    else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
-      navigate(`/main/${params.mockid}/quants`);
-    } 
-    else {
-      alert("You can not move to other sections, Please complete this first");
-    }
+    // if (json.allow === true && isActive === false && params.type=="varc") {
+    //   navigate(`/main/${params.mockid}/lrdi`);
+    // }
+    // else if (json.allow === true  && isActive === false  && params.type=="lrdi") {
+    //   navigate(`/main/${params.mockid}/quants`);
+    // } 
+    // else {
+    //   alert("You can not move to other sections, Please complete this first");
+    // }
   };
 
   return loading ? (
@@ -214,8 +253,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                    {getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
-                    {seconds === 0 && stopTimer()}
+                 {formatTime(timerValue)}
                   </span>
                 </div>
               </div>
@@ -251,7 +289,7 @@ function CenterMain(props) {
             </div>
             {/*  right side question  div */}
             <div className="col-5  text-justify">
-              <div className="container p-3 rightContent">
+              <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
@@ -359,8 +397,8 @@ function CenterMain(props) {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
-                {AnswerStatus &&
-                  AnswerStatus.map((item, index) => {
+                {Data &&
+                  Data.map((item, index) => {
                     return (
                       <div className="col">
                         <Avatar
@@ -368,17 +406,9 @@ function CenterMain(props) {
                           onClick={() => handleQuestionClick(index)}
                           sx={{
                             bgcolor:
-                              item.stage === 0
-                                ? "white"
-                                : item.stage === 1
-                                ? "var(--green)"
-                                : item.stage === 2
-                                ? "red"
-                                : item.stage === 3
-                                ? "var(--blue)"
-                                : item.stage === 4
-                                ? "black"
-                                : "",
+                              selectedQuestionIndex === index
+                                ? "#9169C2"
+                                : "#FFFFFF",
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -395,11 +425,14 @@ function CenterMain(props) {
                   })}
               </div>
             </div>
-            {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2 ">
-              <QuestionPaper question_paper={Data} />
-              <InstructionButton />
+              <MyButton variant="contained" sx={{ width: "130px" }}>
+                Question Paper
+              </MyButton>
+              <MyButton variant="contained" sx={{ width: "130px" }}>
+                Instructions
+              </MyButton>
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
