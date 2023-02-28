@@ -16,9 +16,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 550,
+  width: 750,
   textAlign: "",
-  height: 550,
+  height: 650,
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
@@ -54,11 +54,11 @@ export default function QuestionPaper({ question_paper }) {
                 <Typography variant="paragraph fw-bold" mt='10px'>
                   Question : {index + 1}
                   <br />
-                  {question_paper.length > 0 && question_paper[index].question}
+                  { Boolean(e.question) === true && e.question}
                 </Typography>
                 <ul style={{ listStyleType: "disc", padding: "20px", }}>
-                  {question_paper.length > 0 &&
-                    question_paper[index].options.map((option, ind) => (
+                  { e.options !== null && 
+                    e.options.map((option, ind) => (
                       <li key={ind}>
                         { option }
                       </li>

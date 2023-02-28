@@ -16,6 +16,13 @@ import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
 import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
+<<<<<<< HEAD
+=======
+import QuestionPaper from "./QuestionPaper";
+import InstructionButton from "./InstructionButton";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
+>>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
 
 function CenterMain(props) {
   const navigate = useNavigate();
@@ -205,10 +212,7 @@ function CenterMain(props) {
   };
 
   return loading ? (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}
-    >
+    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -218,27 +222,16 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
-                  >
+                  <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => checkSessionAccess(`lrdi`)}
-                  >
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
                     LR DI
                   </BootstrapButton>
-                  <BootstrapButton
-                    variant="contained"
-                    onClick={() => checkSessionAccess(`quants`)}
-                  >
+                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -263,8 +256,13 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
+<<<<<<< HEAD
                                  
                     {formatTime(timerValue)}
+=======
+                    {getMinutes()}:{getSeconds() < 10 ? `0${getSeconds()}` : getSeconds()}
+                    {seconds === 0 && stopTimer()}
+>>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
                   </span>
                 </div>
               </div>
@@ -284,23 +282,13 @@ function CenterMain(props) {
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
-                        ? Data[selectedQuestionIndex].paragraph
-                        : "No paragraph"
+                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
                     }
@@ -314,43 +302,38 @@ function CenterMain(props) {
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && Data[selectedQuestionIndex].question}
+                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
                     ) : (
-                      Data[selectedQuestionIndex].options.map(
-                        (option, index) => (
-                          <li key={index}>
-                            <input
-                              type="radio"
-                              name="answer"
-                              value={index}
-                              checked={
-                                Data[selectedQuestionIndex].selectedAnswer ===
-                                index
-                              }
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value);
-                                setSelectedAnswer(value);
-                                const updatedData = [...Data];
-                                updatedData[
-                                  selectedQuestionIndex
-                                ].selectedAnswer = value;
-                                setData(updatedData);
-                              }}
-                            />
-                            <label htmlFor={index}>
-                              <small>{option}</small>
-                            </label>
-                          </li>
-                        )
-                      )
+                      Data[selectedQuestionIndex].options !== null &&
+                      Data[selectedQuestionIndex].options.map((option, index) => (
+                        <li key={index}>
+                          <input
+                            type="radio"
+                            name="answer"
+                            value={index}
+                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              setSelectedAnswer(value);
+                              const updatedData = [...Data];
+                              updatedData[selectedQuestionIndex].selectedAnswer = value;
+                              setData(updatedData);
+                            }}
+                          />
+                          <label htmlFor={index}>
+                            <small>
+                              <Latex>{option}</Latex>
+                            </small>
+                          </label>
+                        </li>
+                      ))
                     ))}
                 </ul>
               </div>
@@ -361,13 +344,22 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
+<<<<<<< HEAD
                   onClick={() => handlePostData("review")}
+=======
+                  onClick={() => {
+                    handlePostData("review");
+                  }}
+>>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
                 >
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
                   variant="contained"
-                  onClick={() => setSelectedAnswer(null)}
+                  onClick={() => {
+                    setSelectedAnswer(null);
+                    console.log("working");
+                  }}
                 >
                   Clear Response
                 </MyButton>
@@ -376,7 +368,13 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
+<<<<<<< HEAD
                   onClick={() => handlePostData("save")}
+=======
+                  onClick={() => {
+                    handlePostData("save");
+                  }}
+>>>>>>> 3ef6e172f63967b6b404efa901c634e45f102d24
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next
@@ -459,43 +457,19 @@ function CenterMain(props) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited</b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
                 </div>
               </div>
             </div>
