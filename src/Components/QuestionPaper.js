@@ -10,6 +10,8 @@ import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import Keyboard from "./Keypad";
+import Latex from "react-latex-next";
+import "katex/dist/katex.min.css";
 
 const style = {
   position: "absolute",
@@ -51,16 +53,16 @@ export default function QuestionPaper({ question_paper }) {
           {question_paper.map((e, index) => {
             return (
               <div className="container p-2">
-                <Typography variant="paragraph fw-bold" mt='10px'>
+                <Typography variant="paragraph fw-bold" mt="10px">
                   Question : {index + 1}
                   <br />
-                  { Boolean(e.question) === true && e.question}
+                  {Boolean(e.question) === true && <Latex>{e.question}</Latex>}
                 </Typography>
-                <ul style={{ listStyleType: "disc", padding: "20px", }}>
-                  { e.options !== null && 
+                <ul style={{ listStyleType: "disc", padding: "20px" }}>
+                  {e.options !== null &&
                     e.options.map((option, ind) => (
                       <li key={ind}>
-                        { option }
+                        <Latex>{option}</Latex>
                       </li>
                     ))}
                 </ul>
