@@ -10,17 +10,21 @@ import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import Keyboard from "./Keypad";
+
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
+
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+
   width: 750,
   textAlign: "",
   height: 650,
+
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
@@ -53,6 +57,7 @@ export default function QuestionPaper({ question_paper }) {
           {question_paper.map((e, index) => {
             return (
               <div className="container p-2">
+
                 <Typography variant="paragraph fw-bold" mt="10px">
                   Question : {index + 1}
                   <br />
@@ -63,6 +68,7 @@ export default function QuestionPaper({ question_paper }) {
                     e.options.map((option, ind) => (
                       <li key={ind}>
                         <Latex>{option}</Latex>
+
                       </li>
                     ))}
                 </ul>

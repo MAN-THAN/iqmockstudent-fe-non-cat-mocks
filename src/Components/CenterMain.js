@@ -13,13 +13,16 @@ import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
+
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
+
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
@@ -27,6 +30,28 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
+
+
+  //Timer code
+
+  useEffect(() => {
+    startTimer();
+    if (isActive === false) {
+      checkSessionAccess()
+    }
+    return () => {
+      resetTimer();
+    };
+  }, [params.type, isActive]);
+
+  const getMinutes = () => {
+    return Math.floor(seconds / 60);
+  };
+
+  const getSeconds = () => {
+    return seconds % 60;
+  };
+
 
   //Timer code
  const TIMER_KEY = 'timerValue';
@@ -100,7 +125,9 @@ useEffect(() => {
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
+
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -112,8 +139,10 @@ useEffect(() => {
   };
   useEffect(() => {
     fetchAnswersStatus();
+
     console.log(AnswerStatus);
   }, []);
+
 
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
@@ -165,7 +194,9 @@ useEffect(() => {
   // Session access of student checking
 
   const checkSessionAccess = async (subject) => {
+
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -175,6 +206,7 @@ useEffect(() => {
 
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
+
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
 
     // if (json.allow === true && isActive === false && params.type == "varc") {
@@ -184,6 +216,7 @@ useEffect(() => {
     // } else {
     //   alert("You can not move to other sections, Please complete this first");
     // }
+
   };
 
   return loading ? (
@@ -203,10 +236,12 @@ useEffect(() => {
                   <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
                     Verbal Ability
                   </BootstrapButton>
+
                   <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
                     LR DI
                   </BootstrapButton>
                   <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
+
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -231,7 +266,9 @@ useEffect(() => {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
+
                  {formatTime(timerValue)}
+
                   </span>
                 </div>
               </div>
@@ -251,6 +288,7 @@ useEffect(() => {
                 {
                   <ContentDrawer
                     question={
+
                       Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
@@ -259,6 +297,7 @@ useEffect(() => {
                         ? Data[selectedQuestionIndex].image.map((item) => {
                             return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
+
                         : null
                     }
                   />
@@ -275,11 +314,14 @@ useEffect(() => {
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
+
                     (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+
                       <>
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
                     ) : (
+
                       Data[selectedQuestionIndex].options !== null &&
                       Data[selectedQuestionIndex].options.map((option, index) => (
                         <li key={index}>
@@ -303,6 +345,7 @@ useEffect(() => {
                           </label>
                         </li>
                       ))
+
                     ))}
                 </ul>
               </div>
@@ -313,6 +356,7 @@ useEffect(() => {
               <div>
                 <MyButton
                   variant="contained"
+
                   onClick={() => {
                     handlePostData("review");
                   }}
@@ -333,6 +377,7 @@ useEffect(() => {
               <div className="">
                 <BootstrapButton
                   variant="contained "
+
                   onClick={() => {
                     handlePostData("save");
                   }}
@@ -387,6 +432,7 @@ useEffect(() => {
                               item.stage === 0
                                 ? "white"
                                 : item.stage === 1
+
                                 ? "var(--green)"
                                 : item.stage === 2
                                 ? "red"
@@ -395,6 +441,7 @@ useEffect(() => {
                                 : item.stage === 4
                                 ? "black"
                                 : "",
+
                             color: "black",
                             p: 3,
                             borderRadius: "10px",

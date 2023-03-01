@@ -20,7 +20,9 @@ export const ContextProvider = ({ children }) => {
       mockId: "ruksdjhfjdksfgkdfg",
     };
 
+
     fetch(`${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +41,9 @@ export const ContextProvider = ({ children }) => {
   //Timer code
 
   const [seconds, setSeconds] = useState(2400); // 40 minutes in seconds
+
   const [isActive, setIsActive] = useState(true);
+
 
   useEffect(() => {
     let interval = null;
