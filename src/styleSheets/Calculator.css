@@ -9,3 +9,7 @@
 .calcContainer{
     height: 90%;
 }
+.rounded {
+    border-radius: var(--bs-border-radius)!important;
+    max-width: 400px;
+}

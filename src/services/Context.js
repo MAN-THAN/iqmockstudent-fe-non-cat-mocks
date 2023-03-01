@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-const { REACT_APP_API_ADMIN_URL, REACT_APP_API_STUDENT_URL } = process.env;
+
 export const Context = React.createContext();
 
 export function useAuth() {
@@ -8,7 +8,7 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  console.log(REACT_APP_API_ADMIN_URL,REACT_APP_API_STUDENT_URL)
+ 
   const params = useParams();
   const [attemptID, setattemptID] = useState("");
   const [responseReceived, setResponseReceived] = useState(false);

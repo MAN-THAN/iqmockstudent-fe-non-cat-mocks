@@ -87,17 +87,21 @@ function handleKeyboardValue(inputValue) {
     fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
+        console.warn(data)
         setData(data.data);
+        MainTimer()
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
       })
       .finally(() => {
         setLoading(false);
+       
       });
+     
   }, [params.type]);
-  console.log(Data);
-
+  
+ 
   // fetching answers status
   const fetchAnswersStatus = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
@@ -107,12 +111,12 @@ function handleKeyboardValue(inputValue) {
     };
     const response = await fetch(url, options);
     const json = await response.json();
-    console.log("data===>", json.data, attemptID);
+    // console.log("data===>", json.data, attemptID);
     setAnswerStatus(json.data);
   };
   useEffect(() => {
     fetchAnswersStatus();
-    console.log(AnswerStatus);
+    // console.log(AnswerStatus);
   }, []);
 
   // post answers Api trigger on mark and review  button
@@ -164,7 +168,7 @@ function handleKeyboardValue(inputValue) {
 
   // Session access of student checking
 
-  const checkSessionAccess = async (subject) => {
+  const checkSessionAccess = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
     const options = {
       method: "GET",
@@ -246,7 +250,7 @@ function handleKeyboardValue(inputValue) {
             }}
           >
             {/* left side content div */}
-            <div className="col-7 overflow-auto ">
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-7 overflow-auto":"d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
@@ -266,7 +270,7 @@ function handleKeyboardValue(inputValue) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className="col-5  text-justify">
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-5 text-justify":"col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
@@ -413,9 +417,11 @@ function handleKeyboardValue(inputValue) {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row justify-content-center my-2 ">
-              <QuestionPaper question_paper={Data} />
-              <InstructionButton />
+            <div className="row justify-content-center my-2  ">
+             <div className="d-flex">
+             <QuestionPaper question_paper={Data} />
+             <InstructionButton />
+             </div>
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 

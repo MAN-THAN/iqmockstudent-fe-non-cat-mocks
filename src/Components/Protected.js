@@ -11,7 +11,7 @@ function Protected(props) {
 
       const attemptID = localStorage.getItem("attemptID")
       
-        if(!attemptID){
+      if(!attemptID){
             naviagte("/terms")
         }
     },[])

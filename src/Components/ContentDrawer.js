@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 
 function ContentDrawer(props) {
-  console.log(props.image);
+
   return (
     <Box sx={{ padding: 2, color: "black" }}>
       <CssBaseline />

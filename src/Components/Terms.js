@@ -26,7 +26,7 @@ function Terms() {
     console.log(attemptID);
     localStorage.setItem("attemptID", attemptID);
     // localStorage.setItem("timerValue", timerValue.toString());
-    const ID = "63f7316bb68b3faf642a5c98";
+    const ID = "63fef68b7de67d353b631f7a";
     navigate(`/main/${ID}/varc`);
   };
 
