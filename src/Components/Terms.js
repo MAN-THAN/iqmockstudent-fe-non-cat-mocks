@@ -21,6 +21,7 @@ function Terms() {
   }, [responseReceived]);
   // console.log("mock Id", mockId)
 
+
   const handleClick = async () => {
     const timerValue = 2400;
     console.log(attemptID);

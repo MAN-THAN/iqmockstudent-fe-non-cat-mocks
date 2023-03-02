@@ -22,7 +22,9 @@ export const ContextProvider = ({ children }) => {
       mockId: "ruksdjhfjdksfgkdfg",
     };
 
+
     fetch(`${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",

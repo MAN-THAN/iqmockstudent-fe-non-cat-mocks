@@ -13,6 +13,7 @@ import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
+
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
@@ -20,7 +21,9 @@ import Timer from "./Timer";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
+
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
@@ -29,8 +32,6 @@ function CenterMain(props) {
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
-  //Timer code
-  
 
   // Function for getting a keyboard value from keyboard component
   function handleKeyboardValue(inputValue) {
@@ -58,7 +59,9 @@ function CenterMain(props) {
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
+
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -72,6 +75,7 @@ function CenterMain(props) {
     fetchAnswersStatus();
     // console.log(AnswerStatus);
   }, []);
+
 
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
@@ -124,6 +128,7 @@ function CenterMain(props) {
 
   const checkSessionAccess = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -133,6 +138,7 @@ function CenterMain(props) {
 
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
+
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
 
     // if (json.allow === true && isActive === false && params.type == "varc") {
@@ -142,6 +148,7 @@ function CenterMain(props) {
     // } else {
     //   alert("You can not move to other sections, Please complete this first");
     // }
+
   };
 
   return loading ? (
@@ -221,6 +228,7 @@ function CenterMain(props) {
                 {
                   <ContentDrawer
                     question={
+
                       Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
@@ -229,6 +237,7 @@ function CenterMain(props) {
                         ? Data[selectedQuestionIndex].image.map((item) => {
                             return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
+
                         : null
                     }
                   />
@@ -245,11 +254,14 @@ function CenterMain(props) {
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
+
                     (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+
                       <>
                         <Keyboard onValueChange={handleKeyboardValue} />
                       </>
                     ) : (
+
                       Data[selectedQuestionIndex].options !== null &&
                       Data[selectedQuestionIndex].options.map((option, index) => (
                         <li key={index}>
@@ -273,6 +285,7 @@ function CenterMain(props) {
                           </label>
                         </li>
                       ))
+
                     ))}
                 </ul>
               </div>
@@ -283,6 +296,7 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
+
                   onClick={() => {
                     handlePostData("review");
                   }}
@@ -303,6 +317,7 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
+
                   onClick={() => {
                     handlePostData("save");
                   }}
@@ -357,6 +372,7 @@ function CenterMain(props) {
                               item.stage === 0
                                 ? "white"
                                 : item.stage === 1
+
                                 ? "var(--green)"
                                 : item.stage === 2
                                 ? "red"
@@ -365,6 +381,7 @@ function CenterMain(props) {
                                 : item.stage === 4
                                 ? "black"
                                 : "",
+
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
