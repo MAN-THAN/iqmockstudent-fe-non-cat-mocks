@@ -1,6 +1,11 @@
-import React, { useState, useEffect, usez } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,99 +14,101 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
-import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
-
-
 function CenterMain(props) {
-
   const navigate = useNavigate();
   const params = useParams();
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState([]); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
- const TIMER_KEY = 'timerValue';
-const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
+  const TIMER_KEY = "timerValue";
+  const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
 
-const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
-const [animationFrameId, setAnimationFrameId] = useState(null);
+  const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
+  const [animationFrameId, setAnimationFrameId] = useState(null);
 
-const resetTimer = () => {
-  setTimerValue(DEFAULT_TIMER_VALUE);
-  localStorage.setItem(TIMER_KEY, DEFAULT_TIMER_VALUE.toString());
-};
+  const resetTimer = () => {
+    setTimerValue(DEFAULT_TIMER_VALUE);
+    localStorage.setItem(TIMER_KEY, DEFAULT_TIMER_VALUE.toString());
+  };
 
-const startTimer = (timestamp) => {
-  const elapsedTime = Math.floor(timestamp / 1000);
-  const remainingTime = Math.max(DEFAULT_TIMER_VALUE - elapsedTime, 0);
-  
-  if (remainingTime > 0) {
-    setTimerValue(remainingTime);
-    setAnimationFrameId(requestAnimationFrame(startTimer));
-  } else {
-    resetTimer();
-  }
-};
+  const startTimer = (timestamp) => {
+    const elapsedTime = Math.floor(timestamp / 1000);
+    const remainingTime = Math.max(DEFAULT_TIMER_VALUE - elapsedTime, 0);
 
-const formatTime = (timeInSeconds) => {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = timeInSeconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-};
+    if (remainingTime > 0) {
+      setTimerValue(remainingTime);
+      setAnimationFrameId(requestAnimationFrame(startTimer));
+    } else {
+      resetTimer();
+    }
+  };
 
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
+  const MainTimer = () => {
+    const storedTimerValue = localStorage.getItem(TIMER_KEY);
+    if (storedTimerValue) {
+      const storedElapsedTime = DEFAULT_TIMER_VALUE - storedTimerValue / 1000;
+      setAnimationFrameId(
+        requestAnimationFrame((timestamp) =>
+          startTimer(timestamp + storedElapsedTime * 1000)
+        )
+      );
+    } else {
+      setAnimationFrameId(requestAnimationFrame(startTimer));
+    }
+  };
 
-const MainTimer = () => {
-  const storedTimerValue = localStorage.getItem(TIMER_KEY);
-  if (storedTimerValue) {
-    const storedElapsedTime = DEFAULT_TIMER_VALUE - (storedTimerValue / 1000);
-    setAnimationFrameId(requestAnimationFrame((timestamp) =>
-      startTimer(timestamp + storedElapsedTime * 1000)
-    ));
-  } else {
-    setAnimationFrameId(requestAnimationFrame(startTimer));
-  }
-};
+  // Function for keyboard value from keyboard component
 
-// Function for getting a keyboard value from keyboard component
-function handleKeyboardValue(inputValue) {
-  setInputVal(inputValue);
-}
+  const handleKeyPress = (key) => {
+    setInputVal((prevInput) => prevInput + key);
+  };
+
+  const handleBackspace = () => {
+    setInputVal((prevInput) => prevInput.slice(0, -1));
+  };
 
   // fetching main data
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
-        console.warn(data)
+        console.warn(data);
         setData(data.data);
-        MainTimer()
+        MainTimer();
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
       })
       .finally(() => {
         setLoading(false);
-       
       });
-     
   }, [params.type]);
-  
- 
+
   // fetching answers status
   const fetchAnswersStatus = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
@@ -122,7 +129,9 @@ function handleKeyboardValue(inputValue) {
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
     console.log(clickType);
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
@@ -136,8 +145,6 @@ function handleKeyboardValue(inputValue) {
       studentAnswer,
       duration: 30,
     };
-    
-    
 
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
@@ -193,7 +200,10 @@ function handleKeyboardValue(inputValue) {
   };
 
   return loading ? (
-    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -203,16 +213,27 @@ function handleKeyboardValue(inputValue) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
+                  >
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`lrdi`)}
+                  >
                     LR DI
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
+                  <BootstrapButton
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`quants`)}
+                  >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -237,7 +258,7 @@ function handleKeyboardValue(inputValue) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                 {formatTime(timerValue)}
+                    {formatTime(timerValue)}
                   </span>
                 </div>
               </div>
@@ -252,18 +273,34 @@ function handleKeyboardValue(inputValue) {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-7 overflow-auto":"d-none"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
                           })
                         : null
                     }
@@ -272,43 +309,200 @@ function handleKeyboardValue(inputValue) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-5 text-justify":"col-12  text-justify"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data.length > 0 && (
+                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
+                  )}
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
-                      <>
-                        <Keyboard onValueChange={handleKeyboardValue} />
-                      </>
+                    (Data[selectedQuestionIndex].type === "0" ||
+                    Data[selectedQuestionIndex].type === null ? (
+                      <div className=" text-start">
+                        <TextField
+                          id="outlined-basic"
+                          label="Enter Answer"
+                          variant="outlined"
+                          value={inputVal}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setInputVal(value);
+                            const updatedData = [...Data];
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
+                            setData(updatedData);
+                          }}
+                          inputRef={(input) => input && input.focus()}
+                          sx={{
+                            my: 3,
+                            color: "black",
+                            width: "400px",
+                            "& label.Mui-focused": {
+                              color: "black",
+                            },
+                            "& .MuiInput-underline:after": {
+                              borderBottomColor: "var( --orange)",
+                            },
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": {
+                                borderColor: "var( --orange)",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "var( --orange)",
+                              },
+                              "&.Mui-focused fieldset": {
+                                borderColor: "var( --orange)",
+                              },
+                            },
+                          }}
+                        />
+
+                        <div className="keys  p-3 rounded shadow">
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("1")}
+                            >
+                              1
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("2")}
+                            >
+                              2
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("3")}
+                            >
+                              3
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("4")}
+                            >
+                              4
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("5")}
+                            >
+                              5
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("6")}
+                            >
+                              6
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("7")}
+                            >
+                              7
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("8")}
+                            >
+                              8
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("9")}
+                            >
+                              9
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("0")}
+                            >
+                              0
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress(".")}
+                            >
+                              .
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("-")}
+                            >
+                              -
+                            </BootstrapButton>
+
+                            <BootstrapButton
+                              sx={{
+                                width: "151px",
+                                p: 1,
+                                borderRadius: "25px",
+                              }}
+                              variant="contained"
+                              onClick={() => handleBackspace()}
+                            >
+                              Backspace
+                            </BootstrapButton>
+                          </div>
+                        </div>
+                      </div>
                     ) : (
                       Data[selectedQuestionIndex].options !== null &&
-                      Data[selectedQuestionIndex].options.map((option, index) => (
-                        <li key={index}>
-                          <input
-                            type="radio"
-                            name="answer"
-                            value={index}
-                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
-                            onChange={(e) => {
-                              const value = parseInt(e.target.value);
-                              setSelectedAnswer(value);
-                              const updatedData = [...Data];
-                              updatedData[selectedQuestionIndex].selectedAnswer = value;
-                              setData(updatedData);
-                            }}
-                          />
-                          <label htmlFor={index}>
-                            <small>
-                              <Latex>{option}</Latex>
-                            </small>
-                          </label>
-                        </li>
-                      ))
+                      Data[selectedQuestionIndex].options.map(
+                        (option, index) => (
+                          <li key={index}>
+                            <input
+                              type="radio"
+                              name="answer"
+                              value={index}
+                              checked={
+                                Data[selectedQuestionIndex].selectedAnswer ===
+                                index
+                              }
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                setSelectedAnswer(value);
+                                const updatedData = [...Data];
+                                updatedData[
+                                  selectedQuestionIndex
+                                ].selectedAnswer = value;
+                                setData(updatedData);
+                              }}
+                            />
+                            <label htmlFor={index}>
+                              <small>
+                                <Latex>{option}</Latex>
+                              </small>
+                            </label>
+                          </li>
+                        )
+                      )
                     ))}
                 </ul>
               </div>
@@ -420,10 +614,10 @@ function handleKeyboardValue(inputValue) {
             {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2  ">
-             <div className="d-flex">
-             <QuestionPaper question_paper={Data} />
-             <InstructionButton />
-             </div>
+              <div className="d-flex">
+                <QuestionPaper question_paper={Data} />
+                <InstructionButton />
+              </div>
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
@@ -431,19 +625,43 @@ function handleKeyboardValue(inputValue) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited</b>
                 </div>
               </div>
             </div>
