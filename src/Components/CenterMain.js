@@ -335,8 +335,8 @@ function CenterMain(props) {
                           variant="outlined"
                           value={inputVal}
                           onChange={(e) => {
-                            const value = e.target.value;
-                            setInputVal(value);
+                           const value = e.target.value;
+                          setInputVal(value);
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer =
                               value;
