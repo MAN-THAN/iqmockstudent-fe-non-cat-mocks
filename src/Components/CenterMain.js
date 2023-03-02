@@ -264,7 +264,7 @@ function CenterMain(props) {
 
                       Data[selectedQuestionIndex].options !== null &&
                       Data[selectedQuestionIndex].options.map((option, index) => (
-                        <li key={index}>
+                        <li key={index} style={{ fontSize : '16px', fontWeight : "500", marginTop : "1em"}}>
                           <input
                             type="radio"
                             name="answer"
@@ -278,11 +278,7 @@ function CenterMain(props) {
                               setData(updatedData);
                             }}
                           />
-                          <label htmlFor={index}>
-                            <small>
-                              <Latex>{option}</Latex>
-                            </small>
-                          </label>
+                          <span style={{marginLeft : "0.5em"}}>{ option }</span>
                         </li>
                       ))
 
@@ -401,11 +397,11 @@ function CenterMain(props) {
             {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2  ">
-              <div className="d-flex">
+              <div className="d-flex justify-content-center">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
-              <SubmitButton variant="contained">Submit</SubmitButton>
+                <SubmitButton disabled={ params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">Submit</SubmitButton>
             </div>
 
             <div className="row gap-3 my-2  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
