@@ -15,11 +15,9 @@ import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
-
-
+import Timer from "./Timer";
 
 function CenterMain(props) {
-
   const navigate = useNavigate();
   const params = useParams();
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
@@ -32,53 +30,12 @@ function CenterMain(props) {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   //Timer code
- const TIMER_KEY = 'timerValue';
-const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
-
-const [timerValue, setTimerValue] = useState(DEFAULT_TIMER_VALUE);
-const [animationFrameId, setAnimationFrameId] = useState(null);
-
-const resetTimer = () => {
-  setTimerValue(DEFAULT_TIMER_VALUE);
-  localStorage.setItem(TIMER_KEY, DEFAULT_TIMER_VALUE.toString());
-};
-
-const startTimer = (timestamp) => {
-  const elapsedTime = Math.floor(timestamp / 1000);
-  const remainingTime = Math.max(DEFAULT_TIMER_VALUE - elapsedTime, 0);
   
-  if (remainingTime > 0) {
-    setTimerValue(remainingTime);
-    setAnimationFrameId(requestAnimationFrame(startTimer));
-  } else {
-    resetTimer();
+
+  // Function for getting a keyboard value from keyboard component
+  function handleKeyboardValue(inputValue) {
+    setInputVal(inputValue);
   }
-};
-
-const formatTime = (timeInSeconds) => {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = timeInSeconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-};
-
-
-
-const MainTimer = () => {
-  const storedTimerValue = localStorage.getItem(TIMER_KEY);
-  if (storedTimerValue) {
-    const storedElapsedTime = DEFAULT_TIMER_VALUE - (storedTimerValue / 1000);
-    setAnimationFrameId(requestAnimationFrame((timestamp) =>
-      startTimer(timestamp + storedElapsedTime * 1000)
-    ));
-  } else {
-    setAnimationFrameId(requestAnimationFrame(startTimer));
-  }
-};
-
-// Function for getting a keyboard value from keyboard component
-function handleKeyboardValue(inputValue) {
-  setInputVal(inputValue);
-}
 
   // fetching main data
   useEffect(() => {
@@ -87,21 +44,18 @@ function handleKeyboardValue(inputValue) {
     fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
-        console.warn(data)
+        console.warn(data);
         setData(data.data);
-        MainTimer()
+        
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
       })
       .finally(() => {
         setLoading(false);
-       
       });
-     
   }, [params.type]);
-  
- 
+
   // fetching answers status
   const fetchAnswersStatus = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
@@ -136,8 +90,6 @@ function handleKeyboardValue(inputValue) {
       studentAnswer,
       duration: 30,
     };
-    
-    
 
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
@@ -206,13 +158,25 @@ function handleKeyboardValue(inputValue) {
               <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton variant="contained" onClick={() => navigate(`/main/${params.mockid}/varc`)}>
+                  <BootstrapButton
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    variant="contained"
+                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
+                  >
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`lrdi`)}>
-                    LR DI
+                  <BootstrapButton
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`lrdi`)}
+                  >
+                    LRDI
                   </BootstrapButton>
-                  <BootstrapButton variant="contained" onClick={() => checkSessionAccess(`quants`)}>
+                  <BootstrapButton
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`quants`)}
+                  >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -237,7 +201,7 @@ function handleKeyboardValue(inputValue) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                 {formatTime(timerValue)}
+                    {<Timer initMinute={0} initSeconds={10} />}
                   </span>
                 </div>
               </div>
@@ -252,7 +216,7 @@ function handleKeyboardValue(inputValue) {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-7 overflow-auto":"d-none"}>
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
@@ -272,7 +236,7 @@ function handleKeyboardValue(inputValue) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara ==="Yes"?"col-5 text-justify":"col-12  text-justify"}>
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
@@ -420,10 +384,10 @@ function handleKeyboardValue(inputValue) {
             {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2  ">
-             <div className="d-flex">
-             <QuestionPaper question_paper={Data} />
-             <InstructionButton />
-             </div>
+              <div className="d-flex">
+                <QuestionPaper question_paper={Data} />
+                <InstructionButton />
+              </div>
               <SubmitButton variant="contained">Submit</SubmitButton>
             </div>
 
