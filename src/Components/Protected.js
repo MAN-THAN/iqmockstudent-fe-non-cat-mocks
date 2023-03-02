@@ -8,12 +8,11 @@ function Protected(props) {
     const{Comp}=props;
 
     useEffect(()=>{
-
       const attemptID = localStorage.getItem("attemptID")
       
       if(!attemptID){
-            naviagte("/terms")
-        }
+          naviagte("/terms")
+      }
     },[])
 
   return (

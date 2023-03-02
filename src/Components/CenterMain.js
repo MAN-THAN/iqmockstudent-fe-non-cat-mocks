@@ -136,6 +136,8 @@ function handleKeyboardValue(inputValue) {
       studentAnswer,
       duration: 30,
     };
+    
+    
 
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
