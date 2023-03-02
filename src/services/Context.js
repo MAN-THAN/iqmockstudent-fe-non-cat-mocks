@@ -41,37 +41,6 @@ export const ContextProvider = ({ children }) => {
 
  
 
-  //Timer code
-
-  const [seconds, setSeconds] = useState(2400); // 40 minutes in seconds
-  const [isActive, setIsActive] = useState(true);
-
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
-      }, 1000);
-    } 
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
-  // // else if (!isActive && seconds !== 0) {
-  //   clearInterval(interval);
-
-  // }
-
-  const startTimer = () => {
-    setIsActive(true);
-  };
-
-  const stopTimer = () => {
-    setIsActive(false);
-  };
-
-  const resetTimer = () => {
-    setSeconds(20);
-    setIsActive(false);
-  };
 
   return (
     <>
@@ -80,11 +49,7 @@ export const ContextProvider = ({ children }) => {
           createAttemptId,
           responseReceived,
           attemptID,
-          seconds,
-          isActive,
-          startTimer,
-          stopTimer,
-          resetTimer,
+              
         }}
       >
         {children}

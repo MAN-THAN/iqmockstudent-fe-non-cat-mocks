@@ -1,4 +1,4 @@
-import React, { useState,useRef ,useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styleSheets/keyboard.css";
 import { TextField } from "@mui/material";
 import { BootstrapButton } from "../styleSheets/Style";
@@ -6,10 +6,9 @@ const Keyboard = (props) => {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
-useEffect(() => {
-  inputRef.current && inputRef.current.focus();
-}, []);
-
+  useEffect(() => {
+    inputRef.current && inputRef.current.focus();
+  }, []);
 
   props.onValueChange(input);
 
@@ -21,8 +20,6 @@ useEffect(() => {
     setInput((prevInput) => prevInput.slice(0, -1));
   };
 
-
-
   return (
     <div className=" text-start">
       <TextField
@@ -30,7 +27,7 @@ useEffect(() => {
         label="Enter Answer"
         variant="outlined"
         value={input}
-        autoFocus={true}
+        inputRef={(input) => input && input.focus()}
         sx={{
           my: 3,
           color: "black",
@@ -125,7 +122,7 @@ useEffect(() => {
           <BootstrapButton
             sx={{ width: "auto", p: 1, borderRadius: "25px" }}
             variant="contained"
-            onClick={() => handleKeyPress("1")}
+            onClick={() => handleKeyPress("0")}
           >
             0
           </BootstrapButton>
@@ -145,19 +142,9 @@ useEffect(() => {
           >
             -
           </BootstrapButton>
-        
-      
+
           <BootstrapButton
-            sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-            variant="contained"
-            // onClick={()=>handleBackward()}
-          >
-        back
-          </BootstrapButton>
-        </div>
-        <div className="m-2">
-          <BootstrapButton
-            sx={{ width: "151px", p: 1, borderRadius: "25px", mt: 1 }}
+            sx={{ width: "151px", p: 1, borderRadius: "25px" }}
             variant="contained"
             onClick={() => handleBackspace()}
           >
