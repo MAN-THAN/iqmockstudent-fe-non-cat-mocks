@@ -17,13 +17,20 @@ import { useAuth } from "../services/Context";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
+
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+<<<<<<< HEAD
+=======
+import Timer from "./Timer";
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
 
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
+
   // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState([]); //if have iinput box data store in this state
@@ -32,6 +39,7 @@ function CenterMain(props) {
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
+<<<<<<< HEAD
   //Timer code
   const TIMER_KEY = "timerValue";
   const DEFAULT_TIMER_VALUE = 2400; // 40 minutes * 60 seconds
@@ -87,6 +95,13 @@ function CenterMain(props) {
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
   };
+=======
+
+  // Function for getting a keyboard value from keyboard component
+  function handleKeyboardValue(inputValue) {
+    setInputVal(inputValue);
+  }
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
 
   // fetching main data
   useEffect(() => {
@@ -99,7 +114,11 @@ function CenterMain(props) {
       .then((data) => {
         console.warn(data);
         setData(data.data);
+<<<<<<< HEAD
         MainTimer();
+=======
+        
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -111,7 +130,9 @@ function CenterMain(props) {
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
+
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -125,6 +146,7 @@ function CenterMain(props) {
     fetchAnswersStatus();
     // console.log(AnswerStatus);
   }, []);
+
 
   // post answers Api trigger on mark and review  button
   const handlePostData = async (clickType) => {
@@ -179,6 +201,7 @@ function CenterMain(props) {
 
   const checkSessionAccess = async () => {
     const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+
     const options = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -188,6 +211,7 @@ function CenterMain(props) {
 
     // console.log("data===>", json, attemptID);
     // console.log(json.allow);
+
     // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
 
     // if (json.allow === true && isActive === false && params.type == "varc") {
@@ -197,6 +221,7 @@ function CenterMain(props) {
     // } else {
     //   alert("You can not move to other sections, Please complete this first");
     // }
+
   };
 
   return loading ? (
@@ -219,18 +244,33 @@ function CenterMain(props) {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
+<<<<<<< HEAD
+=======
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
+<<<<<<< HEAD
                     variant="contained"
                     onClick={() => checkSessionAccess(`lrdi`)}
                   >
                     LR DI
                   </BootstrapButton>
                   <BootstrapButton
+=======
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    variant="contained"
+                    onClick={() => checkSessionAccess(`lrdi`)}
+                  >
+                    LRDI
+                  </BootstrapButton>
+                  <BootstrapButton
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                     variant="contained"
                     onClick={() => checkSessionAccess(`quants`)}
                   >
@@ -258,7 +298,11 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
+<<<<<<< HEAD
                     {formatTime(timerValue)}
+=======
+                    {<Timer initMinute={0} initSeconds={10} />}
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                   </span>
                 </div>
               </div>
@@ -273,6 +317,7 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
+<<<<<<< HEAD
             <div
               className={
                 Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
@@ -280,14 +325,22 @@ function CenterMain(props) {
                   : "d-none"
               }
             >
+=======
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
+<<<<<<< HEAD
                       Data.length > 0 &&
                       Data[selectedQuestionIndex].isPara === "Yes"
                         ? Data[selectedQuestionIndex].paragraph
                         : "No paragraph"
+=======
+
+                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
@@ -302,6 +355,7 @@ function CenterMain(props) {
                               />
                             );
                           })
+
                         : null
                     }
                   />
@@ -309,6 +363,7 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
+<<<<<<< HEAD
             <div
               className={
                 Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
@@ -316,6 +371,9 @@ function CenterMain(props) {
                   : "col-12  text-justify"
               }
             >
+=======
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
@@ -326,6 +384,7 @@ function CenterMain(props) {
                 </Typography>
                 <ul style={{ listStyleType: "none", padding: "0" }}>
                   {Data.length > 0 &&
+<<<<<<< HEAD
                     (Data[selectedQuestionIndex].type === "0" ||
                     Data[selectedQuestionIndex].type === null ? (
                       <div className=" text-start">
@@ -472,8 +531,18 @@ function CenterMain(props) {
                           </div>
                         </div>
                       </div>
+=======
+
+                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+
+                      <>
+                        <Keyboard onValueChange={handleKeyboardValue} />
+                      </>
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                     ) : (
+
                       Data[selectedQuestionIndex].options !== null &&
+<<<<<<< HEAD
                       Data[selectedQuestionIndex].options.map(
                         (option, index) => (
                           <li key={index}>
@@ -503,6 +572,27 @@ function CenterMain(props) {
                           </li>
                         )
                       )
+=======
+                      Data[selectedQuestionIndex].options.map((option, index) => (
+                        <li key={index} style={{ fontSize : '16px', fontWeight : "500", marginTop : "1em"}}>
+                          <input
+                            type="radio"
+                            name="answer"
+                            value={index}
+                            checked={Data[selectedQuestionIndex].selectedAnswer === index}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              setSelectedAnswer(value);
+                              const updatedData = [...Data];
+                              updatedData[selectedQuestionIndex].selectedAnswer = value;
+                              setData(updatedData);
+                            }}
+                          />
+                          <span style={{marginLeft : "0.5em"}}>{ option }</span>
+                        </li>
+                      ))
+
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
                     ))}
                 </ul>
               </div>
@@ -513,6 +603,7 @@ function CenterMain(props) {
               <div>
                 <MyButton
                   variant="contained"
+
                   onClick={() => {
                     handlePostData("review");
                   }}
@@ -533,6 +624,7 @@ function CenterMain(props) {
               <div className="">
                 <BootstrapButton
                   variant="contained "
+
                   onClick={() => {
                     handlePostData("save");
                   }}
@@ -587,6 +679,7 @@ function CenterMain(props) {
                               item.stage === 0
                                 ? "white"
                                 : item.stage === 1
+
                                 ? "var(--green)"
                                 : item.stage === 2
                                 ? "red"
@@ -595,6 +688,7 @@ function CenterMain(props) {
                                 : item.stage === 4
                                 ? "black"
                                 : "",
+
                             color: "black",
                             p: 3,
                             borderRadius: "10px",
@@ -614,11 +708,19 @@ function CenterMain(props) {
             {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2  ">
+<<<<<<< HEAD
               <div className="d-flex">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
               <SubmitButton variant="contained">Submit</SubmitButton>
+=======
+              <div className="d-flex justify-content-center">
+                <QuestionPaper question_paper={Data} />
+                <InstructionButton />
+              </div>
+                <SubmitButton disabled={ params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">Submit</SubmitButton>
+>>>>>>> 35bca0f7140c4f4657bba5ce3aaf8c15242a75ba
             </div>
 
             <div className="row gap-3 my-2  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
