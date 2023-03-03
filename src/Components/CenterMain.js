@@ -208,7 +208,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                    {<Timer initMinute={0} initSeconds={10} />}
+                    {<Timer initMinute={0} initSeconds={30} />}
                   </span>
                 </div>
               </div>
