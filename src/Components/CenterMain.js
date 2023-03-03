@@ -234,7 +234,11 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
+<<<<<<< HEAD
                     {<Timer initMinute={40} initSeconds={0} />}
+=======
+                    {<Timer initMinute={0} initSeconds={30} />}
+>>>>>>> e59975712d8f97864de6e3e8f99db3c82ced2f97
                   </span>
                 </div>
               </div>

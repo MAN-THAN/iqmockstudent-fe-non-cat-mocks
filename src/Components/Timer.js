@@ -5,11 +5,20 @@ import { useNavigate, useParams } from "react-router-dom";
 const Timer = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { initMinute = 0, initSeconds = 10 } = props;
+  const { initMinute , initSeconds } = props;
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
+  const COUNTER_KEY = "my-counter";
 
+  // taking the local storage value of timer=
   useEffect(() => {
+    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 30;
+    setSeconds(countDownTime);
+    console.log("onload");
+  }, [])
+  useEffect(() => {
+    
+  
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -30,6 +39,12 @@ const Timer = (props) => {
           setMinutes(minutes - 1);
           setSeconds(59);
         }
+      }
+      if ((seconds - 1) > 0) {
+        window.localStorage.setItem(COUNTER_KEY, seconds - 1);
+      } else {
+        window.localStorage.removeItem(COUNTER_KEY);
+        clearInterval(myInterval);
       }
     }, 1000);
     return () => {
