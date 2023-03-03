@@ -23,7 +23,7 @@ function Terms() {
 
 
   const handleClick = async () => {
-    const timerValue = 2400;
+
     console.log(attemptID);
     localStorage.setItem("attemptID", attemptID);
     // localStorage.setItem("timerValue", timerValue.toString());

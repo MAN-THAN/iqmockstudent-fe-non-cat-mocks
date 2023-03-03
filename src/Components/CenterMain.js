@@ -6,6 +6,12 @@ import {
   MyButton,
   SubmitButton,
 } from "../styleSheets/Style";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -37,7 +43,7 @@ function CenterMain(props) {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   // Function for getting a keyboard value from keyboard component
-
+  console.log(selectedAnswer);
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
   };
@@ -85,21 +91,14 @@ function CenterMain(props) {
   }, []);
 
   // post answers Api trigger on mark and review  button
+
   const handlePostData = async (clickType) => {
-    console.log(clickType);
     const studentAnswer = inputVal
       ? inputVal
       : Data[selectedQuestionIndex].options[selectedAnswer];
-    const updatedData = [...Data];
-    updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
-      question: Data[selectedQuestionIndex].question,
-      topic: Data[selectedQuestionIndex].topic,
-      subtopic: Data[selectedQuestionIndex].subtopic,
-      difficulty: Data[selectedQuestionIndex].difficulty,
-      correctAnswer: Data[selectedQuestionIndex].correctAnswer,
       studentAnswer,
       duration: 30,
     };
@@ -234,7 +233,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                    {<Timer initMinute={0} initSeconds={30} />}
+                    {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
               </div>
@@ -300,192 +299,79 @@ function CenterMain(props) {
                     <Latex>{Data[selectedQuestionIndex].question}</Latex>
                   )}
                 </Typography>
-                <ul style={{ listStyleType: "none", padding: "0" }}>
-                  {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" ||
+
+                {Data.length > 0 && (
+                  <div className="text-start">
+                    {Data[selectedQuestionIndex].type === "0" ||
                     Data[selectedQuestionIndex].type === null ? (
-                      <div className=" text-start">
-                        <TextField
-                          id="outlined-basic"
-                          label="Enter Answer"
-                          variant="outlined"
-                          value={inputVal}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setInputVal(value);
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
-                            setData(updatedData);
-                          }}
-                          inputRef={(input) => input && input.focus()}
-                          sx={{
-                            my: 3,
+                      <TextField
+                        id="outlined-basic"
+                        label="Enter Answer"
+                        variant="outlined"
+                        value={inputVal}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setInputVal(value);
+                          const updatedData = [...Data];
+                          updatedData[selectedQuestionIndex].selectedAnswer =
+                            value;
+                          setData(updatedData);
+                        }}
+                        inputRef={(input) => input && input.focus()}
+                        sx={{
+                          my: 3,
+                          color: "black",
+                          width: "400px",
+                          "& label.Mui-focused": {
                             color: "black",
-                            width: "400px",
-                            "& label.Mui-focused": {
-                              color: "black",
+                          },
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: "var(--orange)",
+                          },
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                            "& .MuiInput-underline:after": {
-                              borderBottomColor: "var( --orange)",
+                            "&:hover fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                borderColor: "var( --orange)",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "var( --orange)",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "var( --orange)",
-                              },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                          }}
-                        />
-
-                        <div className="keys  p-3 rounded shadow">
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("1")}
-                            >
-                              1
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("2")}
-                            >
-                              2
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("3")}
-                            >
-                              3
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("4")}
-                            >
-                              4
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("5")}
-                            >
-                              5
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("6")}
-                            >
-                              6
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("7")}
-                            >
-                              7
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("8")}
-                            >
-                              8
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("9")}
-                            >
-                              9
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("0")}
-                            >
-                              0
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress(".")}
-                            >
-                              .
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("-")}
-                            >
-                              -
-                            </BootstrapButton>
-
-                            <BootstrapButton
-                              sx={{
-                                width: "151px",
-                                p: 1,
-                                borderRadius: "25px",
-                              }}
-                              variant="contained"
-                              onClick={() => handleBackspace()}
-                            >
-                              Backspace
-                            </BootstrapButton>
-                          </div>
-                        </div>
-                      </div>
+                          },
+                        }}
+                      />
                     ) : (
-                      Data[selectedQuestionIndex].options !== null &&
-                      Data[selectedQuestionIndex].options.map(
-                        (option, index) => (
-                          <li
-                            key={index}
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "500",
-                              marginTop: "1em",
-                            }}
-                          >
-                            <input
-                              type="radio"
-                              name="answer"
-                              value={index}
-                              checked={
-                                Data[selectedQuestionIndex].selectedAnswer ===
-                                index
-                              }
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value);
-                                setSelectedAnswer(value);
-                                const updatedData = [...Data];
-                                updatedData[
-                                  selectedQuestionIndex
-                                ].selectedAnswer = value;
-                                setData(updatedData);
-                              }}
-                            />
-                            <span style={{ marginLeft: "0.5em" }}>
-                              {option}
-                            </span>
-                          </li>
-                        )
-                      )
-                    ))}
-                </ul>
+                      <FormControl key={selectedQuestionIndex}>
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          name={`answer_${selectedQuestionIndex}`}
+                          value={Data[selectedQuestionIndex].selectedAnswer}
+                          onChange={(e) => {
+                          const value = e.target.value;
+                          setInputVal(value);
+                          const updatedData = [...Data];
+                          updatedData[selectedQuestionIndex].selectedAnswer =
+                            value;
+                          setData(updatedData);
+                        }}
+                        >
+                          {Data[selectedQuestionIndex].options !== null &&
+                            Data[selectedQuestionIndex].options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={option}
+                                  control={<Radio />}
+                                  label={option}
+                                />
+                              )
+                            )}
+                        </RadioGroup>
+                      </FormControl>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

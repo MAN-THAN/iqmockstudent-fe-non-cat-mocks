@@ -14,7 +14,7 @@ const Timer = (props) => {
   useEffect(() => {
     let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 30;
     setSeconds(countDownTime);
-    console.log("onload");
+    // console.log("onload");
   }, [])
   useEffect(() => {
     
