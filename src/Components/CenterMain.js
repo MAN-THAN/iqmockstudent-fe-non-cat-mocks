@@ -30,7 +30,7 @@ function CenterMain(props) {
 
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(''); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
@@ -115,7 +115,7 @@ function CenterMain(props) {
     console.log("data===>", json, attemptID);
     nextInd();
     fetchAnswersStatus();
-    setInputVal('')
+    setInputVal("");
   };
 
   // function for get index
