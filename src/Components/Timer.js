@@ -54,7 +54,7 @@ const Timer = (props) => {
 
   return (
     <React.Fragment>
-      <div>
+      <span>
         {minutes === 0 && seconds === 0 ? (
           <React.Fragment></React.Fragment>
         ) : (
@@ -64,7 +64,7 @@ const Timer = (props) => {
             </span>
           </React.Fragment>
         )}
-      </div>
+      </span>
     </React.Fragment>
   );
 };

@@ -10,9 +10,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-
-import { Typography, Stack, TextField } from "@mui/material";
+import { Typography, Stack, TextField, Box } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
@@ -23,7 +21,6 @@ import { useAuth } from "../services/Context";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
-
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
@@ -31,8 +28,6 @@ import Timer from "./Timer";
 function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
-
-  // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
@@ -218,7 +213,7 @@ function CenterMain(props) {
                     <span>
                       <img
                         src={require("../images/Open vector.png")}
-                        width="60"
+                        width="70"
                         className="img-fluid p-2"
                         onClick={() => props.fullScreen()}
                         alt="arrow-icon"
@@ -232,7 +227,10 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span className="timer" style={{ color: "#FF0103" }}>
+                  <span
+                    className="timer fs-6 p-3 ms-2   fw-bold"
+                    style={{ color: "#FF0103", borderRadius: "30px" }}
+                  >
                     {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
@@ -299,48 +297,155 @@ function CenterMain(props) {
                     <Latex>{Data[selectedQuestionIndex].question}</Latex>
                   )}
                 </Typography>
-
+                <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
                     {Data[selectedQuestionIndex].type === "0" ||
                     Data[selectedQuestionIndex].type === null ? (
-                      <TextField
-                        id="outlined-basic"
-                        label="Enter Answer"
-                        variant="outlined"
-                        value={inputVal}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setInputVal(value);
-                          const updatedData = [...Data];
-                          updatedData[selectedQuestionIndex].selectedAnswer =
-                            value;
-                          setData(updatedData);
-                        }}
-                        inputRef={(input) => input && input.focus()}
-                        sx={{
-                          my: 3,
-                          color: "black",
-                          width: "400px",
-                          "& label.Mui-focused": {
+                      <>
+                        <TextField
+                          id="outlined-basic"
+                          label="Enter Answer"
+                          variant="outlined"
+                       
+                          value={inputVal}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                           
+                            const updatedData = [...Data];
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
+                            setData(updatedData);
+                          }}
+                          inputRef={(input) => input && input.focus()}
+                          sx={{
+                            my: 3,
                             color: "black",
-                          },
-                          "& .MuiInput-underline:after": {
-                            borderBottomColor: "var(--orange)",
-                          },
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "var(--orange)",
+                            width: "400px",
+                            "& label.Mui-focused": {
+                              color: "black",
                             },
-                            "&:hover fieldset": {
-                              borderColor: "var(--orange)",
+                            "& .MuiInput-underline:after": {
+                              borderBottomColor: "var(--orange)",
                             },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "var(--orange)",
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": {
+                                borderColor: "var(--orange)",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "var(--orange)",
+                              },
+                              "&.Mui-focused fieldset": {
+                                borderColor: "var(--orange)",
+                              },
                             },
-                          },
-                        }}
-                      />
+                          }}
+                        />
+                        <div className="keys  p-3 rounded shadow">
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("1")}
+                            >
+                              1
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("2")}
+                            >
+                              2
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("3")}
+                            >
+                              3
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("4")}
+                            >
+                              4
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("5")}
+                            >
+                              5
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("6")}
+                            >
+                              6
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("7")}
+                            >
+                              7
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("8")}
+                            >
+                              8
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("9")}
+                            >
+                              9
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("0")}
+                            >
+                              0
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress(".")}
+                            >
+                              .
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("-")}
+                            >
+                              -
+                            </BootstrapButton>
+
+                            <BootstrapButton
+                              sx={{
+                                width: "151px",
+                                p: 1,
+                                borderRadius: "25px",
+                              }}
+                              variant="contained"
+                              onClick={() => handleBackspace()}
+                            >
+                              Backspace
+                            </BootstrapButton>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <FormControl key={selectedQuestionIndex}>
                         <RadioGroup
@@ -348,13 +453,13 @@ function CenterMain(props) {
                           name={`answer_${selectedQuestionIndex}`}
                           value={Data[selectedQuestionIndex].selectedAnswer}
                           onChange={(e) => {
-                          const value = e.target.value;
-                          setInputVal(value);
-                          const updatedData = [...Data];
-                          updatedData[selectedQuestionIndex].selectedAnswer =
-                            value;
-                          setData(updatedData);
-                        }}
+                            const value = e.target.value;
+                            setInputVal(value);
+                            const updatedData = [...Data];
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
+                            setData(updatedData);
+                          }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
                             Data[selectedQuestionIndex].options.map(
@@ -363,7 +468,7 @@ function CenterMain(props) {
                                   key={index}
                                   value={option}
                                   control={<Radio />}
-                                  label={option}
+                                  label={<small>{option}</small>}
                                 />
                               )
                             )}
@@ -448,9 +553,9 @@ function CenterMain(props) {
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
-                        <Avatar
+                        {/* <Avatar
                           key={item.series}
-                          onClick={() => handleQuestionClick(index)}
+                          
                           sx={{
                             bgcolor:
                               item.stage === 0
@@ -474,9 +579,49 @@ function CenterMain(props) {
                           }}
                           variant="square"
                         >
-                          {index + 1}
-                        </Avatar>
+                    
+                        </Avatar> */}
+                        <Box
+                          component="div"
+                          onClick={() => handleQuestionClick(index)}
+                          sx={{
+                            width: "60px",
+                            p: 2,
+                            height: "50px",
+                            cursor: "pointer",
+                            backgroundImage: `url(${
+                              item.stage === 0
+                                ? "/Rectangle88.jpg"
+                                : item.stage === 1
+                                ? "/green.png"
+                                : item.stage === 2
+                                ? "/orange.png"
+                                : item.stage === 3
+                                ? "/answered.png"
+                                : "/evolution.png"
+                            })`,
+                            backgroundSize: "cover",
+                            objectFit: "cover",
+                            fontWeight: "bold",
+                            fontSize: "17px",
+                          }}
+                        >
+                          {" "}
+                          <span>{index + 1}</span>
+                        </Box>
                       </div>
+                      // src={
+                      //   item.stage === 0
+                      //     ? "/Rectangle 88.jpg"
+                      //     : item.stage === 1
+                      //     ? "/green.png"
+                      //     : item.stage === 2
+                      //     ? "/orange.png"
+                      //     : item.stage === 3
+                      //     ? "/answered.png"
+                      //     :
+                      //     "/evolution.png"
+                      // }
                     );
                   })}
               </div>
