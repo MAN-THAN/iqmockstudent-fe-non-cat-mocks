@@ -1,6 +1,12 @@
-import React, { useState, useEffect, usez } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+
 import { Typography, Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,7 +15,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import { useAuth } from "../services/Context";
-import Keyboard from "./Keypad";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
@@ -26,17 +31,23 @@ function CenterMain(props) {
 
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
-  console.log(AnswerStatus)
+  console.log(AnswerStatus);
+  console.log(Data);
 
   // Function for getting a keyboard value from keyboard component
-  function handleKeyboardValue(inputValue) {
-    setInputVal(inputValue);
-  }
+  console.log(selectedAnswer);
+  const handleKeyPress = (key) => {
+    setInputVal((prevInput) => prevInput + key);
+  };
+
+  const handleBackspace = () => {
+    setInputVal((prevInput) => prevInput.slice(0, -1));
+  };
 
   // fetching main data
   useEffect(() => {
@@ -75,19 +86,12 @@ function CenterMain(props) {
   }, []);
 
   // post answers Api trigger on mark and review  button
+
   const handlePostData = async (clickType) => {
-    console.log(clickType);
     const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
-    const updatedData = [...Data];
-    updatedData[selectedQuestionIndex].selectedAnswer = selectedAnswer;
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
-      question: Data[selectedQuestionIndex].question,
-      topic: Data[selectedQuestionIndex].topic,
-      subtopic: Data[selectedQuestionIndex].subtopic,
-      difficulty: Data[selectedQuestionIndex].difficulty,
-      correctAnswer: Data[selectedQuestionIndex].correctAnswer,
       studentAnswer,
       duration: 30,
     };
@@ -103,6 +107,7 @@ function CenterMain(props) {
     console.log("data===>", json, attemptID);
     nextInd();
     fetchAnswersStatus();
+    setInputVal("");
   };
 
   // function for get index
@@ -204,7 +209,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer" style={{ color: "#FF0103" }}>
-                    {<Timer initMinute={0} initSeconds={30} />}
+                    {<Timer initMinute={0} initSeconds={1000} />}
                   </span>
                 </div>
               </div>
@@ -246,31 +251,69 @@ function CenterMain(props) {
                   <br />
                   {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
-                <ul style={{ listStyleType: "none", padding: "0" }}>
-                  {Data.length > 0 &&
-                    (Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
-                      <>
-                        <Keyboard onValueChange={handleKeyboardValue} />
-                      </>
+
+                {Data.length > 0 && (
+                  <div className="text-start">
+                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                        <TextField
+                        id="outlined-basic"
+                        label="Enter Answer"
+                        variant="outlined"
+                        value={ "selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : "" }
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setInputVal(value);
+                          const updatedData = [...Data];
+                          updatedData[selectedQuestionIndex].selectedAnswer = value;
+                          setData(updatedData);
+                        }}
+                        inputRef={(input) => input && input.focus()}
+                          sx={{
+                          my: 3,
+                          color: "black",
+                          width: "400px",
+                          "& label.Mui-focused": {
+                            color: "black",
+                          },
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: "var(--orange)",
+                          },
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "var(--orange)",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "var(--orange)",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "var(--orange)",
+                            },
+                          },
+                        }}
+                      />
                     ) : (
-                      Data[selectedQuestionIndex].options !== null &&
-                      Data[selectedQuestionIndex].options.map((option, index) => (
-                        <li key={index} style={{ fontSize: "16px", fontWeight: "500", marginTop: "1em" }}>
-                          <input
-                            type="radio"
-                            name="answer"
-                            value={index}
-                            checked={AnswerStatus[selectedQuestionIndex]?.stage === 0 ? null : true}
-                            onChange={(e) => {
-                              const value = parseInt(e.target.value);
-                              setSelectedAnswer(value);
-                            }}
-                          />
-                          <span style={{ marginLeft: "0.5em" }}>{option}</span>
-                        </li>
-                      ))
-                    ))}
-                </ul>
+                      <FormControl key={selectedQuestionIndex}>
+                        <RadioGroup
+                              aria-labelledby="demo-radio-buttons-group-label"
+                              name={`answer_${selectedQuestionIndex}`}
+                              value={Data[selectedQuestionIndex].selectedAnswer}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setInputVal(value);
+                                const updatedData = [...Data];
+                                updatedData[selectedQuestionIndex].selectedAnswer = value;
+                                setData(updatedData);
+                              }}
+                        >
+                          {Data[selectedQuestionIndex].options !== null &&
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel sx={{marginTop : "1em"}} key={index} value={option} control={<Radio size='small'/>} label={option} />
+                            ))}
+                        </RadioGroup>
+                      </FormControl>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -288,8 +331,10 @@ function CenterMain(props) {
                 <MyButton
                   variant="contained"
                   onClick={() => {
-                    setSelectedAnswer(null);
-                    console.log("working");
+                    const updatedData = [...Data];
+                    updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
+                    setInputVal(""); // clear input field value
+                    setData(updatedData);
                   }}
                 >
                   Clear Response
