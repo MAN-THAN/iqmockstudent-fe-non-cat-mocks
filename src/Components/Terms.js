@@ -10,7 +10,7 @@ function Terms() {
   const [handleStartText, setHandleStartText] = useState(true);
   const navigate = useNavigate();
   const { createAttemptId, responseReceived, attemptID } = useAuth();
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState();
 
   useEffect(() => {
     if (responseReceived) {

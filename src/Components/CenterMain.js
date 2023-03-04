@@ -304,6 +304,7 @@ function CenterMain(props) {
                                 updatedData[selectedQuestionIndex].selectedAnswer = value;
                                 setData(updatedData);
                               }}
+
                         >
                           {Data[selectedQuestionIndex].options !== null &&
                             Data[selectedQuestionIndex].options.map((option, index) => (

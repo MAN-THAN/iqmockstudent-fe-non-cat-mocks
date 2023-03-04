@@ -35,7 +35,7 @@ export default function Calc() {
     <span>
       <img
         src={require("../images/Icon.png")}
-        width="60"
+        width="70"
         className="img-fluid p-2"
         alt="arrow-icon"
         onClick={handleOpen}
