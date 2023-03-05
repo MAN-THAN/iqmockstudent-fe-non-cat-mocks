@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-
-import { Typography, Stack, TextField } from "@mui/material";
+import { Typography, Stack, TextField, Box } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
@@ -18,7 +21,6 @@ import { useAuth } from "../services/Context";
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
-
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
@@ -27,8 +29,6 @@ function CenterMain(props) {
   const navigate = useNavigate();
   const params = useParams();
 
-  // const { seconds, stopTimer, startTimer, resetTimer, isActive } = useAuth();
-
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
@@ -36,8 +36,6 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
-  console.log(AnswerStatus);
-  console.log(Data);
 
   // Function for getting a keyboard value from keyboard component
   console.log(selectedAnswer);
@@ -53,7 +51,9 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -88,7 +88,9 @@ function CenterMain(props) {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -153,7 +155,10 @@ function CenterMain(props) {
   };
 
   return loading ? (
-    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -163,25 +168,39 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    disabled={
+                      params.type === "quants" || params.type === "lrdi"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    disabled={
+                      params.type === "varc" || params.type === "quants"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     onClick={() => checkSessionAccess(`lrdi`)}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    disabled={
+                      params.type === "varc" || params.type === "lrdi"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     onClick={() => checkSessionAccess(`quants`)}
                   >
@@ -194,7 +213,7 @@ function CenterMain(props) {
                     <span>
                       <img
                         src={require("../images/Open vector.png")}
-                        width="60"
+                        width="70"
                         className="img-fluid p-2"
                         onClick={() => props.fullScreen()}
                         alt="arrow-icon"
@@ -208,8 +227,11 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span className="timer" style={{ color: "#FF0103" }}>
-                    {<Timer initMinute={0} initSeconds={1000} />}
+                  <span
+                    className="timer fs-6 p-3 ms-2   fw-bold"
+                    style={{ color: "#FF0103", borderRadius: "30px" }}
+                  >
+                    {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
               </div>
@@ -224,18 +246,34 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
                           })
                         : null
                     }
@@ -244,72 +282,196 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data.length > 0 && (
+                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
+                  )}
                 </Typography>
-
+                <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" ||
+                    Data[selectedQuestionIndex].type === null ? (
+                      <>
                         <TextField
-                        id="outlined-basic"
-                        label="Enter Answer"
-                        variant="outlined"
-                        value={ "selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : "" }
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setInputVal(value);
-                          const updatedData = [...Data];
-                          updatedData[selectedQuestionIndex].selectedAnswer = value;
-                          setData(updatedData);
-                        }}
-                        inputRef={(input) => input && input.focus()}
+                          id="outlined-basic"
+                          label="Enter Answer"
+                          variant="outlined"
+                       
+                          value={inputVal}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                           
+                            const updatedData = [...Data];
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
+                            setData(updatedData);
+                          }}
+                          inputRef={(input) => input && input.focus()}
                           sx={{
-                          my: 3,
-                          color: "black",
-                          width: "400px",
-                          "& label.Mui-focused": {
+                            my: 3,
                             color: "black",
-                          },
-                          "& .MuiInput-underline:after": {
-                            borderBottomColor: "var(--orange)",
-                          },
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "var(--orange)",
+                            width: "400px",
+                            "& label.Mui-focused": {
+                              color: "black",
                             },
-                            "&:hover fieldset": {
-                              borderColor: "var(--orange)",
+                            "& .MuiInput-underline:after": {
+                              borderBottomColor: "var(--orange)",
                             },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "var(--orange)",
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": {
+                                borderColor: "var(--orange)",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "var(--orange)",
+                              },
+                              "&.Mui-focused fieldset": {
+                                borderColor: "var(--orange)",
+                              },
                             },
-                          },
-                        }}
-                      />
+                          }}
+                        />
+                        <div className="keys  p-3 rounded shadow">
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("1")}
+                            >
+                              1
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("2")}
+                            >
+                              2
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("3")}
+                            >
+                              3
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("4")}
+                            >
+                              4
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("5")}
+                            >
+                              5
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("6")}
+                            >
+                              6
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("7")}
+                            >
+                              7
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("8")}
+                            >
+                              8
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("9")}
+                            >
+                              9
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("0")}
+                            >
+                              0
+                            </BootstrapButton>
+                          </div>
+                          <div className="d-flex gap-2 fs-5 m-2 ">
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress(".")}
+                            >
+                              .
+                            </BootstrapButton>
+                            <BootstrapButton
+                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                              variant="contained"
+                              onClick={() => handleKeyPress("-")}
+                            >
+                              -
+                            </BootstrapButton>
+
+                            <BootstrapButton
+                              sx={{
+                                width: "151px",
+                                p: 1,
+                                borderRadius: "25px",
+                              }}
+                              variant="contained"
+                              onClick={() => handleBackspace()}
+                            >
+                              Backspace
+                            </BootstrapButton>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <FormControl key={selectedQuestionIndex}>
                         <RadioGroup
-                              aria-labelledby="demo-radio-buttons-group-label"
-                              name={`answer_${selectedQuestionIndex}`}
-                              value={Data[selectedQuestionIndex].selectedAnswer}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setInputVal(value);
-                                const updatedData = [...Data];
-                                updatedData[selectedQuestionIndex].selectedAnswer = value;
-                                setData(updatedData);
-                              }}
-
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          name={`answer_${selectedQuestionIndex}`}
+                          value={Data[selectedQuestionIndex].selectedAnswer}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setInputVal(value);
+                            const updatedData = [...Data];
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
+                            setData(updatedData);
+                          }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
-                              <FormControlLabel sx={{marginTop : "1em"}} key={index} value={option} control={<Radio size='small'/>} label={option} />
-                            ))}
+                            Data[selectedQuestionIndex].options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={option}
+                                  control={<Radio />}
+                                  label={<small>{option}</small>}
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -391,35 +553,49 @@ function CenterMain(props) {
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
-                        <Avatar
-                          key={item.series}
+                       
+                        <Box
+                          component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            bgcolor:
-                              item.stage === 0
-                                ? "white"
-                                : item.stage === 1
-                                ? "var(--green)"
-                                : item.stage === 2
-                                ? "red"
-                                : item.stage === 3
-                                ? "var(--blue)"
-                                : item.stage === 4
-                                ? "black"
-                                : "",
-
-                            color: "black",
-                            p: 3,
-                            borderRadius: "10px",
-                            boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.25)",
+                            width: "50px",
+                            p: 2,
+                            
+                            height: "50px",
                             cursor: "pointer",
-                            // margin: "2px",
+                            backgroundImage: `url(${
+                              item.stage === 0
+                                ? "/Rectangle88.jpg"
+                                : item.stage === 1
+                                ? "/green.png"
+                                : item.stage === 2
+                                ? "/orange.png"
+                                : item.stage === 3
+                                ? "/answered.png"
+                                : "/evolution.png"
+                            })`,
+                            backgroundSize: "cover",
+                            objectFit: "cover",
+                            fontWeight: "bold",
+                            fontSize: "17px",
                           }}
-                          variant="square"
                         >
-                          {index + 1}
-                        </Avatar>
+                          {" "}
+                          <span>{index + 1}</span>
+                        </Box>
                       </div>
+                      // src={
+                      //   item.stage === 0
+                      //     ? "/Rectangle 88.jpg"
+                      //     : item.stage === 1
+                      //     ? "/green.png"
+                      //     : item.stage === 2
+                      //     ? "/orange.png"
+                      //     : item.stage === 3
+                      //     ? "/answered.png"
+                      //     :
+                      //     "/evolution.png"
+                      // }
                     );
                   })}
               </div>
@@ -431,7 +607,14 @@ function CenterMain(props) {
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
-              <SubmitButton disabled={params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">
+              <SubmitButton
+                disabled={
+                  params.type === "varc" || params.type === "lrdi"
+                    ? true
+                    : false
+                }
+                variant="contained"
+              >
                 Submit
               </SubmitButton>
             </div>
@@ -440,19 +623,43 @@ function CenterMain(props) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited</b>
                 </div>
               </div>
             </div>
