@@ -128,23 +128,26 @@ function AnalysisMain() {
 
                   <Card
                     sx={{
-                      height: 70,
+                      height: 60,
                       borderRadius: "13px",
                       position: "relative",
-                      top: "65px",
+                      top: "50px",
+                     
                     }}
                   >
                     <CardContent>
                       <Typography
                         sx={{
-                          fontSize: 30,
+                          fontSize: 20,
                           color: "black",
-                          textAlign: "center",
+                            display:"flex",
+                          
                         }}
                         variant="h4"
                         gutterBottom
                       >
-                        Precentile <span className="text-end"> 6.5</span>
+                        Precentile
+                      <span className="text-end"> 6.5</span>
                       </Typography>
                     </CardContent>
                   </Card>
@@ -153,7 +156,7 @@ function AnalysisMain() {
             </div>
             <div className="col">
               <div className="row my-2 ">
-              <div className="card shadow-sm " style={{width:" 20rem",height:"7em"}}>
+              <div className="card shadow-sm  " style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                     
@@ -161,7 +164,7 @@ function AnalysisMain() {
                 </div>
               </div>
               <div className="row my-3">
-              <div className="card" style={{width:" 20rem",height:"7em"}}>
+              <div className="card" style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                     
@@ -171,14 +174,14 @@ function AnalysisMain() {
             </div>
             <div className="col align-center">
             <div className="row my-2 ">
-              <div className="card shadow-sm " style={{width:" 20rem",height:"7em"}}>
+              <div className="card shadow-sm " style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                   </div>
                 </div>
               </div>
               <div className="row my-3 mb-0">
-              <div className="card" style={{width:" 20rem",height:"7em"}}>
+              <div className="card" style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
                     
