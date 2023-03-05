@@ -549,13 +549,14 @@ function CenterMain(props) {
             </div>
 
             <div className=" container mt-3 keyboard">
-              <div className="row row-cols-5   pe-4 gap-3  justify-content-center ">
+              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-4 gap-2  justify-content-center ">
                 {AnswerStatus &&
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
                        
                         <Box
+                          
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
@@ -604,8 +605,8 @@ function CenterMain(props) {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row justify-content-center my-2  ">
-              <div className="d-flex justify-content-center">
+            <div className="row justify-content-center my-2   ">
+              <div className="d-flex justify-content-center flex-wrap">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
@@ -621,10 +622,10 @@ function CenterMain(props) {
               </SubmitButton>
             </div>
 
-            <div className="row gap-3 my-2 flex-wrap  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
-              <div className="row">
+            <div className="row gap-3 my-2 flex-wrap  g-2 text-start align-content-center  align-self-bottom  markingNotation">
+              <div className="row text-center">
                 {" "}
-                <div className="col">
+                <div className="col-12 col-sm-12 col-md-12 col-xl-12 col-lg-12 col-xxl-6 ">
                   <img
                     src={require("../images/Vector 1.png")}
                     className="img-fluid"
@@ -633,7 +634,7 @@ function CenterMain(props) {
                   />{" "}
                   <b> Answered</b>
                 </div>
-                <div className="col">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
                   <img
                     src={require("../images/Vector 1 (1).png")}
                     className="img-fluid"
@@ -644,8 +645,8 @@ function CenterMain(props) {
                 </div>
               </div>
 
-              <div className="row ">
-                <div className="col">
+              <div className="row text-center ">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
                   <img
                     src={require("../images/Ellipse 12.png")}
                     className="img-fluid"
@@ -654,7 +655,7 @@ function CenterMain(props) {
                   />{" "}
                   <b>Marked</b>
                 </div>
-                <div className="col">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
                   <img
                     src={require("../images/Rectangle 88.jpg")}
                     className="img-fluid shadow-lg"

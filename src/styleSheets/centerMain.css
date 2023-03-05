@@ -16,7 +16,7 @@
 }
 
 .rightMain {
-  height: 640px;
+  height: max-height;
   background: #e4ecf7;
   border-radius: 30px;
   text-align: center;
@@ -51,7 +51,8 @@
 .markingNotation {
   background: #ffffff;
   border-radius: 20px;
-  height: 100px;
+  height: max-height;
+  padding: 20px 0px 20px 0px
 }
 
 .keyboard {
