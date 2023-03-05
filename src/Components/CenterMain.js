@@ -36,6 +36,8 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
+  console.log(AnswerStatus);
+  console.log(Data)
 
   // Function for getting a keyboard value from keyboard component
   console.log(selectedAnswer);
@@ -155,10 +157,7 @@ function CenterMain(props) {
   };
 
   return loading ? (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}
-    >
+    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -168,39 +167,25 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    disabled={
-                      params.type === "quants" || params.type === "lrdi"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={
-                      params.type === "varc" || params.type === "quants"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
                     onClick={() => checkSessionAccess(`lrdi`)}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={
-                      params.type === "varc" || params.type === "lrdi"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
                     onClick={() => checkSessionAccess(`quants`)}
                   >
@@ -227,10 +212,7 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span
-                    className="timer fs-6 p-3 ms-2   fw-bold"
-                    style={{ color: "#FF0103", borderRadius: "30px" }}
-                  >
+                  <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
                     {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
@@ -246,34 +228,18 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-7 overflow-auto"
-                  : "d-none"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
-                        ? Data[selectedQuestionIndex].paragraph
-                        : "No paragraph"
+                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
                     }
@@ -282,39 +248,32 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && (
-                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
-                  )}
+                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                       
-                          value={inputVal}
+                          value={
+                            AnswerStatus.length && AnswerStatus[selectedQuestionIndex].stage === 1
+                              ? AnswerStatus[selectedQuestionIndex].studentAnswer
+                              : ""
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
-                           
+
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
+                            updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                           inputRef={(input) => input && input.focus()}
@@ -451,27 +410,23 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex].selectedAnswer}
+                          value={
+                            AnswerStatus.length && AnswerStatus[selectedQuestionIndex].stage === 1
+                              ? AnswerStatus[selectedQuestionIndex].studentAnswer
+                              : ""
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setInputVal(value);
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
+                            updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={option}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel key={index} value={option} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -553,14 +508,13 @@ function CenterMain(props) {
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
-                       
                         <Box
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
                             width: "50px",
                             p: 2,
-                            
+
                             height: "50px",
                             cursor: "pointer",
                             backgroundImage: `url(${
@@ -607,14 +561,7 @@ function CenterMain(props) {
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
-              <SubmitButton
-                disabled={
-                  params.type === "varc" || params.type === "lrdi"
-                    ? true
-                    : false
-                }
-                variant="contained"
-              >
+              <SubmitButton disabled={params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">
                 Submit
               </SubmitButton>
             </div>
@@ -623,43 +570,19 @@ function CenterMain(props) {
               <div className="row">
                 {" "}
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
               </div>
 
               <div className="row ">
                 <div className="col">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="col">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited</b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
                 </div>
               </div>
             </div>
