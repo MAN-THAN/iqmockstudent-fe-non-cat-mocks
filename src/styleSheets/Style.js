@@ -147,6 +147,39 @@ export const BootstrapButton = styled(Button)({
     },
 });
 
+
+export const ModifyButton = styled(Button)({
+    boxShadow: "none",
+    textTransform: "none",
+    fontSize: "18px",
+    fontWeight: 500,
+    width: "auto",
+    height: "28px",
+    color: "black",
+    padding:"15px",
+    borderRadius: "20px",
+    lineHeight: 1.5,
+    backgroundColor: "var( --light-background)",
+    fontFamily: "var(--font-inter)",
+    "&:hover": {
+        backgroundColor: "#00359A",
+        // borderColor: "none",
+        // boxShadow: "none",
+        color: "white",
+    },
+    "&:active": {
+        boxShadow: "none",
+        backgroundColor: "#00359A",
+        borderColor: "none",
+    },
+    "&:focus": {
+        // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
+        backgroundColor: "#00359A",
+        color: "white",
+        outerLine: "none",
+    },
+});
+
 export const SubHeading = styled("div")(({ theme }) => ({
     fontFamily: "var(--font-inter)",
     fontSize:"22px",
