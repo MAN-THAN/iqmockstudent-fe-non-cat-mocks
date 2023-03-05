@@ -153,6 +153,7 @@ function CenterMain(props) {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
+  // console.log(AnswerStatus)
 
   return loading ? (
     <Backdrop
@@ -548,7 +549,7 @@ function CenterMain(props) {
             </div>
 
             <div className=" container mt-3 keyboard">
-              <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
+              <div className="row row-cols-5   pe-4 gap-3  justify-content-center ">
                 {AnswerStatus &&
                   AnswerStatus.map((item, index) => {
                     return (
@@ -558,8 +559,9 @@ function CenterMain(props) {
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            width: "50px",
+                            width:"60px",
                             p: 2,
+                            
                             
                             height: "50px",
                             cursor: "pointer",
@@ -619,7 +621,7 @@ function CenterMain(props) {
               </SubmitButton>
             </div>
 
-            <div className="row gap-3 my-2  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
+            <div className="row gap-3 my-2 flex-wrap  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
               <div className="row">
                 {" "}
                 <div className="col">
