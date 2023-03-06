@@ -38,14 +38,22 @@ function CenterMain(props) {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
 
   // Function for getting a keyboard value from keyboard component
-  console.log(selectedAnswer);
+ 
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
+    const updatedData = [...Data];
+    updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
+    setData(updatedData);
   };
+  
 
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
+    const updatedData = [...Data];
+    updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
+    setData(updatedData);
   };
+  
 
   // fetching main data
   useEffect(() => {
@@ -153,7 +161,7 @@ function CenterMain(props) {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
-  // console.log(AnswerStatus)
+  console.log("Data===>",Data)
 
   return loading ? (
     <Backdrop
@@ -310,14 +318,15 @@ function CenterMain(props) {
                           variant="outlined"
                        
                           value={inputVal}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                           
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
-                            setData(updatedData);
-                          }}
+                          // onChange={(e) => {
+                          //   const value = e.target.value;
+                          //   setInputVal(value)
+                          //   // console.log("e.target",value)
+                          //   const updatedData = [...Data];
+                          //   updatedData[selectedQuestionIndex].selectedAnswer =
+                          //     value;
+                          //   setData(updatedData);
+                          // }}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
