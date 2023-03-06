@@ -31,18 +31,22 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
-  console.log(AnswerStatus);
-  console.log(Data);
-  console.log(inputVal);
+  const [studentAnswer, SetStudentAnswer] = useState();
 
   // Function for getting a keyboard value from keyboard component
-  console.log(selectedAnswer);
+
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
+    const updatedData = [...Data];
+    updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
+    setData(updatedData);
   };
 
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
+    const updatedData = [...Data];
+    updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
+    setData(updatedData);
   };
 
   // fetching main data
@@ -88,7 +92,7 @@ function CenterMain(props) {
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer,
+      studentAnswer: studentAnswer,
       duration: 30,
     };
 
@@ -147,6 +151,7 @@ function CenterMain(props) {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
+  console.log("selected===>", selectedAnswer);
 
   return loading ? (
     <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
@@ -205,7 +210,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
-                    {<Timer initMinute={40} initSeconds={0} />}
+                    {<Timer initMinute={0} initSeconds={10} />}
                   </span>
                 </div>
               </div>
@@ -256,15 +261,11 @@ function CenterMain(props) {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={selectedAnswer in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer = value;
-                            console.log(updatedData);
-                            console.log("on change");
-                            setData(updatedData);
-                          }}
+                          value={
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer
+                              : inputVal
+                          }
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -399,19 +400,26 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex].selectedAnswer}
+                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
                           onChange={(e) => {
                             const value = e.target.value;
-                            setInputVal(value);
+                            setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
-                              <FormControlLabel key={index} value={option} control={<Radio />} label={<small>{option}</small>} />
-                            ))}
+                            Data[selectedQuestionIndex].options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index }
+                                  control={<Radio />}
+                                  label={<small>{option}</small>}
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -451,7 +459,7 @@ function CenterMain(props) {
                     handlePostData("save");
                   }}
                   sx={{ fontSize: "13px", color: "white" }}
-                  disabled={inputVal ? false : true}
+                  disabled={false}
                 >
                   Save & Next
                 </BootstrapButton>
@@ -489,7 +497,7 @@ function CenterMain(props) {
             </div>
 
             <div className=" container mt-3 keyboard">
-              <div className="row row-cols-6 gap-2  pe-4 gap-1 justify-content-center ">
+              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-4 gap-2  justify-content-center ">
                 {AnswerStatus &&
                   AnswerStatus.map((item, index) => {
                     return (
@@ -498,7 +506,7 @@ function CenterMain(props) {
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            width: "50px",
+                            width: "60px",
                             p: 2,
 
                             height: "50px",
@@ -542,8 +550,8 @@ function CenterMain(props) {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row justify-content-center my-2  ">
-              <div className="d-flex justify-content-center">
+            <div className="row justify-content-center my-2   ">
+              <div className="d-flex justify-content-center flex-wrap">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
@@ -552,23 +560,44 @@ function CenterMain(props) {
               </SubmitButton>
             </div>
 
-            <div className="row gap-3 my-2  g-3 text-start align-content-center justify-content-center align-self-bottom  markingNotation">
-              <div className="row">
+            <div className="row gap-3 my-2 flex-wrap  text-start align-content-center  align-self-bottom  markingNotation">
+              <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
-                <div className="col">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                <div className=" flex-item flex-fill ">
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
-                <div className="col">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                <div className="flex-item flex-fill ">
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
-              </div>
-
-              <div className="row ">
-                <div className="col">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                <div className="flex-item flex-fill ">
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
-                <div className="col">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited</b>
+                <div className="flex-item flex-fill">
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited {} </b>
                 </div>
               </div>
             </div>

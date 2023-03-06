@@ -13,7 +13,7 @@ const Timer = (props) => {
 
   // taking the local storage value of timer=
   useEffect(() => {
-    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 1000;
+    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 10;
     setSeconds(countDownTime);
     console.log("onload");
   }, []);
@@ -65,7 +65,7 @@ const Timer = (props) => {
         }
       }
       if (seconds - 1 > 0) {
-        window.localStorage.setItem(COUNTER_KEY, 2000);
+        window.localStorage.setItem(COUNTER_KEY, seconds - 1);
       } else {
         window.localStorage.removeItem(COUNTER_KEY);
         clearInterval(myInterval);
