@@ -36,16 +36,16 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
+  const [studentAnswer, SetStudentAnswer] = useState();
 
   // Function for getting a keyboard value from keyboard component
- 
+
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
     setData(updatedData);
   };
-  
 
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
@@ -53,7 +53,6 @@ function CenterMain(props) {
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
     setData(updatedData);
   };
-  
 
   // fetching main data
   useEffect(() => {
@@ -96,13 +95,11 @@ function CenterMain(props) {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer,
+      studentAnswer: studentAnswer,
       duration: 30,
     };
 
@@ -161,7 +158,7 @@ function CenterMain(props) {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
-  console.log("Data===>",Data)
+  console.log("selected===>", selectedAnswer);
 
   return loading ? (
     <Backdrop
@@ -316,17 +313,11 @@ function CenterMain(props) {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                       
-                          value={inputVal}
-                          // onChange={(e) => {
-                          //   const value = e.target.value;
-                          //   setInputVal(value)
-                          //   // console.log("e.target",value)
-                          //   const updatedData = [...Data];
-                          //   updatedData[selectedQuestionIndex].selectedAnswer =
-                          //     value;
-                          //   setData(updatedData);
-                          // }}
+                          value={
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer
+                              : inputVal
+                          }
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -461,10 +452,10 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex].selectedAnswer}
+                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
                           onChange={(e) => {
                             const value = e.target.value;
-                            setInputVal(value);
+                            setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer =
                               value;
@@ -476,7 +467,7 @@ function CenterMain(props) {
                               (option, index) => (
                                 <FormControlLabel
                                   key={index}
-                                  value={option}
+                                  value={index }
                                   control={<Radio />}
                                   label={<small>{option}</small>}
                                 />
@@ -521,6 +512,7 @@ function CenterMain(props) {
                     handlePostData("save");
                   }}
                   sx={{ fontSize: "13px", color: "white" }}
+                  disabled={false}
                 >
                   Save & Next
                 </BootstrapButton>
@@ -563,16 +555,13 @@ function CenterMain(props) {
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
-                       
                         <Box
-                          
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            width:"60px",
+                            width: "60px",
                             p: 2,
-                            
-                            
+
                             height: "50px",
                             cursor: "pointer",
                             backgroundImage: `url(${
@@ -652,7 +641,6 @@ function CenterMain(props) {
                   />{" "}
                   <b>Not Answered</b>
                 </div>
-
                 <div className="flex-item flex-fill ">
                   <img
                     src={require("../images/Ellipse 12.png")}
@@ -669,15 +657,9 @@ function CenterMain(props) {
                     width="20"
                     alt=""
                   />{" "}
-                  <b> Not Visited {" "}  {}     </b>
+                  <b> Not Visited {} </b>
                 </div>
-                </div>
-             
-
-             
-             
-                
-            
+              </div>
             </div>
           </div>
         </div>
