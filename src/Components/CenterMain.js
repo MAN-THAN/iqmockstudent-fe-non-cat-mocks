@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -37,7 +32,8 @@ function CenterMain(props) {
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   console.log(AnswerStatus);
-  console.log(Data)
+  console.log(Data);
+  console.log(inputVal);
 
   // Function for getting a keyboard value from keyboard component
   console.log(selectedAnswer);
@@ -53,9 +49,7 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(
-      `${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`
-    )
+    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -90,9 +84,7 @@ function CenterMain(props) {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -264,16 +256,13 @@ function CenterMain(props) {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            AnswerStatus.length && AnswerStatus[selectedQuestionIndex].stage === 1
-                              ? AnswerStatus[selectedQuestionIndex].studentAnswer
-                              : ""
-                          }
+                          value={selectedAnswer in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
                           onChange={(e) => {
                             const value = e.target.value;
-
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer = value;
+                            console.log(updatedData);
+                            console.log("on change");
                             setData(updatedData);
                           }}
                           inputRef={(input) => input && input.focus()}
@@ -410,11 +399,7 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            AnswerStatus.length && AnswerStatus[selectedQuestionIndex].stage === 1
-                              ? AnswerStatus[selectedQuestionIndex].studentAnswer
-                              : ""
-                          }
+                          value={Data[selectedQuestionIndex].selectedAnswer}
                           onChange={(e) => {
                             const value = e.target.value;
                             setInputVal(value);
@@ -466,6 +451,7 @@ function CenterMain(props) {
                     handlePostData("save");
                   }}
                   sx={{ fontSize: "13px", color: "white" }}
+                  disabled={inputVal ? false : true}
                 >
                   Save & Next
                 </BootstrapButton>
