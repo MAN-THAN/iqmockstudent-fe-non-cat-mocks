@@ -18,7 +18,7 @@ function Header() {
 
                     <div className="d-flex gap-3 ">
                         <div className='text-end'>
-                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >Lakshay parwar</Typography>
+                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >Charlie Puth</Typography>
                             <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id :1222047</Typography>
                         </div>
                         <div className=''>
