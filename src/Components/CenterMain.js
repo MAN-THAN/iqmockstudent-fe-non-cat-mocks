@@ -622,10 +622,10 @@ function CenterMain(props) {
               </SubmitButton>
             </div>
 
-            <div className="row gap-3 my-2 flex-wrap  g-2 text-start align-content-center  align-self-bottom  markingNotation">
-              <div className="row text-center">
+            <div className="row gap-3 my-2 flex-wrap  text-start align-content-center  align-self-bottom  markingNotation">
+              <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
-                <div className="col-12 col-sm-12 col-md-12 col-xl-12 col-lg-12 col-xxl-6 ">
+                <div className=" flex-item flex-fill ">
                   <img
                     src={require("../images/Vector 1.png")}
                     className="img-fluid"
@@ -634,7 +634,7 @@ function CenterMain(props) {
                   />{" "}
                   <b> Answered</b>
                 </div>
-                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
+                <div className="flex-item flex-fill ">
                   <img
                     src={require("../images/Vector 1 (1).png")}
                     className="img-fluid"
@@ -643,10 +643,8 @@ function CenterMain(props) {
                   />{" "}
                   <b>Not Answered</b>
                 </div>
-              </div>
 
-              <div className="row text-center ">
-                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
+                <div className="flex-item flex-fill ">
                   <img
                     src={require("../images/Ellipse 12.png")}
                     className="img-fluid"
@@ -655,16 +653,22 @@ function CenterMain(props) {
                   />{" "}
                   <b>Marked</b>
                 </div>
-                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-6 ">
+                <div className="flex-item flex-fill">
                   <img
                     src={require("../images/Rectangle 88.jpg")}
                     className="img-fluid shadow-lg"
                     width="20"
                     alt=""
                   />{" "}
-                  <b> Not Visited</b>
+                  <b> Not Visited {" "}  {}     </b>
                 </div>
-              </div>
+                </div>
+             
+
+             
+             
+                
+            
             </div>
           </div>
         </div>
