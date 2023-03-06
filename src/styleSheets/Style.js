@@ -21,9 +21,37 @@ export const theme = createTheme({
             fontFamily: "var(--font-inter)" ,
             fontSize: "15px",
         },
+        text: {
+            color: "var(--font-color)",
+            fontWeight: 500,
+            fontFamily: "var(--font-inter)" ,
+            fontSize: "15px",
+        },
 
 
     },
+
+  
+  root: {
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'yellow',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'yellow',
+      },
+    },
+  },
+
 });
 
 
@@ -83,7 +111,6 @@ export const MyButton = styled(Button)({
         backgroundColor: "#0062cc",
     },
     "&:focus": {
-        boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
         color: "white",
     },
 });
@@ -115,6 +142,39 @@ export const BootstrapButton = styled(Button)({
     "&:focus": {
         // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
         backgroundColor: "#ff7b0f",
+        color: "white",
+        outerLine: "none",
+    },
+});
+
+
+export const ModifyButton = styled(Button)({
+    boxShadow: "none",
+    textTransform: "none",
+    fontSize: "18px",
+    fontWeight: 500,
+    width: "auto",
+    height: "28px",
+    color: "black",
+    padding:"15px",
+    borderRadius: "20px",
+    lineHeight: 1.5,
+    backgroundColor: "var( --light-background)",
+    fontFamily: "var(--font-inter)",
+    "&:hover": {
+        backgroundColor: "#00359A",
+        // borderColor: "none",
+        // boxShadow: "none",
+        color: "white",
+    },
+    "&:active": {
+        boxShadow: "none",
+        backgroundColor: "#00359A",
+        borderColor: "none",
+    },
+    "&:focus": {
+        // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
+        backgroundColor: "#00359A",
         color: "white",
         outerLine: "none",
     },
