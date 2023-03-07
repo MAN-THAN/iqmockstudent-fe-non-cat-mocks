@@ -95,7 +95,9 @@ function CenterMain(props) {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -452,7 +454,9 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
+                          value={
+                            Data[selectedQuestionIndex]?.selectedAnswer || ""
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
@@ -467,7 +471,7 @@ function CenterMain(props) {
                               (option, index) => (
                                 <FormControlLabel
                                   key={index}
-                                  value={index }
+                                  value={index}
                                   control={<Radio />}
                                   label={<small>{option}</small>}
                                 />
@@ -568,9 +572,9 @@ function CenterMain(props) {
                               item.stage === 0
                                 ? "/Rectangle88.jpg"
                                 : item.stage === 1
-                                ? "/green.png"
+                                ? "/vectorGreen.png"
                                 : item.stage === 2
-                                ? "/orange.png"
+                                ? "/vectorRed.png"
                                 : item.stage === 3
                                 ? "/answered.png"
                                 : "/evolution.png"
