@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -53,7 +58,9 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(
+      `https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -83,7 +90,7 @@ function CenterMain(props) {
   useEffect(() => {
     fetchAnswersStatus();
     // console.log(AnswerStatus);
-  }, []);
+  }, [params.type]);
 
   // post answers Api trigger on mark and review  button
 
@@ -156,7 +163,10 @@ function CenterMain(props) {
   console.log("selected===>", selectedAnswer);
 
   return loading ? (
-    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -166,7 +176,9 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
@@ -211,7 +223,10 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
+                  <span
+                    className="timer fs-6 p-3 ms-2   fw-bold"
+                    style={{ color: "#FF0103", borderRadius: "30px" }}
+                  >
                     {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
@@ -227,18 +242,34 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
                           })
                         : null
                     }
@@ -247,23 +278,36 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data.length > 0 && (
+                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
+                  )}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" ||
+                    Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
+                          value={
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer
+                              : inputVal
+                          }
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -405,7 +449,8 @@ function CenterMain(props) {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer = value;
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
                             setData(updatedData);
                           }}
                         >
@@ -414,7 +459,7 @@ function CenterMain(props) {
                               (option, index) => (
                                 <FormControlLabel
                                   key={index}
-                                  value={index }
+                                  value={index}
                                   control={<Radio />}
                                   label={<small>{option}</small>}
                                 />
@@ -481,7 +526,7 @@ function CenterMain(props) {
                 }}
               >
                 {" "}
-                You are viewing <b>Verbal Ability</b> section
+                You are viewing <b>{params.type==="varc"?"Verbal Ability":params.type==="lrdi" ?"Lrdi":"Quants"}</b> section
               </Typography>
 
               <SubHeading
@@ -497,7 +542,7 @@ function CenterMain(props) {
             </div>
 
             <div className=" container mt-3 keyboard">
-              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-4 gap-2  justify-content-center ">
+              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
                 {AnswerStatus &&
                   AnswerStatus.map((item, index) => {
                     return (
@@ -506,44 +551,34 @@ function CenterMain(props) {
                           component="div"
                           onClick={() => handleQuestionClick(index)}
                           sx={{
-                            width: "60px",
+                            display: "flex",
+                            justifyContent: "center",
+                            width: "45px",
                             p: 2,
-
-                            height: "50px",
+                            height: "45px",
                             cursor: "pointer",
                             backgroundImage: `url(${
                               item.stage === 0
-                                ? "/Rectangle88.jpg"
+                                ? "/BL.png"
                                 : item.stage === 1
-                                ? "/vectorGreen.png"
+                                ? "/Answered.png"
                                 : item.stage === 2
-                                ? "/vectorRed.png"
+                                ? "/NotAnswered.png"
                                 : item.stage === 3
-                                ? "/answered.png"
-                                : "/evolution.png"
+                                ? "/MarkedforReview.png"
+                                : "/Answered&MarkedReview.png"
                             })`,
                             backgroundSize: "cover",
                             objectFit: "cover",
                             fontWeight: "bold",
-                            fontSize: "17px",
+                            fontSize: "15px",
                           }}
                         >
-                          {" "}
-                          <span>{index + 1}</span>
+                          <span style={{ position: "relative", bottom: "4px" }}>
+                            {index + 1}
+                          </span>
                         </Box>
                       </div>
-                      // src={
-                      //   item.stage === 0
-                      //     ? "/Rectangle 88.jpg"
-                      //     : item.stage === 1
-                      //     ? "/green.png"
-                      //     : item.stage === 2
-                      //     ? "/orange.png"
-                      //     : item.stage === 3
-                      //     ? "/answered.png"
-                      //     :
-                      //     "/evolution.png"
-                      // }
                     );
                   })}
               </div>
@@ -555,7 +590,14 @@ function CenterMain(props) {
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
-              <SubmitButton disabled={params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">
+              <SubmitButton
+                disabled={
+                  params.type === "varc" || params.type === "lrdi"
+                    ? true
+                    : false
+                }
+                variant="contained"
+              >
                 Submit
               </SubmitButton>
             </div>
@@ -564,16 +606,40 @@ function CenterMain(props) {
               <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited {} </b>
                 </div>
               </div>
             </div>
