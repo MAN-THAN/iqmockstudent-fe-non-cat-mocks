@@ -13,13 +13,13 @@ const Timer = (props) => {
 
   // taking the local storage value of timer=
   useEffect(() => {
-    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 1000;
+    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 0;
     setSeconds(countDownTime);
     console.log("onload");
   }, []);
 
   const submitSectionFunc = async (subject) => {
-    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${subject}/final`;
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,17 +28,17 @@ const Timer = (props) => {
     console.log(response);
     const json = await response.json();
     console.log(json?.success);
-    if (json?.success === true) {
-      if (subject === "varc") {
-        console.log("varc submitted");
-        navigate(`/main/${params.mockid}/lrdi`);
-      } else if (subject === "lrdi") {
-        console.log("lrdi submitted");
-        navigate(`/main/${params.mockid}/quants`);
-      } else if (subject === "quants") {
-        console.log("Your mock is submitted!!!");
-      }
-    }
+    // if (json?.success === true) {
+    //   if (subject === "varc") {
+    //     console.log("varc submitted");
+    //     navigate(`/main/${params.mockid}/lrdi`);
+    //   } else if (subject === "lrdi") {
+    //     console.log("lrdi submitted");
+    //     navigate(`/main/${params.mockid}/quants`);
+    //   } else if (subject === "quants") {
+    //     console.log("Your mock is submitted!!!");
+    //   }
+    // }
   };
 
   useEffect(() => {
@@ -50,13 +50,13 @@ const Timer = (props) => {
         if (minutes === 0) {
           //   clearInterval(myInterval);
           if (params.type === "varc") {
-            submitSectionFunc("varc");
+            // submitSectionFunc("varc");
           }
           if (params.type === "lrdi") {
-            submitSectionFunc("lrdi");
+            // submitSectionFunc("lrdi");
           }
           if (params.type === "quants") {
-            submitSectionFunc("quants");
+            // submitSectionFunc("quants");
             //final submit api call
           }
         } else {
@@ -65,7 +65,7 @@ const Timer = (props) => {
         }
       }
       if (seconds - 1 > 0) {
-        window.localStorage.setItem(COUNTER_KEY, 2000);
+        // window.localStorage.setItem(COUNTER_KEY, seconds - 1);
       } else {
         window.localStorage.removeItem(COUNTER_KEY);
         clearInterval(myInterval);

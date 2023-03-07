@@ -23,7 +23,7 @@ export const ContextProvider = ({ children }) => {
     };
 
 
-    fetch(`${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks`, {
 
       method: "POST",
       headers: {
