@@ -168,23 +168,23 @@ function CenterMain(props) {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    // disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
                     onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    // disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
-                    onClick={() => checkSessionAccess(`lrdi`)}
+                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    // disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => checkSessionAccess(`quants`)}
+                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
                   >
                     Quant
                   </BootstrapButton>
@@ -210,7 +210,7 @@ function CenterMain(props) {
                   </Tooltip>
 
                   <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
-                    {<Timer initMinute={0} initSeconds={10} />}
+                    {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
               </div>
@@ -261,11 +261,7 @@ function CenterMain(props) {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer
-                              : inputVal
-                          }
+                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -410,16 +406,9 @@ function CenterMain(props) {
                           }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index }
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -564,40 +553,16 @@ function CenterMain(props) {
               <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited {} </b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
               </div>
             </div>
