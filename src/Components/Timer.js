@@ -20,7 +20,7 @@ const Timer = (props) => {
   }, []);
 
   const submitSectionFunc = async (subject) => {
-    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${subject}/final`;
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

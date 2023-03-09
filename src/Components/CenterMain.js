@@ -53,7 +53,7 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`${process.env.REACT_APP_BASE_URL}:5000/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(`https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -69,7 +69,7 @@ function CenterMain(props) {
 
   // fetching answers status
   const fetchAnswersStatus = async () => {
-    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
 
     const options = {
       method: "GET",
@@ -96,7 +96,7 @@ function CenterMain(props) {
       duration: 30,
     };
 
-    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ function CenterMain(props) {
   // Session access of student checking
 
   const checkSessionAccess = async () => {
-    const url = `${process.env.REACT_APP_BASE_URL}:8000/api/student/v1/mocks/${attemptID}/${params.type}`;
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.type}`;
 
     const options = {
       method: "GET",
