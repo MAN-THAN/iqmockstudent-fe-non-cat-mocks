@@ -6,7 +6,8 @@
 
 [context.staging]
   [context.staging.environment]
-   REACT_APP_BASE_URL= "https://us-central1-mock-test-45864.cloudfunctions.net/app                                                                                                                                                                                                                                                                    "
+   REACT_APP_BASE_URL= "https://us-central1-mock-test-45864.cloudfunctions.net/app"
+
    
  
 

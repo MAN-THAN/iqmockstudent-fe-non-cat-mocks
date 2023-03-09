@@ -2,11 +2,9 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { ModifyButton } from "../styleSheets/Style";
 import { useNavigate, Outlet, Link } from "react-router-dom";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -14,7 +12,7 @@ function AnalysisMain() {
   return (
     <div
       className="container-fluid p-0 "
-      style={{ background: "var( --light-background)" }}
+      style={{ background: "var(--background)" }}
     >
       {/* Header */}
       <header className="p-0 ">
@@ -72,14 +70,14 @@ function AnalysisMain() {
         </div>
       </header>
 
-     <div className="container-fluid">
-     <div className="row p-3 ps-0 m-2 ">
-        <div className="col-4 p-3 ">
+     <div className="container-fluid mx-5">
+     <div className=" d-flex flex-row  justify-content-center align-items-center ">
+        <div className="flex-item p-2 ">
           <Typography
             variant="h4"
             sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
           >
-            Hey Lakshay,
+            Hey Charlie,
           </Typography>
           <Typography variant="h4" sx={{ fontSize: "35px", color: "black" }}>
             This is your mock analysis for iCAT 1.0.
@@ -113,89 +111,107 @@ function AnalysisMain() {
             </ModifyButton>
           </div>
         </div>
+      
 
-        <div className="col-8 ">
-          <div className="row justify-content-center gap-3">
-            <div className="col">
-              <div
-                className="container bg-warning "
-                style={{ height: "250px", borderRadius: "15px" }}
-              >
-                <div className="text-center pt-3 ">
-                  <h3 className="fw-bold">
-                    Your score <br /> 53 <br /> out of 300
-                  </h3>
+      <div className="flex-item  ">
+      <div
+          className="container bg-warning  "
+          style={{ height: "300px", borderRadius: "15px", width: "365px" }}
+        >
+          <div className="text-center pt-3 ">
+            <h3 className="fw-bold">
+              Your score <br /> 53 <br /> out of 300
+            </h3>
 
-                  <Card
-                    sx={{
-                      height: 60,
-                      borderRadius: "13px",
-                      position: "relative",
-                      top: "50px",
-                     
-                    }}
-                  >
-                    <CardContent>
-                      <Typography
-                        sx={{
-                          fontSize: 20,
-                          color: "black",
-                            display:"flex",
-                          
-                        }}
-                        variant="h4"
-                        gutterBottom
-                      >
-                        Precentile
-                      <span className="text-end"> 6.5</span>
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
+            <Card
+              sx={{
+                height: 60,
+                borderRadius: "13px",
+                position: "relative",
+                top: "50px",
+              }}
+            >
+              <CardContent>
+                <Typography
+                  sx={{
+                    fontSize: 20,
+                    color: "black",
+                    display: "flex",
+                  }}
+                  variant="h4"
+                  gutterBottom
+                >
+                  Precentile
+                  <span className="text-end"> 6.5</span>
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+         <div className="  flex-item ps-4  ">
+         <div className=" d-flex flex-wrap gap-3  ">
+          <div
+            className="card shadow-sm  flex-item "
+            style={{
+              width: " 18rem",
+              height: "7em",
+              border: "1px solid white",
+            }}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
             </div>
-            <div className="col">
-              <div className="row my-2 ">
-              <div className="card shadow-sm  " style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    
-                  </div>
-                </div>
-              </div>
-              <div className="row my-3">
-              <div className="card" style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    
-                  </div>
-                </div>
-              </div>
+          </div>
+          <div
+            className="card shadow-sm  flex-item "
+            style={{
+              width: " 18rem",
+              height: "7em",
+              border: "1px solid white",
+            }}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
             </div>
-            <div className="col align-center">
-            <div className="row my-2 ">
-              <div className="card shadow-sm " style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="row my-3 mb-0">
-              <div className="card" style={{width:" 19rem",height:"7em",border:"1px solid white"}}>
-                  <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    
-                  </div>
-                </div>
-              </div>
+          </div>
+
+          <div
+            className="card shadow-sm  flex-item  "
+            style={{
+              width: " 18rem",
+              height: "7em",
+              border: "1px solid white",
+            }}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
+            </div>
+          </div>
+
+          <div
+            className="card shadow-sm  flex-item "
+            style={{
+              width: " 18rem",
+              height: "7em",
+              border: "1px solid white",
+            }}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Card title</h5>
             </div>
           </div>
         </div>
+         </div>
+
+      
+
       </div>
      </div>
 
       {/* Buttons for changing sections */}
-      <div className=" d-flex gap-3">
+      <div className=" d-flex gap-3 my-5">
         <ModifyButton variant="filled" onClick={() => navigate("overall")}>
           Overall Analysis{" "}
         </ModifyButton>
