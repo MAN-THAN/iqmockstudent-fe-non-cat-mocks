@@ -16,6 +16,7 @@ const Timer = (props) => {
     let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 10;
     setSeconds(countDownTime);
     console.log("onload");
+    
   }, []);
 
   const submitSectionFunc = async (subject) => {
