@@ -1,26 +1,26 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function Protected(props) {
-    const naviagte=useNavigate()
-    const{Comp}=props;
+  const navigate = useNavigate();
+  const params = useParams();
+  const { Comp } = props;
 
-    useEffect(()=>{
+  useEffect(() => {
+    const attemptID = localStorage.getItem("attemptID");
 
-      const attemptID = localStorage.getItem("attemptID")
-      
-        if(!attemptID){
-            naviagte("/terms")
-        }
-    },[])
+    if (!attemptID) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>
-     <Comp/>
+      <Comp />
     </div>
-  )
+  );
 }
 
-export default Protected
+export default Protected;
