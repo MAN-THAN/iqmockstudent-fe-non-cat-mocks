@@ -43,6 +43,7 @@ export default function ButtonSubmit() {
   const [Loader, setLoader] = useState(true);
 
   const FinalSubmitTest = () => { 
+    handleConfirmClose()
     handleOpen();
     // final submit api call
   }
