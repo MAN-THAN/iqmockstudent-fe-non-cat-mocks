@@ -35,7 +35,9 @@ function CenterMain(props) {
   const [studentAnswer, SetStudentAnswer] = useState();
 
   // Function for getting a keyboard value from keyboard component
-
+  console.log(inputVal);
+  console.log(Data);
+  console.log(AnswerStatus)
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
@@ -262,7 +264,13 @@ function CenterMain(props) {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
+                          value={
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer === null
+                                ? ""
+                                : Data[selectedQuestionIndex].selectedAnswer
+                              : inputVal
+                          }
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
