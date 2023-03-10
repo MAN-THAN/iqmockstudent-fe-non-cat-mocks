@@ -32,7 +32,7 @@ function Terms() {
     setTimeout(() => {
       setLoader(false);
        navigate(`/main/${ID}/varc`);
-    }, 5500);
+    }, 1500);
    
   };
 
