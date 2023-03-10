@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -24,6 +19,7 @@ import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
+import ButtonSubmit from "./SubmitButton";
 
 function CenterMain(props) {
   const navigate = useNavigate();
@@ -58,9 +54,7 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(
-      `https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`
-    )
+    fetch(`https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -95,9 +89,7 @@ function CenterMain(props) {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -163,10 +155,7 @@ function CenterMain(props) {
   console.log("selected===>", selectedAnswer);
 
   return loading ? (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}
-    >
+    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -176,9 +165,7 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
@@ -223,10 +210,7 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span
-                    className="timer fs-6 p-3 ms-2   fw-bold"
-                    style={{ color: "#FF0103", borderRadius: "30px" }}
-                  >
+                  <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
                     {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
@@ -242,34 +226,18 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-7 overflow-auto"
-                  : "d-none"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
-                        ? Data[selectedQuestionIndex].paragraph
-                        : "No paragraph"
+                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
                     }
@@ -278,36 +246,23 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && (
-                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
-                  )}
+                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer
-                              : inputVal
-                          }
+                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -442,29 +397,19 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            Data[selectedQuestionIndex]?.selectedAnswer || ""
-                          }
+                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
+                            updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -526,7 +471,7 @@ function CenterMain(props) {
                 }}
               >
                 {" "}
-                You are viewing <b>{params.type==="varc"?"Verbal Ability":params.type==="lrdi" ?"Lrdi":"Quants"}</b> section
+                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "Lrdi" : "Quants"}</b> section
               </Typography>
 
               <SubHeading
@@ -574,9 +519,7 @@ function CenterMain(props) {
                             fontSize: "15px",
                           }}
                         >
-                          <span style={{ position: "relative", bottom: "4px" }}>
-                            {index + 1}
-                          </span>
+                          <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
                         </Box>
                       </div>
                     );
@@ -586,60 +529,27 @@ function CenterMain(props) {
             {/* Modal for questions and instructions */}
 
             <div className="row justify-content-center my-2   ">
-              <div className="d-flex justify-content-center flex-wrap">
+              <div className="d-flex justify-content-between ">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
-              <SubmitButton
-                disabled={
-                  params.type === "varc" || params.type === "lrdi"
-                    ? true
-                    : false
-                }
-                variant="contained"
-              >
-                Submit
-              </SubmitButton>
+              <ButtonSubmit />
             </div>
 
             <div className="row gap-3 my-2 flex-wrap  text-start align-content-center  align-self-bottom  markingNotation">
               <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited {} </b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
               </div>
             </div>

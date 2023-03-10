@@ -14,7 +14,6 @@ import Keyboard from "./Keypad";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -42,17 +41,14 @@ export default function InstructionButton() {
     console.log(result);
   }
 
-
   return (
     <span>
-          <MyButton variant="contained" sx={{ width: "130px" }} onClick={handleOpen} >
+      <MyButton variant="contained" sx={{ width: "150px", margin : 0, marginTop : '1em' }} onClick={handleOpen}>
         Instructions
-
       </MyButton>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           <div className="d-flex justify-content-between">
-
             <SubHeading className="m-0 ps-3">Instructions </SubHeading>
             <RxCross1 role="button" onClick={handleClose} />
           </div>
@@ -72,7 +68,6 @@ export default function InstructionButton() {
               </li>
             </ul>
           </Typography>
-
         </Box>
       </Modal>
     </span>
