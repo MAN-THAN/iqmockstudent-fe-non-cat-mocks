@@ -35,18 +35,19 @@ const style = {
 export default function ButtonSubmit() {
   const [open, setOpen] = React.useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const handleConfirmOpen = () => setOpenConfirm(true)
+  const [state, setState] = useState(0);
+  const handleConfirmOpen = () => setOpenConfirm(true);
   const handleConfirmClose = () => setOpenConfirm(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const params = useParams();
   const [Loader, setLoader] = useState(true);
 
-  const FinalSubmitTest = () => { 
-    handleConfirmClose()
-    handleOpen();
+  const FinalSubmitTest = () => {
+    setState(1);
     // final submit api call
-  }
+    setTimeout(() => setState(2), 2000)
+  };
   return (
     <span>
       <SubmitButton
@@ -58,34 +59,63 @@ export default function ButtonSubmit() {
         Submit
       </SubmitButton>
       {/* Confirm modal */}
-      <Modal open={openConfirm} onClose={handleConfirmClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal open={openConfirm} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <div className="d-flex justify-content-center">
-            <SubHeading className="m-5 ps-3">Do you really want to submit? </SubHeading>
-          </div>
-          <div className="d-flex justify-content-center" style={{marginTop : "0.5em"}}>
-            <MyButton variant="contained" sx={{ bgcolor: "red" }} onClick={ handleConfirmClose }>
-              No
-            </MyButton>
-            <MyButton variant="contained" sx={{ bgcolor: "green" }} onClick={ FinalSubmitTest }>
-              Yes
-            </MyButton>
-          </div>
-        </Box>
-      </Modal>
-      {/* Submitting Modal */}
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <div className="d-flex justify-content-center">
-            <SubHeading className="m-0 ps-3">Test Submitting... </SubHeading>
-          </div>
-          <div className="d-flex justify-content-center" style={{ marginTop: "1.5em" }}>
-            {Loader ? (
-              <Puff height="120" width="120" radius={1} color="#4fa94d" ariaLabel="puff-loading" wrapperStyle={{}} wrapperClass="" visible={true} />
-            ) : (
-              ""
-            )}
-          </div>
+          {state === 0 ? (
+            <>
+              <div className="d-flex justify-content-center">
+                <SubHeading className="m-5 ps-3">Do you really want to submit? </SubHeading>
+              </div>
+              <div className="d-flex justify-content-center" style={{ marginTop: "0.5em" }}>
+                <MyButton variant="contained" sx={{ bgcolor: "red" }} onClick={handleConfirmClose}>
+                  No
+                </MyButton>
+                <MyButton variant="contained" sx={{ bgcolor: "green" }} onClick={FinalSubmitTest}>
+                  Yes
+                </MyButton>
+              </div>
+            </>
+          ) : state === 1 ? (
+            <>
+              {" "}
+              <div className="d-flex justify-content-center">
+                <SubHeading className="m-0 ps-3">Test Submitting... </SubHeading>
+              </div>
+              <div className="d-flex justify-content-center" style={{ marginTop: "1.5em" }}>
+                {Loader ? (
+                  <Puff
+                    height="120"
+                    width="120"
+                    radius={1}
+                    color="#4fa94d"
+                    ariaLabel="puff-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </>
+          ) : state === 2 ? (
+            <>
+              {" "}
+              <div className="d-flex justify-content-center">
+                <SubHeading className="m-5 ">Test Submitted </SubHeading>
+              </div>
+              <div className="d-flex justify-content-center" style={{ marginTop: "0.5em" }}>
+                    <MyButton variant="contained" sx={{ bgcolor: "green" }} onClick={() => {
+                      handleConfirmClose();
+                      setState(0)
+                    }}>
+                  Analysis
+                </MyButton>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </Box>
       </Modal>
     </span>
