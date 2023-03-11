@@ -12,7 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
-import { useAuth } from "../services/Context";
+
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
