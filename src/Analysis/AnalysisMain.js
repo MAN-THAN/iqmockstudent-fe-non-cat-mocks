@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Typography, InputAdornment } from "@mui/material";
-import { ModifyButton, SubHeading } from "../styleSheets/Style";
+import { ModifyButton, SubHeading, } from "../styleSheets/Style";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -16,8 +16,9 @@ function AnalysisMain() {
       style={{ background: "var(--background)" }}
     >
       {/* Header */}
-      <header className="p-0 ">
-        <div className="container-fluid px-5 py-4 ">
+      <header className="p-0
+      ujn  ">
+        <div className="container-fluid px-4 py-4 ">
           <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
             <div>
               <Link to="/">
