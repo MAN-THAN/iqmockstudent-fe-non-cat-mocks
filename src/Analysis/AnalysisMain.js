@@ -5,20 +5,25 @@ import { useNavigate, Outlet, Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { RxDotsVertical } from 'react-icons/rx';
-
+import { useLocation } from 'react-router-dom';
 
 function AnalysisMain() {
   const navigate = useNavigate();
+ 
+  const location = useLocation();
+  console.log(location)
+
 
   return (
+    <>
     <div
       className="container-fluid p-0 "
       style={{ background: "var(--background)" }}
     >
       {/* Header */}
-      <header className="p-0
-      ujn  ">
-        <div className="container-fluid px-4 py-4 ">
+      <header className=" mx-4
+     ">
+        <div className="container-fluid py-4 ">
           <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
             <div>
               <Link to="/">
@@ -145,9 +150,9 @@ function AnalysisMain() {
       </header>
       {/* Header end */}
 
-      <div className="container-fluid mx-5">
-        <div className=" d-flex flex-row  justify-content-center align-items-center ">
-          <div className="flex-item p-2 ">
+      
+        <div className=" d-flex justify-content-center align-items-center mx-4">
+          <div className="flex-item p-3  flex-fill">
             <Typography
               variant="h4"
               sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
@@ -166,6 +171,7 @@ function AnalysisMain() {
                   backgroundColor: "#00359A",
                   color: "white",
                   height: "50px",
+                  width: "200px",
                   p: 2,
                   fontWeight: "bold",
                 }}
@@ -178,6 +184,7 @@ function AnalysisMain() {
                   p: 2,
                   height: "50px",
                   border: "2px solid #00359A",
+                  width: "200px",
                   color: "#00359A",
                   fontWeight: "bold",
                 }}
@@ -187,10 +194,10 @@ function AnalysisMain() {
             </div>
           </div>
 
-          <div className="flex-item  ">
+          <div className="flex-item p-3  flex-fill">
             <div
               className="container bg-warning   "
-              style={{ height: "300px", borderRadius: "15px", width: "365px" }}
+              style={{ height: "auto", borderRadius: "15px", width: "auto" }}
             >
               <div className=" d-flex gap-4 flex-column justify-content-center align-items-center py-3">
                 <div className="text-center">
@@ -228,7 +235,7 @@ function AnalysisMain() {
                   <Card
                     sx={{
                       height: 70,
-                      width: 340,
+                      width:"maxWidth",
                       borderRadius: "13px",
                     }}
                   >
@@ -238,6 +245,7 @@ function AnalysisMain() {
                         flexDirection: "row",
                         justifyContent: "space-between",
                         px: 3,
+                        gap:{md:3,lg:5,xl:5,},
                         alignContent: "center",
                       }}
                     >
@@ -275,18 +283,18 @@ function AnalysisMain() {
             </div>
           </div>
 
-          <div className="  flex-item ps-4  ">
-            <div className=" d-flex flex-wrap gap-3  ">
+          <div className="  flex-item p-3 flex-fill   ">
+            <div className=" d-flex  justify-content-center flex-wrap gap-3 ">
               <div
-                className="card shadow-sm  flex-item "
+                className="card shadow-sm  flex-item  flex-fill "
                 style={{
-                  width: " 18rem",
+                 width:"40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
               >
                 <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                  <div className="flex-item">
+                  <div className="flex-item ">
                     <SubHeading className="card-title">75</SubHeading>
 
                     <Typography variant="paragraph">Potential Mark</Typography>
@@ -303,9 +311,9 @@ function AnalysisMain() {
                 </div>
               </div>
               <div
-                className="card shadow-sm  flex-item "
+                className="card shadow-sm  flex-item flex-fill "
                 style={{
-                  width: " 18rem",
+                  width:"40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
@@ -327,15 +335,15 @@ function AnalysisMain() {
                 </div>
               </div>
               <div
-                className="card shadow-sm  flex-item "
+                className="card shadow-sm  flex-item flex-fill"
                 style={{
-                  width: " 18rem",
+                  width:"40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
               >
-                <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                  <div className="flex-item">
+                <div className="card-body d-flex flex-row justify-content-between align-items-center ">
+                  <div className="flex-item ">
                     <SubHeading className="card-title">75.3</SubHeading>
                     <Typography variant="paragraph">% Accuracy</Typography>
                   </div>
@@ -351,15 +359,15 @@ function AnalysisMain() {
                 </div>
               </div>
               <div
-                className="card shadow-sm  flex-item "
+                className="card shadow-sm  flex-item  flex-fill"
                 style={{
-                  width: " 18rem",
+                  width:"40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
               >
-                <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                  <div className="flex-item">
+                <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
+                  <div className="flex-item ">
                     <SubHeading className="card-title">17.5</SubHeading>
                     <Typography variant="paragraph">% Score</Typography>
                   </div>
@@ -367,7 +375,7 @@ function AnalysisMain() {
                   <div className="flex-item">
                     <img
                       src="/PS.png"
-                      alt=""
+                      alt="ps.png"
                       className="img-fluid"
                       width={50}
                     />
@@ -377,7 +385,7 @@ function AnalysisMain() {
             </div>
           </div>
         </div>
-      </div>
+ 
 
       {/* Buttons for changing sections */}
       <div className=" d-flex gap-3 m-5">
@@ -397,8 +405,9 @@ function AnalysisMain() {
           Leader board
         </ModifyButton>
       </div>
-      <Outlet />
     </div>
+      <Outlet />
+    </>
   );
 }
 
