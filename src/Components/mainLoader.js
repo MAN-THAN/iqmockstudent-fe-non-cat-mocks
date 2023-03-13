@@ -12,7 +12,7 @@ const MainLoader = () => {
       <Box sx={{display : "flex", justifyContent : "center", width : "100vw", alignItems : "center", height : "100vh"}}>
         <Box height='fit-content' w="12em">
           {" "}
-          <ChangingProgressProvider values={[0, 20, 40, 60, 80, 100]}>
+          <ChangingProgressProvider values={[0, 100]}>
             {(percentage) => <CircularProgressbar value={percentage} text={`${percentage}%`} />}
           </ChangingProgressProvider>
           <Typography mt={6} textAlign="center" fontSize="18px" fontWeight="600">

@@ -16,6 +16,7 @@ const Timer = (props) => {
     let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 0;
     setSeconds(countDownTime);
     console.log("onload");
+    
   }, []);
 
   const submitSectionFunc = async (subject) => {
@@ -69,6 +70,7 @@ const Timer = (props) => {
       } else {
         window.localStorage.removeItem(COUNTER_KEY);
         clearInterval(myInterval);
+        
       }
     }, 1000);
     return () => {
