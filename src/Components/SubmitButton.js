@@ -65,14 +65,14 @@ export default function ButtonSubmit() {
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                <Image width="600px" height="250px" src="/Group 33.svg" alt="no IMage"></Image>
+                <Image width="600px" height="250px" src="/Image1.svg" alt="no IMage"></Image>
               </div>
               <div className="d-flex justify-content-center">
                 <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
                   Are you sure to submit your test?{" "}
                 </SubHeading>
               </div>
-              <div className="d-flex justify-content-evenly" style={{ marginTop: "1em" }}>
+              <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
                 <MyButton variant="contained" sx={{ bgcolor: "#EBEBEB", color: "black" }} onClick={handleConfirmClose}>
                   Have a doubt? Back to test
                 </MyButton>
