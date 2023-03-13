@@ -37,7 +37,7 @@ function CenterMain(props) {
   // Function for getting a keyboard value from keyboard component
   console.log(inputVal);
   console.log(Data);
-  console.log(AnswerStatus)
+  console.log(AnswerStatus);
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
@@ -155,6 +155,29 @@ function CenterMain(props) {
     // }
   };
   console.log("selected===>", selectedAnswer);
+
+  // clear Response api
+  const clearResponse = async () => {
+    try {
+      const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/clearAnswer/${attemptID}/${params.type}/${selectedQuestionIndex}`;
+
+      const options = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      };
+      const response = await fetch(url, options);
+      const json = await response.json();
+      // console.log("clr response", json.success);
+      if (json?.success === true) {
+        console.log(json.data);
+        fetchAnswersStatus();
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      console.log("clear response function called");
+    }
+  };
 
   return loading ? (
     <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
@@ -444,6 +467,7 @@ function CenterMain(props) {
                     updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
                     setInputVal(""); // clear input field value
                     setData(updatedData);
+                    clearResponse();
                   }}
                 >
                   Clear Response

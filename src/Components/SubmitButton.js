@@ -15,21 +15,22 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { useParams } from "react-router";
 import { SubmitButton } from "../styleSheets/Style";
-import { Puff } from "react-loader-spinner";
+import { Puff , InfinitySpin} from "react-loader-spinner";
+import { Image } from "react-bootstrap";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 550,
+  width: 650,
   textAlign: "",
-  height: 250,
+  height: 400,
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
-  p: 2,
-  overflowY: "scroll",
+  p: 0,
+  m:0
 };
 
 export default function ButtonSubmit() {
@@ -46,7 +47,7 @@ export default function ButtonSubmit() {
   const FinalSubmitTest = () => {
     setState(1);
     // final submit api call
-    setTimeout(() => setState(2), 2000)
+    setTimeout(() => setState(2), 2000);
   };
   return (
     <span>
@@ -64,52 +65,71 @@ export default function ButtonSubmit() {
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                <SubHeading className="m-5 ps-3">Do you really want to submit? </SubHeading>
+                <Image width="600px" height="250px" src="/Group 33.svg" alt="no IMage"></Image>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "0.5em" }}>
-                <MyButton variant="contained" sx={{ bgcolor: "red" }} onClick={handleConfirmClose}>
-                  No
+              <div className="d-flex justify-content-center">
+                <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
+                  Are you sure to submit your test?{" "}
+                </SubHeading>
+              </div>
+              <div className="d-flex justify-content-evenly" style={{ marginTop: "1em" }}>
+                <MyButton variant="contained" sx={{ bgcolor: "#EBEBEB", color: "black" }} onClick={handleConfirmClose}>
+                  Have a doubt? Back to test
                 </MyButton>
-                <MyButton variant="contained" sx={{ bgcolor: "green" }} onClick={FinalSubmitTest}>
-                  Yes
+                <MyButton variant="contained" sx={{ bgcolor: "#FD4153", width: "138px" }} onClick={FinalSubmitTest}>
+                  SUBMIT
                 </MyButton>
               </div>
             </>
           ) : state === 1 ? (
             <>
               {" "}
-              <div className="d-flex justify-content-center">
-                <SubHeading className="m-0 ps-3">Test Submitting... </SubHeading>
+                <div style={{marginTop : "3em"}} className="d-flex justify-content-center">
+                <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1.5em" }}>
+              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                 {Loader ? (
-                  <Puff
-                    height="120"
-                    width="120"
-                    radius={1}
-                    color="#4fa94d"
-                    ariaLabel="puff-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                  />
+                  <div style={{ marginLeft: "12px" }}>
+                    {" "}
+                    <InfinitySpin color="blue" />
+                  </div>
                 ) : (
                   ""
                 )}
+              </div>
+                <div className="d-flex justify-content-center mt-4 ">
+                <Typography>Please Wait...</Typography>
               </div>
             </>
           ) : state === 2 ? (
             <>
               {" "}
-              <div className="d-flex justify-content-center">
-                <SubHeading className="m-5 ">Test Submitted </SubHeading>
+              <div className="d-flex justify-content-center" style={{ height: "50%", width: "100%" }}>
+                <div
+                  style={{ height: "100%", backgroundColor: "#0075FF", width: "100%", borderTopLeftRadius: "10px ", borderTopRightRadius: "10px " }}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Image width="200px" height="150px" src="/tickcircle.svg" alt="no IMage"></Image>
+                </div>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "0.5em" }}>
-                    <MyButton variant="contained" sx={{ bgcolor: "green" }} onClick={() => {
-                      handleConfirmClose();
-                      setState(0)
-                    }}>
-                  Analysis
+              <div className="d-flex justify-content-center">
+                <SubHeading style={{ fontWeight: "800" }} className="m-4 ps-3">
+                  Thank You!{" "}
+                </SubHeading>
+              </div>
+              <div className="d-flex justify-content-center">
+                <Typography fontWeight={700}>Congrats! You have completed the Mock test</Typography>
+              </div>
+              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                <MyButton
+                  variant="contained"
+                  sx={{ bgcolor: "#2400FF" }}
+                  onClick={() => {
+                    handleConfirmClose();
+                    setState(0);
+                  }}
+                >
+                  DONE
                 </MyButton>
               </div>
             </>
