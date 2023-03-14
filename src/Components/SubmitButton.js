@@ -14,9 +14,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { useParams } from "react-router";
 import { SubmitButton } from "../styleSheets/Style";
-import { Puff , InfinitySpin} from "react-loader-spinner";
+import { Puff, InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -30,7 +30,7 @@ const style = {
   borderRadius: "10px ",
   boxShadow: 24,
   p: 0,
-  m:0
+  m: 0,
 };
 
 export default function ButtonSubmit() {
@@ -43,7 +43,7 @@ export default function ButtonSubmit() {
   const handleClose = () => setOpen(false);
   const params = useParams();
   const [Loader, setLoader] = useState(true);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const FinalSubmitTest = () => {
     setState(1);
     // final submit api call
@@ -53,30 +53,62 @@ export default function ButtonSubmit() {
     <span>
       <SubmitButton
         sx={{ width: "100%", marginTop: "1em" }}
-        disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+        disabled={
+          params.type === "varc" || params.type === "lrdi" ? true : false
+        }
         variant="contained"
         onClick={() => handleConfirmOpen()}
       >
         Submit
       </SubmitButton>
       {/* Confirm modal */}
-      <Modal open={openConfirm} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={openConfirm}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                <Image width="600px" height="250px"  data-original="/Image1.svg" loading="lazy" alt="no IMage"></Image>
+                
+                <Box
+                  component="img"
+                  sx={{
+                    height: 233,
+                    width: 350,
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
+                  }}
+                  alt="no IMage"
+                  src="/Image1.svg"
+                  loading="eager"
+                />
               </div>
               <div className="d-flex justify-content-center">
-                <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
+                <SubHeading
+                  style={{ color: "#494949", fontWeight: "700" }}
+                  className="ps-3"
+                >
                   Are you sure to submit your test?{" "}
                 </SubHeading>
               </div>
-              <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
-                <MyButton variant="contained" sx={{ bgcolor: "#EBEBEB", color: "black" }} onClick={handleConfirmClose}>
+              <div
+                className="d-flex justify-content-evenly"
+                style={{ marginTop: "1.8em" }}
+              >
+                <MyButton
+                  variant="contained"
+                  sx={{ bgcolor: "#EBEBEB", color: "black" }}
+                  onClick={handleConfirmClose}
+                >
                   Have a doubt? Back to test
                 </MyButton>
-                <MyButton variant="contained" sx={{ bgcolor: "#FD4153", width: "138px" }} onClick={FinalSubmitTest}>
+                <MyButton
+                  variant="contained"
+                  sx={{ bgcolor: "#FD4153", width: "138px" }}
+                  onClick={FinalSubmitTest}
+                >
                   SUBMIT
                 </MyButton>
               </div>
@@ -84,10 +116,18 @@ export default function ButtonSubmit() {
           ) : state === 1 ? (
             <>
               {" "}
-                <div style={{marginTop : "3em"}} className="d-flex justify-content-center">
-                <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
+              <div
+                style={{ marginTop: "3em" }}
+                className="d-flex justify-content-center"
+              >
+                <SubHeading className="m-4 ps-3">
+                  Test Submitting...{" "}
+                </SubHeading>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
                 {Loader ? (
                   <div style={{ marginLeft: "12px" }}>
                     {" "}
@@ -97,19 +137,32 @@ export default function ButtonSubmit() {
                   ""
                 )}
               </div>
-                <div className="d-flex justify-content-center mt-4 ">
+              <div className="d-flex justify-content-center mt-4 ">
                 <Typography>Please Wait...</Typography>
               </div>
             </>
           ) : state === 2 ? (
             <>
               {" "}
-              <div className="d-flex justify-content-center" style={{ height: "50%", width: "100%" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ height: "50%", width: "100%" }}
+              >
                 <div
-                  style={{ height: "100%", backgroundColor: "#0075FF", width: "100%", borderTopLeftRadius: "10px ", borderTopRightRadius: "10px " }}
+                  style={{
+                    height: "100%",
+                    backgroundColor: "#0075FF",
+                    width: "100%",
+                    borderTopLeftRadius: "10px ",
+                    borderTopRightRadius: "10px ",
+                  }}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <Image width="200px" height="150px" src="/tickcircle.svg" alt="no IMage"></Image>
+                  <Image
+                    className="img-fluid lazy"
+                    src="/tickcircle.svg"
+                    alt="no IMage"
+                  ></Image>
                 </div>
               </div>
               <div className="d-flex justify-content-center">
@@ -118,18 +171,21 @@ export default function ButtonSubmit() {
                 </SubHeading>
               </div>
               <div className="d-flex justify-content-center">
-                <Typography fontWeight={700}>Congrats! You have completed the Mock test</Typography>
+                <Typography fontWeight={700}>
+                  Congrats! You have completed the Mock test
+                </Typography>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
                 <MyButton
                   variant="contained"
                   sx={{ bgcolor: "#2400FF" }}
                   onClick={() => {
                     handleConfirmClose();
                     setState(0);
-                    navigate("/analysis")
-
-                    
+                    navigate("/analysis");
                   }}
                 >
                   DONE
