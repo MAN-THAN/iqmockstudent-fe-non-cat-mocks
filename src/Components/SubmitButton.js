@@ -65,7 +65,7 @@ export default function ButtonSubmit() {
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                <Image width="600px" height="250px" src="/Image1.svg" alt="no IMage"></Image>
+                <Image width="600px" height="250px"  data-original="/Image1.svg" loading="lazy" alt="no IMage"></Image>
               </div>
               <div className="d-flex justify-content-center">
                 <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
