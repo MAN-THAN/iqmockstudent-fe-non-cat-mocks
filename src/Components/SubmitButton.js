@@ -65,7 +65,7 @@ export default function ButtonSubmit() {
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                <Image width="600px" height="250px" src="/Image1.svg" alt="no IMage"></Image>
+                <Image className="img-fluid lazy" src="/Image1.svg" alt="no IMage"></Image>
               </div>
               <div className="d-flex justify-content-center">
                 <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
@@ -84,7 +84,7 @@ export default function ButtonSubmit() {
           ) : state === 1 ? (
             <>
               {" "}
-                <div style={{marginTop : "3em"}} className="d-flex justify-content-center">
+              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
                 <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
               </div>
               <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
@@ -97,7 +97,7 @@ export default function ButtonSubmit() {
                   ""
                 )}
               </div>
-                <div className="d-flex justify-content-center mt-4 ">
+              <div className="d-flex justify-content-center mt-4 ">
                 <Typography>Please Wait...</Typography>
               </div>
             </>
@@ -109,7 +109,7 @@ export default function ButtonSubmit() {
                   style={{ height: "100%", backgroundColor: "#0075FF", width: "100%", borderTopLeftRadius: "10px ", borderTopRightRadius: "10px " }}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <Image width="200px" height="150px" src="/tickcircle.svg" alt="no IMage"></Image>
+                  <Image className="img-fluid lazy" src="/tickcircle.svg" alt="no IMage"></Image>
                 </div>
               </div>
               <div className="d-flex justify-content-center">
