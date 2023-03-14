@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import Modal from "@mui/material/Modal";
-
 import React, { Component } from "react";
 import { RxCross1 } from "react-icons/rx";
 import Calculator from "awesome-react-calculator";
@@ -17,6 +16,7 @@ import { useParams } from "react-router";
 import { SubmitButton } from "../styleSheets/Style";
 import { Puff , InfinitySpin} from "react-loader-spinner";
 import { Image } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: "absolute",
@@ -43,7 +43,7 @@ export default function ButtonSubmit() {
   const handleClose = () => setOpen(false);
   const params = useParams();
   const [Loader, setLoader] = useState(true);
-
+  const navigate=useNavigate()
   const FinalSubmitTest = () => {
     setState(1);
     // final submit api call
@@ -127,6 +127,9 @@ export default function ButtonSubmit() {
                   onClick={() => {
                     handleConfirmClose();
                     setState(0);
+                    navigate("/analysis")
+
+                    
                   }}
                 >
                   DONE

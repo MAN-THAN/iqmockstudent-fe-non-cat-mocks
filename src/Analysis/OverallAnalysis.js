@@ -66,9 +66,11 @@ const rows = [
 
 export default function OverallAnalysis() {
   return (
-    <TableContainer sx={{display:"flex"}}>
+    <div className="container-fluid p-4 pt-0">
+
+    <TableContainer sx={{display:"flex",justifyContent:"center",alignContent:"center"}}>
       <StyledTable
-        sx={{ maxWidth: 1000, ml: 5,}}
+        sx={{ maxWidth:"70%"}}
         aria-label="customized table"
       >
         <TableHead>
@@ -114,7 +116,7 @@ export default function OverallAnalysis() {
 
 
       <StyledTable
-        sx={{ maxWidth: 400, ml: 5,}}
+        sx={{ maxWidth: "30%", ml: 5,}}
         aria-label="customized table"
       >
         <TableHead>
@@ -147,5 +149,6 @@ export default function OverallAnalysis() {
         </TableBody>
       </StyledTable>
     </TableContainer>
+    </div>
   );
 }
