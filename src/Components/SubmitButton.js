@@ -77,8 +77,6 @@ export default function ButtonSubmit() {
                   sx={{
                     height: 233,
                     width: 350,
-                    maxHeight: { xs: 233, md: 167 },
-                    maxWidth: { xs: 350, md: 250 },
                   }}
                   alt="no IMage"
                   src="/Image1.svg"
