@@ -1,30 +1,28 @@
-import React,{useRef} from 'react'
-import CenterMain from './CenterMain'
-import Header from './Header'
+import CenterMain from "./CenterMain";
+import Header from "./Header";
+import React from "react";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
 
-function Main() {
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-
-  const fullscreenRef = useRef(null);
-
-  const handleFullscreenClick = () => {
-  console.log("gvhbjnkm")
-  const element = fullscreenRef.current;
-
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  }
-};
-
+function Main() { 
 
   return (
-    <div ref={fullscreenRef}>
-        <Header/>
-        <CenterMain  fullScreen={handleFullscreenClick}/>
-    </div>
-  )
+    <div>     
+    <Header />
+      <CenterMain  />
+      </div>
+   
+  );
 }
 
-export default Main
-
-
+export default Main;

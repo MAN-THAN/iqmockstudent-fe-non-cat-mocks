@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/Context";
-import MainLoader from "./mainLoader";
+
+
+
 
 function Terms() {
   const [handleAgree, setHandleAgree] = useState(false);
   const [handleStartText, setHandleStartText] = useState(true);
   const navigate = useNavigate();
-  const { createAttemptId, responseReceived, attemptID } = useAuth();
+  const { createAttemptId, responseReceived, attemptID,buttonLoading } = useAuth();
   const [loader, setLoader] = useState();
 
   useEffect(() => {
@@ -23,22 +25,16 @@ function Terms() {
   }, [responseReceived]);
   // console.log("mock Id", mockId)
 
-  const handleClick = async () => {
+  const handleClick = () => {
     console.log(attemptID);
     localStorage.setItem("attemptID", attemptID);
     // localStorage.setItem("timerValue", timerValue.toString());
     const ID = "63fef68b7de67d353b631f7a";
-    setLoader(true)
-    setTimeout(() => {
-      setLoader(false);
-       navigate(`/main/${ID}/varc`);
-    }, 1500);
+    navigate(`/main/${ID}/varc`);
    
   };
 
-  return loader ? (
-    <MainLoader />
-  ) : (
+  return (
     <div className="container d-flex-col justify-content-center align-content-center" style={{ marginTop: "5%", height: "100vh" }}>
       <div className="logo container text-center my-4">
         <img src={require("../images/iQuanta.png")} className="img-fuid mx-auto" width={150} alt="" />
@@ -109,6 +105,9 @@ function Terms() {
           >
             Agree
           </BootstrapButton>
+
+          
+        
           <BootstrapButton
             variant="contained mx-auto"
             disabled={handleStartText}
@@ -118,6 +117,7 @@ function Terms() {
               background: handleStartText ? "#d2d4d6" : "",
             }}
             onClick={handleClick}
+            loading={buttonLoading}
           >
             Start Test
           </BootstrapButton>

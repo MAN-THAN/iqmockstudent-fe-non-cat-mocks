@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,7 +16,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
-
 import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
@@ -20,11 +23,12 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
+import { useAuth } from "../services/Context";
 
-function CenterMain(props) {
+function CenterMain() {
+ 
   const navigate = useNavigate();
   const params = useParams();
-
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
@@ -32,12 +36,26 @@ function CenterMain(props) {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
-  const [studentAnswer, SetStudentAnswer] = useState();
-
+  const[isFullScreen,setFullScreen]=useState(false)
+  //Function for full screen :
+  const handleFullScreen = () => {
+    const element = document.documentElement;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      setFullScreen(false)
+    } else if (element.requestFullscreen) {
+      element.requestFullscreen();
+      setFullScreen(true)
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+      setFullScreen(true)
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+      setFullScreen(true)
+    }
+  };
   // Function for getting a keyboard value from keyboard component
-  console.log(inputVal);
-  console.log(Data);
-  console.log(AnswerStatus);
+
   const handleKeyPress = (key) => {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
@@ -56,17 +74,18 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(
+      `https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
         setData(data.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
-      })
-      .finally(() => {
-        setLoading(false);
+        setLoading(true);
       });
   }, [params.type]);
 
@@ -85,13 +104,14 @@ function CenterMain(props) {
   };
   useEffect(() => {
     fetchAnswersStatus();
-    // console.log(AnswerStatus);
   }, [params.type]);
 
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
 
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
@@ -180,7 +200,10 @@ function CenterMain(props) {
   };
 
   return loading ? (
-    <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={loading}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
@@ -190,7 +213,9 @@ function CenterMain(props) {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
@@ -217,14 +242,15 @@ function CenterMain(props) {
                 </Stack>
 
                 <div>
-                  <Tooltip title="Full screen" role="button">
+                  <Tooltip title={isFullScreen?"Exit full screen":"Full screen"}>
                     <span>
                       <img
-                        src={require("../images/Open vector.png")}
+                        src={isFullScreen?"/Group28.jpg":require("../images/Open vector.png")}
                         width="70"
                         className="img-fluid p-2"
-                        onClick={() => props.fullScreen()}
+                        onClick={handleFullScreen}
                         alt="arrow-icon"
+                        role="button"
                       />
                     </span>
                   </Tooltip>
@@ -235,7 +261,10 @@ function CenterMain(props) {
                     </span>
                   </Tooltip>
 
-                  <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
+                  <span
+                    className="timer fs-6 p-3 ms-2   fw-bold"
+                    style={{ color: "#FF0103", borderRadius: "30px" }}
+                  >
                     {<Timer initMinute={40} initSeconds={0} />}
                   </span>
                 </div>
@@ -251,18 +280,34 @@ function CenterMain(props) {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
                           })
                         : null
                     }
@@ -271,17 +316,26 @@ function CenterMain(props) {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data.length > 0 && (
+                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
+                  )}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" ||
+                    Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -289,7 +343,8 @@ function CenterMain(props) {
                           variant="outlined"
                           value={
                             "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer === null
+                              ? Data[selectedQuestionIndex].selectedAnswer ===
+                                null
                                 ? ""
                                 : Data[selectedQuestionIndex].selectedAnswer
                               : inputVal
@@ -428,19 +483,29 @@ function CenterMain(props) {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
+                          value={
+                            Data[selectedQuestionIndex]?.selectedAnswer || ""
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer = value;
+                            updatedData[selectedQuestionIndex].selectedAnswer =
+                              value;
                             setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
-                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
-                            ))}
+                            Data[selectedQuestionIndex].options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={<small>{option}</small>}
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -503,7 +568,15 @@ function CenterMain(props) {
                 }}
               >
                 {" "}
-                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "Lrdi" : "Quants"}</b> section
+                You are viewing{" "}
+                <b>
+                  {params.type === "varc"
+                    ? "Verbal Ability"
+                    : params.type === "lrdi"
+                    ? "Lrdi"
+                    : "Quants"}
+                </b>{" "}
+                section
               </Typography>
 
               <SubHeading
@@ -551,7 +624,9 @@ function CenterMain(props) {
                             fontSize: "15px",
                           }}
                         >
-                          <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
+                          <span style={{ position: "relative", bottom: "4px" }}>
+                            {index + 1}
+                          </span>
                         </Box>
                       </div>
                     );
@@ -572,16 +647,40 @@ function CenterMain(props) {
               <div className="d-flex flex-wrap  justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited {} </b>
                 </div>
               </div>
             </div>

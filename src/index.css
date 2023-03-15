@@ -22,3 +22,7 @@ body {
   --font-inder: "Inder", sans-serif;
   --background:#F9FAFF;
 }
+
+.modal-container {
+  z-index: 10000; /* or any higher value than the z-index of the full screen container */
+}

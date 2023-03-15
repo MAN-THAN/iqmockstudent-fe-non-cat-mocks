@@ -6,7 +6,7 @@ import "../styleSheets/header.css"
 
 function Header() {
     return (
-        <header className="p-0 text-bg-dark" style={{ background: "#010101" }}>
+        <header className="p-0 text-bg-dark">
             <div className="container-fluid px-5 py-2 ">
                 <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 ">
                     <div>

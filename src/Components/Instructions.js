@@ -2,20 +2,6 @@ import { Link, ListItemText, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../services/Context";
-
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  List,
-  ListItem,
-  ListSubheader,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-} from "@mui/material";
 
 function Instructions() {
   const navigate = useNavigate();
@@ -25,13 +11,13 @@ function Instructions() {
   };
 
   return (
-    <div className="container" style={{ marginTop: "5%" }}>
+    <div className="container ">
       <div className="logo container text-center my-4">
         <img
           src={require("../images/iQuanta.png")}
-          className="img-fuid mx-auto"
+          className="img-fuid mx-auto "
           width={150}
-          alt=""
+          alt="no img"
         />
       </div>
 

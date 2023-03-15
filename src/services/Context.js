@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
 
 export const Context = React.createContext();
 
@@ -8,13 +7,13 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
- 
-  const params = useParams();
   const [attemptID, setattemptID] = useState("");
   const [responseReceived, setResponseReceived] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   const createAttemptId = () => {
-    console.log("create attempt call")
+    console.log("create attempt call");
+    setButtonLoading(true);
     const jsonData = {
       name: "Gaurav",
       email: "asdnf@gmail.com",
@@ -22,9 +21,7 @@ export const ContextProvider = ({ children }) => {
       mockId: "ruksdjhfjdksfgkdfg",
     };
 
-
     fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks`, {
-
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,13 +33,12 @@ export const ContextProvider = ({ children }) => {
         console.log(data);
         setattemptID(data.answersheet._id);
         setResponseReceived(true);
+        setButtonLoading(false);
       })
-      .catch((error) =>{ console.error("Attempt id Response not receive",error)});
+      .catch((error) => {
+        console.error("Attempt id Response not receive", error);
+      });
   };
-
-
- 
-
 
   return (
     <>
@@ -51,7 +47,7 @@ export const ContextProvider = ({ children }) => {
           createAttemptId,
           responseReceived,
           attemptID,
-              
+          buttonLoading,
         }}
       >
         {children}
