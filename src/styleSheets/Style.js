@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { createTheme } from "@mui/material/styles";
 import Paper from '@mui/material/Paper';
-
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export const theme = createTheme({
@@ -49,6 +49,9 @@ export const theme = createTheme({
       '&.Mui-focused fieldset': {
         borderColor: 'yellow',
       },
+      '&.MuiDialog-root': {
+        zIndex: 10000
+      }
     },
   },
 
@@ -116,7 +119,7 @@ export const MyButton = styled(Button)({
 });
 
 // Orange color Buttons
-export const BootstrapButton = styled(Button)({
+export const BootstrapButton = styled(LoadingButton)({
     boxShadow: "none",
     textTransform: "none",
     fontSize: "15px",

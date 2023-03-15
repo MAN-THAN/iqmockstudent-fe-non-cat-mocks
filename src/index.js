@@ -5,14 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ContextProvider } from "./services/Context";
 
-
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
   <ContextProvider>
-
     <App />
   </ContextProvider>
   </React.StrictMode>

@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import Modal from "@mui/material/Modal";
-
 import React, { Component } from "react";
 import { RxCross1 } from 'react-icons/rx';
 import Calculator from "awesome-react-calculator";
 import { SubHeading } from './../styleSheets/Style';
+
 
 const style = {
   position: "absolute",
@@ -18,8 +18,10 @@ const style = {
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
-  p: 2
-  ,
+   p: 2,
+  
+   zIndex:1000,
+
 };
 
 export default function Calc() {
@@ -36,15 +38,18 @@ export default function Calc() {
       <img
         src={require("../images/Icon.png")}
         width="70"
+        role="button"
         className="img-fluid p-2"
         alt="arrow-icon"
         onClick={handleOpen}
       />
       <Modal
         open={open}
-        onClose={handleClose}
+      onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{ zIndex: 10000,}}
+   
       >
         <Box sx={style}>
       
