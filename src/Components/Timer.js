@@ -29,17 +29,17 @@ const Timer = (props) => {
     console.log(response);
     const json = await response.json();
     console.log(json?.success);
-    // if (json?.success === true) {
-    //   if (subject === "varc") {
-    //     console.log("varc submitted");
-    //     navigate(`/main/${params.mockid}/lrdi`);
-    //   } else if (subject === "lrdi") {
-    //     console.log("lrdi submitted");
-    //     navigate(`/main/${params.mockid}/quants`);
-    //   } else if (subject === "quants") {
-    //     console.log("Your mock is submitted!!!");
-    //   }
-    // }
+    if (json?.success === true) {
+      if (subject === "varc") {
+        console.log("varc submitted");
+        navigate(`/main/${params.mockid}/lrdi`);
+      } else if (subject === "lrdi") {
+        console.log("lrdi submitted");
+        navigate(`/main/${params.mockid}/quants`);
+      } else if (subject === "quants") {
+        console.log("Your mock is submitted!!!");
+      }
+    }
   };
 
   useEffect(() => {

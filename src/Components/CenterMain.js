@@ -33,6 +33,7 @@ function CenterMain(props) {
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [studentAnswer, SetStudentAnswer] = useState();
+  console.log(selectedAnswer);
 
   // Function for getting a keyboard value from keyboard component
   console.log(inputVal);
@@ -56,7 +57,7 @@ function CenterMain(props) {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`https://us-central1-iqmock.cloudfunctions.net/app/api/admin/v1/mocks/${params.mockid}/${params.type}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`)
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -97,6 +98,11 @@ function CenterMain(props) {
       question_id: Data[selectedQuestionIndex]._id,
       studentAnswer: studentAnswer,
       duration: 30,
+      question: Data[selectedQuestionIndex].question,
+      topic: Data[selectedQuestionIndex].topic,
+      subtopic: Data[selectedQuestionIndex].subtopic,
+      difficulty: Data[selectedQuestionIndex].difficulty,
+      correctAnswer: Data[selectedQuestionIndex].correctAnswer,
     };
 
     const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
@@ -288,12 +294,13 @@ function CenterMain(props) {
                           label="Enter Answer"
                           variant="outlined"
                           value={
-                            "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer === null
+                            "studentAnswer" in AnswerStatus[selectedQuestionIndex]
+                              ? AnswerStatus[selectedQuestionIndex].studentAnswer === null
                                 ? ""
-                                : Data[selectedQuestionIndex].selectedAnswer
+                                : AnswerStatus[selectedQuestionIndex].studentAnswer
                               : inputVal
                           }
+                            onChange={ (e) => setInputVal("")}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -427,11 +434,23 @@ function CenterMain(props) {
                       <FormControl key={selectedQuestionIndex}>
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
-                          name={`answer_${selectedQuestionIndex}`}
-                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
+                              name={`answer_${selectedQuestionIndex}`}
+                              onLoad={"studentAnswer" in AnswerStatus[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].options.filter((option, index) => {
+                                if (option === AnswerStatus[selectedQuestionIndex].studentAnswer) {
+                                  console.log(index);
+                                  
+                                  // setSelectedAnswer(index)
+                                
+                                 }
+                              }) : null }
+                          value={
+                            selectedAnswer
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
+                            console.log(e.target.value);
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);

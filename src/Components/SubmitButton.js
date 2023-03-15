@@ -14,9 +14,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { useParams } from "react-router";
 import { SubmitButton } from "../styleSheets/Style";
-import { Puff , InfinitySpin} from "react-loader-spinner";
+import { Puff, InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -30,7 +30,7 @@ const style = {
   borderRadius: "10px ",
   boxShadow: 24,
   p: 0,
-  m:0
+  m: 0,
 };
 
 export default function ButtonSubmit() {
@@ -43,10 +43,34 @@ export default function ButtonSubmit() {
   const handleClose = () => setOpen(false);
   const params = useParams();
   const [Loader, setLoader] = useState(true);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+  const attemptID = localStorage.getItem("attemptID");
+
+  const submitSectionFunc = async (subject) => {
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
+    console.log(response);
+    const json = await response.json();
+    console.log(json?.success);
+    // if (json?.success === true) {
+    //   if (subject === "varc") {
+    //     console.log("varc submitted");
+    //     navigate(`/main/${params.mockid}/lrdi`);
+    //   } else if (subject === "lrdi") {
+    //     console.log("lrdi submitted");
+    //     navigate(`/main/${params.mockid}/quants`);
+    //   } else if (subject === "quants") {
+    //     console.log("Your mock is submitted!!!");
+    //   }
+    // }
+  };
   const FinalSubmitTest = () => {
     setState(1);
-    // final submit api call
+
     setTimeout(() => setState(2), 2000);
   };
   return (
@@ -127,9 +151,7 @@ export default function ButtonSubmit() {
                   onClick={() => {
                     handleConfirmClose();
                     setState(0);
-                    navigate("/analysis")
-
-                    
+                    navigate("/analysis");
                   }}
                 >
                   DONE
