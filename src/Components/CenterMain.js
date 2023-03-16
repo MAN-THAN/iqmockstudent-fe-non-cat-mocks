@@ -99,7 +99,7 @@ function CenterMain() {
       };
       const response = await fetch(url, options);
       const json = await response.json();
-      const arr = json.data;
+      const arr = json.finalData;
       console.log("data===>", arr, attemptID);
       setAnswerStatus(arr);
       setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
