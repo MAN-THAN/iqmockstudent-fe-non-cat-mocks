@@ -15,7 +15,7 @@ const Timer = (props) => {
   useEffect(() => {
     let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 0;
     setSeconds(countDownTime);
-    console.log("onload");
+
     
   }, []);
 
@@ -26,7 +26,7 @@ const Timer = (props) => {
       headers: { "Content-Type": "application/json" },
     };
     const response = await fetch(url, options);
-    console.log(response);
+   
     const json = await response.json();
     console.log(json?.success);
     if (json?.success === true) {

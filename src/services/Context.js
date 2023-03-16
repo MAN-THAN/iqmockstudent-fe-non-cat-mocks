@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import request from "./Request";
 
 export const Context = React.createContext();
-
 export function useAuth() {
   return useContext(Context);
 }
@@ -10,6 +10,8 @@ export const ContextProvider = ({ children }) => {
   const [attemptID, setattemptID] = useState("");
   const [responseReceived, setResponseReceived] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [analysisData, setAnalysisData] = useState({});
+  const [isLoading, setLoading] = useState(false);
 
   const createAttemptId = () => {
     console.log("create attempt call");
@@ -40,6 +42,21 @@ export const ContextProvider = ({ children }) => {
       });
   };
 
+  const analysisDataApi = async () => {
+    try {
+      const res = await request({
+        url: "api/student/v1/analyse/create/64115b5aa724e7f8bb7c0dbe",
+        type: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      setAnalysisData(res.data.data);
+    } catch (error) {
+      console.log("Analysis Data api error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Context.Provider
@@ -48,6 +65,8 @@ export const ContextProvider = ({ children }) => {
           responseReceived,
           attemptID,
           buttonLoading,
+          analysisData,
+          analysisDataApi,
         }}
       >
         {children}

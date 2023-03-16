@@ -26,7 +26,6 @@ import ButtonSubmit from "./SubmitButton";
 import { useAuth } from "../services/Context";
 
 function CenterMain() {
- 
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -36,22 +35,22 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
-  const[isFullScreen,setFullScreen]=useState(false)
+  const [isFullScreen, setFullScreen] = useState(false);
   //Function for full screen :
   const handleFullScreen = () => {
     const element = document.documentElement;
     if (document.fullscreenElement) {
       document.exitFullscreen();
-      setFullScreen(false)
+      setFullScreen(false);
     } else if (element.requestFullscreen) {
       element.requestFullscreen();
-      setFullScreen(true)
+      setFullScreen(true);
     } else if (element.webkitRequestFullscreen) {
       element.webkitRequestFullscreen();
-      setFullScreen(true)
+      setFullScreen(true);
     } else if (element.msRequestFullscreen) {
       element.msRequestFullscreen();
-      setFullScreen(true)
+      setFullScreen(true);
     }
   };
   // Function for getting a keyboard value from keyboard component
@@ -74,7 +73,9 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`)
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -177,7 +178,6 @@ function CenterMain() {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
-  console.log("selected===>", selectedAnswer);
 
   // clear Response api
   const clearResponse = async () => {
@@ -245,10 +245,16 @@ function CenterMain() {
                 </Stack>
 
                 <div>
-                  <Tooltip title={isFullScreen?"Exit full screen":"Full screen"}>
+                  <Tooltip
+                    title={isFullScreen ? "Exit full screen" : "Full screen"}
+                  >
                     <span>
                       <img
-                        src={isFullScreen?"/Group28.jpg":require("../images/Open vector.png")}
+                        src={
+                          isFullScreen
+                            ? "/Group28.jpg"
+                            : require("../images/Open vector.png")
+                        }
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -337,21 +343,17 @@ function CenterMain() {
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
                           value={
-                            "studentAnswer" in AnswerStatus[selectedQuestionIndex]
-                              ? AnswerStatus[selectedQuestionIndex].studentAnswer === null
-                                ? ""
-                                : AnswerStatus[selectedQuestionIndex].studentAnswer
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer
                               : inputVal
                           }
-                            onChange={ (e) => setInputVal("")}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -485,26 +487,13 @@ function CenterMain() {
                       <FormControl key={selectedQuestionIndex}>
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
-                              name={`answer_${selectedQuestionIndex}`}
-                              onLoad={"studentAnswer" in AnswerStatus[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].options.filter((option, index) => {
-                                if (option === AnswerStatus[selectedQuestionIndex].studentAnswer) {
-                                  console.log(index);
-                                  
-                                  // setSelectedAnswer(index)
-                                
-                                 }
-                              }) : null }
-                          value={
-                            selectedAnswer
-                          }
+                          name={`answer_${selectedQuestionIndex}`}
+                          value={Data[selectedQuestionIndex]?.selectedAnswer || ""}
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
-                            console.log(e.target.value);
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
+                            updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                         >
@@ -513,7 +502,7 @@ function CenterMain() {
                               (option, index) => (
                                 <FormControlLabel
                                   key={index}
-                                  value={index}
+                                  value={index }
                                   control={<Radio />}
                                   label={<small>{option}</small>}
                                 />
@@ -524,6 +513,7 @@ function CenterMain() {
                     )}
                   </div>
                 )}
+
               </div>
             </div>
 
