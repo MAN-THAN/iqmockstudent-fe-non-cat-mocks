@@ -70,7 +70,6 @@ const Timer = (props) => {
       } else {
         window.localStorage.removeItem(COUNTER_KEY);
         clearInterval(myInterval);
-        
       }
     }, 1000);
     return () => {

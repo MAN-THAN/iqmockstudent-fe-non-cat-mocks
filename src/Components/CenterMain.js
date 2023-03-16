@@ -120,11 +120,6 @@ function CenterMain() {
       question_id: Data[selectedQuestionIndex]._id,
       studentAnswer: studentAnswer,
       duration: 30,
-      question: Data[selectedQuestionIndex].question,
-      topic: Data[selectedQuestionIndex].topic,
-      subtopic: Data[selectedQuestionIndex].subtopic,
-      difficulty: Data[selectedQuestionIndex].difficulty,
-      correctAnswer: Data[selectedQuestionIndex].correctAnswer,
       studentAnswerIndex: selectedAnswer,
     };
 
