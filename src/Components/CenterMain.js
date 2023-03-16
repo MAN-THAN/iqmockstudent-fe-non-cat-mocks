@@ -35,6 +35,7 @@ function CenterMain() {
   console.log(AnswerStatus);
   console.log(Data)
   console.log(selectedAnswer);
+
   //Function for full screen :
   const handleFullScreen = () => {
     const element = document.documentElement;
@@ -72,7 +73,9 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`)
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.warn(data);
@@ -183,7 +186,6 @@ function CenterMain() {
     //   alert("You can not move to other sections, Please complete this first");
     // }
   };
-  console.log("selected===>", selectedAnswer);
 
   // clear Response api
   const clearResponse = async () => {
@@ -326,12 +328,11 @@ function CenterMain() {
                           label="Enter Answer"
                           variant="outlined"
                           value={
-                            "studentAnswer" in AnswerStatus[selectedQuestionIndex]
-                              ? AnswerStatus[selectedQuestionIndex].studentAnswer === null
-                                ? ""
-                                : AnswerStatus[selectedQuestionIndex].studentAnswer
+                            "selectedAnswer" in Data[selectedQuestionIndex]
+                              ? Data[selectedQuestionIndex].selectedAnswer
                               : inputVal
                           }
+
                           onChange={(e) => setInputVal("")}
                           inputRef={(input) => input && input.focus()}
                           sx={{
@@ -467,11 +468,12 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
+
                           value={selectedAnswer !== undefined ? selectedAnswer : ""}
+
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
-                            console.log(e.target.value);
                             const updatedData = [...Data];
                             updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
@@ -486,6 +488,7 @@ function CenterMain() {
                     )}
                   </div>
                 )}
+
               </div>
             </div>
 

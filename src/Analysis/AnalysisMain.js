@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Typography, InputAdornment } from "@mui/material";
 import { ModifyButton, SubHeading, } from "../styleSheets/Style";
 import { useNavigate, Outlet, Link } from "react-router-dom";
@@ -6,151 +6,162 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { RxDotsVertical } from 'react-icons/rx';
 import { useLocation } from 'react-router-dom';
-
+import { useAuth } from "../services/Context";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 function AnalysisMain() {
   const navigate = useNavigate();
- 
-  const location = useLocation();
-  console.log(location)
+  const { analysisDataApi, isLoading } = useAuth()
 
+  useEffect(() => {
+    analysisDataApi()
+  }, [])
+ 
 
   return (
     <>
-    <div
-      className="container-fluid p-0 "
-      style={{ background: "var(--background)" }}
+
+    {isLoading ?  <Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={isLoading}
+     
     >
-      {/* Header */}
-      <header className=" mx-4
+      <CircularProgress color="inherit" />
+    </Backdrop>:  <div
+        className="container-fluid p-0 "
+        style={{ background: "var(--background)" }}
+      >
+        {/* Header */}
+        <header className=" mx-4
      ">
-        <div className="container-fluid py-4 ">
-          <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
-            <div>
-              <Link to="/">
-                <img
-                  src="/iQuanta.png"
-                  alt="iquanta_logo"
-                  className="img-fluid iquanta_logo"
-                />
-              </Link>
-            </div>
-
-            <div className="d-flex gap-3 align-items-center ">
-              <div className="text-end">
-                <Button
-                  variant="contained"
-                  sx={{
-                    background: "#DFDDDE",
-                    textTransform: "none",
-                    height: "24px",
-                    width: "123px",
-                    color:"black",
-                    fontFamily: "var(--font-inter)",
-                    borderRadius: "20px",
-                    fontSize:"12px",
-                    "&:hover": {
-                     
-                      backgroundColor: "#DFDDDE",
-                    },
-                  }}
-                >
-                  Leader Board
-                </Button>
-              </div>
-
-
-              <div className="text-end">
-                <Button
-                  variant="contained"
-                  sx={{
-                    background: "black",
-                    textTransform: "none",
-                    height: "60px",
-                    width: "64px",
-                    fontFamily: "var(--font-inter)",
-                    borderRadius: "50%",
-                    "&:hover": {
-                      border: "1px solid #FFC717",
-                      backgroundColor: "black",
-                    },
-                  }}
-                >
-                  <img src="/LB.png" className="img-fluid" width={20} />
-                </Button>
-              </div>
-
-              <div className="text-end">
-                <Button
-                  startIcon={
-                    <img src="/Help.png" className="img-fluid" width={25} />
-                  }
-                  variant="contained"
-                  sx={{
-                    background: "black",
-                    color: "white",
-                    fontSize: "20px",
-                    textTransform: "none",
-                    fontFamily: "var(--font-inter)",
-                    width: "119px",
-                    height: "60px",
-                    borderRadius: "30px",
-                    "&:hover": {
-                      border: "1px solid #0058FF",
-                      backgroundColor: "black",
-                    },
-                  }}
-                >
-                  Help
-                </Button>
-              </div>
-
-              <div className="text-end">
-                <Typography
-                  sx={{
-                    fontFamily: "var(--font-inter)",
-                    fontSize: "19px",
-                    fontWeight: 600,
-                  }}
-                >
-                  Charlie Puth
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: "var(--font-inter)",
-                    fontSize: "13px",
-                    fontWeight: 400,
-                  }}
-                >
-                  User id :1222047
-                </Typography>
-
-               
-              </div>
-
-              <div className="d-flex">
-                <a
-                  href="#"
-                  className="d-block link-dark text-decoration-none "
-                  aria-expanded="false"
-                >
+          <div className="container-fluid py-4 ">
+            <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
+              <div>
+                <Link to="/">
                   <img
-                    src="https://github.com/mdo.png"
-                    alt="mdo"
-                    width="50"
-                    height="50"
-                    className="rounded"
+                    src="/iQuanta.png"
+                    alt="iquanta_logo"
+                    className="img-fluid iquanta_logo"
                   />
-                </a>
-                <h2 role="button"> <RxDotsVertical/></h2>
-               
+                </Link>
+              </div>
+
+              <div className="d-flex gap-3 align-items-center ">
+                <div className="text-end">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      background: "#DFDDDE",
+                      textTransform: "none",
+                      height: "24px",
+                      width: "123px",
+                      color: "black",
+                      fontFamily: "var(--font-inter)",
+                      borderRadius: "20px",
+                      fontSize: "12px",
+                      "&:hover": {
+
+                        backgroundColor: "#DFDDDE",
+                      },
+                    }}
+                  >
+                    Leader Board
+                  </Button>
+                </div>
+
+
+                <div className="text-end">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      background: "black",
+                      textTransform: "none",
+                      height: "60px",
+                      width: "64px",
+                      fontFamily: "var(--font-inter)",
+                      borderRadius: "50%",
+                      "&:hover": {
+                        border: "1px solid #FFC717",
+                        backgroundColor: "black",
+                      },
+                    }}
+                  >
+                    <img src="/LB.png" className="img-fluid" width={20} />
+                  </Button>
+                </div>
+
+                <div className="text-end">
+                  <Button
+                    startIcon={
+                      <img src="/Help.png" className="img-fluid" width={25} />
+                    }
+                    variant="contained"
+                    sx={{
+                      background: "black",
+                      color: "white",
+                      fontSize: "20px",
+                      textTransform: "none",
+                      fontFamily: "var(--font-inter)",
+                      width: "119px",
+                      height: "60px",
+                      borderRadius: "30px",
+                      "&:hover": {
+                        border: "1px solid #0058FF",
+                        backgroundColor: "black",
+                      },
+                    }}
+                  >
+                    Help
+                  </Button>
+                </div>
+
+                <div className="text-end">
+                  <Typography
+                    sx={{
+                      fontFamily: "var(--font-inter)",
+                      fontSize: "19px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Charlie Puth
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: "var(--font-inter)",
+                      fontSize: "13px",
+                      fontWeight: 400,
+                    }}
+                  >
+                    User id :1222047
+                  </Typography>
+
+
+                </div>
+
+                <div className="d-flex">
+                  <a
+                    href="#"
+                    className="d-block link-dark text-decoration-none "
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="https://github.com/mdo.png"
+                      alt="mdo"
+                      width="50"
+                      height="50"
+                      className="rounded"
+                    />
+                  </a>
+                  <h2 role="button"> <RxDotsVertical /></h2>
+
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
-      {/* Header end */}
+        </header>
+        {/* Header end */}
 
-      
+
         <div className=" d-flex justify-content-center align-items-center mx-4">
           <div className="flex-item p-3  flex-fill">
             <Typography
@@ -235,7 +246,7 @@ function AnalysisMain() {
                   <Card
                     sx={{
                       height: 70,
-                      width:"maxWidth",
+                      width: "maxWidth",
                       borderRadius: "13px",
                     }}
                   >
@@ -245,7 +256,7 @@ function AnalysisMain() {
                         flexDirection: "row",
                         justifyContent: "space-between",
                         px: 3,
-                        gap:{md:3,lg:5,xl:5,},
+                        gap: { md: 3, lg: 5, xl: 5, },
                         alignContent: "center",
                       }}
                     >
@@ -288,7 +299,7 @@ function AnalysisMain() {
               <div
                 className="card shadow-sm  flex-item  flex-fill "
                 style={{
-                 width:"40%",
+                  width: "40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
@@ -313,7 +324,7 @@ function AnalysisMain() {
               <div
                 className="card shadow-sm  flex-item flex-fill "
                 style={{
-                  width:"40%",
+                  width: "40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
@@ -337,7 +348,7 @@ function AnalysisMain() {
               <div
                 className="card shadow-sm  flex-item flex-fill"
                 style={{
-                  width:"40%",
+                  width: "40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
@@ -361,7 +372,7 @@ function AnalysisMain() {
               <div
                 className="card shadow-sm  flex-item  flex-fill"
                 style={{
-                  width:"40%",
+                  width: "40%",
                   height: "7em",
                   border: "1px solid white",
                 }}
@@ -385,28 +396,31 @@ function AnalysisMain() {
             </div>
           </div>
         </div>
- 
 
-      {/* Buttons for changing sections */}
-      <div className=" d-flex gap-3 m-5">
-        <ModifyButton variant="filled" onClick={() => navigate("overall")}>
-          Overall Analysis{" "}
-        </ModifyButton>
-        <ModifyButton variant="filled" onClick={() => navigate("sectionwise")}>
-          Section wise analysis{" "}
-        </ModifyButton>
-        <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
-          Topic wise Analysis
-        </ModifyButton>
-        <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
-          Difficulty wise analysis
-        </ModifyButton>
-        <ModifyButton variant="filled" onClick={() => navigate("leaderboard")}>
-          Leader board
-        </ModifyButton>
-      </div>
-    </div>
-      <Outlet />
+
+        {/* Buttons for changing sections */}
+        <div className=" d-flex gap-3 m-5">
+          <ModifyButton variant="filled" onClick={() => navigate("overall")}>
+            Overall Analysis{" "}
+          </ModifyButton>
+          <ModifyButton variant="filled" onClick={() => navigate("sectionwise")}>
+            Section wise analysis{" "}
+          </ModifyButton>
+          <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
+            Topic wise Analysis
+          </ModifyButton>
+          <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
+            Difficulty wise analysis
+          </ModifyButton>
+          <ModifyButton variant="filled" onClick={() => navigate("leaderboard")}>
+            Leader board
+          </ModifyButton>
+        </div>
+        <Outlet />
+      </div>}
+    
+     
+    
     </>
   );
 }
