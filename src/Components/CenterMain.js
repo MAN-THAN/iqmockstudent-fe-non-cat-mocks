@@ -33,7 +33,7 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
 
   console.log(AnswerStatus);
-  console.log(Data)
+  console.log(Data);
   console.log(selectedAnswer);
   //Function for full screen :
   const handleFullScreen = () => {
@@ -99,8 +99,7 @@ function CenterMain() {
       const arr = json.data;
       console.log("data===>", arr, attemptID);
       setAnswerStatus(arr);
-      setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex  : "");
-
+      setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
     } catch (err) {
       console.log(err);
     } finally {
@@ -195,7 +194,7 @@ function CenterMain() {
       if (json?.success === true) {
         console.log(json.data);
         fetchAnswersStatus();
-        setSelectedAnswer("")
+        setSelectedAnswer("");
       }
     } catch (err) {
       console.log(err);
@@ -248,9 +247,9 @@ function CenterMain() {
                   </BootstrapButton>
                 </Stack>
 
-                <div>
-                  <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
-                    <span>
+                  <div style={{display : "flex", flexDirection : "row"}}>
+                  <span>
+                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
                       <img
                         src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
                         width="70"
@@ -259,18 +258,22 @@ function CenterMain() {
                         alt="arrow-icon"
                         role="button"
                       />
-                    </span>
-                  </Tooltip>
-
-                  <Tooltip title="Calculator">
-                    <span role="button">
-                      <Calc />
-                    </span>
-                  </Tooltip>
-
-                  <span className="timer fs-6 p-3 ms-2   fw-bold" style={{ color: "#FF0103", borderRadius: "30px" }}>
-                    {<Timer initMinute={40} initSeconds={0} />}
+                    </Tooltip>
                   </span>
+                  <span role="button">
+                    <Tooltip title="Calculator">
+                      <Calc />
+                    </Tooltip>
+                  </span>
+
+                  <div className="timer fw-bold" style={{ color: "#FF0103", borderRadius: "18px", height : "50px", width : "100px",textAlign : "center",paddingTop : "3px", marginTop : "6px", marginLeft : "8px"}}>
+                    {
+                        <>
+                          <div style={{color : "black", fontSize : "14px"}}>Time Left</div>
+                        <Timer initMinute={40} initSeconds={0} />
+                      </>
+                    }
+                  </div>
                 </div>
               </div>
             </div>
