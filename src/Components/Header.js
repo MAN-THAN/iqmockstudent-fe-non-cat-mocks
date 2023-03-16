@@ -3,8 +3,13 @@ import { Typography } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import "../styleSheets/header.css"
+import { useAuth } from '../services/Context'
 
 function Header() {
+    const userName = localStorage.getItem("userName");
+    const userID = localStorage.getItem("userID");
+    const img_url = localStorage.getItem("img_url");
+   
     return (
         <header className="p-0 text-bg-dark">
             <div className="container-fluid px-5 py-2 ">
@@ -18,8 +23,8 @@ function Header() {
 
                     <div className="d-flex gap-3 ">
                         <div className='text-end'>
-                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >Charlie Puth</Typography>
-                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id :1222047</Typography>
+                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >{"Man " +  userName}</Typography>
+                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id : { userID}</Typography>
                         </div>
                         <div className=''>
                             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

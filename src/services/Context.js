@@ -12,6 +12,8 @@ export const ContextProvider = ({ children }) => {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [analysisData, setAnalysisData] = useState({});
   const [isLoading, setLoading] = useState(true);
+  
+ 
 
   const createAttemptId = () => {
     console.log("create attempt call");
@@ -35,6 +37,9 @@ export const ContextProvider = ({ children }) => {
         console.log(data);
         setattemptID(data.attemptId);
         setButtonLoading(false);
+        localStorage.setItem("userName", data.name);
+        localStorage.setItem("userID", data.uid);
+        localStorage.setItem("img_url", data.email);
         return setResponseReceived(true);
       })
       .catch((error) => {
@@ -67,7 +72,7 @@ export const ContextProvider = ({ children }) => {
           buttonLoading,
           analysisData,
           analysisDataApi,
-          isLoading,
+          isLoading
         }}
       >
         {children}
