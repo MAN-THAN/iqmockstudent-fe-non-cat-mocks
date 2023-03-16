@@ -1,8 +1,10 @@
 import React from 'react'
+import Table from '../Components/Table'
 
 function SectionAnalysis() {
   return (
-    <div>SectionAnalysis</div>
+  <Table/> 
+ 
   )
 }
 

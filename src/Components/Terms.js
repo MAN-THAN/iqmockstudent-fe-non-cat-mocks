@@ -11,28 +11,36 @@ function Terms() {
   const [handleAgree, setHandleAgree] = useState(false);
   const [handleStartText, setHandleStartText] = useState(true);
   const navigate = useNavigate();
-  const { createAttemptId, responseReceived, attemptID,buttonLoading } = useAuth();
+  const { createAttemptId, responseReceived, attemptID, buttonLoading } = useAuth();
   const [loader, setLoader] = useState();
 
+
+  const attempt = localStorage.getItem("attemptID")
   useEffect(() => {
-    if (responseReceived) {
+    if (responseReceived || attempt) {
       setHandleAgree(true);
       setHandleStartText(false);
-    } else {
+    }
+
+    else {
       setHandleStartText(true);
       setHandleAgree(false);
     }
-  }, [responseReceived]);
-  // console.log("mock Id", mockId)
+  }, [responseReceived, attempt]);
+
 
   const handleClick = () => {
     console.log(attemptID);
     localStorage.setItem("attemptID", attemptID);
-    // localStorage.setItem("timerValue", timerValue.toString());
-    const ID = "63fef68b7de67d353b631f7a";
-    navigate(`/main/${ID}/varc`);
-   
+    navigate(`/main/${process.env.REACT_APP_MOCK_ID}/varc`);
+
   };
+
+  const agreeAccept = async () => {
+    setHandleAgree(true);
+    setHandleStartText(false)
+    await createAttemptId()
+  }
 
   return (
     <div className="container d-flex-col justify-content-center align-content-center" style={{ marginTop: "5%", height: "100vh" }}>
@@ -101,23 +109,24 @@ function Terms() {
               p: 2.5,
               backgroundColor: handleAgree ? "#d2d4d6" : "",
             }}
-            onClick={() => createAttemptId()}
+            onClick={agreeAccept}
           >
             Agree
           </BootstrapButton>
 
-          
-        
+
+
           <BootstrapButton
             variant="contained mx-auto"
             disabled={handleStartText}
+            loading={buttonLoading}
             sx={{
               color: "white",
               p: 2.5,
               background: handleStartText ? "#d2d4d6" : "",
             }}
             onClick={handleClick}
-            loading={buttonLoading}
+
           >
             Start Test
           </BootstrapButton>

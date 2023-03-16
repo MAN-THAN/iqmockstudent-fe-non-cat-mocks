@@ -1,7 +1,7 @@
 import CenterMain from "./CenterMain";
 import Header from "./Header";
 import React from "react";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
