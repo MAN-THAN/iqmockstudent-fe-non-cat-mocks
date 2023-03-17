@@ -29,10 +29,10 @@ function Terms() {
   }, [responseReceived, attempt]);
 
 
-  const handleClick = () => {
+  const handleClick = async () => {
     console.log(attemptID);
     localStorage.setItem("attemptID", attemptID);
-    navigate(`/main/${process.env.REACT_APP_MOCK_ID}/varc`);
+     navigate(`/main/${process.env.REACT_APP_MOCK_ID}/varc`);
 
   };
 

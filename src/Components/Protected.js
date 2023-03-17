@@ -11,7 +11,7 @@ function Protected(props) {
   useEffect(() => {
     const attemptID = localStorage.getItem("attemptID");
 
-    if (!attemptID) {
+    if (!attemptID  || attemptID === null) {
       navigate("/");
     }
   }, []);

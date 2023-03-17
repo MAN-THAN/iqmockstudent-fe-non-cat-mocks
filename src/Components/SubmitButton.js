@@ -9,7 +9,6 @@ import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import Keyboard from "./Keypad";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { useParams } from "react-router";
@@ -33,7 +32,11 @@ const style = {
   m: 0,
 };
 
+
+
 export default function ButtonSubmit() {
+
+
   const [open, setOpen] = React.useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [state, setState] = useState(0);
@@ -70,9 +73,16 @@ export default function ButtonSubmit() {
   };
   const FinalSubmitTest = () => {
     setState(1);
-
     setTimeout(() => setState(2), 2000);
   };
+
+  const goToAnalyse = async () => {
+    handleConfirmClose();
+    setState(0);
+    navigate(`/analysis/${attemptID}/overall`);
+  
+  }
+  
   return (
     <span>
       <SubmitButton
@@ -95,7 +105,6 @@ export default function ButtonSubmit() {
           {state === 0 ? (
             <>
               <div className="d-flex justify-content-center">
-                
                 <Box
                   component="img"
                   sx={{
@@ -204,11 +213,7 @@ export default function ButtonSubmit() {
                 <MyButton
                   variant="contained"
                   sx={{ bgcolor: "#2400FF" }}
-                  onClick={() => {
-                    handleConfirmClose();
-                    setState(0);
-                    navigate("/analysis");
-                  }}
+                  onClick={ goToAnalyse}
                 >
                   DONE
                 </MyButton>

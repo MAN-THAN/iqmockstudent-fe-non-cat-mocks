@@ -1,8 +1,9 @@
 import React from 'react'
+import Table from '../Components/Table'
 
 function TopicAnalysis() {
   return (
-    <div>TopicAnalysis</div>
+<Table display="none"/> 
   )
 }
 

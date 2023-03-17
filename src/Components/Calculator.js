@@ -29,9 +29,6 @@ export default function Calc() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  function onResultChange(result) {
-    console.log(result);
-  }
 
   return (
     <span>
@@ -60,7 +57,7 @@ export default function Calc() {
          
           <div className="container calcContainer" >
 
-          <Calculator  onResultChange={onResultChange} />
+          <Calculator />
           </div>
         </Box>
       </Modal>

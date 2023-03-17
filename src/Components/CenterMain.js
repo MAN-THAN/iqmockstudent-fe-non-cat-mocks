@@ -18,7 +18,7 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-import { useAuth } from "../services/Context";
+
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -32,9 +32,7 @@ function CenterMain() {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
 
-  console.log(AnswerStatus);
-  console.log(Data);
-  console.log(selectedAnswer);
+
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -534,7 +532,7 @@ function CenterMain() {
         {/* Right main */}
         <div className="col-3 justify-content-center align-content-center mx-auto">
           <div className="container rightMain  p-3 ">
-            <div className="row ">
+            <div className="row  ">
               <Typography
                 sx={{
                   fontFamily: "var(--font-inter)",
@@ -601,16 +599,16 @@ function CenterMain() {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row justify-content-center my-2   ">
-              <div className="d-flex justify-content-between ">
+            <div className="row   my-2   ">
+              <div className="d-flex gap-2 justify-content-center flex-wrap ">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
               </div>
               <ButtonSubmit />
             </div>
-
-            <div className="row gap-3 my-2 flex-wrap  text-start align-content-center  align-self-bottom  markingNotation">
-              <div className="d-flex flex-wrap  justify-content-center gap-4 ">
+          
+            <div className="row gap-3 my-3  flex-wrap text-start align-content-center  align-self-bottom  markingNotation">
+              <div className="d-flex flex-wrap justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
                   <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
