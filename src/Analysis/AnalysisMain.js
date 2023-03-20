@@ -200,7 +200,7 @@ function AnalysisMain() {
             className={
               pdfStyle
                 ? " d-flex  flex-wrap  justify-content-center align-items-center mx-4"
-                : " d-flex  flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center mx-4"
+                : " d-flex  flex-wrap flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center mx-4"
             }
           >
             <div className="flex-item p-3 flex-fill">

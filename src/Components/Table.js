@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
+    
     backgroundColor: theme.palette.common.gray,
 
     color: theme.palette.common.black,
@@ -58,11 +59,11 @@ function myTable(props) {
         }}
       >
         <StyledTable sx={{ maxWidth:{xs:"100%",sm:"100%",md:"100%",lg:"70%",xl:"70%"},  mx:"auto"}} aria-label="customized table">
-          <TableHead>
+          <TableHead >
             <TableRow sx={{ background: "white" ,width:"10%" }}>
             {headings.map((heading,ind)=>{
             return (
-              <StyledTableCell align="left" key={ind} className="fw-bold">
+              <StyledTableCell align="left" key={ind} className="fw-bold py-4">
                 {heading}
               </StyledTableCell>
             )
@@ -124,9 +125,9 @@ function myTable(props) {
         >
           <TableHead >
             <TableRow sx={{ background: "white", borderBottom: "none" ,}}>
-              <StyledTableCell className="fw-bold" align="left">Correct</StyledTableCell>
-              <StyledTableCell className="fw-bold" align="left">Incorrect</StyledTableCell>
-              <StyledTableCell className="fw-bold" align="left">Skipped</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left ">Correct</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left">Incorrect</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left">Skipped</StyledTableCell>
             </TableRow>
           </TableHead>
 
