@@ -9,6 +9,9 @@ import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import html2pdf from 'html2pdf.js';
+
+
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -28,6 +31,11 @@ function AnalysisMain() {
   }, [basicAnalysis]);
   const{uid,name,negativeMarks,overallPercentage,overallScore,potentialScore,accuracy,percentile}=basicData;
 
+  const handleDownloadPDF = () => {
+    prompt("Download pdf ")
+  const element = document.getElementById('my-component');
+  html2pdf().from(element).save();
+}
 
 
   return (
@@ -41,7 +49,8 @@ function AnalysisMain() {
         </Backdrop>
       ) : (
         <div
-          className="container-fluid p-0 "
+        id="my-component"
+          className=" p-0 "
           style={{ background: "var(--background)" }}
         >
           {/* Header */}
@@ -208,6 +217,7 @@ function AnalysisMain() {
                 </ModifyButton>
                 <ModifyButton
                   variant="outlined"
+                  onClick={handleDownloadPDF}
                   sx={{
                     p: 2,
                     height: "50px",

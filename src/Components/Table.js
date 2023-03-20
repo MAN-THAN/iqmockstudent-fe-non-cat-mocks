@@ -6,7 +6,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,37 +38,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name,
-  Questions,
-  FAttempted,
-  Correct,
-  Incorrect,
-  Score,
-  P_Accuracy,
-  P_Score,
-  Percentile
-) {
-  return {
-    name,
-    Questions,
-    FAttempted,
-    Correct,
-    Incorrect,
-    Score,
-    P_Accuracy,
-    P_Score,
-    Percentile,
-  };
-}
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+
+
 
 function myTable(props) {
   const { display, data,headings } = props;
@@ -90,7 +62,7 @@ function myTable(props) {
             <TableRow sx={{ background: "white" }}>
             {headings.map((heading,ind)=>{
             return (
-              <StyledTableCell key={ind} className="fw-bold">
+              <StyledTableCell align="left" key={ind} className="fw-bold">
                 {heading}
               </StyledTableCell>
             )
@@ -112,29 +84,29 @@ function myTable(props) {
                       color: "black",
                     }}
                   >
-                    <StyledTableCell>{item.name}</StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">{item.name}</StyledTableCell>
+                    <StyledTableCell align="left">
                       {item.question}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">
                       {item.attempted}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">
                       {item.correct}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">
                       {item.incorrect}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">
                       {item.score}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left"  sx={{color:"#0C58B6"}} >
                       {item.accuracy}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align="left">
                       {Math.round(item.perScore)}
                     </StyledTableCell>
-                      <StyledTableCell align="right">
+                      <StyledTableCell align="left" sx={{color:"#0C58B6"}} >
                         {item.percentile}
 
                       </StyledTableCell>
@@ -150,28 +122,32 @@ function myTable(props) {
           sx={{ maxWidth: "30%", ml: 5, display: display }}
           aria-label="customized table"
         >
-          <TableHead>
-            <TableRow sx={{ background: "white", borderBottom: "none" }}>
-              <StyledTableCell align="center">Correct</StyledTableCell>
-              <StyledTableCell align="center">Incorrect</StyledTableCell>
-              <StyledTableCell align="center">Skipped</StyledTableCell>
+          <TableHead >
+            <TableRow sx={{ background: "white", borderBottom: "none" ,}}>
+              <StyledTableCell className="fw-bold" align="left">Correct</StyledTableCell>
+              <StyledTableCell className="fw-bold" align="left">Incorrect</StyledTableCell>
+              <StyledTableCell className="fw-bold" align="left">Skipped</StyledTableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {rows.map((row) => (
+            {data.length >0 && data.slice(1).map((item,index)=>{
+             return (
               <StyledTableRow
-                key={row.name}
+                key={index}
                 sx={{
                   background: "white",
                   border: "none",
                 }}
               >
-                <StyledTableCell align="center">"hjhk"</StyledTableCell>
-                <StyledTableCell align="center">"6tyui"</StyledTableCell>
-                <StyledTableCell align="center">"6tyui"</StyledTableCell>
+                <StyledTableCell align="left">{item.correct}</StyledTableCell>
+                <StyledTableCell align="left">{item.incorrect}</StyledTableCell>
+                <StyledTableCell align="left">{item.skipped}</StyledTableCell>
               </StyledTableRow>
-            ))}
+             )
+         
+            })}
+           
           </TableBody>
         </StyledTable>
       </TableContainer>
