@@ -217,7 +217,7 @@ function AnalysisMain() {
                           {Boolean(e.question) === true && <Latex>{e.question}</Latex>}{" "}
                         </Typography>
                         <br />
-                        <Typography mt='10px'> {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}</Typography>
+                        <Typography mt="10px"> {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}</Typography>
                       </div>
                     );
                   })}
@@ -459,16 +459,16 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex gap-3 m-5">
-            <ModifyButton variant="filled" onClick={() => navigate("overall")}>
+            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("overall")}>
               Overall Analysis{" "}
             </ModifyButton>
-            <ModifyButton variant="filled" onClick={() => navigate("sectionwise")}>
+            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("sectionwise")}>
               Section wise analysis{" "}
             </ModifyButton>
-            <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
+            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("topicwise")}>
               Topic wise Analysis
             </ModifyButton>
-            <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
+            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("difficulty")}>
               Difficulty wise analysis
             </ModifyButton>
           </div>
