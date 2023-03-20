@@ -44,22 +44,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function myTable(props) {
   const { display, data,headings } = props;
-  console.log("Data", data);
-
-  const tableHeadings = data[0];
-
-  return (
-    <div className="container-fluid p-4 pt-0">
+    return (
+  
       <TableContainer
         sx={{
           display: "flex",
           justifyContent: "center",
           alignContent: "center",
+          p:3,
+       pt:0,
+          flexWrap:{sm:"wrap",md:"wrap",lg:"nowrap",xl:"nowrap"}
+          
         }}
       >
-        <StyledTable sx={{ maxWidth: "auto" }} aria-label="customized table">
+        <StyledTable sx={{ maxWidth:{xs:"100%",sm:"100%",md:"100%",lg:"70%",xl:"70%"},  mx:"auto"}} aria-label="customized table">
           <TableHead>
-            <TableRow sx={{ background: "white" }}>
+            <TableRow sx={{ background: "white" ,width:"10%" }}>
             {headings.map((heading,ind)=>{
             return (
               <StyledTableCell align="left" key={ind} className="fw-bold">
@@ -151,7 +151,7 @@ function myTable(props) {
           </TableBody>
         </StyledTable>
       </TableContainer>
-    </div>
+   
   );
 }
 

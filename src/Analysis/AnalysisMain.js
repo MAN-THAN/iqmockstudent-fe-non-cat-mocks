@@ -43,8 +43,11 @@ function AnalysisMain() {
   const [basicData, setBasicData] = useState({});
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false);
+  const [pdfStyle, setPDfStyle] = useState(false);
   console.log(sectionWiseAnalysis?.sectionWiseAnalysis);
+
+  useEffect(() => {setPDfStyle(false)})
 
   useEffect(() => {
     localStorage.clear();
@@ -56,14 +59,23 @@ function AnalysisMain() {
       setBasicData(basicAnalysis.basicAnalysis);
     }
   }, [basicAnalysis]);
-  const{uid,name,negativeMarks,overallPercentage,overallScore,potentialScore,accuracy,percentile}=basicData;
+  const {
+    uid,
+    name,
+    negativeMarks,
+    overallPercentage,
+    overallScore,
+    potentialScore,
+    accuracy,
+    percentile,
+  } = basicData;
 
   const handleDownloadPDF = () => {
-    prompt("Download pdf ")
-  const element = document.getElementById('my-component');
-  html2pdf().from(element).save();
-}
-
+    setPDfStyle(true);
+    const element = document.getElementById("my-component");
+    html2pdf().from(element).save();
+    
+  };
 
   return (
     <>
@@ -79,15 +91,15 @@ function AnalysisMain() {
      "
           >
             <div className="container-fluid py-4 ">
-              <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
+              <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <Link to="/">
                     <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
                   </Link>
                 </div>
 
-                <div className="d-flex gap-3 align-items-center ">
-                  <div className="text-end">
+                <div className="d-flex gap-3  align-items-center ">
+                  <div className="text-end ps-5">
                     <Button
                       variant="contained"
                       sx={{
@@ -189,8 +201,14 @@ function AnalysisMain() {
           </header>
           {/* Header end */}
 
-          <div className=" d-flex justify-content-center align-items-center mx-4">
-            <div className="flex-item p-3  flex-fill">
+          <div
+            className={
+              pdfStyle
+                ? " d-flex  flex-wrap  justify-content-center align-items-center mx-4"
+                : " d-flex  flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center mx-4"
+            }
+          >
+            <div className="flex-item p-3 flex-fill">
               <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
@@ -459,16 +477,16 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex gap-3 m-5">
-            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("overall")}>
+            <ModifyButton variant="filled" style={{ fontSize: "1em", height: "2.5em", padding: "1em" }} onClick={() => navigate("overall")}>
               Overall Analysis{" "}
             </ModifyButton>
-            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("sectionwise")}>
+            <ModifyButton variant="filled" style={{ fontSize: "1em", height: "2.5em", padding: "1em" }} onClick={() => navigate("sectionwise")}>
               Section wise analysis{" "}
             </ModifyButton>
-            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("topicwise")}>
+            <ModifyButton variant="filled" style={{ fontSize: "1em", height: "2.5em", padding: "1em" }} onClick={() => navigate("topicwise")}>
               Topic wise Analysis
             </ModifyButton>
-            <ModifyButton variant="filled" style={{ fontSize: "16px", padding: "1.3em" }} onClick={() => navigate("difficulty")}>
+            <ModifyButton variant="filled" style={{ fontSize: "1em", height: "2.5em", padding: "1em" }} onClick={() => navigate("difficulty")}>
               Difficulty wise analysis
             </ModifyButton>
           </div>
