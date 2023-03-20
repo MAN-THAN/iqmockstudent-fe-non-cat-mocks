@@ -214,10 +214,10 @@ function AnalysisMain() {
                         <Typography variant="paragraph fw-bold" mt="10px">
                           Question : {index + 1}
                           <br />
-                          {Boolean(e.question) === true && <Latex>{e.question}</Latex>}
-                          <br />
-                          {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}
+                          {Boolean(e.question) === true && <Latex>{e.question}</Latex>}{" "}
                         </Typography>
+                        <br />
+                        <Typography mt='10px'> {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}</Typography>
                       </div>
                     );
                   })}
