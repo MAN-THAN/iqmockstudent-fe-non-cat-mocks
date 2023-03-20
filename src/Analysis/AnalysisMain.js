@@ -9,8 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import html2pdf from 'html2pdf.js';
-
+import html2pdf from "html2pdf.js";
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -18,6 +17,9 @@ function AnalysisMain() {
   const { attemptId } = params;
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
+  const [pdfStyle, setPDfStyle] = useState(false);
+  
+  useEffect(() =>{setPDfStyle(false)})
 
   useEffect(() => {
     localStorage.clear();
@@ -29,14 +31,23 @@ function AnalysisMain() {
       setBasicData(basicAnalysis.basicAnalysis);
     }
   }, [basicAnalysis]);
-  const{uid,name,negativeMarks,overallPercentage,overallScore,potentialScore,accuracy,percentile}=basicData;
+  const {
+    uid,
+    name,
+    negativeMarks,
+    overallPercentage,
+    overallScore,
+    potentialScore,
+    accuracy,
+    percentile,
+  } = basicData;
 
   const handleDownloadPDF = () => {
-    prompt("Download pdf ")
-  const element = document.getElementById('my-component');
-  html2pdf().from(element).save();
-}
-
+    setPDfStyle(true);
+    const element = document.getElementById("my-component");
+    html2pdf().from(element).save();
+    
+  };
 
   return (
     <>
@@ -49,7 +60,7 @@ function AnalysisMain() {
         </Backdrop>
       ) : (
         <div
-        id="my-component"
+          id="my-component"
           className=" p-0 "
           style={{ background: "var(--background)" }}
         >
@@ -59,7 +70,7 @@ function AnalysisMain() {
      "
           >
             <div className="container-fluid py-4 ">
-              <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
+              <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <Link to="/">
                     <img
@@ -70,8 +81,8 @@ function AnalysisMain() {
                   </Link>
                 </div>
 
-                <div className="d-flex gap-3 align-items-center ">
-                  <div className="text-end">
+                <div className="d-flex gap-3  align-items-center ">
+                  <div className="text-end ps-5">
                     <Button
                       variant="contained"
                       sx={{
@@ -185,8 +196,14 @@ function AnalysisMain() {
           </header>
           {/* Header end */}
 
-          <div className=" d-flex justify-content-center align-items-center mx-4">
-            <div className="flex-item p-3  flex-fill">
+          <div
+            className={
+              pdfStyle
+                ? " d-flex  flex-wrap  justify-content-center align-items-center mx-4"
+                : " d-flex  flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center mx-4"
+            }
+          >
+            <div className="flex-item p-3 flex-fill">
               <Typography
                 variant="h4"
                 sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
@@ -333,7 +350,9 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">{potentialScore}</SubHeading>
+                      <SubHeading className="card-title">
+                        {potentialScore}
+                      </SubHeading>
 
                       <Typography variant="paragraph">
                         Potential Mark
@@ -360,7 +379,9 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item">
-                      <SubHeading className="card-title">{negativeMarks}</SubHeading>
+                      <SubHeading className="card-title">
+                        {negativeMarks}
+                      </SubHeading>
                       <Typography variant="paragraph">Negative Mark</Typography>
                     </div>
 
@@ -408,7 +429,9 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">{Math.round(overallPercentage)}</SubHeading>
+                      <SubHeading className="card-title">
+                        {Math.round(overallPercentage)}
+                      </SubHeading>
                       <Typography variant="paragraph">% Score</Typography>
                     </div>
 
@@ -427,7 +450,7 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
-          <div className=" d-flex gap-3 m-5">
+          <div className=" d-flex gap-3 m-5 ms-4">
             <ModifyButton variant="filled" onClick={() => navigate("overall")}>
               Overall Analysis{" "}
             </ModifyButton>
@@ -450,9 +473,11 @@ function AnalysisMain() {
               Difficulty wise analysis
             </ModifyButton>
           </div>
-          <Outlet />
+          <Outlet/>
         </div>
       )}
+
+
     </>
   );
 }
