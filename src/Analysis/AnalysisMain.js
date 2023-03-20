@@ -10,14 +10,41 @@ import { useAuth } from "../services/Context";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import html2pdf from 'html2pdf.js';
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { RxCross1 } from "react-icons/rx";
+import Latex from "react-latex-next";
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+
+  width: 750,
+  textAlign: "",
+  height: 650,
+
+  bgcolor: "white",
+  borderRadius: "10px ",
+  boxShadow: 24,
+  p: 2,
+  overflowY: "scroll",
+};
+
 
 
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
   const { attemptId } = params;
-  const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
+  const { analysisDataApi, isLoading, basicAnalysis, sectionWiseAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
+   const [open, setOpen] = React.useState(false);
+   const handleOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
+  console.log(sectionWiseAnalysis?.sectionWiseAnalysis);
 
   useEffect(() => {
     localStorage.clear();
@@ -41,18 +68,11 @@ function AnalysisMain() {
   return (
     <>
       {isLoading ? (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
+        <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-        <div
-        id="my-component"
-          className=" p-0 "
-          style={{ background: "var(--background)" }}
-        >
+        <div id="my-component" className=" p-0 " style={{ background: "var(--background)" }}>
           {/* Header */}
           <header
             className=" mx-4
@@ -62,11 +82,7 @@ function AnalysisMain() {
               <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <Link to="/">
-                    <img
-                      src="/iQuanta.png"
-                      alt="iquanta_logo"
-                      className="img-fluid iquanta_logo"
-                    />
+                    <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
                   </Link>
                 </div>
 
@@ -116,9 +132,7 @@ function AnalysisMain() {
 
                   <div className="text-end">
                     <Button
-                      startIcon={
-                        <img src="/Help.png" className="img-fluid" width={25} />
-                      }
+                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
                       variant="contained"
                       sx={{
                         background: "black",
@@ -161,18 +175,8 @@ function AnalysisMain() {
                   </div>
 
                   <div className="d-flex">
-                    <a
-                      href="#"
-                      className="d-block link-dark text-decoration-none "
-                      aria-expanded="false"
-                    >
-                      <img
-                        src="https://github.com/mdo.png"
-                        alt="mdo"
-                        width="50"
-                        height="50"
-                        className="rounded"
-                      />
+                    <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                      <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                     </a>
                     <h2 role="button">
                       {" "}
@@ -187,19 +191,70 @@ function AnalysisMain() {
 
           <div className=" d-flex justify-content-center align-items-center mx-4">
             <div className="flex-item p-3  flex-fill">
-              <Typography
-                variant="h4"
-                sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
-              >
+              <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography
-                variant="h4"
-                sx={{ fontSize: "35px", color: "black" }}
-              >
+              <Typography variant="h4" sx={{ fontSize: "35px", color: "black" }}>
                 This is your mock analysis for iCAT 1.0.
               </Typography>
               <br />
+              {/* Modal for viewing solutions */}
+              <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Box sx={style}>
+                  <div className="d-flex justify-content-between">
+                    <SubHeading className="m-0 ps-1">Solutions</SubHeading>
+                    <RxCross1 role="button" onClick={handleClose} />
+                  </div>
+                  <SubHeading style={{ fontSize: "16px", textAlign: "center" }} className="m-2 ps-1">
+                    VARC
+                  </SubHeading>
+                  {sectionWiseAnalysis?.sectionWiseAnalysis?.varc.map((e, index) => {
+                    return (
+                      <div className="container p-2">
+                        <Typography variant="paragraph fw-bold" mt="10px">
+                          Question : {index + 1}
+                          <br />
+                          {Boolean(e.question) === true && <Latex>{e.question}</Latex>}
+                          <br />
+                          {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}
+                        </Typography>
+                      </div>
+                    );
+                  })}
+                  <SubHeading style={{ fontSize: "16px", textAlign: "center" }} className="m-2 ps-1">
+                    LRDI
+                  </SubHeading>
+                  {sectionWiseAnalysis?.sectionWiseAnalysis?.lrdi.map((e, index) => {
+                    return (
+                      <div className="container p-2">
+                        <Typography variant="paragraph fw-bold" mt="10px">
+                          Question : {index + 1}
+                          <br />
+                          {Boolean(e.question) === true && <Latex>{e.question}</Latex>}
+                          <br />
+                          {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}
+                        </Typography>
+                      </div>
+                    );
+                  })}
+                  <SubHeading style={{ fontSize: "16px", textAlign: "center" }} className="m-2 ps-1">
+                    Quants
+                  </SubHeading>
+                  {sectionWiseAnalysis?.sectionWiseAnalysis?.quants.map((e, index) => {
+                    return (
+                      <div className="container p-2">
+                        <Typography variant="paragraph fw-bold" mt="10px">
+                          Question : {index + 1}
+                          <br />
+                          {Boolean(e.question) === true && <Latex>{e.question}</Latex>}
+                          <br />
+                          {Boolean(e.correctAnswer) === true && <Latex>{"Solution --> " + e.correctAnswer}</Latex>}
+                        </Typography>
+                      </div>
+                    );
+                  })}
+                </Box>
+              </Modal>
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
                   variant="filled"
@@ -212,6 +267,7 @@ function AnalysisMain() {
                     p: 2,
                     fontWeight: "bold",
                   }}
+                  onClick={handleOpen}
                 >
                   View solutions
                 </ModifyButton>
@@ -233,10 +289,7 @@ function AnalysisMain() {
             </div>
 
             <div className="flex-item p-3  flex-fill">
-              <div
-                className="container bg-warning   "
-                style={{ height: "auto", borderRadius: "15px", width: "auto" }}
-              >
+              <div className="container bg-warning   " style={{ height: "auto", borderRadius: "15px", width: "auto" }}>
                 <div className=" d-flex gap-4 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
@@ -335,18 +388,11 @@ function AnalysisMain() {
                     <div className="flex-item ">
                       <SubHeading className="card-title">{potentialScore}</SubHeading>
 
-                      <Typography variant="paragraph">
-                        Potential Mark
-                      </Typography>
+                      <Typography variant="paragraph">Potential Mark</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/PM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/PM.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -365,12 +411,7 @@ function AnalysisMain() {
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/NM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/NM.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -389,12 +430,7 @@ function AnalysisMain() {
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/Acc.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/Acc.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -413,12 +449,7 @@ function AnalysisMain() {
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/PS.png"
-                        alt="ps.png"
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/PS.png" alt="ps.png" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -431,22 +462,13 @@ function AnalysisMain() {
             <ModifyButton variant="filled" onClick={() => navigate("overall")}>
               Overall Analysis{" "}
             </ModifyButton>
-            <ModifyButton
-              variant="filled"
-              onClick={() => navigate("sectionwise")}
-            >
+            <ModifyButton variant="filled" onClick={() => navigate("sectionwise")}>
               Section wise analysis{" "}
             </ModifyButton>
-            <ModifyButton
-              variant="filled"
-              onClick={() => navigate("topicwise")}
-            >
+            <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
               Topic wise Analysis
             </ModifyButton>
-            <ModifyButton
-              variant="filled"
-              onClick={() => navigate("difficulty")}
-            >
+            <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
               Difficulty wise analysis
             </ModifyButton>
           </div>

@@ -14,7 +14,6 @@ import Keyboard from "./Keypad";
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -42,10 +41,9 @@ export default function QuestionPaper({ question_paper }) {
     console.log(result);
   }
 
-
   return (
     <span>
-      <MyButton variant="contained" sx={{ width: "150px", margin : 0, marginTop : '1em' }} onClick={handleOpen}>
+      <MyButton variant="contained" sx={{ width: "150px", margin: 0, marginTop: "1em" }} onClick={handleOpen}>
         Question Paper
       </MyButton>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -57,7 +55,6 @@ export default function QuestionPaper({ question_paper }) {
           {question_paper.map((e, index) => {
             return (
               <div className="container p-2">
-
                 <Typography variant="paragraph fw-bold" mt="10px">
                   Question : {index + 1}
                   <br />
@@ -68,7 +65,6 @@ export default function QuestionPaper({ question_paper }) {
                     e.options.map((option, ind) => (
                       <li key={ind}>
                         <Latex>{option}</Latex>
-
                       </li>
                     ))}
                 </ul>
