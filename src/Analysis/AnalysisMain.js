@@ -245,6 +245,7 @@ function AnalysisMain() {
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
                   variant="filled"
+                  onClick={ ()=> navigate(`/viewsolutions/${attemptId}/varc`)}
                   sx={{
                     border: "2px solid #00359A",
                     backgroundColor: "#00359A",

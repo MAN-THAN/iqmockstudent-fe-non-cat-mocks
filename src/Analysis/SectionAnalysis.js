@@ -57,7 +57,7 @@ function SectionAnalysis() {
                 <StyledTableCell
                   align="left"
                   key={ind}
-                  className="fw-bold py-4"
+                  className="fw-bold "
                 >
                   {heading}
                 </StyledTableCell>
