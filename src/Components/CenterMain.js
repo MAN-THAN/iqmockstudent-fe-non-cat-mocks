@@ -32,6 +32,8 @@ function CenterMain() {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
 
+  console.log("mock data",Data)
+
 
 
   //Function for full screen :
@@ -270,7 +272,7 @@ function CenterMain() {
                     {
                         <>
                           <div style={{color : "black", fontSize : "14px"}}>Time Left</div>
-                        <Timer initMinute={40} initSeconds={0} />
+                        <Timer initMinute={3} initSeconds={0} />
                       </>
                     }
                   </div>

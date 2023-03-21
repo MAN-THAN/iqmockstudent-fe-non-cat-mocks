@@ -7,11 +7,13 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 function DifficultyAnalysis() {
   const { difficulty } = useAuth();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   useEffect(() => {
-    setData(difficulty.difficulty);
+    setData(difficulty);
+    setShow(difficulty.varc)
   }, []);
   console.log(data);
+  const [show, setShow] = useState([]);
   const headings = [
     "Name",
     "Section",
@@ -55,7 +57,7 @@ function DifficultyAnalysis() {
       <div style={{ display: "flex", flexDirection: "row", gap: "3em", marginTop: "2em" }}>
         <ModifyButton
           variant="outlined"
-          // onClick={}
+          onClick={() => setShow(data.varc)}
           sx={{
             p: 2,
             height: "35px",
@@ -64,12 +66,13 @@ function DifficultyAnalysis() {
             color: "#00359A",
             fontWeight: "bold",
           }}
+          autoFocus={true}
         >
           VARC
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          // onClick={}
+          onClick={() => setShow(data.lrdi)}
           sx={{
             p: 2,
             height: "35px",
@@ -83,7 +86,7 @@ function DifficultyAnalysis() {
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          // onClick={}
+          onClick={() => setShow(data.quants)}
           sx={{
             p: 2,
             height: "35px",
@@ -101,7 +104,7 @@ function DifficultyAnalysis() {
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={show}
             margin={{
               top: 5,
               right: 30,

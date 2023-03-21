@@ -51,13 +51,13 @@ const Timer = (props) => {
         if (minutes === 0) {
           //   clearInterval(myInterval);
           if (params.type === "varc") {
-            // submitSectionFunc("varc");
+            submitSectionFunc("varc");
           }
           if (params.type === "lrdi") {
-            // submitSectionFunc("lrdi");
+            submitSectionFunc("lrdi");
           }
           if (params.type === "quants") {
-            // submitSectionFunc("quants");
+            submitSectionFunc("quants");
             //final submit api call
           }
         } else {
