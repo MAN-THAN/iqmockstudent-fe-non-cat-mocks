@@ -340,7 +340,7 @@ function AnalysisMain() {
                             variant="h4"
                             gutterBottom
                           >
-                            Precentile
+                            Percentile
                           </Typography>
                         </item>
                         <item>
