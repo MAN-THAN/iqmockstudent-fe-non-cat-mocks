@@ -143,7 +143,7 @@ function CenterMain() {
     console.log("data===>", json, attemptID);
     await  fetchAnswersStatus();
      nextInd();
-     setInputVal("");
+   
   };
 
   // function for get index
@@ -158,6 +158,7 @@ function CenterMain() {
     }
      setSelectedQuestionIndex(selectedQuestionIndex + 1);
       setSelectedAnswer(null);
+      setInputVal("");
   };
 
   // Session access of student checking
