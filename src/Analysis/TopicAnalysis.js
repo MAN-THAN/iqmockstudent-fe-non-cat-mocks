@@ -1,5 +1,5 @@
-import React from 'react'
-import { useAuth } from '../services/Context'
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../services/Context";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -37,11 +37,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-
-
 function TopicAnalysis() {
+  const [data, setData] = useState([]);
   const { topicWiseAnalysis } = useAuth();
-  console.log(topicWiseAnalysis)
+  useEffect(() => {
+    setData(topicWiseAnalysis.topicWiseAnalysis);
+  }, []);
+  console.log(topicWiseAnalysis);
+  console.log(data);
   const headings = [
     "Number",
     "Topic",
@@ -52,7 +55,7 @@ function TopicAnalysis() {
     "Mark obtained by correct questions",
     "Overall score in the topic ",
     "Mark Obtained by Topper in this topic",
-    "Mark lose by Incorrect Attempt"
+    "Mark lose by Incorrect Attempt",
   ];
   return (
     <TableContainer
@@ -70,7 +73,7 @@ function TopicAnalysis() {
           <TableRow sx={{ background: "white", width: "10%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell align="left" key={ind} className="fw-bold" >
+                <StyledTableCell align="left" key={ind} className="fw-bold">
                   {heading}
                 </StyledTableCell>
               );
@@ -79,7 +82,7 @@ function TopicAnalysis() {
         </TableHead>
 
         <TableBody>
-          {/* {data.length > 0 &&
+          {data.length > 0 &&
             data.slice(1).map((item, index) => {
               return (
                 <StyledTableRow
@@ -90,26 +93,29 @@ function TopicAnalysis() {
                     color: "black",
                   }}
                 >
-                  <StyledTableCell align="left">{item.name}</StyledTableCell>
-                  <StyledTableCell align="left">{item.question}</StyledTableCell>
-                  <StyledTableCell align="left">{item.attempted}</StyledTableCell>
-                  <StyledTableCell align="left">{item.correct}</StyledTableCell>
-                  <StyledTableCell align="left">{item.incorrect}</StyledTableCell>
-                  <StyledTableCell align="left">{item.score}</StyledTableCell>
+                  <StyledTableCell align="left">{item.number}</StyledTableCell>
+                  <StyledTableCell align="left">{item.topic}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.accuracy}
+                    {item.markObtainedByCorrectQuestion}
                   </StyledTableCell>
-                  <StyledTableCell align="left">{Math.round(item.perScore)}</StyledTableCell>
+                  <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.percentile}
+                    {item.markObtainedByTopperInThisTopic}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                    {item.markLoseByIncorrectAttempt}
                   </StyledTableCell>
                 </StyledTableRow>
               );
-            })} */}
+            })}
         </TableBody>
       </StyledTable>
     </TableContainer>
   );
 }
 
-export default TopicAnalysis
+export default TopicAnalysis;
