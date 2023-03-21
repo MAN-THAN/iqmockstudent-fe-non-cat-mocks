@@ -22,7 +22,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/analysis/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
-            <Route path="sectionwise" element={<SectionAnalysis />} />
+            <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>
