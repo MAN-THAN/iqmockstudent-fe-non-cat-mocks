@@ -3,6 +3,11 @@ import Button from "@mui/material/Button";
 import { createTheme } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { alpha } from "@mui/material/styles";
+import Menu from "@mui/material/Menu";
+import Table from "@mui/material/Table";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
 export const theme = createTheme({
   typography: {
@@ -209,4 +214,79 @@ export const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
+}));
+
+export const StyledMenu = styled((props) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "right",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "right",
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 250,
+    color:
+      theme.palette.mode === "light"
+        ? "rgb(55, 65, 81)"
+        : theme.palette.grey[400],
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      "&:active": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
+        "&:hover": {
+          color: "#ff7b0f",
+        },
+      },
+    },
+  },
+}));
+
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.gray,
+
+    color: theme.palette.common.black,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: "17.76px",
+  },
+}));
+
+export const StyledTable = styled(Table)(({ theme }) => ({
+  borderCollapse: "separate",
+  borderSpacing: "0 13px",
+  // background:"red",
+}));
+
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  py: 5,
+
+  "& td": {
+    paddingBottom: "10px",
+    paddingTop: "10px",
+  },
+  "&:hover": {
+    backgroundColor: " #dedede !important",
+  },
 }));

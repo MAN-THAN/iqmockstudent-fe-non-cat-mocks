@@ -1,49 +1,15 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.gray,
-
-    color: theme.palette.common.black,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: "17.76px",
-  },
-}));
-
-const StyledTable = styled(Table)(({ theme }) => ({
-  borderCollapse: "separate",
-  borderSpacing: "0 13px",
-  // background:"red",
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  py: 5,
-  
-
-  "& td": {
-    paddingBottom: "10px",
-    paddingTop: "10px",
-  },
-  "&:hover": {
-    backgroundColor: " #dedede !important",
-  },
-}));
-
-
-
+import {StyledTableCell,StyledTable,StyledTableRow} from "../styleSheets/Style"
 
 
 function myTable(props) {
   const { display, data,headings } = props;
+
+
     return (
   
       <TableContainer
@@ -57,12 +23,12 @@ function myTable(props) {
           
         }}
       >
-        <StyledTable sx={{ maxWidth:{xs:"100%",sm:"100%",md:"100%",lg:"70%",xl:"70%"},  mx:"auto"}} aria-label="customized table">
-          <TableHead>
+        <StyledTable sx={{ maxWidth:"auto"}} aria-label="customized table">
+          <TableHead >
             <TableRow sx={{ background: "white" ,width:"10%" }}>
             {headings.map((heading,ind)=>{
             return (
-              <StyledTableCell align="left" key={ind} className="fw-bold">
+              <StyledTableCell align="left" key={ind} className="fw-bold py-4">
                 {heading}
               </StyledTableCell>
             )
@@ -124,9 +90,9 @@ function myTable(props) {
         >
           <TableHead >
             <TableRow sx={{ background: "white", borderBottom: "none" ,}}>
-              <StyledTableCell className="fw-bold" align="left">Correct</StyledTableCell>
-              <StyledTableCell className="fw-bold" align="left">Incorrect</StyledTableCell>
-              <StyledTableCell className="fw-bold" align="left">Skipped</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left ">Correct</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left">Incorrect</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="left">Skipped</StyledTableCell>
             </TableRow>
           </TableHead>
 
