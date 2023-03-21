@@ -319,7 +319,7 @@ function CenterMain() {
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" || Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"

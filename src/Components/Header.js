@@ -23,7 +23,7 @@ function Header() {
 
                     <div className="d-flex gap-3 ">
                         <div className='text-end'>
-                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >{userName}</Typography>
+                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >{"Man " + userName}</Typography>
                             <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id : { userID}</Typography>
                         </div>
                         <div className=''>

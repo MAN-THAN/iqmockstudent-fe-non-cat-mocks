@@ -38,6 +38,7 @@ const Timer = (props) => {
         navigate(`/main/${params.mockid}/quants`);
       } else if (subject === "quants") {
         console.log("Your mock is submitted!!!");
+         navigate(`/analysis/${attemptID}/overall`);
       }
     }
   };
