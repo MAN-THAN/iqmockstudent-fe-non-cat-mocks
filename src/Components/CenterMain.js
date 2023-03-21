@@ -151,7 +151,7 @@ function CenterMain() {
     setSelectedQuestionIndex(index);
   };
   // button for next func
-  const nextInd = async() => {
+  const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
       // Show message or disable button
       return;
