@@ -6,9 +6,9 @@ import "../styleSheets/header.css"
 import { useAuth } from '../services/Context'
 
 function Header() {
-    const userName = localStorage.getItem("userName");
-    const userID = localStorage.getItem("userID");
-    const img_url = localStorage.getItem("img_url");
+    const userName = JSON.parse(localStorage.getItem("userData"))?.name;
+    const userID = JSON.parse(localStorage.getItem("userData"))?.uid;
+    // const img_url = JSON.parse(localStorage.getItem("userData"))?.;
    
     return (
         <header className="p-0 text-bg-dark">

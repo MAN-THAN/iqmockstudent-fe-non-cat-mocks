@@ -7,44 +7,10 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  const [attemptID, setattemptID] = useState("");
-  const [responseReceived, setResponseReceived] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const createAttemptId = () => {
-    console.log("create attempt call");
-    setButtonLoading(true);
-    const jsonData = {
-      name: "Gaurav",
-      email: "asdnf@gmail.com",
-      uid: "2345678098765",
-      mockId: `${process.env.REACT_APP_MOCK_ID}`,
-    };
-
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsonData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setattemptID(data.attemptId);
-        setButtonLoading(false);
-        localStorage.setItem("userName", data.name);
-        localStorage.setItem("userID", data.uid);
-        localStorage.setItem("img_url", data.email);
-        return setResponseReceived(true);
-      })
-      .catch((error) => {
-        console.error("Attempt id Response not receive", error);
-      });
-  };
-
+ 
   const analysisDataApi = async (attemptId) => {
     try {
       const res = await request({
@@ -68,15 +34,11 @@ export const ContextProvider = ({ children }) => {
   const topicWiseAnalysis = analysisData[3];
   const difficulty = analysisData[4];
  
-
+  
   return (
     <>
       <Context.Provider
         value={{
-          createAttemptId,
-          responseReceived,
-          attemptID,
-          buttonLoading,
           basicAnalysis,
           sectionWiseAnalysis,
           topicWiseAnalysis,

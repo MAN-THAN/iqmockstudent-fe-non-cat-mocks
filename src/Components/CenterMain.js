@@ -24,6 +24,9 @@ import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchMockData } from "../services/Mock.Api";
+import { Space, Spin } from "antd";
+
+
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -33,7 +36,7 @@ function CenterMain() {
   const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
-  const attemptID = localStorage.getItem("attemptID"); // User attempt id (This api trigger in use context pageb that create a attempt id)
+  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
 
@@ -224,12 +227,9 @@ function CenterMain() {
   // };
 
   return loading ? (
-    <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      open={loading}
-    >
-      <CircularProgress color="inherit" />
-    </Backdrop>
+    <div style={{ display: "flex", width: "100vw", height: "80vh", justifyContent: "center", alignItems: "center" }}>
+      <Spin size="large" style={{ transform: "scale(1.8)" }} />
+    </div>
   ) : (
     <div className="container-fluid bg-white h-100">
       <div className="row p-3 pe-1 h-100 ">
@@ -237,9 +237,7 @@ function CenterMain() {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
@@ -267,15 +265,9 @@ function CenterMain() {
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <span>
-                    <Tooltip
-                      title={isFullScreen ? "Exit full screen" : "Full screen"}
-                    >
+                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
                       <img
-                        src={
-                          isFullScreen
-                            ? "/Group28.jpg"
-                            : require("../images/Open vector.png")
-                        }
+                        src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -304,8 +296,8 @@ function CenterMain() {
                     }}
                   >
                     {
-                        <>
-                          <div style={{color : "black", fontSize : "14px"}}>Time Left</div>
+                      <>
+                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
                         <Timer initMinute={3} initSeconds={0} />
                       </>
                     }
@@ -323,34 +315,18 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-7 overflow-auto"
-                  : "d-none"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
-                        ? Data[selectedQuestionIndex].paragraph
-                        : "No paragraph"
+                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
                     }
@@ -359,36 +335,23 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
-              }
-            >
+            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && (
-                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
-                  )}
+                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === 0 ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer
-                              : inputVal
-                          }
+                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
                           onChange={(e) => setInputVal("")}
                           inputRef={(input) => input && input.focus()}
                           sx={{
@@ -524,29 +487,19 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            selectedAnswer !== undefined ? selectedAnswer : ""
-                          }
+                          value={selectedAnswer !== undefined ? selectedAnswer : ""}
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
                             const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
+                            updatedData[selectedQuestionIndex].selectedAnswer = value;
                             setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options != null &&
-                            Data[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -609,15 +562,7 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing{" "}
-                <b>
-                  {params.type === "varc"
-                    ? "Verbal Ability"
-                    : params.type === "lrdi"
-                    ? "Lrdi"
-                    : "Quants"}
-                </b>{" "}
-                section
+                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "Lrdi" : "Quants"}</b> section
               </Typography>
 
               <SubHeading
@@ -665,9 +610,7 @@ function CenterMain() {
                             fontSize: "15px",
                           }}
                         >
-                          <span style={{ position: "relative", bottom: "4px" }}>
-                            {index + 1}
-                          </span>
+                          <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
                         </Box>
                       </div>
                     );
@@ -688,40 +631,16 @@ function CenterMain() {
               <div className="d-flex flex-wrap justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited {} </b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
               </div>
             </div>
