@@ -157,7 +157,7 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-      // Show message or disable button
+     alert("Go to next section")
       return;
     }
      setSelectedQuestionIndex(selectedQuestionIndex + 1);

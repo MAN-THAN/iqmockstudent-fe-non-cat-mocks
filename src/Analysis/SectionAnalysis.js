@@ -95,7 +95,7 @@ function SectionAnalysis() {
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.score}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.accuracy}
+                    {item.duration}
                   </StyledTableCell>
                   <StyledTableCell align="left"></StyledTableCell>
                 </StyledTableRow>
