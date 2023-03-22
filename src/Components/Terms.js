@@ -4,43 +4,9 @@ import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/Context";
 
-
-
-
 function Terms() {
-  const [handleAgree, setHandleAgree] = useState(false);
-  const [handleStartText, setHandleStartText] = useState(true);
+  const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
-  const { createAttemptId, responseReceived, attemptID, buttonLoading } = useAuth();
-  const [loader, setLoader] = useState();
-
-
-  const attempt = localStorage.getItem("attemptID")
-  useEffect(() => {
-    if (responseReceived || attempt) {
-      setHandleAgree(true);
-      setHandleStartText(false);
-    }
-
-    else {
-      setHandleStartText(true);
-      setHandleAgree(false);
-    }
-  }, [responseReceived, attempt]);
-
-
-  const handleClick = async () => {
-    console.log(attemptID);
-    localStorage.setItem("attemptID", attemptID);
-     navigate(`/main/${process.env.REACT_APP_MOCK_ID}/varc`);
-
-  };
-
-  const agreeAccept = async () => {
-    setHandleAgree(true);
-    setHandleStartText(false)
-    await createAttemptId()
-  }
 
   return (
     <div className="container d-flex-col justify-content-center align-content-center" style={{ marginTop: "5%", height: "100vh" }}>
@@ -103,30 +69,26 @@ function Terms() {
         <div className="d-flex justify-content-center  align-self-center gap-5 my-3">
           <BootstrapButton
             variant="contained mx-auto"
-            disabled={handleAgree}
+            disabled={agree ? true : false}
             sx={{
-              color: handleAgree ? "black" : "white",
+              color: agree ? "black" : "white",
               p: 2.5,
-              backgroundColor: handleAgree ? "#d2d4d6" : "",
+              backgroundColor: agree ? "#d2d4d6" : "",
             }}
-            onClick={agreeAccept}
+            onClick={() => setAgree(true)}
           >
             Agree
           </BootstrapButton>
 
-
-
           <BootstrapButton
             variant="contained mx-auto"
-            disabled={handleStartText}
-            loading={buttonLoading}
+            disabled={agree ? false : true}
             sx={{
               color: "white",
               p: 2.5,
-              background: handleStartText ? "#d2d4d6" : "",
+              background: agree ? "" : "#d2d4d6",
             }}
-            onClick={handleClick}
-
+            onClick={() => navigate("/user_authentication")}
           >
             Start Test
           </BootstrapButton>

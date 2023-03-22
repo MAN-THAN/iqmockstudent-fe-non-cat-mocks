@@ -9,14 +9,12 @@ const Timer = (props) => {
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
   const COUNTER_KEY = "my-counter";
-  const attemptID = localStorage.getItem("attemptID");
+  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
 
-  // taking the local storage value of timer=
+  // taking the local storage value of timer
   useEffect(() => {
     let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 0;
     setSeconds(countDownTime);
-
-    
   }, []);
 
   const submitSectionFunc = async (subject) => {

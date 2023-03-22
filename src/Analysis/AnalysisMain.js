@@ -18,7 +18,9 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {IoBookSharp} from "react-icons/io5"
+import { IoBookSharp } from "react-icons/io5";
+import { Space, Spin } from "antd";
+
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -77,18 +79,11 @@ function AnalysisMain() {
   return (
     <>
       {isLoading ? (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <div style={{ display: "flex", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
+          <Spin tip="Preparing Analysis...." size="large" style={{ transform: "scale(1.8)" }} />
+        </div>
       ) : (
-        <div
-          id="my-component"
-          className=" p-0 "
-          style={{ background: "var(--background)" }}
-        >
+        <div id="my-component" className=" p-0 " style={{ background: "var(--background)" }}>
           {/* Header */}
           <header
             className=" mx-4
@@ -98,11 +93,7 @@ function AnalysisMain() {
               <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <Link to="/">
-                    <img
-                      src="/iQuanta.png"
-                      alt="iquanta_logo"
-                      className="img-fluid iquanta_logo"
-                    />
+                    <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
                   </Link>
                 </div>
 
@@ -152,9 +143,7 @@ function AnalysisMain() {
 
                   <div className="text-end">
                     <Button
-                      startIcon={
-                        <img src="/Help.png" className="img-fluid" width={25} />
-                      }
+                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
                       variant="contained"
                       sx={{
                         background: "black",
@@ -197,18 +186,8 @@ function AnalysisMain() {
                   </div>
 
                   <div className="d-flex">
-                    <a
-                      href="#"
-                      className="d-block link-dark text-decoration-none "
-                      aria-expanded="false"
-                    >
-                      <img
-                        src="https://github.com/mdo.png"
-                        alt="mdo"
-                        width="50"
-                        height="50"
-                        className="rounded"
-                      />
+                    <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                      <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                     </a>
                     <h2 role="button">
                       {" "}
@@ -229,23 +208,17 @@ function AnalysisMain() {
             }
           >
             <div className="flex-item p-3 flex-fill">
-              <Typography
-                variant="h4"
-                sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
-              >
+              <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography
-                variant="h4"
-                sx={{ fontSize: "35px", color: "black" }}
-              >
+              <Typography variant="h4" sx={{ fontSize: "35px", color: "black" }}>
                 This is your mock analysis for iCAT 1.0.
               </Typography>
               <br />
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
                   variant="filled"
-                  onClick={ ()=> navigate(`/viewsolutions/${attemptId}/varc`)}
+                  onClick={() => navigate(`/viewsolutions/${attemptId}/varc`)}
                   sx={{
                     border: "2px solid #00359A",
                     backgroundColor: "#00359A",
@@ -276,10 +249,7 @@ function AnalysisMain() {
             </div>
 
             <div className="flex-item p-3  flex-fill">
-              <div
-                className="container bg-warning   "
-                style={{ height: "auto", borderRadius: "15px", width: "auto" }}
-              >
+              <div className="container bg-warning   " style={{ height: "auto", borderRadius: "15px", width: "auto" }}>
                 <div className=" d-flex gap-4 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
@@ -376,22 +346,13 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">
-                        {potentialScore}
-                      </SubHeading>
+                      <SubHeading className="card-title">{potentialScore}</SubHeading>
 
-                      <Typography variant="paragraph">
-                        Potential Mark
-                      </Typography>
+                      <Typography variant="paragraph">Potential Mark</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/PM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/PM.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -405,19 +366,12 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item">
-                      <SubHeading className="card-title">
-                        {negativeMarks}
-                      </SubHeading>
+                      <SubHeading className="card-title">{negativeMarks}</SubHeading>
                       <Typography variant="paragraph">Negative Mark</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/NM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/NM.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -436,12 +390,7 @@ function AnalysisMain() {
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/Acc.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/Acc.png" alt="" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -455,19 +404,12 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">
-                        {Math.round(overallPercentage)}
-                      </SubHeading>
+                      <SubHeading className="card-title">{Math.round(overallPercentage)}</SubHeading>
                       <Typography variant="paragraph">% Score</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img
-                        src="/PS.png"
-                        alt="ps.png"
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <img src="/PS.png" alt="ps.png" className="img-fluid" width={50} />
                     </div>
                   </div>
                 </div>
@@ -489,8 +431,6 @@ function AnalysisMain() {
               disableElevation
               onClick={handleClick}
               endIcon={<KeyboardArrowDownIcon />}
-
-             
             >
               Section wise analysis{" "}
             </ModifyButton>
@@ -502,34 +442,26 @@ function AnalysisMain() {
               }}
               anchorEl={anchorEl}
               open={open}
-           
             >
-              <MenuItem onClick={()=>handleClose("varc")} disableRipple>
+              <MenuItem onClick={() => handleClose("varc")} disableRipple>
                 <IoBookSharp className="me-2" />
-                 VARC
+                VARC
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem onClick={()=> handleClose("lrdi")} disableRipple>
-                <IoBookSharp className="me-2"  />
-               LRDI
+              <MenuItem onClick={() => handleClose("lrdi")} disableRipple>
+                <IoBookSharp className="me-2" />
+                LRDI
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem onClick={()=> handleClose("quants")} disableRipple>
-                <IoBookSharp className="me-2"/>
-               QUANTS
+              <MenuItem onClick={() => handleClose("quants")} disableRipple>
+                <IoBookSharp className="me-2" />
+                QUANTS
               </MenuItem>
-            
             </StyledMenu>
-            <ModifyButton
-              variant="filled"
-              onClick={() => navigate("topicwise")}
-            >
+            <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
               Topic wise Analysis
             </ModifyButton>
-            <ModifyButton
-              variant="filled"
-              onClick={() => navigate("difficulty")}
-            >
+            <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
               Difficulty wise analysis
             </ModifyButton>
           </div>
