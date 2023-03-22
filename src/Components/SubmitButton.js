@@ -47,7 +47,7 @@ export default function ButtonSubmit() {
   const params = useParams();
   const [Loader, setLoader] = useState(true);
   const navigate = useNavigate();
-  const attemptID = localStorage.getItem("attemptID");
+  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
 
   const submitSectionFunc = async (subject) => {
     const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
