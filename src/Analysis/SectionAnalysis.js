@@ -55,7 +55,7 @@ function SectionAnalysis() {
             {headings.map((heading, ind) => {
               return (
                 <StyledTableCell
-                  align="left"
+                  align="center"
                   key={ind}
                   className="fw-bold "
                 >
@@ -78,26 +78,26 @@ function SectionAnalysis() {
                     color: "black",
                   }}
                 >
-                  <StyledTableCell align="left">{index + 1}</StyledTableCell>
-                  <StyledTableCell align="left">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
+                  <StyledTableCell align="center">{item.topic}</StyledTableCell>
+                  <StyledTableCell align="center"  style={{fontSize:"15px"}}>
                     {item.subtopic}
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="center">
                     {item.studentAnswer !== undefined
                       ? item.studentAnswer === item.correctAnswer
                         ? "Yes"
                         : "No"
                       : "Not attempted"}
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="center">
                     {item.difficulty}
                   </StyledTableCell>
-                  <StyledTableCell align="left">{item.score}</StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="center">{item.score}</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
                     {item.duration}
                   </StyledTableCell>
-                  <StyledTableCell align="left"></StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </StyledTableRow>
               );
             })}

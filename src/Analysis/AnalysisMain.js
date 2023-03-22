@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, InputAdornment } from "@mui/material";
 import { ModifyButton, SubHeading } from "../styleSheets/Style";
-import { useNavigate, Outlet, Link } from "react-router-dom";
+import { useNavigate, Outlet, NavLink } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { RxDotsVertical } from "react-icons/rx";
@@ -28,6 +28,7 @@ function AnalysisMain() {
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     setPDfStyle(false);
@@ -60,30 +61,43 @@ function AnalysisMain() {
     html2pdf().from(element).save();
   };
 
-//Dropdown functions:
+  //Dropdown functions:
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  
   };
   const handleClose = (sub) => {
     setAnchorEl(null);
-    navigate(`sectionwise/${sub}`)
-  
+    navigate(`sectionwise/${sub}`);
   };
 
   return (
     <>
       {isLoading ? (
-        <div style={{ display: "flex", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
-          <Spin tip="Preparing Analysis...." size="large" style={{ transform: "scale(1.8)" }} />
+        <div
+          style={{
+            display: "flex",
+            width: "100vw",
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Spin
+            tip="Preparing Analysis...."
+            size="large"
+            style={{ transform: "scale(1.8)" }}
+          />
         </div>
       ) : (
-        <div id="my-component" className=" p-0 " style={{ background: "var(--background)" }}>
+        <div
+          id="my-component"
+          className=" p-0 "
+          style={{ background: "var(--background)" }}
+        >
           {/* Header */}
           <header
             className=" mx-4
@@ -92,9 +106,13 @@ function AnalysisMain() {
             <div className="container-fluid py-4 ">
               <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
-                  <Link to="/">
-                    <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
-                  </Link>
+                  <NavLink to="/">
+                    <img
+                      src="/iQuanta.png"
+                      alt="iquanta_logo"
+                      className="img-fluid iquanta_logo"
+                    />
+                  </NavLink>
                 </div>
 
                 <div className="d-flex gap-3  align-items-center ">
@@ -143,7 +161,9 @@ function AnalysisMain() {
 
                   <div className="text-end">
                     <Button
-                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
+                      startIcon={
+                        <img src="/Help.png" className="img-fluid" width={25} />
+                      }
                       variant="contained"
                       sx={{
                         background: "black",
@@ -186,8 +206,18 @@ function AnalysisMain() {
                   </div>
 
                   <div className="d-flex">
-                    <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
-                      <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
+                    <a
+                      href="#"
+                      className="d-block link-dark text-decoration-none "
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="https://github.com/mdo.png"
+                        alt="mdo"
+                        width="50"
+                        height="50"
+                        className="rounded"
+                      />
                     </a>
                     <h2 role="button">
                       {" "}
@@ -208,10 +238,16 @@ function AnalysisMain() {
             }
           >
             <div className="flex-item p-3 flex-fill">
-              <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
+              <Typography
+                variant="h4"
+                sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
+              >
                 Hey {name},
               </Typography>
-              <Typography variant="h4" sx={{ fontSize: "35px", color: "black" }}>
+              <Typography
+                variant="h4"
+                sx={{ fontSize: "35px", color: "black" }}
+              >
                 This is your mock analysis for iCAT 1.0.
               </Typography>
               <br />
@@ -249,7 +285,10 @@ function AnalysisMain() {
             </div>
 
             <div className="flex-item p-3  flex-fill">
-              <div className="container bg-warning   " style={{ height: "auto", borderRadius: "15px", width: "auto" }}>
+              <div
+                className="container bg-warning   "
+                style={{ height: "auto", borderRadius: "15px", width: "auto" }}
+              >
                 <div className=" d-flex gap-4 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
@@ -346,13 +385,22 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">{potentialScore}</SubHeading>
+                      <SubHeading className="card-title">
+                        {potentialScore}
+                      </SubHeading>
 
-                      <Typography variant="paragraph">Potential Mark</Typography>
+                      <Typography variant="paragraph">
+                        Potential Mark
+                      </Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img src="/PM.png" alt="" className="img-fluid" width={50} />
+                      <img
+                        src="/PM.png"
+                        alt=""
+                        className="img-fluid"
+                        width={50}
+                      />
                     </div>
                   </div>
                 </div>
@@ -366,12 +414,19 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center">
                     <div className="flex-item">
-                      <SubHeading className="card-title">{negativeMarks}</SubHeading>
+                      <SubHeading className="card-title">
+                        {negativeMarks}
+                      </SubHeading>
                       <Typography variant="paragraph">Negative Mark</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img src="/NM.png" alt="" className="img-fluid" width={50} />
+                      <img
+                        src="/NM.png"
+                        alt=""
+                        className="img-fluid"
+                        width={50}
+                      />
                     </div>
                   </div>
                 </div>
@@ -390,7 +445,12 @@ function AnalysisMain() {
                     </div>
 
                     <div className="flex-item">
-                      <img src="/Acc.png" alt="" className="img-fluid" width={50} />
+                      <img
+                        src="/Acc.png"
+                        alt=""
+                        className="img-fluid"
+                        width={50}
+                      />
                     </div>
                   </div>
                 </div>
@@ -404,12 +464,19 @@ function AnalysisMain() {
                 >
                   <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
                     <div className="flex-item ">
-                      <SubHeading className="card-title">{Math.round(overallPercentage)}</SubHeading>
+                      <SubHeading className="card-title">
+                        {Math.round(overallPercentage)}
+                      </SubHeading>
                       <Typography variant="paragraph">% Score</Typography>
                     </div>
 
                     <div className="flex-item">
-                      <img src="/PS.png" alt="ps.png" className="img-fluid" width={50} />
+                      <img
+                        src="/PS.png"
+                        alt="ps.png"
+                        className="img-fluid"
+                        width={50}
+                      />
                     </div>
                   </div>
                 </div>
@@ -419,10 +486,19 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex gap-3 m-5 ms-4">
-            <ModifyButton variant="filled" onClick={() => navigate("overall")}>
-              Overall Analysis{" "}
-            </ModifyButton>
-            <ModifyButton
+            <NavLink to="overall" activeClassName="active">
+              <ModifyButton
+                variant="filled"
+                activeClassName="active"
+                focus={isActive && true}
+                onClick={() => setIsActive(true)}
+                onBlur={() => setIsActive(false)}
+              >
+                Overall Analysis
+              </ModifyButton>
+            </NavLink>
+           <NavLink>
+           <ModifyButton
               variant="filled"
               id="demo-customized-button"
               aria-controls={open ? "demo-customized-menu" : undefined}
@@ -434,6 +510,8 @@ function AnalysisMain() {
             >
               Section wise analysis{" "}
             </ModifyButton>
+           </NavLink>
+           
 
             <StyledMenu
               id="demo-customized-menu"
@@ -458,12 +536,23 @@ function AnalysisMain() {
                 QUANTS
               </MenuItem>
             </StyledMenu>
-            <ModifyButton variant="filled" onClick={() => navigate("topicwise")}>
+
+
+            <NavLink to="topicwise">
+            <ModifyButton
+              variant="filled"
+            >
               Topic wise Analysis
             </ModifyButton>
-            <ModifyButton variant="filled" onClick={() => navigate("difficulty")}>
+            </NavLink>
+           <NavLink to="difficulty">
+           <ModifyButton
+              variant="filled"
+            >
               Difficulty wise analysis
             </ModifyButton>
+           </NavLink>
+         
           </div>
           <Outlet />
         </div>

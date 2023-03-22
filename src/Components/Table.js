@@ -28,7 +28,7 @@ function myTable(props) {
             <TableRow sx={{ background: "white" ,width:"10%" }}>
             {headings.map((heading,ind)=>{
             return (
-              <StyledTableCell align="left" key={ind} className="fw-bold py-4">
+              <StyledTableCell align="center" key={ind} className="fw-bold py-4">
                 {heading}
               </StyledTableCell>
             )
@@ -50,29 +50,29 @@ function myTable(props) {
                       color: "black",
                     }}
                   >
-                    <StyledTableCell align="left">{item.name}</StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center" className="fw-bold">{item.name}</StyledTableCell>
+                    <StyledTableCell align="center">
                       {item.question}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center">
                       {item.attempted}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center">
                       {item.correct}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center">
                       {item.incorrect}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center">
                       {item.score}
                     </StyledTableCell>
-                    <StyledTableCell align="left"  sx={{color:"#0C58B6"}} >
+                    <StyledTableCell align="center"  sx={{color:"#0C58B6"}} >
                       {item.accuracy}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell align="center">
                       {Math.round(item.perScore)}
                     </StyledTableCell>
-                      <StyledTableCell align="left" sx={{color:"#0C58B6"}} >
+                      <StyledTableCell align="center" sx={{color:"#0C58B6"}} >
                         {item.percentile}
 
                       </StyledTableCell>
@@ -89,10 +89,10 @@ function myTable(props) {
           aria-label="customized table"
         >
           <TableHead >
-            <TableRow sx={{ background: "white", borderBottom: "none" ,}}>
-              <StyledTableCell className="fw-bold py-4" align="left ">Correct</StyledTableCell>
-              <StyledTableCell className="fw-bold py-4" align="left">Incorrect</StyledTableCell>
-              <StyledTableCell className="fw-bold py-4" align="left">Skipped</StyledTableCell>
+            <TableRow sx={{ background: "white", borderBottom: "none" }}>
+              <StyledTableCell className="fw-bold py-4 text-center" >Correct</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="center">Incorrect</StyledTableCell>
+              <StyledTableCell className="fw-bold py-4" align="center">Skipped</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -106,9 +106,9 @@ function myTable(props) {
                   border: "none",
                 }}
               >
-                <StyledTableCell align="left">{item.correct}</StyledTableCell>
-                <StyledTableCell align="left">{item.incorrect}</StyledTableCell>
-                <StyledTableCell align="left">{item.skipped}</StyledTableCell>
+                <StyledTableCell align="center">{item.correct}</StyledTableCell>
+                <StyledTableCell align="center">{item.incorrect}</StyledTableCell>
+                <StyledTableCell align="center">{item.skipped}</StyledTableCell>
               </StyledTableRow>
              )
          
