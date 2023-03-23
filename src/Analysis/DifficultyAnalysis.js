@@ -27,9 +27,9 @@ function DifficultyAnalysis() {
   console.log(show)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "1.6em" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "3em"}}>
       <h1>Analysis Review,</h1>
-      <h6 style={{ marginTop: "1em" }}>A Quick Analysis Overview</h6>
+      <h6 style={{ marginTop: "0.5em" }}>A Quick Analysis Overview</h6>
       <div style={{ display: "flex", flexDirection: "row", gap: "3em", marginTop: "2em" }}>
         <ModifyButton
           variant="outlined"
@@ -91,7 +91,7 @@ function DifficultyAnalysis() {
             margin={{
               top: 5,
               right: 30,
-              left: 20,
+              left: 10,
               bottom: 5,
             }}
           >

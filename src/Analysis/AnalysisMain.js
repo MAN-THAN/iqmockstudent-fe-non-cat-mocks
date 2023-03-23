@@ -491,7 +491,7 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
-          <div className=" d-flex gap-3 m-5 ms-4">
+          <div className=" d-flex gap-3 m-5 ms-4 ps-3">
             <NavLink to="overall"  activeClassName="active " className="link">
               <ModifyButton
                 variant="filled"
@@ -543,7 +543,7 @@ function AnalysisMain() {
             </StyledMenu>
 
 
-            <NavLink to="topicwise" activeClassName="active "  className="link" >
+            <NavLink to="topicwise" activeClassName="active " className="link" >
             <ModifyButton
               variant="filled"
               className="nav-button"
