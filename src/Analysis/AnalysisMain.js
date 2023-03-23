@@ -225,10 +225,7 @@ function AnalysisMain() {
                         className="rounded"
                       />
                     </a>
-                    <h2 role="button">
-                      {" "}
-                      <RxDotsVertical />
-                    </h2>
+                  
                   </div>
                 </div>
               </div>

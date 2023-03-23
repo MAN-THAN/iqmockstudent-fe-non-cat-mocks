@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -23,10 +18,8 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-import { fetchMockData } from "../services/Mock.Api";
+import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
 import { Space, Spin } from "antd";
-
-
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -40,9 +33,7 @@ function CenterMain() {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
 
-  console.log("mock data",Data)
-
-
+  console.log("mock data", Data);
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -81,76 +72,57 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${params.mockid}/${params.type}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.warn(data);
-        setData(data.data);
+    const mockId = params.mockid;
+    const subject_type = params.type;
+    const fetchMainData = async () => {
+      const response = await fetchQuestions(mockId, subject_type);
+      console.log(response);
+      if (response?.status == 200) {
+        setData(response.data.data);
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
+      } else {
+        console.error("Error in  fetching data");
         setLoading(true);
-      });
+      }
+    };
+    fetchMainData();
   }, [params.type]);
 
   // fetching answers status
-  const fetchAnswersStatus = async () => {
-    try {
-      const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${attemptID}/${params.type}`;
-
-      const options = {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      };
-      const response = await fetch(url, options);
-      const json = await response.json();
-      const arr = json.finalData;
-      console.log("data===>", arr, attemptID);
+  const fetchingAnswersStatus = async () => {
+    const subject_type = params.type;
+    const response = await fetchAnswerStatus(attemptID, subject_type);
+    console.log(response);
+    if (response?.status == 200) {
+      const arr = response.data.finalData;
       setAnswerStatus(arr);
-      setSelectedAnswer(
-        "studentAnswerIndex" in arr[selectedQuestionIndex]
-          ? arr[selectedQuestionIndex].studentAnswerIndex
-          : ""
-      );
-    } catch (err) {
-      console.log(err);
-    } finally {
-      //  checkAnswered()
+      setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
     }
   };
   useEffect(() => {
-    fetchAnswersStatus();
+    fetchingAnswersStatus();
   }, [params.type, selectedQuestionIndex]);
 
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
-
+    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
       studentAnswer: studentAnswer,
       duration: 30,
       studentAnswerIndex: selectedAnswer,
     };
-
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.type}/${selectedQuestionIndex}/${clickType}`;
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log("data===>", json, attemptID);
-    await  fetchAnswersStatus();
-     nextInd();
-   
+    const subject_type = params.type;
+    const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
+    console.log(response);
+    if (response?.status == 200) {
+      console.log("Answer posted successfully");
+    } else {
+      console.log("--> error in posting answer");
+    }
+    await fetchingAnswersStatus();
+    nextInd();
   };
 
   // function for get index
@@ -163,59 +135,15 @@ function CenterMain() {
      alert("Go to next section")
       return;
     }
-     setSelectedQuestionIndex(selectedQuestionIndex + 1);
-      setSelectedAnswer(null);
-      setInputVal("");
+    setSelectedQuestionIndex(selectedQuestionIndex + 1);
+    setSelectedAnswer(null);
+    setInputVal("");
   };
 
-  // Session access of student checking
-
-  const checkSessionAccess = async () => {
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.type}`;
-
-    const options = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-
-    // console.log("data===>", json, attemptID);
-    // console.log(json.allow);
-
-    // console.log("is active",isActive ,"json.allow", json.allow ,"params.type",params.type)
-
-    // if (json.allow === true && isActive === false && params.type == "varc") {
-    //   navigate(`/main/${params.mockid}/lrdi`);
-    // } else if (json.allow === true && isActive === false && params.type == "lrdi") {
-    //   navigate(`/main/${params.mockid}/quants`);
-    // } else {
-    //   alert("You can not move to other sections, Please complete this first");
-    // }
-  };
-
-  // clear Response api
-  const clearResponse = async () => {
-    try {
-      const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/clearAnswer/${attemptID}/${params.type}/${selectedQuestionIndex}`;
-
-      const options = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      };
-      const response = await fetch(url, options);
-      const json = await response.json();
-      // console.log("clr response", json.success);
-      if (json?.success === true) {
-        console.log(json.data);
-        fetchAnswersStatus();
-        setSelectedAnswer("");
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      console.log("clear response function called");
-    }
+  // clear Response
+  const clearResponse = () => {
+    setSelectedAnswer("");
+    setInputVal("");
   };
 
   // const checkAnswered = () => {
