@@ -164,19 +164,19 @@ export const ModifyButton = styled(Button)({
   backgroundColor: "var( --light-background)",
   fontFamily: "var(--font-inter)",
   "&:hover": {
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     // borderColor: "none",
     // boxShadow: "none",
     color: "white",
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     borderColor: "none",
   },
   "&:focus": {
     // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     color: "white",
     outerLine: "none",
   },

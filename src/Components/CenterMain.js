@@ -74,6 +74,8 @@ function CenterMain() {
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
+
+    
     const fetchMainData = async () => {
       const response = await fetchQuestions(mockId, subject_type);
       console.log(response);
