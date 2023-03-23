@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, InputAdornment } from "@mui/material";
 import { ModifyButton, SubHeading } from "../styleSheets/Style";
-import { useNavigate, Outlet, NavLink } from "react-router-dom";
+import { useNavigate, Outlet, NavLink, useLoaderData } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { RxDotsVertical } from "react-icons/rx";
@@ -20,15 +20,21 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import { Space, Spin } from "antd";
+import "../styleSheets/AnalysisMain.css"
 
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
-  const { attemptId } = params;
+  const location = useLocation()
+  const { attemptId ,subject} = params;
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const navButton = document.querySelector('.nav-button');
+
+  console.log(location)
+
 
   useEffect(() => {
     setPDfStyle(false);
@@ -486,20 +492,18 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex gap-3 m-5 ms-4">
-            <NavLink to="overall" activeClassName="active">
+            <NavLink to="overall"  activeClassName="active " className="link">
               <ModifyButton
                 variant="filled"
-                activeClassName="active"
-                focus={isActive && true}
-                onClick={() => setIsActive(true)}
-                onBlur={() => setIsActive(false)}
+                className="nav-button"
               >
                 Overall Analysis
               </ModifyButton>
             </NavLink>
-           <NavLink>
+           <NavLink activeClassName="active"  className="link" >
            <ModifyButton
               variant="filled"
+              style={{ background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? '#00359A' : '', color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && 'white'  }}
               id="demo-customized-button"
               aria-controls={open ? "demo-customized-menu" : undefined}
               aria-haspopup="true"
@@ -507,6 +511,7 @@ function AnalysisMain() {
               disableElevation
               onClick={handleClick}
               endIcon={<KeyboardArrowDownIcon />}
+              
             >
               Section wise analysis{" "}
             </ModifyButton>
@@ -538,16 +543,18 @@ function AnalysisMain() {
             </StyledMenu>
 
 
-            <NavLink to="topicwise">
+            <NavLink to="topicwise" activeClassName="active "  className="link" >
             <ModifyButton
               variant="filled"
+              className="nav-button"
             >
               Topic wise Analysis
             </ModifyButton>
             </NavLink>
-           <NavLink to="difficulty">
+           <NavLink to="difficulty" activeClassName="active"  className="link">
            <ModifyButton
               variant="filled"
+              className="nav-button"
             >
               Difficulty wise analysis
             </ModifyButton>

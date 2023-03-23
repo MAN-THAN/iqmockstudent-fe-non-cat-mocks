@@ -1,54 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Table from "../Components/Table";
 import { useAuth } from "../services/Context";
-import { ModifyButton, SubHeading } from "../styleSheets/Style";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
+import { ModifyButton } from "../styleSheets/Style";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { NavLink } from "react-router-dom";
+import "../styleSheets/AnalysisMain.css"
 function DifficultyAnalysis() {
   const { difficulty } = useAuth();
   const [data, setData] = useState({});
+  const [activeButton, setActiveButton] = useState('varc');
+  const [show, setShow] = useState([]);
   useEffect(() => {
     setData(difficulty);
     setShow(difficulty.varc)
   }, []);
-  console.log(data);
-  const [show, setShow] = useState([]);
-  const headings = [
-    "Name",
-    "Section",
-    "Topic",
-    "Subtopic",
-    "Correct or Incorrect",
-    "Difficulty",
-    "%student got this answer correct",
-    "Time spent on this Question",
-    "Time spent by mock topper on this Question ",
-  ];
 
-  const dummyData = [
-    {
-      name: "Easy Questions",
-      Incorrect: 5,
-      Correct: 10,
-      Total: 25,
-      Skipped: 5,
-    },
-    {
-      name: "Moderate Questions",
-      Incorrect: 10,
-      Correct: 5,
-      Total: 25,
-      Skipped: 5,
-    },
-    {
-      name: "Difficult Questions",
-      Incorrect: 20,
-      Correct: 2,
-      Total: 25,
-      Skipped: 1,
-    },
-  ];
+
+  console.log(activeButton)
+
+ 
+
+  const handleClick = (button) => {
+    setActiveButton(button);
+    setShow(data[button]);
+  };
+
+  console.log(show)
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "1.6em" }}>
@@ -57,14 +33,17 @@ function DifficultyAnalysis() {
       <div style={{ display: "flex", flexDirection: "row", gap: "3em", marginTop: "2em" }}>
         <ModifyButton
           variant="outlined"
-          onClick={() => setShow(data.varc)}
+          onClick={() => handleClick('varc')}
+          className={`${activeButton === 'varc' ? 'active' : ''}`}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #00359A",
             width: "200px",
             color: "#00359A",
+            color: activeButton === "varc"? "white": "#00359A",
             fontWeight: "bold",
+            background:activeButton === "varc" && "#00359A"
           }}
           autoFocus={true}
         >
@@ -72,28 +51,32 @@ function DifficultyAnalysis() {
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          onClick={() => setShow(data.lrdi)}
+          className="nav-button"
+          onClick={() => handleClick('lrdi')}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #00359A",
             width: "200px",
             color: "#00359A",
+            color: activeButton === "lrdi"? "white": "#00359A",
             fontWeight: "bold",
+            background:activeButton === "lrdi" && "#00359A"
           }}
         >
           LRDI
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          onClick={() => setShow(data.quants)}
+          onClick={() => handleClick('quants')}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #00359A",
             width: "200px",
-            color: "#00359A",
+            color: activeButton === "quants"? "white": "#00359A",
             fontWeight: "bold",
+            background:activeButton === "quants" && "#00359A"
           }}
         >
           QUANT
