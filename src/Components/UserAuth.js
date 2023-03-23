@@ -2,11 +2,11 @@ import { Space, Spin } from "antd";
 import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../services/Context";
-import request from "../services/Request";
+import { getAttemptId } from "../services/Mock_api";
 
 const UserAuth = () => {
   const navigate = useNavigate();
-//   console.log(attemptID);
+  //   console.log(attemptID);
 
   useEffect(() => {
     userAuthCheck();
@@ -14,8 +14,8 @@ const UserAuth = () => {
 
   // Function for checking authorising user
   const userAuthCheck = () => {
-      const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
-      console.log(attemptID);
+    const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+    console.log(attemptID);
     if (attemptID) {
       console.log("userAttemptID", attemptID);
       console.log("go to m0ck page");
@@ -28,27 +28,11 @@ const UserAuth = () => {
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const jsonData = {
-      name: "Gaurav",
-      email: "asdnf@gmail.com",
-      uid: "2345678098765",
-      mockId: `${process.env.REACT_APP_MOCK_ID}`,
-    };
-    try {
-      const res = await request({
-        url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks`,
-        type: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(jsonData),
-      });
-      console.log(res);
-      localStorage.setItem("userData", JSON.stringify(res.data));
+    const response = await getAttemptId();
+    console.log(response);
+    if (response?.status == 200) {
+      localStorage.setItem("userData", JSON.stringify(response.data));
       userAuthCheck();
-    } catch (err) {
-      console.log(err);
-      console.log("attempt id could not be created!!!");
     }
   };
 
