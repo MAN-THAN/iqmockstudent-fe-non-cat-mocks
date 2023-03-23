@@ -185,14 +185,11 @@ function AnalysisMain() {
                     </Typography>
                   </div>
 
-                  <div className="d-flex">
+                  <div className="d-flex m-1">
                     <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
                       <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                     </a>
-                    <h2 role="button">
-                      {" "}
-                      <RxDotsVertical />
-                    </h2>
+                  
                   </div>
                 </div>
               </div>
