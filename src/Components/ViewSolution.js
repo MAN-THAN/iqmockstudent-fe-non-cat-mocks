@@ -17,12 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import ContentDrawer from "./ContentDrawer";
-import QuestionPaper from "./QuestionPaper";
-import InstructionButton from "./InstructionButton";
-import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
-import Timer from "./Timer";
-import ButtonSubmit from "./SubmitButton";
 
 function ViewSolution() {
   const navigate = useNavigate();
@@ -30,7 +25,6 @@ function ViewSolution() {
 
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = params.attemptID; // User attempt id (This api trigger in use context pageb that create a attempt id)
@@ -55,20 +49,6 @@ function ViewSolution() {
     }
   };
   // Function for getting a keyboard value from keyboard component
-
-  const handleKeyPress = (key) => {
-    setInputVal((prevInput) => prevInput + key);
-    const updatedData = [...Data];
-    updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
-    setData(updatedData);
-  };
-
-  const handleBackspace = () => {
-    setInputVal((prevInput) => prevInput.slice(0, -1));
-    const updatedData = [...Data];
-    updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
-    setData(updatedData);
-  };
 
   // fetching main data
   useEffect(() => {
@@ -103,122 +83,30 @@ function ViewSolution() {
       const arr = json.finalData;
       console.log("data===>", arr, attemptID);
       setAnswerStatus(arr);
-      setSelectedAnswer(
-        "studentAnswerIndex" in arr[selectedQuestionIndex]
-          ? arr[selectedQuestionIndex].studentAnswerIndex
-          : ""
-      );
+
+      setSelectedAnswer(arr[selectedQuestionIndex].studentAnswerIndex);
     } catch (err) {
       console.log(err);
     } finally {
       //  checkAnswered()
     }
   };
+
   useEffect(() => {
     fetchAnswersStatus();
-  }, [params.mocktype, selectedQuestionIndex]);
+  }, [params.mocktype]);
 
-  // post answers Api trigger on mark and review  button
-
-  const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
-
-    const data = {
-      question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer: studentAnswer,
-      duration: 30,
-      studentAnswerIndex: selectedAnswer,
-    };
-
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.mocktype}/${selectedQuestionIndex}/${clickType}`;
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log("data===>", json, attemptID);
-    nextInd();
-    fetchAnswersStatus();
-    setInputVal("");
-  };
+  useEffect(() => {
+    if (AnswerStatus.length > 0) {
+      setSelectedAnswer(AnswerStatus[selectedQuestionIndex].studentAnswerIndex);
+    } else {
+      setSelectedAnswer(null);
+    }
+  }, [, selectedQuestionIndex, selectedAnswer]);
 
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
-  };
-  // button for next func
-  const nextInd = () => {
-    if (selectedQuestionIndex === Data.length - 1) {
-      // Show message or disable button
-
-      return;
-    }
-
-    setSelectedQuestionIndex(selectedQuestionIndex + 1);
-    setSelectedAnswer(null);
-  };
-
-  // Session access of student checking
-
-  const checkSessionAccess = async () => {
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${params.mocktype}`;
-
-    const options = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-    const json = await response.json();
-
-    // console.log("data===>", json, attemptID);
-    // console.log(json.allow);
-
-    // console.log("is active",isActive ,"json.allow", json.allow ,"params.mocktype",params.mocktype)
-
-    // if (json.allow === true && isActive === false && params.mocktype == "varc") {
-    //   navigate(`/main/${params.mockid}/lrdi`);
-    // } else if (json.allow === true && isActive === false && params.mocktype == "lrdi") {
-    //   navigate(`/main/${params.mockid}/quants`);
-    // } else {
-    //   alert("You can not move to other sections, Please complete this first");
-    // }
-  };
-
-  // clear Response api
-  const clearResponse = async () => {
-    try {
-      const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/clearAnswer/${attemptID}/${params.mocktype}/${selectedQuestionIndex}`;
-
-      const options = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      };
-      const response = await fetch(url, options);
-      const json = await response.json();
-      // console.log("clr response", json.success);
-      if (json?.success === true) {
-        console.log(json.data);
-        fetchAnswersStatus();
-        setSelectedAnswer("");
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      console.log("clear response function called");
-    }
-  };
-  const checkAnswered = () => {
-    if ("studentAnswer" in AnswerStatus[selectedQuestionIndex]) {
-      const a = Data[selectedQuestionIndex].options.filter(
-        (option, index) =>
-          option === AnswerStatus[selectedQuestionIndex].studentAnswer
-      );
-      console.log(a);
-    }
   };
 
   return loading ? (
@@ -241,7 +129,6 @@ function ViewSolution() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    // disabled={params.mocktype === "quants" || params.mocktype === "lrdi" ? true : false}
                     variant="contained"
                     onClick={() =>
                       navigate(`/viewsolutions/${params.attemptId}/varc`)
@@ -250,7 +137,6 @@ function ViewSolution() {
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.mocktype === "varc" || params.mocktype === "quants" ? true : false}
                     variant="contained"
                     onClick={() =>
                       navigate(`/viewsolutions/${params.attemptId}/lrdi`)
@@ -259,7 +145,6 @@ function ViewSolution() {
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.mocktype === "varc" || params.mocktype === "lrdi" ? true : false}
                     variant="contained"
                     onClick={() =>
                       navigate(`/viewsolutions/${params.attemptId}/varc`)
@@ -358,166 +243,54 @@ function ViewSolution() {
                   )}
                 </Typography>
                 <br /> <br />
+                <Typography variant="paragraph fw-bold">
+                  Your Answer:
+                </Typography>
+                <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === "0" ||
+                    {Data[selectedQuestionIndex].type === 0 ||
                     Data[selectedQuestionIndex].type === null ? (
-                      <>
-                        <TextField
-                          id="outlined-basic"
-                          label="Enter Answer"
-                          variant="outlined"
-                          value={
-                            "selectedAnswer" in Data[selectedQuestionIndex]
-                              ? Data[selectedQuestionIndex].selectedAnswer
-                              : inputVal
-                          }
-                          onChange={(e) => setInputVal("")}
-                          inputRef={(input) => input && input.focus()}
-                          sx={{
-                            my: 3,
+                      <TextField
+                        id="outlined-basic"
+                        label="Enter Answer"
+                        variant="outlined"
+                        value={
+                          AnswerStatus[selectedQuestionIndex].studentAnswer
+                        }
+                        inputRef={(input) => input && input.focus()}
+                        disabled={true}
+                        sx={{
+                          my: 3,
+                          color: "black",
+                          width: "400px",
+                          "& label.Mui-focused": {
                             color: "black",
-                            width: "400px",
-                            "& label.Mui-focused": {
-                              color: "black",
+                          },
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: "var(--orange)",
+                          },
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                            "& .MuiInput-underline:after": {
-                              borderBottomColor: "var(--orange)",
+                            "&:hover fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                borderColor: "var(--orange)",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "var(--orange)",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "var(--orange)",
-                              },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "var(--orange)",
                             },
-                          }}
-                        />
-                        <div className="keys  p-3 rounded shadow">
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("1")}
-                            >
-                              1
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("2")}
-                            >
-                              2
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("3")}
-                            >
-                              3
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("4")}
-                            >
-                              4
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("5")}
-                            >
-                              5
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("6")}
-                            >
-                              6
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("7")}
-                            >
-                              7
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("8")}
-                            >
-                              8
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("9")}
-                            >
-                              9
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("0")}
-                            >
-                              0
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress(".")}
-                            >
-                              .
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("-")}
-                            >
-                              -
-                            </BootstrapButton>
-
-                            <BootstrapButton
-                              sx={{
-                                width: "151px",
-                                p: 1,
-                                borderRadius: "25px",
-                              }}
-                              variant="contained"
-                              onClick={() => handleBackspace()}
-                            >
-                              Backspace
-                            </BootstrapButton>
-                          </div>
-                        </div>
-                      </>
+                          },
+                        }}
+                      />
                     ) : (
                       <FormControl key={selectedQuestionIndex}>
+                        <br />
+
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            selectedAnswer !== undefined ? selectedAnswer : ""
-                          }
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setSelectedAnswer(parseInt(value));
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer =
-                              value;
-                            setData(updatedData);
-                          }}
+                          value={selectedAnswer}
                         >
                           {Data[selectedQuestionIndex].options !== null &&
                             Data[selectedQuestionIndex].options.map(
@@ -527,6 +300,7 @@ function ViewSolution() {
                                   value={index}
                                   control={<Radio />}
                                   label={<small>{option}</small>}
+                                
                                 />
                               )
                             )}
@@ -537,30 +311,13 @@ function ViewSolution() {
                 )}
               </div>
             </div>
-
-            {/* Bottom button div */}
+            {/* Bottom button div */}e
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton
-                  disabled={true}
-                  variant="contained"
-                  onClick={() => {
-                    handlePostData("review");
-                  }}
-                >
+                <MyButton disabled={true} variant="contained">
                   Mark for Review & Next
                 </MyButton>
-                <MyButton
-                  disabled={true}
-                  variant="contained"
-                  onClick={() => {
-                    const updatedData = [...Data];
-                    updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
-                    setInputVal(""); // clear input field value
-                    setData(updatedData);
-                    clearResponse();
-                  }}
-                >
+                <MyButton disabled={true} variant="contained">
                   Clear Response
                 </MyButton>
               </div>
@@ -569,9 +326,6 @@ function ViewSolution() {
                 <BootstrapButton
                   variant="contained "
                   disabled={true}
-                  onClick={() => {
-                    handlePostData("save");
-                  }}
                   sx={{ fontSize: "13px", color: "white" }}
                 >
                   Save & Next
@@ -619,7 +373,7 @@ function ViewSolution() {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
-                {AnswerStatus &&
+                {AnswerStatus.length > 0 &&
                   AnswerStatus.map((item, index) => {
                     return (
                       <div className="col">
@@ -663,10 +417,28 @@ function ViewSolution() {
 
             <div className="row   my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
-                <QuestionPaper question_paper={Data} />
-                <InstructionButton />
+                <MyButton
+                  variant="contained"
+                  sx={{ width: "150px", margin: 0, marginTop: "1em" }}
+                  disabled={true}
+                >
+                  Question Paper
+                </MyButton>
+                <MyButton
+                  variant="contained"
+                  sx={{ width: "150px", margin: 0, marginTop: "1em" }}
+                  disabled={true}
+                >
+                  Instructions
+                </MyButton>
               </div>
-              <ButtonSubmit />
+              <SubmitButton
+                sx={{ width: "100%", marginTop: "1em" }}
+                disabled={true}
+                variant="contained"
+              >
+                Submit
+              </SubmitButton>
             </div>
 
             <div className="row gap-3 my-3  flex-wrap text-start align-content-center  align-self-bottom  markingNotation">
