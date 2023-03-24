@@ -478,15 +478,15 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
-          <div className=" d-flex  m-5 ms-4 gap-5 align-items-center">
-            <div className=" d-flex flex-item gap-4 ms-3">
+          <div className=" d-flex  m-5 ms-4  align-items-center">
+            <div  style={{flexBasis:"70%"}} className=" d-flex flex-item gap-3 ms-3">
               <NavLink
                 to="overall"
                 activeClassName="active "
                 className="link flex-item"
               >
                 <ModifyButton variant="filled" className="nav-button">
-                  Overall Analysis
+                Score Card
                 </ModifyButton>
               </NavLink>
               <NavLink activeClassName="active" className="link flex-item">
@@ -511,7 +511,7 @@ function AnalysisMain() {
                   onClick={handleClick}
                   endIcon={<KeyboardArrowDownIcon />}
                 >
-                  Section wise analysis{" "}
+                  Section-wise
                 </ModifyButton>
               </NavLink>
 
@@ -562,9 +562,10 @@ function AnalysisMain() {
             </div>
 
             <div
+              style={{flexBasis:"30%"}}
               className={
                 location.pathname === `/analysis/${attemptId}/overall`
-                  ? "flex-item ms-3"
+                  ? "flex-item ms-3" 
                   : "d-none"
               }
             >
