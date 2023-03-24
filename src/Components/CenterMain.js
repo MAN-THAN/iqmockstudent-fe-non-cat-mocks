@@ -32,6 +32,7 @@ function CenterMain() {
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
+  const [questionStatus, setQuestionStatus] = useState([]);
 
   console.log("mock data", Data);
 
@@ -58,14 +59,14 @@ function CenterMain() {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
-    setData(updatedData);
+    // setData(updatedData);
   };
 
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
-    setData(updatedData);
+    // setData(updatedData);
   };
 
   // fetching main data
@@ -88,6 +89,84 @@ function CenterMain() {
     fetchMainData();
   }, [params.type]);
 
+  // Stage = 0 --> Not Visited
+  // Stage = 1 --> Answered
+  // Stage = 2 --> Not Answered
+  // Stage = 3 --> Mark for review
+  // Stage = 4 --> Answered & Mark for review
+
+  // Function for making stage setting 0
+
+  useEffect(() => setInitialStage(), [Data]);
+
+  const setInitialStage = () => {
+    Data.length &&
+      Data.map((item, index) => {
+        const prevObj = item;
+        const newObj = { ...prevObj, stage: 0 };
+        // console.log(newObj);
+        setQuestionStatus((prevState) => [...prevState, newObj]);
+      });
+  };
+  console.log(questionStatus, "question status");
+
+  // Function for setting stages
+
+  const setStage = (buttonType) => {
+    const questionType = Data[selectedQuestionIndex].type;
+    let studentAnswer;
+    let studentAnswerIndex
+    if (questionType === 1) {
+     studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
+      studentAnswer =
+        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined ? Data[selectedQuestionIndex].options[studentAnswerIndex] : null;
+    }
+    if (questionType === 0) {
+      studentAnswer = inputVal;
+   
+    }
+    console.log("===>", studentAnswer);
+    const obj = questionStatus[selectedQuestionIndex];
+    if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "save") {
+      const newObj = { ...obj, stage: 1, studentAnswer, studentAnswerIndex, duration: 10 };
+      console.log(newObj);
+      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      return nextInd();
+    } else if (studentAnswer === null && studentAnswerIndex === null && buttonType === "review") {
+      const newObj = { ...obj, stage: 3, studentAnswer, studentAnswerIndex, duration: 10 };
+      console.log(newObj);
+      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      return nextInd();
+    } else if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "review") {
+      const newObj = { ...obj, stage: 4, studentAnswer, studentAnswerIndex, duration: 10 };
+      console.log(newObj);
+      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      return nextInd();
+    } else {
+      const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
+      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      return nextInd();
+    }
+  };
+
+  // Function on question render
+
+  const showPreviousValue = () => {
+    console.log("manthan", selectedQuestionIndex);
+    if (questionStatus.length > 0) {
+      if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
+        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
+        setSelectedAnswer(null);
+      } else {
+        setSelectedAnswer(null);
+      }
+    }
+  };
+  useEffect(() => {
+    showPreviousValue();
+  }, [selectedQuestionIndex]);
+
   // fetching answers status
   const fetchingAnswersStatus = async () => {
     const subject_type = params.type;
@@ -96,7 +175,7 @@ function CenterMain() {
     if (response?.status == 200) {
       const arr = response.data.finalData;
       setAnswerStatus(arr);
-      setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+      // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
     }
   };
   useEffect(() => {
@@ -132,7 +211,7 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-     alert("Go to next section")
+      alert("Go to next section");
       return;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
@@ -279,7 +358,9 @@ function CenterMain() {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
+                          value={
+                            "studentAnswer" in questionStatus[selectedQuestionIndex] ? questionStatus[selectedQuestionIndex].studentAnswer : inputVal
+                          }
                           onChange={(e) => setInputVal("")}
                           inputRef={(input) => input && input.focus()}
                           sx={{
@@ -419,9 +500,9 @@ function CenterMain() {
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer = value;
-                            setData(updatedData);
+                            // const updatedData = [...Data];
+                            // updatedData[selectedQuestionIndex].selectedAnswer = value;
+                            // // setData(updatedData);
                           }}
                         >
                           {Data[selectedQuestionIndex].options != null &&
@@ -439,12 +520,7 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton
-                  variant="contained"
-                  onClick={() => {
-                    handlePostData("review");
-                  }}
-                >
+                <MyButton variant="contained" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -453,7 +529,7 @@ function CenterMain() {
                     const updatedData = [...Data];
                     updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
                     setInputVal(""); // clear input field value
-                    setData(updatedData);
+                    // setData(updatedData);
                     clearResponse();
                   }}
                 >
@@ -462,14 +538,7 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton
-                  variant="contained "
-                  onClick={() => {
-                    handlePostData("save");
-                  }}
-                  sx={{ fontSize: "13px", color: "white" }}
-                  disabled={false}
-                >
+                <BootstrapButton variant="contained " onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -507,8 +576,8 @@ function CenterMain() {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
-                {AnswerStatus &&
-                  AnswerStatus.map((item, index) => {
+                {questionStatus &&
+                  questionStatus.map((item, index) => {
                     return (
                       <div className="col">
                         <Box
