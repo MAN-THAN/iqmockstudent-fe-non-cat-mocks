@@ -479,7 +479,7 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex  m-5 ms-4  align-items-center">
-            <div  style={{flexBasis:"70%"}} className=" d-flex flex-item gap-3 ms-3">
+            <div  style={{flexBasis:"70%"}} className=" d-flex  gap-3 ms-3">
               <NavLink
                 to="overall"
                 activeClassName="active "
@@ -565,7 +565,7 @@ function AnalysisMain() {
               style={{flexBasis:"30%"}}
               className={
                 location.pathname === `/analysis/${attemptId}/overall`
-                  ? "flex-item ms-3" 
+                  ? "flex-item ps-4" 
                   : "d-none"
               }
             >
@@ -589,8 +589,9 @@ function AnalysisMain() {
               >
                 Time spent on questions:
               </Box>
-
-              <img src="/Group17.svg" className="ms-3" alt="" />
+              <span >
+              <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
+              </span>
             </div>
           </div>
           <Outlet />
