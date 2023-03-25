@@ -106,12 +106,13 @@ function CenterMain() {
   };
 
   // Function for setting stages
+
+  console.log(questionStatus);
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
   // Stage = 3 --> Mark for review
   // Stage = 4 --> Answered & Mark for review
-  console.log(questionStatus);
   const setStage = (buttonType) => {
     const questionType = Data[selectedQuestionIndex].type;
     let studentAnswer;
@@ -126,7 +127,12 @@ function CenterMain() {
     }
 
     const obj = questionStatus[selectedQuestionIndex];
-    if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "save") {
+    if (
+      studentAnswer !== null &&
+      studentAnswer !== "" &&
+      studentAnswerIndex !== null &&
+      buttonType === "save"
+    ) {
       const newObj = {
         ...obj,
         stage: 1,
@@ -137,7 +143,12 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (studentAnswer === null && studentAnswerIndex === null && buttonType === "review") {
+    } 
+
+    else if (
+      (studentAnswer === null || studentAnswer === "") &&
+      buttonType === "review"
+    ) {
       const newObj = {
         ...obj,
         stage: 3,
@@ -148,7 +159,14 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "review") {
+    } 
+
+     else if (
+      studentAnswer !== null &&
+      studentAnswer !== "" &&
+      studentAnswerIndex !== null &&
+      buttonType === "review"
+    ) {
       const newObj = {
         ...obj,
         stage: 4,
@@ -159,7 +177,9 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else {
+    }
+    
+     else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
       setQuestionStatus((prevState) => {
         prevState.splice(selectedQuestionIndex, 1, newObj);
