@@ -34,7 +34,28 @@ function CenterMain() {
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
+  const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
   const [questionStatus, setQuestionStatus] = useState([]);
+
+  console.log(questionStatus);
+  console.log("stored question status", storedQuestionStatus);
+  // setting local storage into question status
+  useEffect(() => {
+    if (storedQuestionStatus !== null) { 
+      setQuestionStatus(storedQuestionStatus);
+    }
+  }, [])
+
+
+  // setting state into local storage
+
+  useEffect(() => {
+    if (questionStatus.length > 0) { 
+       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
+       console.log("putting ibnto local");
+    }
+  }, [selectedQuestionIndex]);
+
   // for storing previous value of question index
   const prevQuestionIndex = useRef(null);
 
@@ -88,7 +109,12 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    fetchMainData();
+    if (storedQuestionStatus === null) {
+      fetchMainData();
+    } else {
+      setData(storedQuestionStatus);
+      setLoading(false);
+    }
   }, [params.type]);
 
   // Function for making stage setting 0
@@ -98,7 +124,7 @@ function CenterMain() {
   }, [Data]);
 
   const setInitialStage = () => {
-    const updatedQuestionStatus = Data.map((item) => ({
+    const updatedQuestionStatus = Data?.map((item) => ({
       ...item,
       stage: 0,
     }));
@@ -127,12 +153,7 @@ function CenterMain() {
     }
 
     const obj = questionStatus[selectedQuestionIndex];
-    if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "save"
-    ) {
+    if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "save") {
       const newObj = {
         ...obj,
         stage: 1,
@@ -141,14 +162,12 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
-    } 
-
-    else if (
-      (studentAnswer === null || studentAnswer === "") &&
-      buttonType === "review"
-    ) {
+    } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
       const newObj = {
         ...obj,
         stage: 3,
@@ -157,16 +176,12 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
-    } 
-
-     else if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "review"
-    ) {
+    } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
       const newObj = {
         ...obj,
         stage: 4,
@@ -175,11 +190,12 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
-    }
-    
-     else {
+    } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
       setQuestionStatus((prevState) => {
         prevState.splice(selectedQuestionIndex, 1, newObj);
@@ -189,11 +205,11 @@ function CenterMain() {
     }
   };
 
-  // Function on question render
+  // Function showing prev value(If any) on question render
 
   const showPreviousValue = () => {
     console.log("currentQueIndex", selectedQuestionIndex);
-    if (questionStatus.length > 0) {
+    if (questionStatus?.length > 0) {
       if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
         if (questionStatus[selectedQuestionIndex].options === null) {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
@@ -214,7 +230,7 @@ function CenterMain() {
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
 
   const settingStage2 = () => {
-    if (questionStatus.length > 0) {
+    if (questionStatus?.length > 0) {
       console.log("prevQueIndex", prevQuestionIndex.current);
       const preQuestionIndex = prevQuestionIndex.current;
       const obj = questionStatus[preQuestionIndex];
@@ -231,13 +247,12 @@ function CenterMain() {
       }
     }
   };
-   useEffect(() => {
-     settingStage2();
-   }, [selectedQuestionIndex]);
+  useEffect(() => {
+    settingStage2();
+  }, [selectedQuestionIndex]);
 
   console.log("inputVal-->", inputVal);
-  console.log("selectedAnswer", selectedAnswer)
-  
+  console.log("selectedAnswer", selectedAnswer);
 
   // // fetching answers status
   // const fetchingAnswersStatus = async () => {
@@ -329,23 +344,20 @@ function CenterMain() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    // disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
                   >
                     Quant
                   </BootstrapButton>
@@ -403,15 +415,15 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
-                      Data.length > 0 && // Check if Data array has at least one element
+                      Data?.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
                             return <img src={item} alt="" className="img-fluid " width={150} />;
@@ -423,15 +435,15 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data?.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
-                {Data.length > 0 && (
+                {Data?.length > 0 && (
                   <div className="text-start">
                     {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
                       <>
