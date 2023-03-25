@@ -34,7 +34,7 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState([]);
 
-  console.log("mock data", Data);
+
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -155,14 +155,22 @@ function CenterMain() {
     console.log("manthan", selectedQuestionIndex);
     if (questionStatus.length > 0) {
       if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
+        if(questionStatus[selectedQuestionIndex].options === null){
+              setInputVal(questionStatus[selectedQuestionIndex].studentAnswer)
+      }
         setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
-      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
+      }  else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
+        setInputVal("")
+     
       }
     }
   };
+
+
+  console.log(inputVal)
   useEffect(() => {
     showPreviousValue();
   }, [selectedQuestionIndex]);
@@ -359,9 +367,9 @@ function CenterMain() {
                           label="Enter Answer"
                           variant="outlined"
                           value={
-                            "studentAnswer" in questionStatus[selectedQuestionIndex] ? questionStatus[selectedQuestionIndex].studentAnswer : inputVal
+                            inputVal !== "" ? inputVal : ""
                           }
-                          onChange={(e) => setInputVal("")}
+                          onChange={(e) => setInputVal(e.target.value)}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
