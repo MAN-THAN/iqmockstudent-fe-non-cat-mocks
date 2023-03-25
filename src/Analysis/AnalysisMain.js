@@ -19,22 +19,21 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
-import { Space, Spin } from "antd";
-import "../styleSheets/AnalysisMain.css"
+import PulseLoader from "react-spinners/PulseLoader";
+import "../styleSheets/AnalysisMain.css";
 
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
-  const location = useLocation()
-  const { attemptId ,subject} = params;
+  const location = useLocation();
+  const { attemptId, subject } = params;
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const navButton = document.querySelector('.nav-button');
+  const navButton = document.querySelector(".nav-button");
 
-  console.log(location)
-
+  console.log(location);
 
   useEffect(() => {
     setPDfStyle(false);
@@ -86,17 +85,15 @@ function AnalysisMain() {
         <div
           style={{
             display: "flex",
+            flexDirection:"column",
             width: "100vw",
             height: "100vh",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Spin
-            tip="Preparing Analysis...."
-            size="large"
-            style={{ transform: "scale(1.8)" }}
-          />
+          <PulseLoader color="#f8c014" size={21} text="Loading data..." />
+          <h5 className=" mt-4" style={{color:"#f8c014", textAlign:"center"}}>Loading....</h5>
         </div>
       ) : (
         <div
@@ -225,7 +222,6 @@ function AnalysisMain() {
                         className="rounded"
                       />
                     </a>
-                  
                   </div>
                 </div>
               </div>
@@ -489,31 +485,36 @@ function AnalysisMain() {
 
           {/* Buttons for changing sections */}
           <div className=" d-flex gap-3 m-5 ms-4">
-            <NavLink to="overall"  activeClassName="active " className="link">
-              <ModifyButton
-                variant="filled"
-                className="nav-button"
-              >
+            <NavLink to="overall" activeClassName="active " className="link">
+              <ModifyButton variant="filled" className="nav-button">
                 Overall Analysis
               </ModifyButton>
             </NavLink>
-           <NavLink activeClassName="active"  className="link" >
-           <ModifyButton
-              variant="filled"
-              style={{ background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? '#00359A' : '', color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && 'white'  }}
-              id="demo-customized-button"
-              aria-controls={open ? "demo-customized-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              disableElevation
-              onClick={handleClick}
-              endIcon={<KeyboardArrowDownIcon />}
-              
-            >
-              Section wise analysis{" "}
-            </ModifyButton>
-           </NavLink>
-           
+            <NavLink activeClassName="active" className="link">
+              <ModifyButton
+                variant="filled"
+                style={{
+                  background:
+                    location.pathname ===
+                    `/analysis/${attemptId}/sectionwise/${subject}`
+                      ? "#00359A"
+                      : "",
+                  color:
+                    location.pathname ===
+                      `/analysis/${attemptId}/sectionwise/${subject}` &&
+                    "white",
+                }}
+                id="demo-customized-button"
+                aria-controls={open ? "demo-customized-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                disableElevation
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Section wise analysis{" "}
+              </ModifyButton>
+            </NavLink>
 
             <StyledMenu
               id="demo-customized-menu"
@@ -539,24 +540,16 @@ function AnalysisMain() {
               </MenuItem>
             </StyledMenu>
 
-
-            <NavLink to="topicwise" activeClassName="active "  className="link" >
-            <ModifyButton
-              variant="filled"
-              className="nav-button"
-            >
-              Topic wise Analysis
-            </ModifyButton>
+            <NavLink to="topicwise" activeClassName="active " className="link">
+              <ModifyButton variant="filled" className="nav-button">
+                Topic wise Analysis
+              </ModifyButton>
             </NavLink>
-           <NavLink to="difficulty" activeClassName="active"  className="link">
-           <ModifyButton
-              variant="filled"
-              className="nav-button"
-            >
-              Difficulty wise analysis
-            </ModifyButton>
-           </NavLink>
-         
+            <NavLink to="difficulty" activeClassName="active" className="link">
+              <ModifyButton variant="filled" className="nav-button">
+                Difficulty wise analysis
+              </ModifyButton>
+            </NavLink>
           </div>
           <Outlet />
         </div>

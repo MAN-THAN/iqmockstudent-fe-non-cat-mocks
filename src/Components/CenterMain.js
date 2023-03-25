@@ -10,8 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
+import PulseLoader from "react-spinners/PulseLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -190,7 +189,7 @@ function CenterMain() {
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
     }
-    
+
      else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
@@ -310,7 +309,7 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      <Spin size="large" style={{ transform: "scale(1.8)" }} />
+      <PulseLoader color="#f8c014" size={21} text="Loading data..." />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">
