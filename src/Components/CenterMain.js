@@ -20,21 +20,23 @@ import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
 import { Space, Spin } from "antd";
+import { useRef } from "react";
+import { ContentPasteSearchOutlined } from "@mui/icons-material";
 
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState([]);
-
-  console.log("mock data", Data);
+  // for storing previous value of question index
+  const prevQuestionIndex = useRef(null);
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -89,62 +91,80 @@ function CenterMain() {
     fetchMainData();
   }, [params.type]);
 
+  // Function for making stage setting 0
+
+  useEffect(() => {
+    setInitialStage();
+  }, [Data]);
+
+  const setInitialStage = () => {
+    const updatedQuestionStatus = Data.map((item) => ({
+      ...item,
+      stage: 0,
+    }));
+    setQuestionStatus(updatedQuestionStatus);
+  };
+
+  // Function for setting stages
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
   // Stage = 3 --> Mark for review
   // Stage = 4 --> Answered & Mark for review
-
-  // Function for making stage setting 0
-
-  useEffect(() => setInitialStage(), [Data]);
-
-  const setInitialStage = () => {
-    Data.length &&
-      Data.map((item, index) => {
-        const prevObj = item;
-        const newObj = { ...prevObj, stage: 0 };
-        // console.log(newObj);
-        setQuestionStatus((prevState) => [...prevState, newObj]);
-      });
-  };
-  console.log(questionStatus, "question status");
-
-  // Function for setting stages
-
+  console.log(questionStatus);
   const setStage = (buttonType) => {
     const questionType = Data[selectedQuestionIndex].type;
     let studentAnswer;
-    let studentAnswerIndex
+    let studentAnswerIndex;
     if (questionType === 1) {
-     studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
+      studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
         Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined ? Data[selectedQuestionIndex].options[studentAnswerIndex] : null;
     }
     if (questionType === 0) {
       studentAnswer = inputVal;
-   
     }
-    console.log("===>", studentAnswer);
+
     const obj = questionStatus[selectedQuestionIndex];
     if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "save") {
-      const newObj = { ...obj, stage: 1, studentAnswer, studentAnswerIndex, duration: 10 };
+      const newObj = {
+        ...obj,
+        stage: 1,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
     } else if (studentAnswer === null && studentAnswerIndex === null && buttonType === "review") {
-      const newObj = { ...obj, stage: 3, studentAnswer:null, studentAnswerIndex, duration: 10 };
+      const newObj = {
+        ...obj,
+        stage: 3,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
     } else if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "review") {
-      const newObj = { ...obj, stage: 4, studentAnswer, studentAnswerIndex, duration: 10 };
+      const newObj = {
+        ...obj,
+        stage: 4,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
     } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
     }
   };
@@ -152,14 +172,18 @@ function CenterMain() {
   // Function on question render
 
   const showPreviousValue = () => {
-    console.log("manthan", selectedQuestionIndex);
+    console.log("currentQueIndex", selectedQuestionIndex);
     if (questionStatus.length > 0) {
       if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
+        if (questionStatus[selectedQuestionIndex].options === null) {
+          setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
+        }
         setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
       } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
+        setInputVal("");
       }
     }
   };
@@ -167,46 +191,75 @@ function CenterMain() {
     showPreviousValue();
   }, [selectedQuestionIndex]);
 
-  // fetching answers status
-  const fetchingAnswersStatus = async () => {
-    const subject_type = params.type;
-    const response = await fetchAnswerStatus(attemptID, subject_type);
-    console.log(response);
-    if (response?.status == 200) {
-      const arr = response.data.finalData;
-      setAnswerStatus(arr);
-      // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  // Function setting stage "Not Answered" on just changing selectedQuestionIndex
+
+  const settingStage2 = () => {
+    if (questionStatus.length > 0) {
+      console.log("prevQueIndex", prevQuestionIndex.current);
+      const preQuestionIndex = prevQuestionIndex.current;
+      const obj = questionStatus[preQuestionIndex];
+      if (obj?.stage === 0) {
+        const newObj = {
+          ...obj,
+          stage: 2,
+        };
+        console.log(newObj);
+        setQuestionStatus((prevState) => {
+          prevState.splice(preQuestionIndex, 1, newObj);
+          return prevState;
+        });
+      }
     }
   };
-  useEffect(() => {
-    fetchingAnswersStatus();
-  }, [params.type, selectedQuestionIndex]);
+   useEffect(() => {
+     settingStage2();
+   }, [selectedQuestionIndex]);
+
+  console.log("inputVal-->", inputVal);
+  console.log("selectedAnswer", selectedAnswer)
+  
+
+  // // fetching answers status
+  // const fetchingAnswersStatus = async () => {
+  //   const subject_type = params.type;
+  //   const response = await fetchAnswerStatus(attemptID, subject_type);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     const arr = response.data.finalData;
+  //     setAnswerStatus(arr);
+  //     // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchingAnswersStatus();
+  // }, [params.type, selectedQuestionIndex]);
 
   // post answers Api trigger on mark and review  button
 
-  const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
-    const data = {
-      question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer: studentAnswer,
-      duration: 30,
-      studentAnswerIndex: selectedAnswer,
-    };
-    const subject_type = params.type;
-    const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
-    console.log(response);
-    if (response?.status == 200) {
-      console.log("Answer posted successfully");
-    } else {
-      console.log("--> error in posting answer");
-    }
-    await fetchingAnswersStatus();
-    nextInd();
-  };
+  // const handlePostData = async (clickType) => {
+  //   const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+  //   const data = {
+  //     question_id: Data[selectedQuestionIndex]._id,
+  //     studentAnswer: studentAnswer,
+  //     duration: 30,
+  //     studentAnswerIndex: selectedAnswer,
+  //   };
+  //   const subject_type = params.type;
+  //   const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     console.log("Answer posted successfully");
+  //   } else {
+  //     console.log("--> error in posting answer");
+  //   }
+  //   await fetchingAnswersStatus();
+  //   nextInd();
+  // };
 
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
+    prevQuestionIndex.current = selectedQuestionIndex;
   };
   // button for next func
   const nextInd = () => {
@@ -234,7 +287,15 @@ function CenterMain() {
   // };
 
   return loading ? (
-    <div style={{ display: "flex", width: "100vw", height: "80vh", justifyContent: "center", alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        width: "100vw",
+        height: "80vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Spin size="large" style={{ transform: "scale(1.8)" }} />
     </div>
   ) : (
@@ -358,10 +419,8 @@ function CenterMain() {
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            "studentAnswer" in questionStatus[selectedQuestionIndex] ? questionStatus[selectedQuestionIndex].studentAnswer : inputVal
-                          }
-                          onChange={(e) => setInputVal("")}
+                          value={inputVal !== "" ? inputVal : ""}
+                          onChange={(e) => setInputVal(e.target.value)}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
