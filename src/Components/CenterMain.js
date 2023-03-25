@@ -96,31 +96,32 @@ function CenterMain() {
     fetchMainData();
   }, [params.type]);
 
+  // Function for making stage setting 0
+
+  useEffect(() => {
+    setInitialStage();
+  }, [Data]);
+
+  const setInitialStage = () => {
+    const updatedQuestionStatus = Data.map((item) => ({
+      ...item,
+      stage: 0,
+    }));
+    setQuestionStatus(updatedQuestionStatus);
+  };
+
+  // Function for setting stages
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
   // Stage = 3 --> Mark for review
   // Stage = 4 --> Answered & Mark for review
-
-  // Function for making stage setting 0
-
-  useEffect(() => {
-    setInitialStage();
-   }, [Data]);
-
-   const setInitialStage = () => {
-  const updatedQuestionStatus = Data.map((item) => ({
-    ...item,
-    stage: 0,
-  }));
-  setQuestionStatus(updatedQuestionStatus);
-};
-
-
-
-
-
-  // Function for setting stages
+  console.log(questionStatus);
+  // Stage = 0 --> Not Visited
+  // Stage = 1 --> Answered
+  // Stage = 2 --> Not Answered
+  // Stage = 3 --> Mark for review
+  // Stage = 4 --> Answered & Mark for review
 
   const setStage = (buttonType) => {
     const questionType = Data[selectedQuestionIndex].type;
@@ -136,10 +137,11 @@ function CenterMain() {
     if (questionType === 0) {
       studentAnswer = inputVal;
     }
-    console.log("===>", studentAnswer);
+
     const obj = questionStatus[selectedQuestionIndex];
     if (
       studentAnswer !== null &&
+      studentAnswer !== "" &&
       studentAnswerIndex !== null &&
       buttonType === "save"
     ) {
@@ -153,9 +155,10 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (
-      studentAnswer === null &&
-      studentAnswerIndex === null &&
+    } 
+
+    else if (
+      (studentAnswer === null || studentAnswer === "") &&
       buttonType === "review"
     ) {
       const newObj = {
@@ -168,8 +171,11 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (
+    } 
+
+     else if (
       studentAnswer !== null &&
+      studentAnswer !== "" &&
       studentAnswerIndex !== null &&
       buttonType === "review"
     ) {
@@ -183,7 +189,9 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else {
+    }
+    
+     else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
