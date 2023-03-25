@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -22,24 +17,54 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
+<<<<<<< HEAD
 import {
   fetchQuestions,
   fetchAnswerStatus,
   postAnswers,
 } from "../services/Mock_api";
+=======
+import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
+import { Space, Spin } from "antd";
+import { useRef } from "react";
+import { ContentPasteSearchOutlined } from "@mui/icons-material";
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
+  const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
   const [questionStatus, setQuestionStatus] = useState([]);
+
+  console.log(questionStatus);
+  console.log("stored question status", storedQuestionStatus);
+  // setting local storage into question status
+  useEffect(() => {
+    if (storedQuestionStatus !== null) { 
+      setQuestionStatus(storedQuestionStatus);
+    }
+  }, [])
+
+
+  // setting state into local storage
+
+  useEffect(() => {
+    if (questionStatus.length > 0) { 
+       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
+       console.log("putting ibnto local");
+    }
+  }, [selectedQuestionIndex]);
+
+  // for storing previous value of question index
+  const prevQuestionIndex = useRef(null);
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -91,7 +116,12 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    fetchMainData();
+    if (storedQuestionStatus === null) {
+      fetchMainData();
+    } else {
+      setData(storedQuestionStatus);
+      setLoading(false);
+    }
   }, [params.type]);
 
   // Function for making stage setting 0
@@ -101,7 +131,7 @@ function CenterMain() {
   }, [Data]);
 
   const setInitialStage = () => {
-    const updatedQuestionStatus = Data.map((item) => ({
+    const updatedQuestionStatus = Data?.map((item) => ({
       ...item,
       stage: 0,
     }));
@@ -109,18 +139,13 @@ function CenterMain() {
   };
 
   // Function for setting stages
-  // Stage = 0 --> Not Visited
-  // Stage = 1 --> Answered
-  // Stage = 2 --> Not Answered
-  // Stage = 3 --> Mark for review
-  // Stage = 4 --> Answered & Mark for review
+
   console.log(questionStatus);
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
   // Stage = 3 --> Mark for review
   // Stage = 4 --> Answered & Mark for review
-
   const setStage = (buttonType) => {
     const questionType = Data[selectedQuestionIndex].type;
     let studentAnswer;
@@ -128,21 +153,14 @@ function CenterMain() {
     if (questionType === 1) {
       studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
-        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
-          ? Data[selectedQuestionIndex].options[studentAnswerIndex]
-          : null;
+        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined ? Data[selectedQuestionIndex].options[studentAnswerIndex] : null;
     }
     if (questionType === 0) {
       studentAnswer = inputVal;
     }
 
     const obj = questionStatus[selectedQuestionIndex];
-    if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "save"
-    ) {
+    if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "save") {
       const newObj = {
         ...obj,
         stage: 1,
@@ -151,12 +169,19 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
+<<<<<<< HEAD
     } else if (
       (studentAnswer === null || studentAnswer === "") &&
       buttonType === "review"
     ) {
+=======
+    } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
       const newObj = {
         ...obj,
         stage: 3,
@@ -165,14 +190,21 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
+<<<<<<< HEAD
     } else if (
       studentAnswer !== null &&
       studentAnswer !== "" &&
       studentAnswerIndex !== null &&
       buttonType === "review"
     ) {
+=======
+    } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
       const newObj = {
         ...obj,
         stage: 4,
@@ -181,30 +213,32 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
     } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
-      questionStatus.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus((prevState) => {
+        prevState.splice(selectedQuestionIndex, 1, newObj);
+        return prevState;
+      });
       return nextInd();
     }
   };
 
-  // Function on question render
+  // Function showing prev value(If any) on question render
 
   const showPreviousValue = () => {
-    console.log("manthan", selectedQuestionIndex);
-    if (questionStatus.length > 0) {
+    console.log("currentQueIndex", selectedQuestionIndex);
+    if (questionStatus?.length > 0) {
       if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
         if (questionStatus[selectedQuestionIndex].options === null) {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
         }
-        setSelectedAnswer(
-          questionStatus[selectedQuestionIndex].studentAnswerIndex
-        );
-      } else if (
-        questionStatus[selectedQuestionIndex].studentAnswerIndex === null
-      ) {
+        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
@@ -212,60 +246,78 @@ function CenterMain() {
       }
     }
   };
-
-  console.log(inputVal);
   useEffect(() => {
     showPreviousValue();
   }, [selectedQuestionIndex]);
 
-  // fetching answers status
-  const fetchingAnswersStatus = async () => {
-    const subject_type = params.type;
-    const response = await fetchAnswerStatus(attemptID, subject_type);
-    console.log(response);
-    if (response?.status == 200) {
-      const arr = response.data.finalData;
-      setAnswerStatus(arr);
-      // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  // Function setting stage "Not Answered" on just changing selectedQuestionIndex
+
+  const settingStage2 = () => {
+    if (questionStatus?.length > 0) {
+      console.log("prevQueIndex", prevQuestionIndex.current);
+      const preQuestionIndex = prevQuestionIndex.current;
+      const obj = questionStatus[preQuestionIndex];
+      if (obj?.stage === 0) {
+        const newObj = {
+          ...obj,
+          stage: 2,
+        };
+        console.log(newObj);
+        setQuestionStatus((prevState) => {
+          prevState.splice(preQuestionIndex, 1, newObj);
+          return prevState;
+        });
+      }
     }
   };
   useEffect(() => {
-    fetchingAnswersStatus();
-  }, [params.type, selectedQuestionIndex]);
+    settingStage2();
+  }, [selectedQuestionIndex]);
+
+  console.log("inputVal-->", inputVal);
+  console.log("selectedAnswer", selectedAnswer);
+
+  // // fetching answers status
+  // const fetchingAnswersStatus = async () => {
+  //   const subject_type = params.type;
+  //   const response = await fetchAnswerStatus(attemptID, subject_type);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     const arr = response.data.finalData;
+  //     setAnswerStatus(arr);
+  //     // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchingAnswersStatus();
+  // }, [params.type, selectedQuestionIndex]);
 
   // post answers Api trigger on mark and review  button
 
-  const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal
-      ? inputVal
-      : Data[selectedQuestionIndex].options[selectedAnswer];
-    const data = {
-      question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer: studentAnswer,
-      duration: 30,
-      studentAnswerIndex: selectedAnswer,
-    };
-    const subject_type = params.type;
-    const response = await postAnswers(
-      JSON.stringify(data),
-      attemptID,
-      subject_type,
-      selectedQuestionIndex,
-      clickType
-    );
-    console.log(response);
-    if (response?.status == 200) {
-      console.log("Answer posted successfully");
-    } else {
-      console.log("--> error in posting answer");
-    }
-    await fetchingAnswersStatus();
-    nextInd();
-  };
+  // const handlePostData = async (clickType) => {
+  //   const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+  //   const data = {
+  //     question_id: Data[selectedQuestionIndex]._id,
+  //     studentAnswer: studentAnswer,
+  //     duration: 30,
+  //     studentAnswerIndex: selectedAnswer,
+  //   };
+  //   const subject_type = params.type;
+  //   const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     console.log("Answer posted successfully");
+  //   } else {
+  //     console.log("--> error in posting answer");
+  //   }
+  //   await fetchingAnswersStatus();
+  //   nextInd();
+  // };
 
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
+    prevQuestionIndex.current = selectedQuestionIndex;
   };
   // button for next func
   const nextInd = () => {
@@ -311,29 +363,24 @@ function CenterMain() {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    // disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
                   >
                     Quant
                   </BootstrapButton>
@@ -341,15 +388,9 @@ function CenterMain() {
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <span>
-                    <Tooltip
-                      title={isFullScreen ? "Exit full screen" : "Full screen"}
-                    >
+                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
                       <img
-                        src={
-                          isFullScreen
-                            ? "/Group28.jpg"
-                            : require("../images/Open vector.png")
-                        }
+                        src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -379,9 +420,7 @@ function CenterMain() {
                   >
                     {
                       <>
-                        <div style={{ color: "black", fontSize: "14px" }}>
-                          Time Left
-                        </div>
+                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
                         <Timer initMinute={3} initSeconds={0} />
                       </>
                     }
@@ -399,34 +438,18 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-7 overflow-auto"
-                  : "d-none"
-              }
-            >
+            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 &&
-                      Data[selectedQuestionIndex].isPara === "Yes"
-                        ? Data[selectedQuestionIndex].paragraph
-                        : "No paragraph"
+                      Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
                     }
                     image={
-                      Data.length > 0 && // Check if Data array has at least one element
+                      Data?.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return (
-                              <img
-                                src={item}
-                                alt=""
-                                className="img-fluid "
-                                width={150}
-                              />
-                            );
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
                     }
@@ -435,26 +458,17 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div
-              className={
-                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
-              }
-            >
+            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && (
-                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
-                  )}
+                  {Data?.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
-                {Data.length > 0 && (
+                {Data?.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === 0 ||
-                    Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -596,9 +610,7 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            selectedAnswer !== undefined ? selectedAnswer : ""
-                          }
+                          value={selectedAnswer !== undefined ? selectedAnswer : ""}
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
@@ -608,16 +620,9 @@ function CenterMain() {
                           }}
                         >
                           {Data[selectedQuestionIndex].options != null &&
-                            Data[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                            Data[selectedQuestionIndex].options.map((option, index) => (
+                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -629,10 +634,7 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton
-                  variant="contained"
-                  onClick={() => setStage("review")}
-                >
+                <MyButton variant="contained" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -650,12 +652,7 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton
-                  variant="contained "
-                  onClick={() => setStage("save")}
-                  sx={{ fontSize: "13px", color: "white" }}
-                  disabled={false}
-                >
+                <BootstrapButton variant="contained " onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -676,15 +673,7 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing{" "}
-                <b>
-                  {params.type === "varc"
-                    ? "Verbal Ability"
-                    : params.type === "lrdi"
-                    ? "Lrdi"
-                    : "Quants"}
-                </b>{" "}
-                section
+                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "Lrdi" : "Quants"}</b> section
               </Typography>
 
               <SubHeading
@@ -732,9 +721,7 @@ function CenterMain() {
                             fontSize: "15px",
                           }}
                         >
-                          <span style={{ position: "relative", bottom: "4px" }}>
-                            {index + 1}
-                          </span>
+                          <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
                         </Box>
                       </div>
                     );
@@ -755,40 +742,16 @@ function CenterMain() {
               <div className="d-flex flex-wrap justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img
-                    src={require("../images/Rectangle 88.jpg")}
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited {} </b>
+                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
               </div>
             </div>

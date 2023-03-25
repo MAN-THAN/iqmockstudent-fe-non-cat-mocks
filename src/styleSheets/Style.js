@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 export const theme = createTheme({
   typography: {
     h4: {
-      fontSize: "250",
       fontFamily: "var(--font-inter)",
       color: "white",
       fontWeight: 700,
@@ -77,8 +76,7 @@ export const SubmitButton = styled(Button)({
   borderRadius: "20px",
   backgroundColor: " #CECECE;",
   fontFamily: "var(--font-inder)",
-  borderRadius: "15px",
-  color: "black",
+ 
   "&:hover": {
     borderColor: "#CECECE",
     boxShadow: "none",
@@ -103,12 +101,10 @@ export const MyButton = styled(Button)({
   width: "209px",
   padding: "10px ",
   height: "30px",
-  color: "black",
   borderRadius: "20px",
   backgroundColor: " #1B4A82;",
   fontFamily: "var(--font-inter)",
-  borderRadius: "15px",
-  color: "white",
+   color: "white",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",
@@ -168,19 +164,19 @@ export const ModifyButton = styled(Button)({
   backgroundColor: "var( --light-background)",
   fontFamily: "var(--font-inter)",
   "&:hover": {
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     // borderColor: "none",
     // boxShadow: "none",
     color: "white",
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     borderColor: "none",
   },
   "&:focus": {
     // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     color: "white",
     outerLine: "none",
   },

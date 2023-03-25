@@ -52,7 +52,7 @@ export default function QuestionPaper({ question_paper }) {
             <SubHeading className="m-0 ps-1">Question Paper </SubHeading>
             <RxCross1 role="button" onClick={handleClose} />
           </div>
-          {question_paper.map((e, index) => {
+          {question_paper?.map((e, index) => {
             return (
               <div className="container p-2">
                 <Typography variant="paragraph fw-bold" mt="10px">

@@ -30,12 +30,15 @@ const Timer = (props) => {
     if (json?.success === true) {
       if (subject === "varc") {
         console.log("varc submitted");
+        localStorage.removeItem("questionStatus");
         navigate(`/main/${params.mockid}/lrdi`);
       } else if (subject === "lrdi") {
         console.log("lrdi submitted");
+          localStorage.removeItem("questionStatus");
         navigate(`/main/${params.mockid}/quants`);
       } else if (subject === "quants") {
         console.log("Your mock is submitted!!!");
+         localStorage.removeItem("questionStatus");
          navigate(`/analysis/${attemptID}/overall`);
       }
     }

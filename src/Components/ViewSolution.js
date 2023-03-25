@@ -70,31 +70,33 @@ function ViewSolution() {
   }, [params.mocktype]);
 
   // fetching answers status
-  const fetchAnswersStatus = async () => {
-    try {
-      const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${params.attemptId}/${params.mocktype}`;
-
-      const options = {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      };
-      const response = await fetch(url, options);
-      const json = await response.json();
-      const arr = json.finalData;
-      console.log("data===>", arr, attemptID);
-      setAnswerStatus(arr);
-
-      setSelectedAnswer(arr[selectedQuestionIndex].studentAnswerIndex);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      //  checkAnswered()
-    }
-  };
-
+  
   useEffect(() => {
+    const fetchAnswersStatus = async () => {
+      try {
+        const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${params.attemptId}/${params.mocktype}`;
+  
+        const options = {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        };
+        const response = await fetch(url, options);
+        const json = await response.json();
+        const arr = json.finalData;
+        console.log("data===>", arr, attemptID);
+        setAnswerStatus(arr);
+  
+        setSelectedAnswer(arr[selectedQuestionIndex].studentAnswerIndex);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        //  checkAnswered()
+      }
+    };
     fetchAnswersStatus();
   }, [params.mocktype]);
+ 
+
 
   useEffect(() => {
     if (AnswerStatus.length > 0) {

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, InputAdornment } from "@mui/material";
+import { Button, Typography, InputAdornment, Box } from "@mui/material";
 import { ModifyButton, SubHeading } from "../styleSheets/Style";
 import { useNavigate, Outlet, NavLink, useLoaderData } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { RxDotsVertical } from "react-icons/rx";
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
+import Badge from "react-bootstrap/Badge";
 import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
-import EditIcon from "@mui/icons-material/Edit";
+
 import Divider from "@mui/material/Divider";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
+<<<<<<< HEAD
 import PulseLoader from "react-spinners/PulseLoader";
+=======
+import { Space, Spin } from "antd";
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 import "../styleSheets/AnalysisMain.css";
 
 function AnalysisMain() {
@@ -30,10 +30,13 @@ function AnalysisMain() {
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
+<<<<<<< HEAD
   const [isActive, setIsActive] = useState(false);
   const navButton = document.querySelector(".nav-button");
 
   console.log(location);
+=======
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
   useEffect(() => {
     setPDfStyle(false);
@@ -255,8 +258,8 @@ function AnalysisMain() {
                   variant="filled"
                   onClick={() => navigate(`/viewsolutions/${attemptId}/varc`)}
                   sx={{
-                    border: "2px solid #00359A",
-                    backgroundColor: "#00359A",
+                    border: "2px solid #0057CB",
+                    backgroundColor: "#0057CB",
                     color: "white",
                     height: "50px",
                     width: "200px",
@@ -272,9 +275,9 @@ function AnalysisMain() {
                   sx={{
                     p: 2,
                     height: "50px",
-                    border: "2px solid #00359A",
+                    border: "2px solid #0057CB",
                     width: "200px",
-                    color: "#00359A",
+                    color: "#0057CB",
                     fontWeight: "bold",
                   }}
                 >
@@ -484,6 +487,7 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
+<<<<<<< HEAD
           <div className=" d-flex gap-3 m-5 ms-4">
             <NavLink to="overall" activeClassName="active " className="link">
               <ModifyButton variant="filled" className="nav-button">
@@ -515,31 +519,71 @@ function AnalysisMain() {
                 Section wise analysis{" "}
               </ModifyButton>
             </NavLink>
+=======
+          <div className=" d-flex  m-5 ms-4  align-items-center">
+            <div  style={{flexBasis:"70%"}} className=" d-flex  gap-3 ms-3">
+              <NavLink
+                to="overall"
+                activeClassName="active "
+                className="link flex-item"
+              >
+                <ModifyButton variant="filled" className="nav-button">
+                Score Card
+                </ModifyButton>
+              </NavLink>
+              <NavLink activeClassName="active" className="link flex-item">
+                <ModifyButton
+                  variant="filled"
+                  style={{
+                    background:
+                      location.pathname ===
+                      `/analysis/${attemptId}/sectionwise/${subject}`
+                        ? "#0057CB"
+                        : "",
+                    color:
+                      location.pathname ===
+                        `/analysis/${attemptId}/sectionwise/${subject}` &&
+                      "white",
+                  }}
+                  id="demo-customized-button"
+                  aria-controls={open ? "demo-customized-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  disableElevation
+                  onClick={handleClick}
+                  endIcon={<KeyboardArrowDownIcon />}
+                >
+                  Section-wise
+                </ModifyButton>
+              </NavLink>
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
-            <StyledMenu
-              id="demo-customized-menu"
-              MenuListProps={{
-                "aria-labelledby": "demo-customized-button",
-              }}
-              anchorEl={anchorEl}
-              open={open}
-            >
-              <MenuItem onClick={() => handleClose("varc")} disableRipple>
-                <IoBookSharp className="me-2" />
-                VARC
-              </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
-              <MenuItem onClick={() => handleClose("lrdi")} disableRipple>
-                <IoBookSharp className="me-2" />
-                LRDI
-              </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
-              <MenuItem onClick={() => handleClose("quants")} disableRipple>
-                <IoBookSharp className="me-2" />
-                QUANTS
-              </MenuItem>
-            </StyledMenu>
+              <StyledMenu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={() => handleClose("varc")} disableRipple>
+                  <IoBookSharp className="me-2" />
+                  VARC
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem onClick={() => handleClose("lrdi")} disableRipple>
+                  <IoBookSharp className="me-2" />
+                  LRDI
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem onClick={() => handleClose("quants")} disableRipple>
+                  <IoBookSharp className="me-2" />
+                  QUANTS
+                </MenuItem>
+              </StyledMenu>
 
+<<<<<<< HEAD
             <NavLink to="topicwise" activeClassName="active " className="link">
               <ModifyButton variant="filled" className="nav-button">
                 Topic wise Analysis
@@ -550,6 +594,61 @@ function AnalysisMain() {
                 Difficulty wise analysis
               </ModifyButton>
             </NavLink>
+=======
+              <NavLink
+                to="topicwise"
+                activeClassName="active "
+                className="link flex-item"
+              >
+                <ModifyButton variant="filled" className="nav-button">
+                  Topic wise Analysis
+                </ModifyButton>
+              </NavLink>
+
+              <NavLink
+                to="difficulty"
+                activeClassName="active"
+                className="link flex-item"
+              >
+                <ModifyButton variant="filled" className="nav-button">
+                  Difficulty wise analysis
+                </ModifyButton>
+              </NavLink>
+            </div>
+
+            <div
+              style={{flexBasis:"30%"}}
+              className={
+                location.pathname === `/analysis/${attemptId}/overall`
+                  ? "flex-item ps-4" 
+                  : "d-none"
+              }
+            >
+              <Box
+                component="span"
+                sx={{
+                  boxShadow: "none",
+                  textTransform: "none",
+                  fontSize: "18px",
+                  fontWeight: 500,
+                  width: "auto",
+                  height: "auto",
+                  color: "white",
+                  padding: "8px 16px",
+               
+                  borderRadius: "20px",
+                  lineHeight: 1.5,
+                  backgroundColor: "#0057CB",
+                  fontFamily: "var(--font-inter)",
+                }}
+              >
+                Time spent on questions:
+              </Box>
+              <span >
+              <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
+              </span>
+            </div>
+>>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
           </div>
           <Outlet />
         </div>
