@@ -117,13 +117,8 @@ function CenterMain() {
 };
 
 
-const  ttt =()=>{
-  const uup=datt.map(()=>({
 
-  }))
-}
 
-  console.log(questionStatus, "question status");
 
   // Function for setting stages
 
