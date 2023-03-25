@@ -10,7 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import PulseLoader from "react-spinners/PulseLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -27,7 +27,6 @@ import {
   fetchAnswerStatus,
   postAnswers,
 } from "../services/Mock_api";
-import { Space, Spin } from "antd";
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -154,9 +153,7 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } 
-
-    else if (
+    } else if (
       (studentAnswer === null || studentAnswer === "") &&
       buttonType === "review"
     ) {
@@ -170,9 +167,7 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } 
-
-     else if (
+    } else if (
       studentAnswer !== null &&
       studentAnswer !== "" &&
       studentAnswerIndex !== null &&
@@ -188,9 +183,7 @@ function CenterMain() {
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    }
-
-     else {
+    } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
@@ -309,7 +302,7 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      <PulseLoader color="#f8c014" size={21} text="Loading data..." />
+      <MoonLoader color="orange" loading size={50} speedMultiplier={1} />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">

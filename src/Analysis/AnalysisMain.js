@@ -92,8 +92,8 @@ function AnalysisMain() {
             alignItems: "center",
           }}
         >
-          <PulseLoader color="#f8c014" size={21} text="Loading data..." />
-          <h5 className=" mt-4" style={{color:"#f8c014", textAlign:"center"}}>Loading....</h5>
+          <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
+          <h5 className=" mt-4 ms-2" style={{color:"var(--button-blue)", textAlign:"center"}}>Loading....</h5>
         </div>
       ) : (
         <div
