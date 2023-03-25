@@ -27,9 +27,9 @@ function DifficultyAnalysis() {
   console.log(show)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "1.6em" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "3em"}}>
       <h1>Analysis Review,</h1>
-      <h6 style={{ marginTop: "1em" }}>A Quick Analysis Overview</h6>
+      <h6 style={{ marginTop: "0.5em" }}>A Quick Analysis Overview</h6>
       <div style={{ display: "flex", flexDirection: "row", gap: "3em", marginTop: "2em" }}>
         <ModifyButton
           variant="outlined"
@@ -38,12 +38,12 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #00359A",
+            border: "2px solid #0057CB",
             width: "200px",
-            color: "#00359A",
-            color: activeButton === "varc"? "white": "#00359A",
+            color: "#0057CB",
+            color: activeButton === "varc"? "white": "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "varc" && "#00359A"
+            background:activeButton === "varc" && "#0057CB"
           }}
           autoFocus={true}
         >
@@ -56,12 +56,12 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #00359A",
+            border: "2px solid #0057CB",
             width: "200px",
-            color: "#00359A",
-            color: activeButton === "lrdi"? "white": "#00359A",
+            color: "#0057CB",
+            color: activeButton === "lrdi"? "white": "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "lrdi" && "#00359A"
+            background:activeButton === "lrdi" && "#0057CB"
           }}
         >
           LRDI
@@ -72,11 +72,11 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #00359A",
+            border: "2px solid #0057CB",
             width: "200px",
-            color: activeButton === "quants"? "white": "#00359A",
+            color: activeButton === "quants"? "white": "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "quants" && "#00359A"
+            background:activeButton === "quants" && "#0057CB"
           }}
         >
           QUANT
@@ -91,7 +91,7 @@ function DifficultyAnalysis() {
             margin={{
               top: 5,
               right: 30,
-              left: 20,
+              left: 10,
               bottom: 5,
             }}
           >

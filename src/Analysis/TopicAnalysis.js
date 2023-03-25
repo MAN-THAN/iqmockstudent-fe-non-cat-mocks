@@ -15,11 +15,11 @@ import {
 function TopicAnalysis() {
   const [data, setData] = useState([]);
   const { topicWiseAnalysis } = useAuth();
+  
   useEffect(() => {
     setData(topicWiseAnalysis.topicWiseAnalysis);
   }, []);
-  console.log(topicWiseAnalysis);
-  console.log(data);
+
   const headings = [
     "Number",
     "Topic",
