@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { SubHeading, BootstrapButton, MyButton, SubmitButton } from "../styleSheets/Style";
+import {
+  SubHeading,
+  BootstrapButton,
+  MyButton,
+  SubmitButton,
+} from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -18,7 +23,11 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
+import {
+  fetchQuestions,
+  fetchAnswerStatus,
+  postAnswers,
+} from "../services/Mock_api";
 import { Space, Spin } from "antd";
 
 function CenterMain() {
@@ -33,8 +42,6 @@ function CenterMain() {
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState([]);
-
-
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -97,17 +104,18 @@ function CenterMain() {
 
   // Function for making stage setting 0
 
-  useEffect(() => setInitialStage(), [Data]);
+  useEffect(() => {
+    setInitialStage();
+   }, [Data]);
 
-  const setInitialStage = () => {
-    Data.length &&
-      Data.map((item, index) => {
-        const prevObj = item;
-        const newObj = { ...prevObj, stage: 0 };
-        // console.log(newObj);
-        setQuestionStatus((prevState) => [...prevState, newObj]);
-      });
-  };
+   const setInitialStage = () => {
+  const updatedQuestionStatus = Data.map((item) => ({
+    ...item,
+    stage: 0,
+  }));
+  setQuestionStatus(updatedQuestionStatus);
+};
+
   console.log(questionStatus, "question status");
 
   // Function for setting stages
@@ -115,30 +123,61 @@ function CenterMain() {
   const setStage = (buttonType) => {
     const questionType = Data[selectedQuestionIndex].type;
     let studentAnswer;
-    let studentAnswerIndex
+    let studentAnswerIndex;
     if (questionType === 1) {
-     studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
+      studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
-        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined ? Data[selectedQuestionIndex].options[studentAnswerIndex] : null;
+        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
+          ? Data[selectedQuestionIndex].options[studentAnswerIndex]
+          : null;
     }
     if (questionType === 0) {
       studentAnswer = inputVal;
-   
     }
     console.log("===>", studentAnswer);
     const obj = questionStatus[selectedQuestionIndex];
-    if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "save") {
-      const newObj = { ...obj, stage: 1, studentAnswer, studentAnswerIndex, duration: 10 };
+    if (
+      studentAnswer !== null &&
+      studentAnswerIndex !== null &&
+      buttonType === "save"
+    ) {
+      const newObj = {
+        ...obj,
+        stage: 1,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (studentAnswer === null && studentAnswerIndex === null && buttonType === "review") {
-      const newObj = { ...obj, stage: 3, studentAnswer, studentAnswerIndex, duration: 10 };
+    } else if (
+      studentAnswer === null &&
+      studentAnswerIndex === null &&
+      buttonType === "review"
+    ) {
+      const newObj = {
+        ...obj,
+        stage: 3,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
-    } else if (studentAnswer !== null && studentAnswerIndex !== null && buttonType === "review") {
-      const newObj = { ...obj, stage: 4, studentAnswer, studentAnswerIndex, duration: 10 };
+    } else if (
+      studentAnswer !== null &&
+      studentAnswerIndex !== null &&
+      buttonType === "review"
+    ) {
+      const newObj = {
+        ...obj,
+        stage: 4,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
       console.log(newObj);
       questionStatus.splice(selectedQuestionIndex, 1, newObj);
       return nextInd();
@@ -155,22 +194,24 @@ function CenterMain() {
     console.log("manthan", selectedQuestionIndex);
     if (questionStatus.length > 0) {
       if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
-        if(questionStatus[selectedQuestionIndex].options === null){
-              setInputVal(questionStatus[selectedQuestionIndex].studentAnswer)
-      }
-        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
-      }  else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
+        if (questionStatus[selectedQuestionIndex].options === null) {
+          setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
+        }
+        setSelectedAnswer(
+          questionStatus[selectedQuestionIndex].studentAnswerIndex
+        );
+      } else if (
+        questionStatus[selectedQuestionIndex].studentAnswerIndex === null
+      ) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
-        setInputVal("")
-     
+        setInputVal("");
       }
     }
   };
 
-
-  console.log(inputVal)
+  console.log(inputVal);
   useEffect(() => {
     showPreviousValue();
   }, [selectedQuestionIndex]);
@@ -193,7 +234,9 @@ function CenterMain() {
   // post answers Api trigger on mark and review  button
 
   const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+    const studentAnswer = inputVal
+      ? inputVal
+      : Data[selectedQuestionIndex].options[selectedAnswer];
     const data = {
       question_id: Data[selectedQuestionIndex]._id,
       studentAnswer: studentAnswer,
@@ -201,7 +244,13 @@ function CenterMain() {
       studentAnswerIndex: selectedAnswer,
     };
     const subject_type = params.type;
-    const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
+    const response = await postAnswers(
+      JSON.stringify(data),
+      attemptID,
+      subject_type,
+      selectedQuestionIndex,
+      clickType
+    );
     console.log(response);
     if (response?.status == 200) {
       console.log("Answer posted successfully");
@@ -242,7 +291,15 @@ function CenterMain() {
   // };
 
   return loading ? (
-    <div style={{ display: "flex", width: "100vw", height: "80vh", justifyContent: "center", alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        width: "100vw",
+        height: "80vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Spin size="large" style={{ transform: "scale(1.8)" }} />
     </div>
   ) : (
@@ -252,7 +309,9 @@ function CenterMain() {
         <div className="col-9">
           <div className="row py-2">
             <div className="container ">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
@@ -280,9 +339,15 @@ function CenterMain() {
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <span>
-                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
+                    <Tooltip
+                      title={isFullScreen ? "Exit full screen" : "Full screen"}
+                    >
                       <img
-                        src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
+                        src={
+                          isFullScreen
+                            ? "/Group28.jpg"
+                            : require("../images/Open vector.png")
+                        }
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -312,7 +377,9 @@ function CenterMain() {
                   >
                     {
                       <>
-                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
+                        <div style={{ color: "black", fontSize: "14px" }}>
+                          Time Left
+                        </div>
                         <Timer initMinute={3} initSeconds={0} />
                       </>
                     }
@@ -330,18 +397,34 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      Data.length > 0 &&
+                      Data[selectedQuestionIndex].isPara === "Yes"
+                        ? Data[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
                       Data.length > 0 && // Check if Data array has at least one element
                       Data[selectedQuestionIndex].image
                         ? Data[selectedQuestionIndex].image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return (
+                              <img
+                                src={item}
+                                alt=""
+                                className="img-fluid "
+                                width={150}
+                              />
+                            );
                           })
                         : null
                     }
@@ -350,25 +433,32 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {Data.length > 0 && (
+                    <Latex>{Data[selectedQuestionIndex].question}</Latex>
+                  )}
                 </Typography>
                 <br /> <br />
                 {Data.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
+                    {Data[selectedQuestionIndex].type === 0 ||
+                    Data[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={
-                            inputVal !== "" ? inputVal : ""
-                          }
+                          value={inputVal !== "" ? inputVal : ""}
                           onChange={(e) => setInputVal(e.target.value)}
                           inputRef={(input) => input && input.focus()}
                           sx={{
@@ -504,7 +594,9 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={selectedAnswer !== undefined ? selectedAnswer : ""}
+                          value={
+                            selectedAnswer !== undefined ? selectedAnswer : ""
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
@@ -514,9 +606,16 @@ function CenterMain() {
                           }}
                         >
                           {Data[selectedQuestionIndex].options != null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
-                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
-                            ))}
+                            Data[selectedQuestionIndex].options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={<small>{option}</small>}
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -528,7 +627,10 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={() => setStage("review")}>
+                <MyButton
+                  variant="contained"
+                  onClick={() => setStage("review")}
+                >
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -546,7 +648,12 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained " onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
+                <BootstrapButton
+                  variant="contained "
+                  onClick={() => setStage("save")}
+                  sx={{ fontSize: "13px", color: "white" }}
+                  disabled={false}
+                >
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -567,7 +674,15 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "Lrdi" : "Quants"}</b> section
+                You are viewing{" "}
+                <b>
+                  {params.type === "varc"
+                    ? "Verbal Ability"
+                    : params.type === "lrdi"
+                    ? "Lrdi"
+                    : "Quants"}
+                </b>{" "}
+                section
               </Typography>
 
               <SubHeading
@@ -615,7 +730,9 @@ function CenterMain() {
                             fontSize: "15px",
                           }}
                         >
-                          <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
+                          <span style={{ position: "relative", bottom: "4px" }}>
+                            {index + 1}
+                          </span>
                         </Box>
                       </div>
                     );
@@ -636,16 +753,40 @@ function CenterMain() {
               <div className="d-flex flex-wrap justify-content-center gap-4 ">
                 {" "}
                 <div className=" flex-item flex-fill ">
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
                 <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked</b>
                 </div>
                 <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                  <img
+                    src={require("../images/Rectangle 88.jpg")}
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited {} </b>
                 </div>
               </div>
             </div>
