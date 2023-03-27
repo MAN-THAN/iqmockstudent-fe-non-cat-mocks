@@ -671,7 +671,7 @@ function CenterMain() {
 
             <div className="row my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
-                <QuestionPaper question_paper={Data} />
+                <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
               <ButtonSubmit />
