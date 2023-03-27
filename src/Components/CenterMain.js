@@ -5,8 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
+import MoonLoader from "react-spinners/MoonLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -34,25 +33,14 @@ function CenterMain() {
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
-  const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
-  const [questionStatus, setQuestionStatus] = useState([]);
+  const [questionStatus, setQuestionStatus] = useState(null);
 
-  console.log(questionStatus);
-  console.log("stored question status", storedQuestionStatus);
-  // setting local storage into question status
+// syncing question status with local
+  
   useEffect(() => {
-    if (storedQuestionStatus !== null) { 
-      setQuestionStatus(storedQuestionStatus);
-    }
-  }, [])
-
-
-  // setting state into local storage
-
-  useEffect(() => {
-    if (questionStatus.length > 0) { 
-       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
-       console.log("putting ibnto local");
+    if (questionStatus?.length > 0) {
+      localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
+      console.log("putting ibnto local");
     }
   }, [selectedQuestionIndex]);
 
@@ -98,7 +86,7 @@ function CenterMain() {
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
-    const fetchMainData = async () => {
+    const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);
       console.log(response);
       if (response?.status == 200) {
@@ -109,18 +97,24 @@ function CenterMain() {
         setLoading(true);
       }
     };
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    console.log("storedQuestionStatus", storedQuestionStatus);
     if (storedQuestionStatus === null) {
-      fetchMainData();
+      fetchDataFromApi();
     } else {
-      setData(storedQuestionStatus);
+      console.log("setting from local");
+      setQuestionStatus(storedQuestionStatus);
       setLoading(false);
     }
   }, [params.type]);
 
-  // Function for making stage setting 0
+  // Function for making stage 0 in Question status(Only when data fetching from api)
 
   useEffect(() => {
-    setInitialStage();
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    if (storedQuestionStatus === null) {
+      setInitialStage();
+    }
   }, [Data]);
 
   const setInitialStage = () => {
@@ -131,22 +125,24 @@ function CenterMain() {
     setQuestionStatus(updatedQuestionStatus);
   };
 
-  // Function for setting stages
-
-  console.log(questionStatus);
+  // Function for setting different stages(accrd to student input)
+  console.log("data", Data);
+  console.log("questionStatus", questionStatus);
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
   // Stage = 3 --> Mark for review
   // Stage = 4 --> Answered & Mark for review
   const setStage = (buttonType) => {
-    const questionType = Data[selectedQuestionIndex].type;
+    const questionType = questionStatus[selectedQuestionIndex].type;
     let studentAnswer;
     let studentAnswerIndex;
     if (questionType === 1) {
       studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
-        Data[selectedQuestionIndex].options[studentAnswerIndex] !== undefined ? Data[selectedQuestionIndex].options[studentAnswerIndex] : null;
+        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
+          ? questionStatus[selectedQuestionIndex].options[studentAnswerIndex]
+          : null;
     }
     if (questionType === 0) {
       studentAnswer = inputVal;
@@ -331,7 +327,7 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      <Spin size="large" style={{ transform: "scale(1.8)" }} />
+      <MoonLoader color="orange" loading size={50} speedMultiplier={1} />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">
@@ -343,22 +339,13 @@ function CenterMain() {
               <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton
-                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
-                    variant="contained"
-                  >
+                  <BootstrapButton disabled={params.type === "quants" || params.type === "lrdi" ? true : false} variant="contained">
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
-                    variant="contained"
-                  >
+                  <BootstrapButton disabled={params.type === "varc" || params.type === "quants" ? true : false} variant="contained">
                     LRDI
                   </BootstrapButton>
-                  <BootstrapButton
-                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
-                    variant="contained"
-                  >
+                  <BootstrapButton disabled={params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -398,7 +385,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={3} initSeconds={0} />
+                          <Timer initMinute={3} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -415,17 +402,19 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
+                        ? questionStatus[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
-                      Data?.length > 0 && // Check if Data array has at least one element
-                      Data[selectedQuestionIndex].image
-                        ? Data[selectedQuestionIndex].image.map((item) => {
+                      questionStatus?.length > 0 && // Check if Data array has at least one element
+                      questionStatus[selectedQuestionIndex].image
+                        ? questionStatus[selectedQuestionIndex].image.map((item) => {
                             return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
@@ -435,17 +424,21 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data?.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data?.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
-                {Data?.length > 0 && (
+                {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
+                    {questionStatus[selectedQuestionIndex].type === 0 || questionStatus[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -596,8 +589,8 @@ function CenterMain() {
                             // // setData(updatedData);
                           }}
                         >
-                          {Data[selectedQuestionIndex].options != null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
+                          {questionStatus[selectedQuestionIndex].options != null &&
+                            questionStatus[selectedQuestionIndex].options.map((option, index) => (
                               <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
                             ))}
                         </RadioGroup>

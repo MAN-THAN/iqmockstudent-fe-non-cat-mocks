@@ -15,7 +15,7 @@ import Divider from "@mui/material/Divider";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
-import { Space, Spin } from "antd";
+import PulseLoader from "react-spinners/PulseLoader";
 import "../styleSheets/AnalysisMain.css";
 
 function AnalysisMain() {
@@ -26,6 +26,10 @@ function AnalysisMain() {
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const navButton = document.querySelector(".nav-button");
+
+  console.log(location);
 
   useEffect(() => {
     setPDfStyle(false);
@@ -77,17 +81,15 @@ function AnalysisMain() {
         <div
           style={{
             display: "flex",
+            flexDirection:"column",
             width: "100vw",
             height: "100vh",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Spin
-            tip="Preparing Analysis...."
-            size="large"
-            style={{ transform: "scale(1.8)" }}
-          />
+          <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
+          <h5 className=" mt-4 ms-2" style={{color:"var(--button-blue)", textAlign:"center"}}>Loading....</h5>
         </div>
       ) : (
         <div
@@ -478,42 +480,37 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
-          <div className=" d-flex  m-5 ms-4  align-items-center">
-            <div  style={{flexBasis:"70%"}} className=" d-flex  gap-3 ms-3">
-              <NavLink
-                to="overall"
-                activeClassName="active "
-                className="link flex-item"
+          <div className=" d-flex gap-3 m-5 ms-4">
+            <NavLink to="overall" activeClassName="active " className="link">
+              <ModifyButton variant="filled" className="nav-button">
+                Overall Analysis
+              </ModifyButton>
+            </NavLink>
+            <NavLink activeClassName="active" className="link">
+              <ModifyButton
+                variant="filled"
+                style={{
+                  background:
+                    location.pathname ===
+                    `/analysis/${attemptId}/sectionwise/${subject}`
+                      ? "#00359A"
+                      : "",
+                  color:
+                    location.pathname ===
+                      `/analysis/${attemptId}/sectionwise/${subject}` &&
+                    "white",
+                }}
+                id="demo-customized-button"
+                aria-controls={open ? "demo-customized-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                disableElevation
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDownIcon />}
               >
-                <ModifyButton variant="filled" className="nav-button">
-                Score Card
-                </ModifyButton>
-              </NavLink>
-              <NavLink activeClassName="active" className="link flex-item">
-                <ModifyButton
-                  variant="filled"
-                  style={{
-                    background:
-                      location.pathname ===
-                      `/analysis/${attemptId}/sectionwise/${subject}`
-                        ? "#0057CB"
-                        : "",
-                    color:
-                      location.pathname ===
-                        `/analysis/${attemptId}/sectionwise/${subject}` &&
-                      "white",
-                  }}
-                  id="demo-customized-button"
-                  aria-controls={open ? "demo-customized-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  disableElevation
-                  onClick={handleClick}
-                  endIcon={<KeyboardArrowDownIcon />}
-                >
-                  Section-wise
-                </ModifyButton>
-              </NavLink>
+                Section wise analysis{" "}
+              </ModifyButton>
+            </NavLink>
 
               <StyledMenu
                 id="basic-menu"
@@ -540,59 +537,16 @@ function AnalysisMain() {
                 </MenuItem>
               </StyledMenu>
 
-              <NavLink
-                to="topicwise"
-                activeClassName="active "
-                className="link flex-item"
-              >
-                <ModifyButton variant="filled" className="nav-button">
-                  Topic wise Analysis
-                </ModifyButton>
-              </NavLink>
-
-              <NavLink
-                to="difficulty"
-                activeClassName="active"
-                className="link flex-item"
-              >
-                <ModifyButton variant="filled" className="nav-button">
-                  Difficulty wise analysis
-                </ModifyButton>
-              </NavLink>
-            </div>
-
-            <div
-              style={{flexBasis:"30%"}}
-              className={
-                location.pathname === `/analysis/${attemptId}/overall`
-                  ? "flex-item ps-4" 
-                  : "d-none"
-              }
-            >
-              <Box
-                component="span"
-                sx={{
-                  boxShadow: "none",
-                  textTransform: "none",
-                  fontSize: "18px",
-                  fontWeight: 500,
-                  width: "auto",
-                  height: "auto",
-                  color: "white",
-                  padding: "8px 16px",
-               
-                  borderRadius: "20px",
-                  lineHeight: 1.5,
-                  backgroundColor: "#0057CB",
-                  fontFamily: "var(--font-inter)",
-                }}
-              >
-                Time spent on questions:
-              </Box>
-              <span >
-              <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
-              </span>
-            </div>
+            <NavLink to="topicwise" activeClassName="active " className="link">
+              <ModifyButton variant="filled" className="nav-button">
+                Topic wise Analysis
+              </ModifyButton>
+            </NavLink>
+            <NavLink to="difficulty" activeClassName="active" className="link">
+              <ModifyButton variant="filled" className="nav-button">
+                Difficulty wise analysis
+              </ModifyButton>
+            </NavLink>
           </div>
           <Outlet />
         </div>

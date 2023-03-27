@@ -73,3 +73,20 @@ export const postAnswers = async (payload, attempt_id, subject_type, question_in
     throw err;
   }
 };
+
+ // api for submit student answers(section-wise)
+
+export const submitSection = async (attempt_id, subject_type, payload) => { 
+  try {
+    const res = request({
+      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/submitAnswer/${subject_type}/${attempt_id}`,
+      type: "POST",
+      data: {answers : payload},
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
