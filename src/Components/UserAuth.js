@@ -39,9 +39,9 @@ const UserAuth = () => {
   return (
     <React.Fragment>
       <div style={{ display: "flex",flexDirection:"column", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
-      <PulseLoader color="#f8c014" size={21} text="Loading data..." />
+      <PulseLoader color="var(--orange)" size={21} text="Loading data..." />
    
-         <h5 className=" mt-4" style={{color:"#f8c014", textAlign:"center"}}>Authenticating..... Please wait</h5>
+         <h5 className=" mt-4" style={{color:"var(--orange)", textAlign:"center"}}>Authenticating..... Please wait</h5>
       
       </div>
     </React.Fragment>

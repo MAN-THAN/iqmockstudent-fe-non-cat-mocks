@@ -20,58 +20,53 @@ const Timer = (props) => {
 
   // submitting section wise
   const submitSectionFunc = async (subject) => {
-    const response = await submitSection(attemptID, subject, studentAnswersData);
-    if (response.status == 200) {
-      if (subject === "varc") {
-        window.localStorage.removeItem("questionStatus");
-        console.log("varc submitted");
-        navigate(`/main/${params.mockid}/lrdi`);
-      } else if (subject === "lrdi") {
-        window.localStorage.removeItem("questionStatus");
-        console.log("lrdi submitted");
-        navigate(`/main/${params.mockid}/quants`);
-      } else if (subject === "quants") {
-         window.localStorage.removeItem("questionStatus");
-        console.log("Your mock is submitted!!!");
-        navigate(`/analysis/${attemptID}/overall`);
-      }
+  const response = await submitSection(attemptID, subject, studentAnswersData);
+  if (response.status == 200) {
+    window.localStorage.removeItem("COUNTER_KEY");
+    window.localStorage.removeItem("questionStatus");
+    if (subject === "varc") {
+      console.log("varc submitted");
+      navigate(`/main/${params.mockid}/lrdi`);
+   
+    } else if (subject === "lrdi") {
+      console.log("lrdi submitted");
+      navigate(`/main/${params.mockid}/quants`);
+    } else if (subject === "quants") {
+      console.log("Your mock is submitted!!!");
+      navigate(`/analysis/${attemptID}/overall`);
     }
-  };
+  }
+};
 
-  useEffect(() => {
-    let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          //   clearInterval(myInterval);
-          if (params.type === "varc") {
-            submitSectionFunc("varc");
-          }
-          if (params.type === "lrdi") {
-            submitSectionFunc("lrdi");
-          }
-          if (params.type === "quants") {
-            submitSectionFunc("quants");
-            //final submit api call
-          }
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+useEffect(() => {
+  let myInterval = setInterval(() => {
+    if (seconds > 0) {
+      setSeconds(seconds - 1);
+    }
+    if (seconds === 0) {
+      if (minutes === 0) {
+        if (params.type === "varc") {
+          submitSectionFunc("varc");
+        } else if (params.type === "lrdi") {
+          submitSectionFunc("lrdi");
+        } else if (params.type === "quants") {
+          submitSectionFunc("quants");
         }
-      }
-      if (seconds - 1 > 0) {
-        // window.localStorage.setItem(COUNTER_KEY, seconds - 1);
       } else {
-        window.localStorage.removeItem(COUNTER_KEY);
-        clearInterval(myInterval);
+        setMinutes(minutes - 1);
+        setSeconds(59);
       }
-    }, 1000);
-    return () => {
-      clearInterval(myInterval);
-    };
-  });
+    } else {
+      window.localStorage.setItem("COUNTER_KEY", seconds - 1);
+    }
+  }, 1000);
+
+  return () => {
+    clearInterval(myInterval);
+  };
+},[seconds,minutes]);
+
+
 
   return (
     <React.Fragment>
