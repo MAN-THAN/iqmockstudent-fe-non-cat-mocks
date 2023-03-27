@@ -5,8 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
+import MoonLoader from "react-spinners/MoonLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -20,20 +19,33 @@ import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
 import { Space, Spin } from "antd";
+import { useRef } from "react";
+import { ContentPasteSearchOutlined } from "@mui/icons-material";
 
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
-  const [inputVal, setInputVal] = useState(""); //if have iinput box data store in this state
+  const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
   const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
+  const [questionStatus, setQuestionStatus] = useState(null);
 
-  console.log("mock data", Data);
+// syncing question status with local
+  
+  useEffect(() => {
+    if (questionStatus?.length > 0) {
+      localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
+      console.log("putting ibnto local");
+    }
+  }, [selectedQuestionIndex]);
+
+  // for storing previous value of question index
+  const prevQuestionIndex = useRef(null);
 
   //Function for full screen :
   const handleFullScreen = () => {
@@ -58,14 +70,14 @@ function CenterMain() {
     setInputVal((prevInput) => prevInput + key);
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal + key;
-    setData(updatedData);
+    // setData(updatedData);
   };
 
   const handleBackspace = () => {
     setInputVal((prevInput) => prevInput.slice(0, -1));
     const updatedData = [...Data];
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
-    setData(updatedData);
+    // setData(updatedData);
   };
 
   // fetching main data
@@ -74,7 +86,7 @@ function CenterMain() {
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
-    const fetchMainData = async () => {
+    const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);
       console.log(response);
       if (response?.status == 200) {
@@ -85,54 +97,200 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    fetchMainData();
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    console.log("storedQuestionStatus", storedQuestionStatus);
+    if (storedQuestionStatus === null) {
+      fetchDataFromApi();
+    } else {
+      console.log("setting from local");
+      setQuestionStatus(storedQuestionStatus);
+      setLoading(false);
+    }
   }, [params.type]);
 
-  // fetching answers status
-  const fetchingAnswersStatus = async () => {
-    const subject_type = params.type;
-    const response = await fetchAnswerStatus(attemptID, subject_type);
-    console.log(response);
-    if (response?.status == 200) {
-      const arr = response.data.finalData;
-      setAnswerStatus(arr);
-      setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  // Function for making stage 0 in Question status(Only when data fetching from api)
+
+  useEffect(() => {
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    if (storedQuestionStatus === null) {
+      setInitialStage();
+    }
+  }, [Data]);
+
+  const setInitialStage = () => {
+    const updatedQuestionStatus = Data?.map((item) => ({
+      ...item,
+      stage: 0,
+    }));
+    setQuestionStatus(updatedQuestionStatus);
+  };
+
+  // Function for setting different stages(accrd to student input)
+  console.log("data", Data);
+  console.log("questionStatus", questionStatus);
+  // Stage = 0 --> Not Visited
+  // Stage = 1 --> Answered
+  // Stage = 2 --> Not Answered
+  // Stage = 3 --> Mark for review
+  // Stage = 4 --> Answered & Mark for review
+  const setStage = (buttonType) => {
+    const questionType = questionStatus[selectedQuestionIndex].type;
+    let studentAnswer;
+    let studentAnswerIndex;
+    if (questionType === 1) {
+      studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
+      studentAnswer =
+        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
+          ? questionStatus[selectedQuestionIndex].options[studentAnswerIndex]
+          : null;
+    }
+    if (questionType === 0) {
+      studentAnswer = inputVal;
+    }
+
+    const obj = questionStatus[selectedQuestionIndex];
+    if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "save") {
+      const newObj = {
+        ...obj,
+        stage: 1,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
+      console.log(newObj);
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
+      return nextInd();
+    } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
+      const newObj = {
+        ...obj,
+        stage: 3,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
+      console.log(newObj);
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
+      return nextInd();
+    } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
+      const newObj = {
+        ...obj,
+        stage: 4,
+        studentAnswer,
+        studentAnswerIndex,
+        duration: 10,
+      };
+      console.log(newObj);
+       let arr = [...questionStatus];
+       arr.splice(selectedQuestionIndex, 1, newObj);
+       setQuestionStatus(arr);
+      return nextInd();
+    } else {
+      const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
+      return nextInd();
+    }
+  };
+
+  // Function showing prev value(If any) on question render
+
+  const showPreviousValue = () => {
+    console.log("currentQueIndex", selectedQuestionIndex);
+    if (questionStatus?.length > 0) {
+      if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
+        if (questionStatus[selectedQuestionIndex].options === null) {
+          setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
+        }
+        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
+        setSelectedAnswer(null);
+      } else {
+        setSelectedAnswer(null);
+        setInputVal("");
+      }
     }
   };
   useEffect(() => {
-    fetchingAnswersStatus();
-  }, [params.type, selectedQuestionIndex]);
+    showPreviousValue();
+  }, [selectedQuestionIndex]);
+
+  // Function setting stage "Not Answered" on just changing selectedQuestionIndex
+
+  const settingStage2 = () => {
+    if (questionStatus?.length > 0) {
+      console.log("prevQueIndex", prevQuestionIndex.current);
+      const preQuestionIndex = prevQuestionIndex.current;
+      const obj = questionStatus[preQuestionIndex];
+      if (obj?.stage === 0) {
+        const newObj = {
+          ...obj,
+          stage: 2,
+        };
+        console.log(newObj);
+        let arr = [...questionStatus];
+        arr.splice(preQuestionIndex, 1, newObj);
+        setQuestionStatus(arr);
+      }
+    }
+  };
+  useEffect(() => {
+    settingStage2();
+  }, [selectedQuestionIndex]);
+
+  console.log("inputVal-->", inputVal);
+  console.log("selectedAnswer", selectedAnswer);
+
+  // // fetching answers status
+  // const fetchingAnswersStatus = async () => {
+  //   const subject_type = params.type;
+  //   const response = await fetchAnswerStatus(attemptID, subject_type);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     const arr = response.data.finalData;
+  //     setAnswerStatus(arr);
+  //     // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchingAnswersStatus();
+  // }, [params.type, selectedQuestionIndex]);
 
   // post answers Api trigger on mark and review  button
 
-  const handlePostData = async (clickType) => {
-    const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
-    const data = {
-      question_id: Data[selectedQuestionIndex]._id,
-      studentAnswer: studentAnswer,
-      duration: 30,
-      studentAnswerIndex: selectedAnswer,
-    };
-    const subject_type = params.type;
-    const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
-    console.log(response);
-    if (response?.status == 200) {
-      console.log("Answer posted successfully");
-    } else {
-      console.log("--> error in posting answer");
-    }
-    await fetchingAnswersStatus();
-    nextInd();
-  };
+  // const handlePostData = async (clickType) => {
+  //   const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
+  //   const data = {
+  //     question_id: Data[selectedQuestionIndex]._id,
+  //     studentAnswer: studentAnswer,
+  //     duration: 30,
+  //     studentAnswerIndex: selectedAnswer,
+  //   };
+  //   const subject_type = params.type;
+  //   const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
+  //   console.log(response);
+  //   if (response?.status == 200) {
+  //     console.log("Answer posted successfully");
+  //   } else {
+  //     console.log("--> error in posting answer");
+  //   }
+  //   await fetchingAnswersStatus();
+  //   nextInd();
+  // };
 
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
+    prevQuestionIndex.current = selectedQuestionIndex;
   };
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-     alert("Go to next section")
+      alert("Wait for next section!!!");
       return;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
@@ -155,8 +313,16 @@ function CenterMain() {
   // };
 
   return loading ? (
-    <div style={{ display: "flex", width: "100vw", height: "80vh", justifyContent: "center", alignItems: "center" }}>
-      <Spin size="large" style={{ transform: "scale(1.8)" }} />
+    <div
+      style={{
+        display: "flex",
+        width: "100vw",
+        height: "80vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <MoonLoader color="orange" loading size={50} speedMultiplier={1} />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">
@@ -169,23 +335,27 @@ function CenterMain() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    // disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                   height="48"
+                   sx={{borderRadius:"20px"}}
+
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/varc`)}
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    height="48"
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/lrdi`)}
+                    sx={{borderRadius:"20px"}}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    // disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                  height="48"
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    onClick={() => navigate(`/main/${params.mockid}/quants`)}
+                    sx={{borderRadius:"20px"}}
                   >
                     Quant
                   </BootstrapButton>
@@ -226,7 +396,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={3} initSeconds={0} />
+                          <Timer initMinute={3} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -243,17 +413,19 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? Data[selectedQuestionIndex].paragraph : "No paragraph"
+                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
+                        ? questionStatus[selectedQuestionIndex].paragraph
+                        : "No paragraph"
                     }
                     image={
-                      Data.length > 0 && // Check if Data array has at least one element
-                      Data[selectedQuestionIndex].image
-                        ? Data[selectedQuestionIndex].image.map((item) => {
+                      questionStatus?.length > 0 && // Check if Data array has at least one element
+                      questionStatus[selectedQuestionIndex].image
+                        ? questionStatus[selectedQuestionIndex].image.map((item) => {
                             return <img src={item} alt="" className="img-fluid " width={150} />;
                           })
                         : null
@@ -263,24 +435,28 @@ function CenterMain() {
               </div>
             </div>
             {/*  right side question  div */}
-            <div className={Data.length > 0 && Data[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"}>
+            <div
+              className={
+                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
+              }
+            >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {Data.length > 0 && <Latex>{Data[selectedQuestionIndex].question}</Latex>}
+                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
-                {Data.length > 0 && (
+                {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {Data[selectedQuestionIndex].type === 0 || Data[selectedQuestionIndex].type === null ? (
+                    {questionStatus[selectedQuestionIndex].type === 0 || questionStatus[selectedQuestionIndex].type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
-                          value={"selectedAnswer" in Data[selectedQuestionIndex] ? Data[selectedQuestionIndex].selectedAnswer : inputVal}
-                          onChange={(e) => setInputVal("")}
+                          value={inputVal !== "" ? inputVal : ""}
+                          onChange={(e) => setInputVal(e.target.value)}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -419,13 +595,13 @@ function CenterMain() {
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
-                            const updatedData = [...Data];
-                            updatedData[selectedQuestionIndex].selectedAnswer = value;
-                            setData(updatedData);
+                            // const updatedData = [...Data];
+                            // updatedData[selectedQuestionIndex].selectedAnswer = value;
+                            // // setData(updatedData);
                           }}
                         >
-                          {Data[selectedQuestionIndex].options != null &&
-                            Data[selectedQuestionIndex].options.map((option, index) => (
+                          {questionStatus[selectedQuestionIndex].options != null &&
+                            questionStatus[selectedQuestionIndex].options.map((option, index) => (
                               <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
                             ))}
                         </RadioGroup>
@@ -439,21 +615,13 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton
-                  variant="contained"
-                  onClick={() => {
-                    handlePostData("review");
-                  }}
-                >
+                <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
                   variant="contained"
+                  height="41"
                   onClick={() => {
-                    const updatedData = [...Data];
-                    updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
-                    setInputVal(""); // clear input field value
-                    setData(updatedData);
                     clearResponse();
                   }}
                 >
@@ -462,14 +630,7 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton
-                  variant="contained "
-                  onClick={() => {
-                    handlePostData("save");
-                  }}
-                  sx={{ fontSize: "13px", color: "white" }}
-                  disabled={false}
-                >
+                <BootstrapButton variant="contained "   height="41" onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -507,8 +668,8 @@ function CenterMain() {
 
             <div className=" container mt-3 keyboard">
               <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
-                {AnswerStatus &&
-                  AnswerStatus.map((item, index) => {
+                {questionStatus &&
+                  questionStatus.map((item, index) => {
                     return (
                       <div className="col">
                         <Box
@@ -547,7 +708,7 @@ function CenterMain() {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row   my-2   ">
+            <div className="row my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
@@ -555,20 +716,23 @@ function CenterMain() {
               <ButtonSubmit />
             </div>
 
-            <div className="row gap-3 my-3  flex-wrap text-start align-content-center  align-self-bottom  markingNotation">
-              <div className="d-flex flex-wrap justify-content-center gap-4 ">
+            <div className="row mb-1 mt-3 markingNotation">
+              <div className="d-flex  flex-wrap row-gap-3  text-start ">
                 {" "}
-                <div className=" flex-item flex-fill ">
+                <div className=" flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
-                <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                <div className="flex-item "style={{flexBasis:"50%"}}> 
+                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                </div>
+                <div className="flex-item " style={{flexBasis:"100%"}}>
+                  <img src="/Answered&MarkedReview.png"className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review  </b>
                 </div>
               </div>
             </div>

@@ -1,15 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { submitSection } from "../services/Mock_api";
 
 const Timer = (props) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { initMinute, initSeconds } = props;
+  const { initMinute, initSeconds, studentAnswersData } = props;
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
   const COUNTER_KEY = "my-counter";
-  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+  const attemptID = JSON.parse(window.localStorage.getItem("userData"))?.attemptId;
 
   // taking the local storage value of timer
   useEffect(() => {
@@ -17,26 +18,22 @@ const Timer = (props) => {
     setSeconds(countDownTime);
   }, []);
 
+  // submitting section wise
   const submitSectionFunc = async (subject) => {
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-   
-    const json = await response.json();
-    console.log(json?.success);
-    if (json?.success === true) {
+    const response = await submitSection(attemptID, subject, studentAnswersData);
+    if (response.status == 200) {
       if (subject === "varc") {
+        window.localStorage.removeItem("questionStatus");
         console.log("varc submitted");
         navigate(`/main/${params.mockid}/lrdi`);
       } else if (subject === "lrdi") {
+        window.localStorage.removeItem("questionStatus");
         console.log("lrdi submitted");
         navigate(`/main/${params.mockid}/quants`);
       } else if (subject === "quants") {
+         window.localStorage.removeItem("questionStatus");
         console.log("Your mock is submitted!!!");
-         navigate(`/analysis/${attemptID}/overall`);
+        navigate(`/analysis/${attemptID}/overall`);
       }
     }
   };

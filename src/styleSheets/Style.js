@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 export const theme = createTheme({
   typography: {
     h4: {
-      fontSize: "250",
       fontFamily: "var(--font-inter)",
       color: "white",
       fontWeight: 700,
@@ -20,7 +19,6 @@ export const theme = createTheme({
     },
     paragraph: {
       color: "var(--font-color)",
-      fontWeight: 600,
       fontFamily: "var(--font-inter)",
       fontSize: "15px",
     },
@@ -70,15 +68,14 @@ export const SubmitButton = styled(Button)({
   textTransform: "none",
   fontSize: "13px",
   fontWeight: 600,
-  width: "280px",
+  width: "413px",
   padding: "10px ",
-  height: "30px",
+  height: "41px",
   color: "black",
-  borderRadius: "20px",
+  borderRadius: "15px",
   backgroundColor: " #CECECE;",
   fontFamily: "var(--font-inder)",
-  borderRadius: "15px",
-  color: "black",
+ 
   "&:hover": {
     borderColor: "#CECECE",
     boxShadow: "none",
@@ -94,21 +91,21 @@ export const SubmitButton = styled(Button)({
   },
 });
 
-export const MyButton = styled(Button)({
+
+
+export const MyButton = styled(Button) (({ height }) =>  ({
   boxShadow: "none",
   textTransform: "none",
   fontSize: "13px",
   fontWeight: 600,
   margin: "10px",
-  width: "209px",
+  width: "201px",
   padding: "10px ",
-  height: "30px",
-  color: "black",
-  borderRadius: "20px",
-  backgroundColor: " #1B4A82;",
-  fontFamily: "var(--font-inter)",
+  height: `${height}px`,
   borderRadius: "15px",
-  color: "white",
+  backgroundColor: "#0654CE;",
+  fontFamily: "var(--font-inter)",
+   color: "white",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",
@@ -120,18 +117,18 @@ export const MyButton = styled(Button)({
   "&:focus": {
     color: "white",
   },
-});
+}));
 
 // Orange color Buttons
-export const BootstrapButton = styled(LoadingButton)({
+export const BootstrapButton = styled(LoadingButton)(({ height }) => ({
   boxShadow: "none",
   textTransform: "none",
   fontSize: "15px",
   fontWeight: 600,
-  width: "189px",
-  height: "28px",
+  width: "219px",
+  height: `${height}px`,
   color: "black",
-  borderRadius: "20px",
+  borderRadius: "15px",
   lineHeight: 1.5,
   backgroundColor: "#FF9000",
   fontFamily: "var(--font-inter)",
@@ -152,7 +149,8 @@ export const BootstrapButton = styled(LoadingButton)({
     color: "white",
     outerLine: "none",
   },
-});
+}));
+
 
 export const ModifyButton = styled(Button)({
   boxShadow: "none",
@@ -163,24 +161,24 @@ export const ModifyButton = styled(Button)({
   height: "auto",
   color: "black",
   padding: "",
-  borderRadius: "20px",
+  borderRadius: "30px",
   lineHeight: 1.5,
   backgroundColor: "var( --light-background)",
   fontFamily: "var(--font-inter)",
   "&:hover": {
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     // borderColor: "none",
     // boxShadow: "none",
     color: "white",
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     borderColor: "none",
   },
   "&:focus": {
     // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-    backgroundColor: "#00359A",
+    backgroundColor: "#0057CB",
     color: "white",
     outerLine: "none",
   },
@@ -191,7 +189,6 @@ export const SubHeading = styled("div")(({ theme }) => ({
   fontSize: "22px",
   fontWeight: "600",
   lineHeight: "28px",
-  letterSpacing: "0em",
   textAlign: "left",
   color: "black",
   m: 2,

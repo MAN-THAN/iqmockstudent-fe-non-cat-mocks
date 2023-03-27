@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../services/Context";
 import { getAttemptId } from "../services/Mock_api";
-
+import PulseLoader from "react-spinners/PulseLoader";
 const UserAuth = () => {
   const navigate = useNavigate();
   //   console.log(attemptID);
@@ -38,8 +38,11 @@ const UserAuth = () => {
 
   return (
     <React.Fragment>
-      <div style={{ display: "flex", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
-        <Spin tip="Authenticating..... Please wait" size="large" style={{ transform: "scale(1.8)" }} />
+      <div style={{ display: "flex",flexDirection:"column", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
+      <PulseLoader color="#f8c014" size={21} text="Loading data..." />
+   
+         <h5 className=" mt-4" style={{color:"#f8c014", textAlign:"center"}}>Authenticating..... Please wait</h5>
+      
       </div>
     </React.Fragment>
   );
