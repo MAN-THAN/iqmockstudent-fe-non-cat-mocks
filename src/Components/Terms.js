@@ -70,10 +70,12 @@ function Terms() {
           <BootstrapButton
             variant="contained mx-auto"
             disabled={agree ? true : false}
+            height="30"
             sx={{
               color: agree ? "black" : "white",
               p: 2.5,
               backgroundColor: agree ? "#d2d4d6" : "",
+              borderRadius:"30px"
             }}
             onClick={() => setAgree(true)}
           >
@@ -83,10 +85,12 @@ function Terms() {
           <BootstrapButton
             variant="contained mx-auto"
             disabled={agree ? false : true}
+            height="30"
             sx={{
               color: "white",
               p: 2.5,
               background: agree ? "" : "#d2d4d6",
+              borderRadius:"30px"
             }}
             onClick={() => navigate("/user_authentication")}
           >

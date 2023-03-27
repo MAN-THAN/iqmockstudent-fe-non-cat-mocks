@@ -21,7 +21,7 @@ const Timer = (props) => {
   // submitting section wise
   const submitSectionFunc = async (subject) => {
     const response = await submitSection(attemptID, subject, studentAnswersData);
-    if (response?.status == 200) {
+    if (response.status == 200) {
       if (subject === "varc") {
         window.localStorage.removeItem("questionStatus");
         console.log("varc submitted");

@@ -46,12 +46,15 @@
   background: #ffffff;
   border-radius: 20px;
   height: max-height;
+  width: 100%;
+  font-size: 12px;
+  margin: auto;
   padding: 20px 0px 20px 0px;
 }
 
 .keyboard {
-  min-height: 300px;
-  max-height: 300px;
+  min-height: 275px;
+  max-height: 275px;
   /* overflow-x: hidden; */
   overflow-y: scroll;
   /* background: #000; */

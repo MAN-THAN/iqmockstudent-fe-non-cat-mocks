@@ -339,13 +339,29 @@ function CenterMain() {
               <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
-                  <BootstrapButton disabled={params.type === "quants" || params.type === "lrdi" ? true : false} variant="contained">
+                  <BootstrapButton
+                   height="48"
+                   sx={{borderRadius:"20px"}}
+
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    variant="contained"
+                  >
                     Verbal Ability
                   </BootstrapButton>
-                  <BootstrapButton disabled={params.type === "varc" || params.type === "quants" ? true : false} variant="contained">
+                  <BootstrapButton
+                    height="48"
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    variant="contained"
+                    sx={{borderRadius:"20px"}}
+                  >
                     LRDI
                   </BootstrapButton>
-                  <BootstrapButton disabled={params.type === "varc" || params.type === "lrdi" ? true : false} variant="contained">
+                  <BootstrapButton
+                  height="48"
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    variant="contained"
+                    sx={{borderRadius:"20px"}}
+                  >
                     Quant
                   </BootstrapButton>
                 </Stack>
@@ -385,7 +401,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                          <Timer initMinute={3} initSeconds={0} studentAnswersData={questionStatus} />
+                          <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -604,16 +620,13 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={() => setStage("review")}>
+                <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
                   variant="contained"
+                  height="41"
                   onClick={() => {
-                    const updatedData = [...Data];
-                    updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
-                    setInputVal(""); // clear input field value
-                    // setData(updatedData);
                     clearResponse();
                   }}
                 >
@@ -622,7 +635,7 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained " onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
+                <BootstrapButton variant="contained "   height="41" onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -700,7 +713,7 @@ function CenterMain() {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row   my-2   ">
+            <div className="row my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
@@ -708,20 +721,23 @@ function CenterMain() {
               <ButtonSubmit />
             </div>
 
-            <div className="row gap-3 my-3  flex-wrap text-start align-content-center  align-self-bottom  markingNotation">
-              <div className="d-flex flex-wrap justify-content-center gap-4 ">
+            <div className="row mb-1 mt-3 markingNotation">
+              <div className="d-flex  flex-wrap row-gap-3  text-start ">
                 {" "}
-                <div className=" flex-item flex-fill ">
+                <div className=" flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
-                <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                <div className="flex-item "style={{flexBasis:"50%"}}> 
+                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                </div>
+                <div className="flex-item " style={{flexBasis:"100%"}}>
+                  <img src="/Answered&MarkedReview.png"className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review  </b>
                 </div>
               </div>
             </div>
