@@ -158,10 +158,9 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
       const newObj = {
@@ -172,10 +171,9 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
       const newObj = {
@@ -186,17 +184,15 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+       let arr = [...questionStatus];
+       arr.splice(selectedQuestionIndex, 1, newObj);
+       setQuestionStatus(arr);
       return nextInd();
     } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     }
   };
@@ -236,10 +232,9 @@ function CenterMain() {
           stage: 2,
         };
         console.log(newObj);
-        setQuestionStatus((prevState) => {
-          prevState.splice(preQuestionIndex, 1, newObj);
-          return prevState;
-        });
+        let arr = [...questionStatus];
+        arr.splice(preQuestionIndex, 1, newObj);
+        setQuestionStatus(arr);
       }
     }
   };
@@ -295,7 +290,7 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-      alert("Go to next section");
+      alert("Wait for next section!!!");
       return;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
@@ -401,7 +396,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                          <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                          <Timer initMinute={3} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
