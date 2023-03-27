@@ -19,7 +19,6 @@ export const theme = createTheme({
     },
     paragraph: {
       color: "var(--font-color)",
-      fontWeight: 600,
       fontFamily: "var(--font-inter)",
       fontSize: "15px",
     },
@@ -69,11 +68,11 @@ export const SubmitButton = styled(Button)({
   textTransform: "none",
   fontSize: "13px",
   fontWeight: 600,
-  width: "280px",
+  width: "413px",
   padding: "10px ",
-  height: "30px",
+  height: "41px",
   color: "black",
-  borderRadius: "20px",
+  borderRadius: "15px",
   backgroundColor: " #CECECE;",
   fontFamily: "var(--font-inder)",
  
@@ -92,17 +91,19 @@ export const SubmitButton = styled(Button)({
   },
 });
 
-export const MyButton = styled(Button)({
+
+
+export const MyButton = styled(Button) (({ height }) =>  ({
   boxShadow: "none",
   textTransform: "none",
   fontSize: "13px",
   fontWeight: 600,
   margin: "10px",
-  width: "209px",
+  width: "201px",
   padding: "10px ",
-  height: "30px",
-  borderRadius: "20px",
-  backgroundColor: " #1B4A82;",
+  height: `${height}px`,
+  borderRadius: "15px",
+  backgroundColor: "#0654CE;",
   fontFamily: "var(--font-inter)",
    color: "white",
   "&:hover": {
@@ -116,18 +117,18 @@ export const MyButton = styled(Button)({
   "&:focus": {
     color: "white",
   },
-});
+}));
 
 // Orange color Buttons
-export const BootstrapButton = styled(LoadingButton)({
+export const BootstrapButton = styled(LoadingButton)(({ height }) => ({
   boxShadow: "none",
   textTransform: "none",
   fontSize: "15px",
   fontWeight: 600,
-  width: "189px",
-  height: "28px",
+  width: "219px",
+  height: `${height}px`,
   color: "black",
-  borderRadius: "20px",
+  borderRadius: "15px",
   lineHeight: 1.5,
   backgroundColor: "#FF9000",
   fontFamily: "var(--font-inter)",
@@ -148,7 +149,8 @@ export const BootstrapButton = styled(LoadingButton)({
     color: "white",
     outerLine: "none",
   },
-});
+}));
+
 
 export const ModifyButton = styled(Button)({
   boxShadow: "none",
@@ -159,7 +161,7 @@ export const ModifyButton = styled(Button)({
   height: "auto",
   color: "black",
   padding: "",
-  borderRadius: "20px",
+  borderRadius: "30px",
   lineHeight: 1.5,
   backgroundColor: "var( --light-background)",
   fontFamily: "var(--font-inter)",
@@ -187,7 +189,6 @@ export const SubHeading = styled("div")(({ theme }) => ({
   fontSize: "22px",
   fontWeight: "600",
   lineHeight: "28px",
-  letterSpacing: "0em",
   textAlign: "left",
   color: "black",
   m: 2,

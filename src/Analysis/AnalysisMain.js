@@ -10,16 +10,12 @@ import Badge from "react-bootstrap/Badge";
 import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
-
+import PulseLoader from "react-spinners/PulseLoader";
 import Divider from "@mui/material/Divider";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
-<<<<<<< HEAD
-import PulseLoader from "react-spinners/PulseLoader";
-=======
-import { Space, Spin } from "antd";
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
+
 import "../styleSheets/AnalysisMain.css";
 
 function AnalysisMain() {
@@ -30,13 +26,6 @@ function AnalysisMain() {
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
-<<<<<<< HEAD
-  const [isActive, setIsActive] = useState(false);
-  const navButton = document.querySelector(".nav-button");
-
-  console.log(location);
-=======
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
   useEffect(() => {
     setPDfStyle(false);
@@ -123,24 +112,7 @@ function AnalysisMain() {
 
                 <div className="d-flex gap-3  align-items-center ">
                   <div className="text-end ps-5">
-                    <Button
-                      variant="contained"
-                      sx={{
-                        background: "#DFDDDE",
-                        textTransform: "none",
-                        height: "24px",
-                        width: "123px",
-                        color: "black",
-                        fontFamily: "var(--font-inter)",
-                        borderRadius: "20px",
-                        fontSize: "12px",
-                        "&:hover": {
-                          backgroundColor: "#DFDDDE",
-                        },
-                      }}
-                    >
-                      Leader Board
-                    </Button>
+                   <img src="/LeaderBoard.png"  className="img-fluid" alt="" width={100} />
                   </div>
 
                   <div className="text-end">
@@ -247,8 +219,7 @@ function AnalysisMain() {
                 Hey {name},
               </Typography>
               <Typography
-                variant="h4"
-                sx={{ fontSize: "35px", color: "black" }}
+              sx={{ fontSize: "30px", color: "black", fontWeight:600 }}
               >
                 This is your mock analysis for iCAT 1.0.
               </Typography>
@@ -261,8 +232,9 @@ function AnalysisMain() {
                     border: "2px solid #0057CB",
                     backgroundColor: "#0057CB",
                     color: "white",
-                    height: "50px",
+                    height: "59px",
                     width: "200px",
+                    borderRadius:"20px",
                     p: 2,
                     fontWeight: "bold",
                   }}
@@ -271,14 +243,18 @@ function AnalysisMain() {
                 </ModifyButton>
                 <ModifyButton
                   variant="outlined"
+                  startIcon={
+                    <img src="/Download.png" className="img-fluid" width={13} />
+                      }
                   onClick={handleDownloadPDF}
                   sx={{
                     p: 2,
-                    height: "50px",
+                    height: "59px",
                     border: "2px solid #0057CB",
-                    width: "200px",
+                    width: "215px",
                     color: "#0057CB",
                     fontWeight: "bold",
+                    borderRadius:"20px",
                   }}
                 >
                   Download report
@@ -289,22 +265,22 @@ function AnalysisMain() {
             <div className="flex-item p-3  flex-fill">
               <div
                 className="container bg-warning   "
-                style={{ height: "auto", borderRadius: "15px", width: "auto" }}
+                style={{  borderRadius: "15px", width: "auto"  }}
               >
-                <div className=" d-flex gap-4 flex-column justify-content-center align-items-center py-3">
+                <div className=" d-flex gap-2 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
                       sx={{
-                        fontSize: "32px",
+                        fontSize: "30px",
                         fontFamily: "var( --font-inter)",
-                        fontWeight: "700",
+                        fontWeight: "bolder",
                       }}
                     >
                       Your score
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: "55px",
+                        fontSize: "52px",
                         fontFamily: "var( --font-inter)",
                         fontWeight: "900",
                       }}
@@ -314,9 +290,9 @@ function AnalysisMain() {
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: "32px",
+                        fontSize: "26px",
                         fontFamily: "var( --font-inter)",
-                        fontWeight: "700",
+                        fontWeight: "600",
                       }}
                     >
                       {" "}
@@ -338,18 +314,19 @@ function AnalysisMain() {
                           justifyContent: "space-between",
                           px: 3,
                           gap: { md: 3, lg: 5, xl: 5 },
-                          alignContent: "center",
+                          alignItem: "center",
                         }}
                       >
                         <item>
                           <Typography
                             sx={{
-                              fontSize: "28px",
+                              fontSize: "23px",
                               color: "black",
+                             fontWeight:600,
                               fontFamily: "var(--font-inter)",
                             }}
-                            variant="h4"
                             gutterBottom
+                            
                           >
                             Percentile
                           </Typography>
@@ -357,12 +334,13 @@ function AnalysisMain() {
                         <item>
                           <Typography
                             sx={{
-                              fontSize: "28px",
+                              fontSize: "23px",
                               color: "black",
+                              fontWeight:600,
 
                               fontFamily: "var(--font-inter)",
                             }}
-                            variant="h4"
+                         
                             gutterBottom
                           >
                             {percentile}
@@ -376,11 +354,11 @@ function AnalysisMain() {
             </div>
 
             <div className="  flex-item p-3 flex-fill   ">
-              <div className=" d-flex  justify-content-center flex-wrap gap-3 ">
+              <div className=" d-flex  justify-content-center  flex-wrap gap-4">
                 <div
-                  className="card shadow-sm  flex-item  flex-fill "
+                  className="card shadow flex-item  flex-fill  my-2 "
                   style={{
-                    width: "40%",
+                    width: "43%",
                     height: "7em",
                     border: "1px solid white",
                   }}
@@ -391,7 +369,7 @@ function AnalysisMain() {
                         {potentialScore}
                       </SubHeading>
 
-                      <Typography variant="paragraph">
+                      <Typography variant="paragraph" sx={{fontSize:"13px"}}>
                         Potential Mark
                       </Typography>
                     </div>
@@ -407,9 +385,9 @@ function AnalysisMain() {
                   </div>
                 </div>
                 <div
-                  className="card shadow-sm  flex-item flex-fill "
+                  className="card shadow flex-item flex-fill  my-2 "
                   style={{
-                    width: "40%",
+                    width: "43%",
                     height: "7em",
                     border: "1px solid white",
                   }}
@@ -433,9 +411,9 @@ function AnalysisMain() {
                   </div>
                 </div>
                 <div
-                  className="card shadow-sm  flex-item flex-fill"
+                  className="card shadow flex-item flex-fill  my-2"
                   style={{
-                    width: "40%",
+                    width: "43%",
                     height: "7em",
                     border: "1px solid white",
                   }}
@@ -457,9 +435,9 @@ function AnalysisMain() {
                   </div>
                 </div>
                 <div
-                  className="card shadow-sm  flex-item  flex-fill"
+                  className="card shadow flex-item  flex-fill  my-2"
                   style={{
-                    width: "40%",
+                    width: "43%",
                     height: "7em",
                     border: "1px solid white",
                   }}
@@ -487,39 +465,6 @@ function AnalysisMain() {
           </div>
 
           {/* Buttons for changing sections */}
-<<<<<<< HEAD
-          <div className=" d-flex gap-3 m-5 ms-4">
-            <NavLink to="overall" activeClassName="active " className="link">
-              <ModifyButton variant="filled" className="nav-button">
-                Overall Analysis
-              </ModifyButton>
-            </NavLink>
-            <NavLink activeClassName="active" className="link">
-              <ModifyButton
-                variant="filled"
-                style={{
-                  background:
-                    location.pathname ===
-                    `/analysis/${attemptId}/sectionwise/${subject}`
-                      ? "#00359A"
-                      : "",
-                  color:
-                    location.pathname ===
-                      `/analysis/${attemptId}/sectionwise/${subject}` &&
-                    "white",
-                }}
-                id="demo-customized-button"
-                aria-controls={open ? "demo-customized-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
-              >
-                Section wise analysis{" "}
-              </ModifyButton>
-            </NavLink>
-=======
           <div className=" d-flex  m-5 ms-4  align-items-center">
             <div  style={{flexBasis:"70%"}} className=" d-flex  gap-3 ms-3">
               <NavLink
@@ -556,7 +501,6 @@ function AnalysisMain() {
                   Section-wise
                 </ModifyButton>
               </NavLink>
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
               <StyledMenu
                 id="basic-menu"
@@ -583,25 +527,13 @@ function AnalysisMain() {
                 </MenuItem>
               </StyledMenu>
 
-<<<<<<< HEAD
-            <NavLink to="topicwise" activeClassName="active " className="link">
-              <ModifyButton variant="filled" className="nav-button">
-                Topic wise Analysis
-              </ModifyButton>
-            </NavLink>
-            <NavLink to="difficulty" activeClassName="active" className="link">
-              <ModifyButton variant="filled" className="nav-button">
-                Difficulty wise analysis
-              </ModifyButton>
-            </NavLink>
-=======
               <NavLink
                 to="topicwise"
                 activeClassName="active "
                 className="link flex-item"
               >
                 <ModifyButton variant="filled" className="nav-button">
-                  Topic wise Analysis
+                  Topic-wise 
                 </ModifyButton>
               </NavLink>
 
@@ -611,7 +543,7 @@ function AnalysisMain() {
                 className="link flex-item"
               >
                 <ModifyButton variant="filled" className="nav-button">
-                  Difficulty wise analysis
+                  Difficulty-wise 
                 </ModifyButton>
               </NavLink>
             </div>
@@ -648,7 +580,6 @@ function AnalysisMain() {
               <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
               </span>
             </div>
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
           </div>
           <Outlet />
         </div>

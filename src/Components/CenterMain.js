@@ -17,18 +17,10 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-<<<<<<< HEAD
-import {
-  fetchQuestions,
-  fetchAnswerStatus,
-  postAnswers,
-} from "../services/Mock_api";
-=======
 import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
 import { Space, Spin } from "antd";
 import { useRef } from "react";
 import { ContentPasteSearchOutlined } from "@mui/icons-material";
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -174,14 +166,7 @@ function CenterMain() {
         return prevState;
       });
       return nextInd();
-<<<<<<< HEAD
-    } else if (
-      (studentAnswer === null || studentAnswer === "") &&
-      buttonType === "review"
-    ) {
-=======
     } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
       const newObj = {
         ...obj,
         stage: 3,
@@ -195,16 +180,7 @@ function CenterMain() {
         return prevState;
       });
       return nextInd();
-<<<<<<< HEAD
-    } else if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "review"
-    ) {
-=======
     } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
->>>>>>> 2d2098395203451b7502b405a7742d2c489bedd8
       const newObj = {
         ...obj,
         stage: 4,
@@ -367,20 +343,27 @@ function CenterMain() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
+                   height="48"
+                   sx={{borderRadius:"20px"}}
+
                     disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
+                    height="48"
                     disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
+                    sx={{borderRadius:"20px"}}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
+                  height="48"
                     disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
+                    sx={{borderRadius:"20px"}}
                   >
                     Quant
                   </BootstrapButton>
@@ -634,11 +617,12 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between align-items-center pt-2">
               <div>
-                <MyButton variant="contained" onClick={() => setStage("review")}>
+                <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
                   variant="contained"
+                  height="41"
                   onClick={() => {
                     const updatedData = [...Data];
                     updatedData[selectedQuestionIndex].selectedAnswer = null; // clear selected answer
@@ -652,7 +636,7 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained " onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
+                <BootstrapButton variant="contained "   height="41" onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -730,7 +714,7 @@ function CenterMain() {
             </div>
             {/* Modal for questions and instructions */}
 
-            <div className="row   my-2   ">
+            <div className="row my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
                 <QuestionPaper question_paper={Data} />
                 <InstructionButton />
@@ -738,20 +722,23 @@ function CenterMain() {
               <ButtonSubmit />
             </div>
 
-            <div className="row gap-3 my-3  flex-wrap text-start align-content-center  align-self-bottom  markingNotation">
-              <div className="d-flex flex-wrap justify-content-center gap-4 ">
+            <div className="row mb-1 mt-3 markingNotation">
+              <div className="d-flex  flex-wrap row-gap-3  text-start ">
                 {" "}
-                <div className=" flex-item flex-fill ">
+                <div className=" flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
                   <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
-                <div className="flex-item flex-fill ">
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked</b>
+                <div className="flex-item  " style={{flexBasis:"50%"}}>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
-                <div className="flex-item flex-fill">
-                  <img src={require("../images/Rectangle 88.jpg")} className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                <div className="flex-item "style={{flexBasis:"50%"}}> 
+                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                </div>
+                <div className="flex-item " style={{flexBasis:"100%"}}>
+                  <img src="/Answered&MarkedReview.png"className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review  </b>
                 </div>
               </div>
             </div>

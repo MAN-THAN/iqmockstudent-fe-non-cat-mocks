@@ -86,7 +86,7 @@ export default function ButtonSubmit() {
   return (
     <span>
       <SubmitButton
-        sx={{ width: "100%", marginTop: "1em" }}
+        sx={{ width: "96%", marginTop: "1em" }}
         disabled={
           params.type === "varc" || params.type === "lrdi" ? true : false
         }
