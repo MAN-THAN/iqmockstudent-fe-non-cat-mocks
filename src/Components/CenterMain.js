@@ -42,7 +42,7 @@ function CenterMain() {
       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
       console.log("putting ibnto local");
     }
-  }, [selectedQuestionIndex]);
+  }, [questionStatus]);
 
   // for storing previous value of question index
   const prevQuestionIndex = useRef(null);
@@ -290,7 +290,7 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-      alert("Wait for next section!!!");
+      alert("You can not go to next section!!!");
       return;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
@@ -396,7 +396,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                          <Timer initMinute={3} initSeconds={0} studentAnswersData={questionStatus} />
+                          <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
