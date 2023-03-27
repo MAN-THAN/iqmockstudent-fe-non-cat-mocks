@@ -5,7 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import MoonLoader from "react-spinners/MoonLoader";
+import GridLoader from "react-spinners/GridLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -25,13 +25,11 @@ import { ContentPasteSearchOutlined } from "@mui/icons-material";
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
-  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId; // User attempt id (This api trigger in use context pageb that create a attempt id)
-  const [AnswerStatus, setAnswerStatus] = useState([]); // Answer status of user
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
 
@@ -225,67 +223,34 @@ function CenterMain() {
 
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
 
-  const settingStage2 = () => {
-    if (questionStatus?.length > 0) {
-      console.log("prevQueIndex", prevQuestionIndex.current);
-      const preQuestionIndex = prevQuestionIndex.current;
-      const obj = questionStatus[preQuestionIndex];
-      if (obj?.stage === 0) {
-        const newObj = {
-          ...obj,
-          stage: 2,
-        };
-        console.log(newObj);
-        setQuestionStatus((prevState) => {
-          prevState.splice(preQuestionIndex, 1, newObj);
-          return prevState;
-        });
-      }
-    }
-  };
+  
+
   useEffect(() => {
+    const settingStage2 = () => {
+      if (questionStatus?.length > 0) {
+        console.log("prevQueIndex", prevQuestionIndex.current);
+        const preQuestionIndex = prevQuestionIndex.current;
+        const obj = questionStatus[preQuestionIndex];
+        if (obj?.stage === 0) {
+          const newObj = {
+            ...obj,
+            stage: 2,
+          };
+          console.log(newObj);
+          setQuestionStatus((prevState) => {
+            prevState.splice(preQuestionIndex, 1, newObj);
+            return prevState;
+          });
+        }
+      }
+    };
     settingStage2();
   }, [selectedQuestionIndex]);
 
   console.log("inputVal-->", inputVal);
   console.log("selectedAnswer", selectedAnswer);
 
-  // // fetching answers status
-  // const fetchingAnswersStatus = async () => {
-  //   const subject_type = params.type;
-  //   const response = await fetchAnswerStatus(attemptID, subject_type);
-  //   console.log(response);
-  //   if (response?.status == 200) {
-  //     const arr = response.data.finalData;
-  //     setAnswerStatus(arr);
-  //     // setSelectedAnswer("studentAnswerIndex" in arr[selectedQuestionIndex] ? arr[selectedQuestionIndex].studentAnswerIndex : "");
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchingAnswersStatus();
-  // }, [params.type, selectedQuestionIndex]);
-
-  // post answers Api trigger on mark and review  button
-
-  // const handlePostData = async (clickType) => {
-  //   const studentAnswer = inputVal ? inputVal : Data[selectedQuestionIndex].options[selectedAnswer];
-  //   const data = {
-  //     question_id: Data[selectedQuestionIndex]._id,
-  //     studentAnswer: studentAnswer,
-  //     duration: 30,
-  //     studentAnswerIndex: selectedAnswer,
-  //   };
-  //   const subject_type = params.type;
-  //   const response = await postAnswers(JSON.stringify(data), attemptID, subject_type, selectedQuestionIndex, clickType);
-  //   console.log(response);
-  //   if (response?.status == 200) {
-  //     console.log("Answer posted successfully");
-  //   } else {
-  //     console.log("--> error in posting answer");
-  //   }
-  //   await fetchingAnswersStatus();
-  //   nextInd();
-  // };
+  
 
   // function for get index
   const handleQuestionClick = (index) => {
@@ -309,13 +274,7 @@ function CenterMain() {
     setInputVal("");
   };
 
-  // const checkAnswered = () => {
-  //   console.log("ammanjbcusacw");
-  //   if ("studentAnswer" in AnswerStatus[selectedQuestionIndex]) {
-  //     const a = Data[selectedQuestionIndex].options.filter((option, index) => option === AnswerStatus[selectedQuestionIndex].studentAnswer);
-  //     console.log(a);
-  //   }
-  // };
+
 
   return loading ? (
     <div
@@ -327,7 +286,8 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      <MoonLoader color="orange" loading size={50} speedMultiplier={1} />
+      <GridLoader
+ color="var(--orange)" loading size={20} speedMultiplier={1} />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">
