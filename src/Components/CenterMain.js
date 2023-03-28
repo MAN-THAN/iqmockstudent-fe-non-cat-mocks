@@ -430,7 +430,7 @@ function CenterMain() {
                 {
                   <ContentDrawer
                     question={
-                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
+                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes"
                         ? questionStatus[selectedQuestionIndex].paragraph
                         : "No paragraph"
                     }
@@ -449,14 +449,14 @@ function CenterMain() {
             {/*  right side question  div */}
             <div
               className={
-                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
+                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
               }
             >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex].question}</Latex>}
+                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
                 </Typography>
                 <br /> <br />
                 {questionStatus?.length > 0 && (
