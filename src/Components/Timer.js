@@ -2,6 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { SubHeading } from "./../styleSheets/Style";
+import { Typography } from "antd";
 
 const Timer = (props) => {
   const navigate = useNavigate();
@@ -64,7 +68,22 @@ useEffect(() => {
   return () => {
     clearInterval(myInterval);
   };
-},[seconds,minutes]);
+}, [seconds, minutes]);
+  
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 350,
+    textAlign: "",
+    height: 200,
+    bgcolor: "white",
+    borderRadius: "10px ",
+    boxShadow: 24,
+    p: 2,
+    overflowY: "scroll",
+  };
 
 
 
@@ -72,7 +91,15 @@ useEffect(() => {
     <React.Fragment>
       <span>
         {minutes === 0 && seconds === 0 ? (
-          <React.Fragment></React.Fragment>
+          <React.Fragment>
+            <Modal open={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+              <Box sx={style}>
+                <div style={{height : "100%", width : '100%'}} className="d-flex justify-content-between align-items-center">
+                  <SubHeading style={{textAlign:"center", color : 'red'}} className="m-0 ps-1">Times Up!!!</SubHeading>
+                </div>
+              </Box>
+            </Modal>
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <span className="Timer">
