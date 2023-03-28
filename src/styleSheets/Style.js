@@ -71,15 +71,16 @@ export const SubmitButton = styled(Button)({
   width: "413px",
   padding: "10px ",
   height: "41px",
-  color: "black",
+  color: "White",
   borderRadius: "15px",
-  backgroundColor: " #CECECE;",
+  background:" linear-gradient(90deg, #FF9000 0%, #FFB85C 100%)",
   fontFamily: "var(--font-inder)",
  
   "&:hover": {
     borderColor: "#CECECE",
-    boxShadow: "none",
-    backgroundColor: "#aba9a9",
+    boxShadow: "5px",
+      color:"white",
+    backgroundColor: " var(--orange);",
   },
   "&:active": {
     boxShadow: "none",
@@ -87,7 +88,7 @@ export const SubmitButton = styled(Button)({
   },
   "&:focus": {
     boxShadow: "none",
-    backgroundColor: "#aba9a9",
+    backgroundColor: " var(--orange);",
   },
 });
 
