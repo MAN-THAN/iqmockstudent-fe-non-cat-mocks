@@ -57,23 +57,6 @@ export const fetchAnswerStatus = async (attempt_id, subject_type) => {
   }
 };
 
-// api for posting answers
-
-export const postAnswers = async (payload, attempt_id, subject_type, question_index, clickType) => {
-  try {
-    const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attempt_id}/${subject_type}/${question_index}/${clickType}`,
-      data: payload,
-      type: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-    return res;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
-
  // api for submit student answers(section-wise)
 
 export const submitSection = async (attempt_id, subject_type, payload) => { 

@@ -13,12 +13,12 @@ function Header() {
     return (
         <header className="p-0 m-0 text-bg-dark">
             <div className="container-fluid py-2 ">
-                <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 px-3">
+                <div style={{gap : '20vw'}} className="d-flex flex-wrap align-items-center justify-content-around py-2 px-3">
                     <div className='flex-item w-30'  >
                         <Link to="/"><img src={require("../images/iquanta_Logo.png")} alt="iquanta_logo" className='img-fluid iquanta_logo' /></Link>
                     </div>
                     <div className='flex-item w-20 ms-5 ps-3'  >
-                        <Typography variant='h4'>iCAT 1.O 2023</Typography>
+                        <Typography sx={{marginLeft : "1.5em"}} variant='h4'>iCAT 1.O 2023</Typography>
                     </div>
 
                     <div className="d-flex gap-3 w-30  justify-self-end" >

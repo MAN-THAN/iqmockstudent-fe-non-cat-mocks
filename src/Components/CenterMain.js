@@ -22,11 +22,7 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-import {
-  fetchQuestions,
-  fetchAnswerStatus,
-  postAnswers,
-} from "../services/Mock_api";
+import { fetchQuestions } from "../services/Mock_api";
 import { Space, Spin } from "antd";
 import { useRef } from "react";
 import { ContentPasteSearchOutlined } from "@mui/icons-material";
@@ -409,7 +405,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={40}
+                          initMinute={2}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
@@ -751,7 +747,7 @@ function CenterMain() {
                 <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
-              <ButtonSubmit />
+              <ButtonSubmit studentAnswersData={questionStatus} />
             </div>
 
             <div className="row mb-1 mt-3 markingNotation">
