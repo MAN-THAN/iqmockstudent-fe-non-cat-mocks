@@ -233,10 +233,9 @@ function CenterMain() {
             stage: 2,
           };
           console.log(newObj);
-          setQuestionStatus((prevState) => {
-            prevState.splice(preQuestionIndex, 1, newObj);
-            return prevState;
-          });
+          let arr = [...questionStatus];
+          arr.splice(preQuestionIndex, 1, newObj);
+          setQuestionStatus(arr);
         }
       }
     };
