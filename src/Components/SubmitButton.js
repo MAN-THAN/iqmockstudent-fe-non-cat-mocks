@@ -63,8 +63,10 @@ export default function ButtonSubmit(props) {
   return (
     <span>
       <SubmitButton
-        sx={{ width: "96%", marginTop: "1em" }}
-        disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+        sx={{ width: "96%", marginTop: "1em" ,background: params.type === "varc" || params.type === "lrdi" ? "grey" : ""}}
+        disabled={
+          params.type === "varc" || params.type === "lrdi" ? true : false
+        }
         variant="contained"
         onClick={() => setOpenConfirm(true)}
       >
