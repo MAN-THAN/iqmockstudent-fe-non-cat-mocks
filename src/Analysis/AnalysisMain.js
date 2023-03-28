@@ -22,7 +22,7 @@ function AnalysisMain() {
   const params = useParams();
   const location = useLocation();
   const { attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis,SetLoading } = useAuth();
+  const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
 
