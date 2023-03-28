@@ -16,7 +16,6 @@ import { SubmitButton } from "../styleSheets/Style";
 import { Puff, InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { submitSection } from "../services/Mock_api";
 
 const style = {
   position: "absolute",
@@ -33,47 +32,79 @@ const style = {
   m: 0,
 };
 
-export default function ButtonSubmit(props) {
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [state, setState] = useState(0);
-  const { studentAnswersData } = props;
-  const params = useParams();
-  const navigate = useNavigate();
-  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
 
-  const buttonStyle = {
+
+export default function ButtonSubmit() {
+    const buttonStyle = {
     background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
     width: "138px",
     color: "#fff",
-    borderRadius: "20px"
-  }
+    borderRadius:"20px"
+  };
 
-  const FinalSubmitTest = async (subject) => {
-    setState(1);
-    const response = await submitSection(attemptID, subject, studentAnswersData);
+  const [open, setOpen] = React.useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [state, setState] = useState(0);
+  const handleConfirmOpen = () => setOpenConfirm(true);
+  const handleConfirmClose = () => setOpenConfirm(false);
+   const params = useParams();
+  const [Loader, setLoader] = useState(true);
+  const navigate = useNavigate();
+  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+
+  const submitSectionFunc = async (subject) => {
+    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(url, options);
     console.log(response);
-    if (response?.status == 200) {
-      setState(2);
-    }
+    const json = await response.json();
+    console.log(json?.success);
+    // if (json?.success === true) {
+    //   if (subject === "varc") {
+    //     console.log("varc submitted");
+    //     navigate(`/main/${params.mockid}/lrdi`);
+    //   } else if (subject === "lrdi") {
+    //     console.log("lrdi submitted");
+    //     navigate(`/main/${params.mockid}/quants`);
+    //   } else if (subject === "quants") {
+    //     console.log("Your mock is submitted!!!");
+    //   }
+    // }
   };
-  const goToAnalysis = () => {
-    navigate(`/analysis/${attemptID}/overall`);
+  const FinalSubmitTest = () => {
+    setState(1);
+    setTimeout(() => setState(2), 2000);
   };
 
+  const goToAnalyse = async () => {
+    handleConfirmClose();
+    setState(0);
+    navigate(`/analysis/${attemptID}/overall`);
+  
+  }
+  
   return (
     <span>
       <SubmitButton
-        sx={{ width: "96%", marginTop: "1em" ,background: params.type === "varc" || params.type === "lrdi" ? "grey" : ""}}
+        sx={{ width: "96%", marginTop: "1em" , background: params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : ""}}
         disabled={
           params.type === "varc" || params.type === "lrdi" ? true : false
         }
+    
         variant="contained"
-        onClick={() => setOpenConfirm(true)}
+        onClick={() => handleConfirmOpen()}
       >
         Submit
       </SubmitButton>
       {/* Confirm modal */}
-      <Modal open={openConfirm} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={openConfirm}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           {state === 0 ? (
             <>
@@ -90,30 +121,56 @@ export default function ButtonSubmit(props) {
                 />
               </div>
               <div className="d-flex justify-content-center">
-                <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
+                <SubHeading
+                  style={{ color: "#494949", fontWeight: "700" }}
+                  className="ps-3"
+                >
                   Are you sure to submit your test?{" "}
                 </SubHeading>
               </div>
-              <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
-                <MyButton variant="contained" sx={{ bgcolor: "#EBEBEB", color: "black" }} onClick={() => setOpenConfirm(false)}>
+              <div
+                className="d-flex justify-content-evenly"
+                style={{ marginTop: "1.8em" }}
+              >
+                <MyButton
+                  variant="contained"
+                  sx={{ bgcolor: "#EBEBEB", color: "black", borderRadius:"20px", ":hover":{ background:"#EBEBEB", color:"black" } }}
+                  onClick={handleConfirmClose}
+                >
                   Have a doubt? Back to test
                 </MyButton>
-                <MyButton variant="contained" sx={{ bgcolor: "#FD4153", width: "138px" }} onClick={() => FinalSubmitTest("quants")}>
-                  SUBMIT
+                <MyButton
+                  variant="contained"
+                  style={buttonStyle}
+                  onClick={FinalSubmitTest}
+                >
+                  Submit
                 </MyButton>
               </div>
             </>
           ) : state === 1 ? (
             <>
               {" "}
-              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
+              <div
+                style={{ marginTop: "3em" }}
+                className="d-flex justify-content-center"
+              >
+                <SubHeading className="m-4 ps-3">
+                  Test Submitting...{" "}
+                </SubHeading>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
-                <div style={{ marginLeft: "12px" }}>
-                  {" "}
-                  <InfinitySpin color="blue" />
-                </div>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
+                {Loader ? (
+                  <div style={{ marginLeft: "12px" }}>
+                    {" "}
+                    <InfinitySpin color="blue" />
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="d-flex justify-content-center mt-4 ">
                 <Typography>Please Wait...</Typography>
@@ -122,7 +179,10 @@ export default function ButtonSubmit(props) {
           ) : state === 2 ? (
             <>
               {" "}
-              <div className="d-flex justify-content-center" style={{ height: "50%", width: "100%" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ height: "50%", width: "100%" }}
+              >
                 <div
                   style={{
                     height: "100%",
@@ -159,7 +219,7 @@ export default function ButtonSubmit(props) {
                 <MyButton
                   variant="contained"
                   sx={{...buttonStyle,background:" linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",  borderRadius:"30px"}}
-                  onClick={ goToAnalysis }
+                  onClick={ goToAnalyse}
                 >
                   DONE
                 </MyButton>
