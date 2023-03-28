@@ -39,7 +39,7 @@ export default function InstructionButton() {
 
   return (
     <span>
-      <MyButton variant="contained"  height="41" sx={{ width: "150px", margin : 0, marginTop : '1em' }} onClick={handleOpen}>
+      <MyButton variant="contained"  height="41" sx={{ width: "150px", margin : 0, marginTop : '1em',":hover":{boxShadow:5} }} onClick={handleOpen}>
         Instructions
       </MyButton>
       <Modal open={open}   onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
