@@ -17,7 +17,7 @@ import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
-import { fetchQuestions, fetchAnswerStatus, postAnswers } from "../services/Mock_api";
+import { fetchQuestions } from "../services/Mock_api";
 import { Space, Spin } from "antd";
 import { useRef } from "react";
 import { ContentPasteSearchOutlined } from "@mui/icons-material";
@@ -281,8 +281,7 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      <GridLoader
- color="var(--orange)" loading size={20} speedMultiplier={1} />
+      <GridLoader color="var(--orange)" loading size={20} speedMultiplier={1} />
     </div>
   ) : (
     <div className="container-fluid bg-white h-100">
@@ -295,9 +294,8 @@ function CenterMain() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                   height="48"
-                   sx={{borderRadius:"20px"}}
-
+                    height="48"
+                    sx={{ borderRadius: "20px" }}
                     disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
                   >
@@ -307,15 +305,15 @@ function CenterMain() {
                     height="48"
                     disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
-                    sx={{borderRadius:"20px"}}
+                    sx={{ borderRadius: "20px" }}
                   >
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                  height="48"
+                    height="48"
                     disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
-                    sx={{borderRadius:"20px"}}
+                    sx={{ borderRadius: "20px" }}
                   >
                     Quant
                   </BootstrapButton>
@@ -356,7 +354,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                          <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -590,7 +588,13 @@ function CenterMain() {
               </div>
 
               <div className="">
-                <BootstrapButton variant="contained "   height="41" onClick={() => setStage("save")} sx={{ fontSize: "13px", color: "white" }} disabled={false}>
+                <BootstrapButton
+                  variant="contained "
+                  height="41"
+                  onClick={() => setStage("save")}
+                  sx={{ fontSize: "13px", color: "white" }}
+                  disabled={false}
+                >
                   Save & Next
                 </BootstrapButton>
               </div>
@@ -673,26 +677,26 @@ function CenterMain() {
                 <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
-              <ButtonSubmit />
+              <ButtonSubmit studentAnswersData={questionStatus} />
             </div>
 
             <div className="row mb-1 mt-3 markingNotation">
               <div className="d-flex  flex-wrap row-gap-3  text-start ">
                 {" "}
-                <div className=" flex-item  " style={{flexBasis:"50%"}}>
+                <div className=" flex-item  " style={{ flexBasis: "50%" }}>
                   <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
-                <div className="flex-item  " style={{flexBasis:"50%"}}>
+                <div className="flex-item  " style={{ flexBasis: "50%" }}>
                   <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
-                <div className="flex-item  " style={{flexBasis:"50%"}}>
+                <div className="flex-item  " style={{ flexBasis: "50%" }}>
                   <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
-                <div className="flex-item "style={{flexBasis:"50%"}}> 
+                <div className="flex-item " style={{ flexBasis: "50%" }}>
                   <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
-                <div className="flex-item " style={{flexBasis:"100%"}}>
-                  <img src="/Answered&MarkedReview.png"className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review  </b>
+                <div className="flex-item " style={{ flexBasis: "100%" }}>
+                  <img src="/Answered&MarkedReview.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review </b>
                 </div>
               </div>
             </div>
