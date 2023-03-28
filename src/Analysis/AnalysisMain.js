@@ -22,7 +22,7 @@ function AnalysisMain() {
   const params = useParams();
   const location = useLocation();
   const { attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
+  const { analysisDataApi, isLoading, basicAnalysis,SetLoading } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
 
@@ -69,7 +69,7 @@ function AnalysisMain() {
     setAnchorEl(null);
     navigate(`sectionwise/${sub}`);
   };
-
+ 
   return (
     <>
       {isLoading ? (
@@ -83,8 +83,10 @@ function AnalysisMain() {
             alignItems: "center",
           }}
         >
-          <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
-          <h5 className=" mt-4 ms-2" style={{color:"var(--button-blue)", textAlign:"center"}}>Loading....</h5>
+          {/* <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
+         x*/}
+          <img src="/Analysis.gif" alt="Loader"  className="img-fluid"  width={200} />
+          <h5 className=" mt-4 ms-2" style={{color:"var(--button-blue)", textAlign:"center"}}>Prepare Analysis....</h5>
         </div>
       ) : (
         <div
