@@ -93,9 +93,6 @@ export default function ButtonSubmit() {
         disabled={
           params.type === "varc" || params.type === "lrdi" ? true : false
         }
-
-        
-        
         variant="contained"
         onClick={() => handleConfirmOpen()}
       >
