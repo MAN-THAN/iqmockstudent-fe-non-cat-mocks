@@ -11,17 +11,17 @@ function Header() {
     // const img_url = JSON.parse(localStorage.getItem("userData"))?.;
    
     return (
-        <header className="p-0 text-bg-dark">
-            <div className="container-fluid px-5 py-2 ">
-                <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 ">
-                    <div>
+        <header className="p-0 m-0 text-bg-dark">
+            <div className="container-fluid py-2 ">
+                <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 px-3">
+                    <div className='flex-item w-30'  >
                         <Link to="/"><img src={require("../images/iquanta_Logo.png")} alt="iquanta_logo" className='img-fluid iquanta_logo' /></Link>
                     </div>
-                    <div >
+                    <div className='flex-item w-20 ms-5 ps-3'  >
                         <Typography variant='h4'>iCAT 1.O 2023</Typography>
                     </div>
 
-                    <div className="d-flex gap-3 ">
+                    <div className="d-flex gap-3 w-30  justify-self-end" >
                         <div className='text-end'>
                             <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "21px", fontWeight: 400 }} >{ userName }</Typography>
                             <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id : { userID}</Typography>

@@ -35,16 +35,19 @@ const style = {
 
 
 export default function ButtonSubmit() {
-
+    const buttonStyle = {
+    background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
+    width: "138px",
+    color: "#fff",
+    borderRadius:"20px"
+  };
 
   const [open, setOpen] = React.useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [state, setState] = useState(0);
   const handleConfirmOpen = () => setOpenConfirm(true);
   const handleConfirmClose = () => setOpenConfirm(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const params = useParams();
+   const params = useParams();
   const [Loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
@@ -109,11 +112,11 @@ export default function ButtonSubmit() {
                   component="img"
                   sx={{
                     height: 233,
-                    width: 350,
+                    width: 600,
                   }}
                   alt="no IMage"
-                  src="/Image1.svg"
-                  loading="eager"
+                  src="/ModalImage.png"
+               
                 />
               </div>
               <div className="d-flex justify-content-center">
@@ -130,17 +133,17 @@ export default function ButtonSubmit() {
               >
                 <MyButton
                   variant="contained"
-                  sx={{ bgcolor: "#EBEBEB", color: "black" }}
+                  sx={{ bgcolor: "#EBEBEB", color: "black", borderRadius:"20px", ":hover":{ background:"#EBEBEB", color:"black" } }}
                   onClick={handleConfirmClose}
                 >
                   Have a doubt? Back to test
                 </MyButton>
                 <MyButton
                   variant="contained"
-                  sx={{ bgcolor: "#FD4153", width: "138px" }}
+                  style={buttonStyle}
                   onClick={FinalSubmitTest}
                 >
-                  SUBMIT
+                  Submit
                 </MyButton>
               </div>
             </>
@@ -190,19 +193,21 @@ export default function ButtonSubmit() {
                   className="d-flex justify-content-center align-items-center"
                 >
                   <Image
-                    className="img-fluid lazy"
-                    src="/tickcircle.svg"
+                    className="img-fluid text-center ps-4 "
+                    src="/Group103.png"
                     alt="no IMage"
+                    width={300}
+
                   ></Image>
                 </div>
               </div>
-              <div className="d-flex justify-content-center">
+              <div className="d-flex justify-content-center ">
                 <SubHeading style={{ fontWeight: "800" }} className="m-4 ps-3">
                   Thank You!{" "}
                 </SubHeading>
               </div>
-              <div className="d-flex justify-content-center">
-                <Typography fontWeight={700}>
+              <div className="d-flex justify-content-center text-muted">
+                <Typography  fontWeight={700}>
                   Congrats! You have completed the Mock test
                 </Typography>
               </div>
@@ -212,7 +217,7 @@ export default function ButtonSubmit() {
               >
                 <MyButton
                   variant="contained"
-                  sx={{ bgcolor: "#2400FF" }}
+                  sx={{...buttonStyle,background:" linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",  borderRadius:"30px"}}
                   onClick={ goToAnalyse}
                 >
                   DONE
