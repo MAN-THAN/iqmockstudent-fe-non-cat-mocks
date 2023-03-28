@@ -14,77 +14,83 @@ const Timer = (props) => {
   const { initMinute, initSeconds, studentAnswersData } = props;
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
-  const COUNTER_KEY = "my-counter";
+  const COUNTER_KEY_SEC = "my-counter-sec";
+  const COUNTER_KEY_MIN = "my-counter-min";
   const attemptID = JSON.parse(window.localStorage.getItem("userData"))?.attemptId;
 
   // taking the local storage value of timer
   useEffect(() => {
-    let countDownTime = window.localStorage.getItem(COUNTER_KEY) || 0;
-    setSeconds(countDownTime);
+    let countDownTimeSec = window.localStorage.getItem(COUNTER_KEY_SEC) || 0;
+    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || 2;
+    setSeconds(countDownTimeSec);
+    setMinutes(countDownTimeMin);
   }, []);
 
   // submitting section wise
   const submitSectionFunc = async (subject) => {
-  const response = await submitSection(attemptID, subject, studentAnswersData);
-  if (response.status == 200) {
-    window.localStorage.removeItem("COUNTER_KEY");
-    window.localStorage.removeItem("questionStatus");
-    if (subject === "varc") {
-      console.log("varc submitted");
-      navigate(`/main/${params.mockid}/lrdi`);
-   
-    } else if (subject === "lrdi") {
-      console.log("lrdi submitted");
-      navigate(`/main/${params.mockid}/quants`);
-    } else if (subject === "quants") {
-      console.log("Your mock is submitted!!!");
-      navigate(`/analysis/${attemptID}/overall`);
+    const response = await submitSection(attemptID, subject, studentAnswersData);
+    if (response.status == 200) {
+      window.localStorage.removeItem(COUNTER_KEY_MIN);
+      window.localStorage.removeItem (COUNTER_KEY_SEC);
+      window.localStorage.removeItem("questionStatus");
+      if (subject === "varc") {
+        console.log("varc submitted");
+        navigate(`/main/${params.mockid}/lrdi`);
+      } else if (subject === "lrdi") {
+        console.log("lrdi submitted");
+        navigate(`/main/${params.mockid}/quants`);
+      } else if (subject === "quants") {
+        console.log("Your mock is submitted!!!");
+        navigate(`/analysis/${attemptID}/overall`);
+      }
     }
-  }
-};
+  };
 
-useEffect(() => {
-  let myInterval = setInterval(() => {
-    if (seconds > 0) {
-      setSeconds(seconds - 1);
-    }
-    if (seconds === 0) {
-      if (minutes === 0) {
-        if (params.type === "varc") {
-          submitSectionFunc("varc");
-        } else if (params.type === "lrdi") {
-          submitSectionFunc("lrdi");
-        } else if (params.type === "quants") {
-          submitSectionFunc("quants");
+  useEffect(() => {
+    let myInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+      if (seconds == 0) {
+        if (minutes == 0) {
+          if (params.type === "varc") {
+            submitSectionFunc("varc");
+          } else if (params.type === "lrdi") {
+            submitSectionFunc("lrdi");
+          } else if (params.type === "quants") {
+            submitSectionFunc("quants");
+          }
+        } else {
+          if (minutes > 0) { 
+             setMinutes(minutes - 1);
+          }
+          setSeconds(59);
         }
       } else {
-        setMinutes(minutes - 1);
-        setSeconds(59);
+        window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
+        window.localStorage.setItem(COUNTER_KEY_SEC, seconds - 1);
       }
-    } else {
-      window.localStorage.setItem("COUNTER_KEY", seconds - 1);
-    }
-  }, 1000);
+    }, 1000);
 
-  return () => {
-    clearInterval(myInterval);
+    return () => {
+      clearInterval(myInterval);
+    };
+  }, [seconds, minutes]);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 650,
+    textAlign: "",
+    height: 400,
+    bgcolor: "white",
+    borderRadius: "10px ",
+    boxShadow: 24,
+    p: 0,
+    m: 0,
   };
-}, [seconds, minutes]);
-  
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 650,
-  textAlign: "",
-  height: 400,
-  bgcolor: "white",
-  borderRadius: "10px ",
-  boxShadow: 24,
-  p: 0,
-  m: 0,
-};
 
   return (
     <React.Fragment>
