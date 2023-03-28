@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../services/Context";
 import { getAttemptId } from "../services/Mock_api";
-import PulseLoader from "react-spinners/PulseLoader";
+
 const UserAuth = () => {
   const navigate = useNavigate();
   //   console.log(attemptID);
@@ -39,9 +39,8 @@ const UserAuth = () => {
   return (
     <React.Fragment>
       <div style={{ display: "flex",flexDirection:"column", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
-      <PulseLoader color="var(--orange)" size={21} text="Loading data..." />
-   
-         <h5 className=" mt-4" style={{color:"var(--orange)", textAlign:"center"}}>Authenticating..... Please wait</h5>
+      <img src="/AuthLoader.gif"  className="img-fluid"  alt=""  width={150} />
+            <h5 className=" text-muted" style={{color:"", textAlign:"center"}}>Authenticating..... Please wait</h5>
       
       </div>
     </React.Fragment>
