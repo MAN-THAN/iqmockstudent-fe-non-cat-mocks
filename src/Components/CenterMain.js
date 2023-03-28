@@ -205,9 +205,9 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-       let arr = [...questionStatus];
-       arr.splice(selectedQuestionIndex, 1, newObj);
-       setQuestionStatus(arr);
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
@@ -277,7 +277,7 @@ function CenterMain() {
   };
   // button for next func
   const nextInd = () => {
-    if (selectedQuestionIndex === Data.length - 1) {
+    if (selectedQuestionIndex === questionStatus.length - 1) {
       alert("You can not go to next section!!!");
       return false;
     }
@@ -324,7 +324,7 @@ function CenterMain() {
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
-                    height="48"
+                    height="41"
                     sx={{ borderRadius: "20px" }}
                     disabled={
                       params.type === "quants" || params.type === "lrdi"
@@ -336,7 +336,7 @@ function CenterMain() {
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
-                    height="48"
+                    height="41"
                     disabled={
                       params.type === "varc" || params.type === "quants"
                         ? true
@@ -348,7 +348,7 @@ function CenterMain() {
                     LRDI
                   </BootstrapButton>
                   <BootstrapButton
-                    height="48"
+                    height="41"
                     disabled={
                       params.type === "varc" || params.type === "lrdi"
                         ? true
@@ -425,21 +425,38 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
+            <div
+              className={
+                questionStatus?.length > 0 &&
+                questionStatus[selectedQuestionIndex]?.isPara === "Yes"
+                  ? "col-7 overflow-auto"
+                  : "d-none"
+              }
+            >
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes"
+                      questionStatus?.length > 0 &&
+                      questionStatus[selectedQuestionIndex].isPara === "Yes"
                         ? questionStatus[selectedQuestionIndex].paragraph
                         : "No paragraph"
                     }
                     image={
                       questionStatus?.length > 0 && // Check if Data array has at least one element
                       questionStatus[selectedQuestionIndex]?.image
-                        ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
-                          })
+                        ? questionStatus[selectedQuestionIndex]?.image.map(
+                            (item) => {
+                              return (
+                                <img
+                                  src={item}
+                                  alt=""
+                                  className="img-fluid "
+                                  width={150}
+                                />
+                              );
+                            }
+                          )
                         : null
                     }
                   />
@@ -449,7 +466,10 @@ function CenterMain() {
             {/*  right side question  div */}
             <div
               className={
-                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
+                questionStatus?.length > 0 &&
+                questionStatus[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
               }
             >
               <div className="container p-3 rightContent overflow-auto">
@@ -461,7 +481,8 @@ function CenterMain() {
                 <br /> <br />
                 {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
+                    {questionStatus[selectedQuestionIndex]?.type === 0 ||
+                    questionStatus[selectedQuestionIndex]?.type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -614,10 +635,18 @@ function CenterMain() {
                             // // setData(updatedData);
                           }}
                         >
-                          {questionStatus[selectedQuestionIndex]?.options != null &&
-                            questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
-                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
-                            ))}
+                          {questionStatus[selectedQuestionIndex]?.options !=
+                            null &&
+                            questionStatus[selectedQuestionIndex]?.options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={<small>{option}</small>}
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
