@@ -49,7 +49,7 @@ function CenterMain() {
       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
       console.log("putting ibnto local");
     }
-  }, [selectedQuestionIndex]);
+  }, [questionStatus]);
 
   // for storing previous value of question index
   const prevQuestionIndex = useRef(null);
@@ -175,10 +175,9 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     } else if (
       (studentAnswer === null || studentAnswer === "") &&
@@ -192,10 +191,9 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     } else if (
       studentAnswer !== null &&
@@ -211,17 +209,15 @@ function CenterMain() {
         duration: 10,
       };
       console.log(newObj);
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+       let arr = [...questionStatus];
+       arr.splice(selectedQuestionIndex, 1, newObj);
+       setQuestionStatus(arr);
       return nextInd();
     } else {
       const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
-      setQuestionStatus((prevState) => {
-        prevState.splice(selectedQuestionIndex, 1, newObj);
-        return prevState;
-      });
+      let arr = [...questionStatus];
+      arr.splice(selectedQuestionIndex, 1, newObj);
+      setQuestionStatus(arr);
       return nextInd();
     }
   };
@@ -266,10 +262,9 @@ function CenterMain() {
             stage: 2,
           };
           console.log(newObj);
-          setQuestionStatus((prevState) => {
-            prevState.splice(preQuestionIndex, 1, newObj);
-            return prevState;
-          });
+          let arr = [...questionStatus];
+          arr.splice(preQuestionIndex, 1, newObj);
+          setQuestionStatus(arr);
         }
       }
     };
@@ -287,8 +282,8 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === Data.length - 1) {
-      alert("Go to next section");
-      return;
+      alert("You can not go to next section!!!");
+      return false;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
     setSelectedAnswer(null);
@@ -434,38 +429,21 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                questionStatus?.length > 0 &&
-                questionStatus[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-7 overflow-auto"
-                  : "d-none"
-              }
-            >
+            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      questionStatus?.length > 0 &&
-                      questionStatus[selectedQuestionIndex].isPara === "Yes"
+                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
                         ? questionStatus[selectedQuestionIndex].paragraph
                         : "No paragraph"
                     }
                     image={
                       questionStatus?.length > 0 && // Check if Data array has at least one element
-                      questionStatus[selectedQuestionIndex].image
-                        ? questionStatus[selectedQuestionIndex].image.map(
-                            (item) => {
-                              return (
-                                <img
-                                  src={item}
-                                  alt=""
-                                  className="img-fluid "
-                                  width={150}
-                                />
-                              );
-                            }
-                          )
+                      questionStatus[selectedQuestionIndex]?.image
+                        ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                          })
                         : null
                     }
                   />
@@ -475,27 +453,19 @@ function CenterMain() {
             {/*  right side question  div */}
             <div
               className={
-                questionStatus?.length > 0 &&
-                questionStatus[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
+                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
               }
             >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {questionStatus?.length > 0 && (
-                    <Latex>
-                      {questionStatus[selectedQuestionIndex].question}
-                    </Latex>
-                  )}
+                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex].question}</Latex>}
                 </Typography>
                 <br /> <br />
                 {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {questionStatus[selectedQuestionIndex].type === 0 ||
-                    questionStatus[selectedQuestionIndex].type === null ? (
+                    {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -648,18 +618,10 @@ function CenterMain() {
                             // // setData(updatedData);
                           }}
                         >
-                          {questionStatus[selectedQuestionIndex].options !=
-                            null &&
-                            questionStatus[selectedQuestionIndex].options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                          {questionStatus[selectedQuestionIndex]?.options != null &&
+                            questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                              <FormControlLabel key={index} value={index} control={<Radio />} label={<small>{option}</small>} />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -786,7 +748,7 @@ function CenterMain() {
 
             <div className="row my-2   ">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
-                <QuestionPaper question_paper={Data} />
+                <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
               <ButtonSubmit />
