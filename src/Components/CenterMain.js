@@ -37,9 +37,14 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
+  // Timer state
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setRunning] = useState(false);
+  const intervalRef = useRef(null);
 
+  console.log("timer", timer);
+  
   // syncing question status with local
-
   useEffect(() => {
     if (questionStatus?.length > 0) {
       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
@@ -291,7 +296,17 @@ function CenterMain() {
     setSelectedAnswer("");
     setInputVal("");
   };
+  // Timer code
 
+   useEffect(() => {
+     let intervalId;
+     if (true) {
+       // setting time from 0 to 1 every 1000 milisecond using setInterval method
+       intervalId = setInterval(() => setTimer(timer + 1), 1000);
+     }
+     return () => clearInterval(intervalId);
+   }, [timer]);
+  
   return loading ? (
     <div
       style={{
