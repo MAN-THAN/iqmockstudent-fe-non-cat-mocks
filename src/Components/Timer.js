@@ -21,7 +21,7 @@ const Timer = (props) => {
   // taking the local storage value of timer
   useEffect(() => {
     let countDownTimeSec = window.localStorage.getItem(COUNTER_KEY_SEC) || 0;
-    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || 2;
+    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || 4;
     setSeconds(countDownTimeSec);
     setMinutes(countDownTimeMin);
   }, []);

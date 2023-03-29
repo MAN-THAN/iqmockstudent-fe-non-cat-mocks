@@ -16,6 +16,7 @@ import { SubmitButton } from "../styleSheets/Style";
 import { Puff, InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { submitSection } from "../services/Mock_api";
 
 const style = {
   position: "absolute",
@@ -34,56 +35,30 @@ const style = {
 
 
 
-export default function ButtonSubmit() {
+export default function ButtonSubmit({ studentAnswersData }) {
     const buttonStyle = {
     background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
     width: "138px",
     color: "#fff",
     borderRadius:"20px"
   };
-
-  const [open, setOpen] = React.useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [state, setState] = useState(0);
-  const handleConfirmOpen = () => setOpenConfirm(true);
-  const handleConfirmClose = () => setOpenConfirm(false);
-   const params = useParams();
-  const [Loader, setLoader] = useState(true);
+  const params = useParams();
   const navigate = useNavigate();
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
 
   const submitSectionFunc = async (subject) => {
-    const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/${attemptID}/${subject}/final`;
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(url, options);
-    console.log(response);
-    const json = await response.json();
-    console.log(json?.success);
-    // if (json?.success === true) {
-    //   if (subject === "varc") {
-    //     console.log("varc submitted");
-    //     navigate(`/main/${params.mockid}/lrdi`);
-    //   } else if (subject === "lrdi") {
-    //     console.log("lrdi submitted");
-    //     navigate(`/main/${params.mockid}/quants`);
-    //   } else if (subject === "quants") {
-    //     console.log("Your mock is submitted!!!");
-    //   }
-    // }
-  };
-  const FinalSubmitTest = () => {
     setState(1);
-    setTimeout(() => setState(2), 2000);
+    const response = await submitSection(attemptID, subject, studentAnswersData);
+    console.log(response);
+    if (response?.status == 200) { 
+      setState(2);
+    }
   };
 
-  const goToAnalyse = async () => {
-    handleConfirmClose();
-    setState(0);
+  const goToAnalysis = async () => {
     navigate(`/analysis/${attemptID}/overall`);
-  
   }
   
   return (
@@ -95,7 +70,7 @@ export default function ButtonSubmit() {
         }
     
         variant="contained"
-        onClick={() => handleConfirmOpen()}
+        onClick={() => setOpenConfirm(true)}
       >
         Submit
       </SubmitButton>
@@ -135,14 +110,14 @@ export default function ButtonSubmit() {
                 <MyButton
                   variant="contained"
                   sx={{ bgcolor: "#EBEBEB", color: "black", borderRadius:"20px", ":hover":{ background:"#EBEBEB", color:"black" } }}
-                  onClick={handleConfirmClose}
+                  onClick={() => setOpenConfirm(false)}
                 >
                   Have a doubt? Back to test
                 </MyButton>
                 <MyButton
                   variant="contained"
                   style={buttonStyle}
-                  onClick={FinalSubmitTest}
+                  onClick={() => submitSectionFunc("quants")}
                 >
                   Submit
                 </MyButton>
@@ -163,14 +138,10 @@ export default function ButtonSubmit() {
                 className="d-flex justify-content-center"
                 style={{ marginTop: "1em" }}
               >
-                {Loader ? (
                   <div style={{ marginLeft: "12px" }}>
                     {" "}
                     <InfinitySpin color="blue" />
                   </div>
-                ) : (
-                  ""
-                )}
               </div>
               <div className="d-flex justify-content-center mt-4 ">
                 <Typography>Please Wait...</Typography>
@@ -219,7 +190,7 @@ export default function ButtonSubmit() {
                 <MyButton
                   variant="contained"
                   sx={{...buttonStyle,background:" linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",  borderRadius:"30px"}}
-                  onClick={ goToAnalyse}
+                  onClick={ goToAnalysis }
                 >
                   DONE
                 </MyButton>
