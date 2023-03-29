@@ -12,7 +12,11 @@ import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
 import PulseLoader from "react-spinners/PulseLoader";
 import Divider from "@mui/material/Divider";
-
+import Tooltip from "@mui/material/Tooltip";
+import Fade from "@mui/material/Fade";
+import Zoom from "@mui/material/Zoom";
+import { styled } from "@mui/material/styles";
+import { tooltipClasses } from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import "../styleSheets/AnalysisMain.css";
@@ -69,6 +73,17 @@ function AnalysisMain() {
     setAnchorEl(null);
     navigate(`sectionwise/${sub}`);
   };
+
+  // Tooltip Customisation
+
+  const BootstrapTooltip = styled(({ className, ...props }) => <Tooltip {...props} classes={{ popper: className }} />)(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+    },
+  }));
  
   return (
     <>
@@ -76,7 +91,7 @@ function AnalysisMain() {
         <div
           style={{
             display: "flex",
-            flexDirection:"column",
+            flexDirection: "column",
             width: "100vw",
             height: "100vh",
             justifyContent: "center",
@@ -85,15 +100,13 @@ function AnalysisMain() {
         >
           {/* <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
          x*/}
-          <img src="/Analysis.gif" alt="Loader"  className="img-fluid"  width={200} />
-          <h5 className=" mt-4 ms-2" style={{color:"var(--button-blue)", textAlign:"center"}}>Prepare Analysis....</h5>
+          <img src="/Analysis.gif" alt="Loader" className="img-fluid" width={200} />
+          <h5 className=" mt-4 ms-2" style={{ color: "var(--button-blue)", textAlign: "center" }}>
+            Prepare Analysis....
+          </h5>
         </div>
       ) : (
-        <div
-          id="my-component"
-          className=" p-0 "
-          style={{ background: "var(--background)" }}
-        >
+        <div id="my-component" className=" p-0 " style={{ background: "var(--background)" }}>
           {/* Header */}
           <header
             className=" mx-4
@@ -103,17 +116,13 @@ function AnalysisMain() {
               <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <NavLink to="/">
-                    <img
-                      src="/iQuanta.png"
-                      alt="iquanta_logo"
-                      className="img-fluid iquanta_logo"
-                    />
+                    <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
                   </NavLink>
                 </div>
 
                 <div className="d-flex gap-3  align-items-center ">
                   <div className="text-end ps-5">
-                   <img src="/LeaderBoard.png"  className="img-fluid" alt="" width={100} />
+                    <img src="/LeaderBoard.png" className="img-fluid" alt="" width={100} />
                   </div>
 
                   <div className="text-end">
@@ -140,9 +149,7 @@ function AnalysisMain() {
 
                   <div className="text-end">
                     <Button
-                      startIcon={
-                        <img src="/Help.png" className="img-fluid" width={25} />
-                      }
+                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
                       variant="contained"
                       sx={{
                         background: "black",
@@ -185,18 +192,8 @@ function AnalysisMain() {
                   </div>
 
                   <div className="d-flex">
-                    <a
-                      href="#"
-                      className="d-block link-dark text-decoration-none "
-                      aria-expanded="false"
-                    >
-                      <img
-                        src="https://github.com/mdo.png"
-                        alt="mdo"
-                        width="50"
-                        height="50"
-                        className="rounded"
-                      />
+                    <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                      <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                     </a>
                   </div>
                 </div>
@@ -213,17 +210,10 @@ function AnalysisMain() {
             }
           >
             <div className="flex-item p-3 flex-fill">
-              <Typography
-                variant="h4"
-                sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
-              >
+              <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography
-              sx={{ fontSize: "30px", color: "black", fontWeight:600 }}
-              >
-                This is your mock analysis for iCAT 1.0.
-              </Typography>
+              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>This is your mock analysis for iCAT 1.0.</Typography>
               <br />
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
@@ -235,7 +225,7 @@ function AnalysisMain() {
                     color: "white",
                     height: "59px",
                     width: "200px",
-                    borderRadius:"20px",
+                    borderRadius: "20px",
                     p: 2,
                     fontWeight: "bold",
                   }}
@@ -244,9 +234,7 @@ function AnalysisMain() {
                 </ModifyButton>
                 <ModifyButton
                   variant="outlined"
-                  startIcon={
-                    <img src="/Download.png" className="img-fluid" width={13} />
-                      }
+                  startIcon={<img src="/Download.png" className="img-fluid" width={13} />}
                   onClick={handleDownloadPDF}
                   sx={{
                     p: 2,
@@ -255,7 +243,7 @@ function AnalysisMain() {
                     width: "215px",
                     color: "#0057CB",
                     fontWeight: "bold",
-                    borderRadius:"20px",
+                    borderRadius: "20px",
                   }}
                 >
                   Download report
@@ -264,10 +252,7 @@ function AnalysisMain() {
             </div>
 
             <div className="flex-item p-3  flex-fill">
-              <div
-                className="container bg-warning   "
-                style={{  borderRadius: "15px", width: "auto"  }}
-              >
+              <div className="container bg-warning   " style={{ borderRadius: "15px", width: "auto" }}>
                 <div className=" d-flex gap-2 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
@@ -323,11 +308,10 @@ function AnalysisMain() {
                             sx={{
                               fontSize: "23px",
                               color: "black",
-                             fontWeight:600,
+                              fontWeight: 600,
                               fontFamily: "var(--font-inter)",
                             }}
                             gutterBottom
-                            
                           >
                             Percentile
                           </Typography>
@@ -337,11 +321,10 @@ function AnalysisMain() {
                             sx={{
                               fontSize: "23px",
                               color: "black",
-                              fontWeight:600,
+                              fontWeight: 600,
 
                               fontFamily: "var(--font-inter)",
                             }}
-                         
                             gutterBottom
                           >
                             {percentile}
@@ -356,140 +339,111 @@ function AnalysisMain() {
 
             <div className="  flex-item p-3 flex-fill   ">
               <div className=" d-flex  justify-content-center  flex-wrap gap-4">
-                <div
-                  className="card shadow flex-item  flex-fill  my-2 "
-                  style={{
-                    width: "43%",
-                    height: "7em",
-                    border: "1px solid white",
-                  }}
-                >
-                  <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                    <div className="flex-item ">
-                      <SubHeading className="card-title">
-                        {potentialScore}
-                      </SubHeading>
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="My name is Manthan" followCursor>
+                  <div
+                    className="card shadow flex-item  flex-fill  my-2 "
+                    style={{
+                      width: "43%",
+                      height: "7em",
+                      border: "1px solid white",
+                    }}
+                  >
+                    <div className="card-body d-flex flex-row justify-content-between align-items-center">
+                      <div className="flex-item ">
+                        <SubHeading className="card-title">{potentialScore}</SubHeading>
 
-                      <Typography variant="paragraph" sx={{fontSize:"13px"}}>
-                        Potential Mark
-                      </Typography>
-                    </div>
+                        <Typography variant="paragraph" sx={{ fontSize: "13px" }}>
+                          Potential Mark
+                        </Typography>
+                      </div>
 
-                    <div className="flex-item">
-                      <img
-                        src="/PM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <div className="flex-item">
+                        <img src="/PM.png" alt="" className="img-fluid" width={50} />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  className="card shadow flex-item flex-fill  my-2 "
-                  style={{
-                    width: "43%",
-                    height: "7em",
-                    border: "1px solid white",
-                  }}
-                >
-                  <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                    <div className="flex-item">
-                      <SubHeading className="card-title">
-                        {negativeMarks}
-                      </SubHeading>
-                      <Typography variant="paragraph">Negative Mark</Typography>
-                    </div>
+                </BootstrapTooltip>
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Negative Mark" followCursor>
+                  <div
+                    className="card shadow flex-item flex-fill  my-2 "
+                    style={{
+                      width: "43%",
+                      height: "7em",
+                      border: "1px solid white",
+                    }}
+                  >
+                    <div className="card-body d-flex flex-row justify-content-between align-items-center">
+                      <div className="flex-item">
+                        <SubHeading className="card-title">{negativeMarks}</SubHeading>
+                        <Typography variant="paragraph">Negative Mark</Typography>
+                      </div>
 
-                    <div className="flex-item">
-                      <img
-                        src="/NM.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <div className="flex-item">
+                        <img src="/NM.png" alt="" className="img-fluid" width={50} />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  className="card shadow flex-item flex-fill  my-2"
-                  style={{
-                    width: "43%",
-                    height: "7em",
-                    border: "1px solid white",
-                  }}
-                >
-                  <div className="card-body d-flex flex-row justify-content-between align-items-center ">
-                    <div className="flex-item ">
-                      <SubHeading className="card-title">{accuracy}</SubHeading>
-                      <Typography variant="paragraph">% Accuracy</Typography>
-                    </div>
+                </BootstrapTooltip>
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Your Accuracy boy!!!" followCursor>
+                  <div
+                    className="card shadow flex-item flex-fill  my-2"
+                    style={{
+                      width: "43%",
+                      height: "7em",
+                      border: "1px solid white",
+                    }}
+                  >
+                    <div className="card-body d-flex flex-row justify-content-between align-items-center ">
+                      <div className="flex-item ">
+                        <SubHeading className="card-title">{accuracy}</SubHeading>
+                        <Typography variant="paragraph">% Accuracy</Typography>
+                      </div>
 
-                    <div className="flex-item">
-                      <img
-                        src="/Acc.png"
-                        alt=""
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <div className="flex-item">
+                        <img src="/Acc.png" alt="" className="img-fluid" width={50} />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  className="card shadow flex-item  flex-fill  my-2"
-                  style={{
-                    width: "43%",
-                    height: "7em",
-                    border: "1px solid white",
-                  }}
-                >
-                  <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
-                    <div className="flex-item ">
-                      <SubHeading className="card-title">
-                        {Math.round(overallPercentage)}
-                      </SubHeading>
-                      <Typography variant="paragraph">% Score</Typography>
-                    </div>
+                </BootstrapTooltip>
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Overall Percentage boy!!!" followCursor>
+                  <div
+                    className="card shadow flex-item  flex-fill  my-2"
+                    style={{
+                      width: "43%",
+                      height: "7em",
+                      border: "1px solid white",
+                    }}
+                  >
+                    <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
+                      <div className="flex-item ">
+                        <SubHeading className="card-title">{Math.round(overallPercentage)}</SubHeading>
+                        <Typography variant="paragraph">% Score</Typography>
+                      </div>
 
-                    <div className="flex-item">
-                      <img
-                        src="/PS.png"
-                        alt="ps.png"
-                        className="img-fluid"
-                        width={50}
-                      />
+                      <div className="flex-item">
+                        <img src="/PS.png" alt="ps.png" className="img-fluid" width={50} />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </BootstrapTooltip>
               </div>
             </div>
           </div>
 
           {/* Buttons for changing sections */}
           <div className=" d-flex  m-5 ms-4  align-items-center">
-            <div  style={{flexBasis:"70%"}} className=" d-flex  gap-3 ms-3">
-              <NavLink
-                to="overall"
-                activeClassName="active "
-                className="link flex-item"
-              >
+            <div style={{ flexBasis: "70%" }} className=" d-flex  gap-3 ms-3">
+              <NavLink to="overall" activeClassName="active " className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
-                Score Card
+                  Score Card
                 </ModifyButton>
               </NavLink>
               <NavLink activeClassName="active" className="link flex-item">
                 <ModifyButton
                   variant="filled"
                   style={{
-                    background:
-                      location.pathname ===
-                      `/analysis/${attemptId}/sectionwise/${subject}`
-                        ? "#0057CB"
-                        : "",
-                    color:
-                      location.pathname ===
-                        `/analysis/${attemptId}/sectionwise/${subject}` &&
-                      "white",
+                    background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
+                    color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
                   }}
                   id="demo-customized-button"
                   aria-controls={open ? "demo-customized-menu" : undefined}
@@ -528,35 +482,20 @@ function AnalysisMain() {
                 </MenuItem>
               </StyledMenu>
 
-              <NavLink
-                to="topicwise"
-                activeClassName="active "
-                className="link flex-item"
-              >
+              <NavLink to="topicwise" activeClassName="active " className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
-                  Topic-wise 
+                  Topic-wise
                 </ModifyButton>
               </NavLink>
 
-              <NavLink
-                to="difficulty"
-                activeClassName="active"
-                className="link flex-item"
-              >
+              <NavLink to="difficulty" activeClassName="active" className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
-                  Difficulty-wise 
+                  Difficulty-wise
                 </ModifyButton>
               </NavLink>
             </div>
 
-            <div
-              style={{flexBasis:"30%"}}
-              className={
-                location.pathname === `/analysis/${attemptId}/overall`
-                  ? "flex-item ps-4" 
-                  : "d-none"
-              }
-            >
+            <div style={{ flexBasis: "30%" }} className={location.pathname === `/analysis/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}>
               <Box
                 component="span"
                 sx={{
@@ -568,7 +507,7 @@ function AnalysisMain() {
                   height: "auto",
                   color: "white",
                   padding: "8px 16px",
-               
+
                   borderRadius: "20px",
                   lineHeight: 1.5,
                   backgroundColor: "#0057CB",
@@ -577,8 +516,8 @@ function AnalysisMain() {
               >
                 Time spent on questions:
               </Box>
-              <span >
-              <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
+              <span>
+                <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
               </span>
             </div>
           </div>
