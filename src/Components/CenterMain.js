@@ -173,7 +173,7 @@ function CenterMain() {
         stage: 1,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -189,7 +189,7 @@ function CenterMain() {
         stage: 3,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -207,7 +207,7 @@ function CenterMain() {
         stage: 4,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -215,7 +215,7 @@ function CenterMain() {
       setQuestionStatus(arr);
       return nextInd();
     } else {
-      const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
+      const newObj = { ...obj, stage: 2, duration : null, studentAnswer, studentAnswerIndex };
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -247,6 +247,7 @@ function CenterMain() {
   };
   useEffect(() => {
     showPreviousValue();
+    setTimer(0);
   }, [selectedQuestionIndex]);
 
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
@@ -261,6 +262,7 @@ function CenterMain() {
           const newObj = {
             ...obj,
             stage: 2,
+            duration : null
           };
           console.log(newObj);
           let arr = [...questionStatus];
@@ -293,7 +295,7 @@ function CenterMain() {
 
   // clear Response
   const clearResponse = () => {
-    setSelectedAnswer("");
+    setSelectedAnswer(null);
     setInputVal("");
   };
   // Timer code
@@ -640,7 +642,7 @@ function CenterMain() {
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
                           value={
-                            selectedAnswer !== undefined ? selectedAnswer : ""
+                            selectedAnswer !== undefined ? selectedAnswer : null
                           }
                           onChange={(e) => {
                             const value = e.target.value;
