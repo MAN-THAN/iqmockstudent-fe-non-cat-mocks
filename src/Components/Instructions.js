@@ -2,13 +2,10 @@ import { Link, ListItemText, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
-import SwipeableEdgeDrawer from "./userInfo";
 import BasicModal from "./userInfo";
 
 function Instructions() {
   const navigate = useNavigate();
-
-
 
   return (
     <div className="container ">
