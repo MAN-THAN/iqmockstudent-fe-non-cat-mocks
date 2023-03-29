@@ -1,4 +1,3 @@
-import { Space, Spin } from "antd";
 import React, { useEffect, useMemo } from "react";
 import { useNavigate ,useParams} from "react-router";
 import { getAttemptId } from "../services/Mock_api";
@@ -6,7 +5,7 @@ import { getAttemptId } from "../services/Mock_api";
 const UserAuth = () => {
   const navigate = useNavigate();
    const {name,email,uid}=useParams()
-  
+
 
   useEffect(() => {
     userAuthCheck();

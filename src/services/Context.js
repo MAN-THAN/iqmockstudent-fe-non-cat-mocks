@@ -28,6 +28,9 @@ export const ContextProvider = ({ children }) => {
   const topicWiseAnalysis = analysisData[3];
   const difficulty = analysisData[4];
 
+
+
+
   return (
     <>
       <Context.Provider

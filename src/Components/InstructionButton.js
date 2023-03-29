@@ -22,7 +22,10 @@ const style = {
   borderRadius: "10px ",
   boxShadow: 24,
   p: 2,
-
+  backgroundImage: "url('/instructions.jpg')",
+  backroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    objectfit:"cover"
  
   // Add this line to set a higher z-index value
 };
