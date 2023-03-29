@@ -1,13 +1,16 @@
 import { Link, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../services/Context";
+import { useNavigate,useParams } from "react-router-dom";
+
+
 
 function Terms() {
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
-
+  const params = useParams()
+ 
+  console.log(params)
   return (
     <div className="container d-flex-col justify-content-center align-content-center" style={{ marginTop: "5%", height: "100vh" }}>
       <div className="logo container text-center my-4">
@@ -92,7 +95,7 @@ function Terms() {
               background: agree ? "" : "#d2d4d6",
               borderRadius:"30px"
             }}
-            onClick={() => navigate("/user_authentication")}
+            onClick={() => navigate(`/user_authentication/${params.name}/${params.email}/${params.uid}`)}
           >
             Start Test
           </BootstrapButton>

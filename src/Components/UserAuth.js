@@ -1,12 +1,12 @@
 import { Space, Spin } from "antd";
 import React, { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router";
-import { useAuth } from "../services/Context";
+import { useNavigate ,useParams} from "react-router";
 import { getAttemptId } from "../services/Mock_api";
 
 const UserAuth = () => {
   const navigate = useNavigate();
-  //   console.log(attemptID);
+   const {name,email,uid}=useParams()
+  
 
   useEffect(() => {
     userAuthCheck();
@@ -28,7 +28,7 @@ const UserAuth = () => {
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const response = await getAttemptId();
+    const response = await getAttemptId(name,email,uid);
     console.log(response);
     if (response?.status == 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));

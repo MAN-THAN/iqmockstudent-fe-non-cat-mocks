@@ -2,13 +2,13 @@ import { Link, ListItemText, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
+import SwipeableEdgeDrawer from "./userInfo";
+import BasicModal from "./userInfo";
 
 function Instructions() {
   const navigate = useNavigate();
 
-  const handleClick = async () => {
-    navigate(`/terms`);
-  };
+
 
   return (
     <div className="container ">
@@ -276,15 +276,22 @@ function Instructions() {
             </li>
           </ol>
         </div>
-        <BootstrapButton
+       <div className="d-flex w-100 justify-content-center">
+       {/* <BootstrapButton
           height="30"
           variant="contained mx-auto"
           sx={{ color: "white", p: 3, my: 2 ,borderRadius:"30px"}}
-          onClick={handleClick}
+          onClick={() => navigate(`/terms`)}
         
         >
           Next
-        </BootstrapButton>
+        </BootstrapButton> */}
+
+        <BasicModal/>
+      
+       
+       </div>
+
       </div>
     </div>
   );

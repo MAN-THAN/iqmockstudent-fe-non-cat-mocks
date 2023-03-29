@@ -2,11 +2,11 @@ import request from "./Request";
 
 // api for creating attempt id
 
-export const getAttemptId = async () => {
+export const getAttemptId = async (name,email,uid) => {
   const jsonData = {
-    name: "Gaurav",
-    email: "asdnf@gmail.com",
-    uid: "2345678098765",
+    name,
+    email,
+    uid,
     mockId: `${process.env.REACT_APP_MOCK_ID}`,
   };
   try {
