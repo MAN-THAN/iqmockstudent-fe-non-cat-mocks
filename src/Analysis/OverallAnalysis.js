@@ -4,15 +4,30 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { StyledTableCell, StyledTable, StyledTableRow } from "../styleSheets/Style";
+import {
+  StyledTableCell,
+  StyledTable,
+  StyledTableRow,
+} from "../styleSheets/Style";
 import moment from "moment/moment";
 
 function OverallAnalysis() {
   const { overallAnalysis } = useAuth();
   const [data, setData] = useState([]);
+  console.log("overall", data);
   useEffect(() => setData(overallAnalysis.overAllAnalysis), []);
 
-  const headings = ["Name", "Questions", "Attempted", "Correct", "Incorrect", "Score", "% Accuracy", "% Score", "Percentile"];
+  const headings = [
+    "Name",
+    "Questions",
+    "Attempted",
+    "Correct",
+    "Incorrect",
+    "Score",
+    "% Accuracy",
+    "% Score",
+    "Percentile",
+  ];
   return (
     <TableContainer
       sx={{
@@ -29,7 +44,11 @@ function OverallAnalysis() {
           <TableRow sx={{ background: "white", width: "10%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell align="center" key={ind} className="fw-bold py-4">
+                <StyledTableCell
+                  align="center"
+                  key={ind}
+                  className="fw-bold py-4"
+                >
                   {heading}
                 </StyledTableCell>
               );
@@ -52,15 +71,25 @@ function OverallAnalysis() {
                   <StyledTableCell align="center" className="fw-bold">
                     {item.name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{item.question}</StyledTableCell>
-                  <StyledTableCell align="center">{item.attempted}</StyledTableCell>
-                  <StyledTableCell align="center">{item.correct}</StyledTableCell>
-                  <StyledTableCell align="center">{item.incorrect}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.question}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.attempted}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.correct}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item.incorrect}
+                  </StyledTableCell>
                   <StyledTableCell align="center">{item.score}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
                     {item.accuracy}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{Math.round(item.perScore)}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {Math.round(item.perScore)}
+                  </StyledTableCell>
                   <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
                     {item.percentile}
                   </StyledTableCell>
@@ -71,7 +100,10 @@ function OverallAnalysis() {
       </StyledTable>
       {/* 2nd table  side table */}
 
-      <StyledTable sx={{ maxWidth: "30%", ml: 5 }} aria-label="customized table">
+      <StyledTable
+        sx={{ maxWidth: "30%", ml: 5 }}
+        aria-label="customized table"
+      >
         <TableHead>
           <TableRow sx={{ background: "white", borderBottom: "none" }}>
             <StyledTableCell className="fw-bold py-4" align="left ">
@@ -97,9 +129,24 @@ function OverallAnalysis() {
                     border: "none",
                   }}
                 >
-                  <StyledTableCell align="left">{moment.duration(item.timeCorrect, "seconds").asMinutes().toFixed(2)}</StyledTableCell>
-                  <StyledTableCell align="left">{moment.duration(item.timeIncorrect, "seconds").asMinutes().toFixed(2)}</StyledTableCell>
-                  <StyledTableCell align="left">{moment.duration(item.timeSkipped, "seconds").asMinutes().toFixed(2)}</StyledTableCell>
+                  <StyledTableCell align="left">
+                    {moment
+                      .duration(item.timeCorrect, "seconds")
+                      .asMinutes()
+                      .toFixed(2)}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
+                    {moment
+                      .duration(item.timeInCorrect, "seconds")
+                      .asMinutes()
+                      .toFixed(2)}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
+                    {moment
+                      .duration(item.timeSkipped, "seconds")
+                      .asMinutes()
+                      .toFixed(2)}
+                  </StyledTableCell>
                 </StyledTableRow>
               );
             })}

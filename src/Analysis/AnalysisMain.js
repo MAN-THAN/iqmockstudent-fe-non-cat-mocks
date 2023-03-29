@@ -53,6 +53,7 @@ function AnalysisMain() {
     potentialScore,
     accuracy,
     percentile,
+    title
   } = basicData;
 
   const handleDownloadPDF = () => {
@@ -213,7 +214,7 @@ function AnalysisMain() {
               <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>This is your mock analysis for iCAT 1.0.</Typography>
+              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>This is your mock analysis for {title ? title :"iCAT 1.0"}.</Typography>
               <br />
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
