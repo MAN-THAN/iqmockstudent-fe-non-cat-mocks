@@ -21,8 +21,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Instructions />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/user_authentication" element={<UserAuth />} />
+          <Route path="/terms/:name/:email/:uid" element={<Terms />} />
+          <Route path="/user_authentication/:name/:email/:uid" element={<UserAuth />} />
           <Route path="/analysis/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
             <Route path="sectionwise/:subject" element={<SectionAnalysis />} />

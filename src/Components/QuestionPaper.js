@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import Modal from "@mui/material/Modal";
-
 import React, { Component } from "react";
 import { RxCross1 } from "react-icons/rx";
 import Calculator from "awesome-react-calculator";
@@ -9,7 +8,7 @@ import { SubHeading } from "./../styleSheets/Style";
 import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
-import Keyboard from "./Keypad";
+import Fade from '@mui/material/Fade';
 
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
@@ -19,7 +18,10 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-
+  backgroundImage:"url('/QuestionsPaper.jpg')",
+  backroundSize:"300px 100px",
+  backgroundRepeat: "no-repeat",
+  
   width: 750,
   textAlign: "",
   height: 650,
@@ -47,10 +49,12 @@ export default function QuestionPaper({ question_paper }) {
         Question Paper
       </MyButton>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <div className="d-flex justify-content-between">
-            <SubHeading className="m-0 ps-1 fw-bold text-underline">Question Paper : </SubHeading>
-            <RxCross1 role="button" onClick={handleClose} />
+      <Fade in={open}>
+          
+      <Box sx={style}>
+        <div className="d-flex text-center">
+            <SubHeading className="m-0 ps-1 fw-bold text-center">Question Paper </SubHeading>
+            {/* <RxCross1 role="button" onClick={handleClose} /> */}
           </div>
           <br />
           {question_paper?.map((e, index) => {
@@ -74,6 +78,8 @@ export default function QuestionPaper({ question_paper }) {
             );
           })}
         </Box>
+      </Fade>
+     
       </Modal>
     </span>
   );
