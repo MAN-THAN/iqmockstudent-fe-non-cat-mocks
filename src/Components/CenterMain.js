@@ -37,9 +37,14 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
+  // Timer state
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setRunning] = useState(false);
+  const intervalRef = useRef(null);
 
+  console.log("timer", timer);
+  
   // syncing question status with local
-
   useEffect(() => {
     if (questionStatus?.length > 0) {
       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
@@ -109,6 +114,8 @@ function CenterMain() {
     } else {
       console.log("setting from local");
       setQuestionStatus(storedQuestionStatus);
+      setInputVal("");
+      setSelectedAnswer(null);
       setLoading(false);
     }
   }, [params.type]);
@@ -130,6 +137,8 @@ function CenterMain() {
       stage: 0,
     }));
     setQuestionStatus(updatedQuestionStatus);
+    setInputVal("");
+    setSelectedAnswer(null);
   };
 
   // Function for setting different stages(accrd to student input)
@@ -168,7 +177,7 @@ function CenterMain() {
         stage: 1,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -184,7 +193,7 @@ function CenterMain() {
         stage: 3,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -202,7 +211,7 @@ function CenterMain() {
         stage: 4,
         studentAnswer,
         studentAnswerIndex,
-        duration: 10,
+        duration: timer,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -210,7 +219,7 @@ function CenterMain() {
       setQuestionStatus(arr);
       return nextInd();
     } else {
-      const newObj = { ...obj, stage: 2, studentAnswer, studentAnswerIndex };
+      const newObj = { ...obj, stage: 2, duration : null, studentAnswer, studentAnswerIndex };
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -242,6 +251,7 @@ function CenterMain() {
   };
   useEffect(() => {
     showPreviousValue();
+    setTimer(0);
   }, [selectedQuestionIndex]);
 
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
@@ -256,6 +266,7 @@ function CenterMain() {
           const newObj = {
             ...obj,
             stage: 2,
+            duration : null
           };
           console.log(newObj);
           let arr = [...questionStatus];
@@ -288,13 +299,20 @@ function CenterMain() {
 
   // clear Response
   const clearResponse = () => {
-    setSelectedAnswer("");
+    setSelectedAnswer(null);
     setInputVal("");
   };
+  // Timer code
 
-
+   useEffect(() => {
+     let intervalId;
+     if (true) {
+       // setting time from 0 to 1 every 1000 milisecond using setInterval method
+       intervalId = setInterval(() => setTimer(timer + 1), 1000);
+     }
+     return () => clearInterval(intervalId);
+   }, [timer]);
   
-
   return loading ? (
     <div
       style={{
@@ -408,7 +426,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={40}
+                          initMinute={1}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
@@ -630,7 +648,7 @@ function CenterMain() {
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
                           value={
-                            selectedAnswer !== undefined ? selectedAnswer : ""
+                            selectedAnswer !== undefined ? selectedAnswer : null
                           }
                           onChange={(e) => {
                             const value = e.target.value;
