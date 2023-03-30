@@ -112,7 +112,7 @@ function CenterMain() {
     if (storedQuestionStatus === null) {
       fetchDataFromApi();
     } else {
-      console.log("setting from local");
+      console.log("getting data from local storage");
       setQuestionStatus(storedQuestionStatus);
       setInputVal("");
       setSelectedAnswer(null);
