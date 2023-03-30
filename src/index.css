@@ -6,8 +6,8 @@
 }
 body {
   overflow: hidden;
-  overflow-y: scroll;
-  background-color: white;
+ 
+
 }
 
 :root {
@@ -25,4 +25,10 @@ body {
 
 
 
-
+@media (min-width: 1250px) {
+  body {
+    overflow: hidden;
+   overflow-y: scroll;
+  
+  }
+}

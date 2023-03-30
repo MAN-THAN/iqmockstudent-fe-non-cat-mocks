@@ -12,10 +12,11 @@ function Header() {
    
     return (
         <header className="p-0 m-0 text-bg-dark">
-            <div className="container-fluid py-2 ">
+            <div className="container-fluid py-1 ">
                 <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 px-3">
                     <div className='flex-item ' >
-                        <Link to="/"><img src={require("../images/iquanta_Logo.png")} alt="iquanta_logo" className='img-fluid iquanta_logo' /></Link>
+                        <Link to="/">
+                        <img src={require("../images/iquanta_Logo.png")} alt="iquanta_logo" className='img-fluid iquanta_logo'/></Link>
                     </div>
                     <div className='flex-item  ms-5 ps-5' >
                         <Typography variant='h4'>iCAT 1.O 2023</Typography>

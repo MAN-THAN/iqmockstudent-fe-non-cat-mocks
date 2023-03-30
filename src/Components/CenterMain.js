@@ -329,12 +329,12 @@ function CenterMain() {
       </div>
     </div>
   ) : (
-    <div className="container-fluid bg-white h-100">
-      <div className="row p-3 pe-1 h-100 ">
+    <div className="container-fluid bg-white">
+      <div className="row p-3 pe-1" style={{height:"100%"}}>
         {/* Left main container */}
-        <div className="col-9">
-          <div className="row py-2">
-            <div className="container ">
+        <div className="col-9 " style={{height:"100%"}}>
+          <div className="row ">
+            <div className="container">
               <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
                 Section
               </SubHeading>
@@ -422,7 +422,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={4}
+                          initMinute={40}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
@@ -435,10 +435,12 @@ function CenterMain() {
           </div>
 
           <div
-            className="row px-1 py-4"
-            style={{
+            className="row px-1 py-4  mt-2"
+              style={{
               background: "var(--light-background)",
-              borderRadius: "30px",
+               borderRadius: "30px",
+               height:"70vh"
+             
             }}
           >
             {/* left side content div */}
@@ -446,7 +448,7 @@ function CenterMain() {
               className={
                 questionStatus?.length > 0 &&
                 questionStatus[selectedQuestionIndex]?.isPara === "Yes"
-                  ? "col-7 overflow-auto"
+                  ? "col-7 overflow-auto" 
                   : "d-none"
               }
             >
@@ -673,7 +675,7 @@ function CenterMain() {
             </div>
 
             {/* Bottom button div */}
-            <div className="d-flex justify-content-between align-items-center pt-2">
+            <div className="d-flex justify-content-between py-3 align-items-center ">
               <div>
                 <MyButton
                   variant="contained"
@@ -709,9 +711,9 @@ function CenterMain() {
         </div>
 
         {/* Right main */}
-        <div className="col-3 justify-content-center align-content-center mx-auto">
-          <div className="container rightMain  p-3 ">
-            <div className="row  ">
+        <div className="col-3 justify-content-center align-content-bottom mx-auto"   >
+          <div className="d-flex flex-column gap-1 p-2 rightMain">
+            <div className="flex-item flex-fill py-2">
               <Typography
                 sx={{
                   fontFamily: "var(--font-inter)",
@@ -743,8 +745,10 @@ function CenterMain() {
                 QUESTION PALETTE
               </SubHeading>
             </div>
-
-            <div className=" container mt-3 keyboard">
+           
+           {/* Question pallete */}
+            <div className="flex-item mt-2 flex-fill ">
+            <div className=" container keyboard ">
               <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
                 {questionStatus &&
                   questionStatus.map((item, index) => {
@@ -786,9 +790,10 @@ function CenterMain() {
                   })}
               </div>
             </div>
-            {/* Modal for questions and instructions */}
+            </div>
 
-            <div className="row my-2   ">
+            {/* Modal for questions and instructions */}
+            <div className="flex-item flex-fill">
               <div className="d-flex gap-2 justify-content-center flex-wrap ">
                 <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
@@ -796,8 +801,8 @@ function CenterMain() {
               <ButtonSubmit studentAnswersData={questionStatus} />
             </div>
 
-            <div className="row mb-1 mt-3 markingNotation">
-              <div className="d-flex  flex-wrap row-gap-3  text-start ">
+            <div className=" flex-item flex-fill  p-3 mt-3 markingNotation align-self-bottom">
+              <div className="d-flex   flex-wrap row-gap-3  text-start ">
                 {" "}
                 <div className=" flex-item  " style={{ flexBasis: "50%" }}>
                   <img
@@ -845,7 +850,7 @@ function CenterMain() {
                   <b> Answered & Marked for review </b>
                 </div>
               </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
