@@ -289,7 +289,7 @@ function CenterMain() {
   // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === questionStatus.length - 1) {
-      alert("You can not go to next section!!!");
+      // alert("You can not go to next section!!!");
       return false;
     }
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
@@ -334,35 +334,25 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      <div className="row p-3 pe-1" style={{height:"100%"}}>
+      <div className="row p-3 pe-1" style={{ height: "100%" }}>
         {/* Left main container */}
-        <div className="col-9 " style={{height:"100%"}}>
+        <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
             <div className="container">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
-                Section
-              </SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
                     height="41"
                     sx={{ borderRadius: "20px" }}
-                    disabled={
-                      params.type === "quants" || params.type === "lrdi"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
                     variant="contained"
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={
-                      params.type === "varc" || params.type === "quants"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -370,11 +360,7 @@ function CenterMain() {
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={
-                      params.type === "varc" || params.type === "lrdi"
-                        ? true
-                        : false
-                    }
+                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -384,15 +370,9 @@ function CenterMain() {
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <span>
-                    <Tooltip
-                      title={isFullScreen ? "Exit full screen" : "Full screen"}
-                    >
+                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
                       <img
-                        src={
-                          isFullScreen
-                            ? "/Group28.jpg"
-                            : require("../images/Open vector.png")
-                        }
+                        src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -422,14 +402,8 @@ function CenterMain() {
                   >
                     {
                       <>
-                        <div style={{ color: "black", fontSize: "14px" }}>
-                          Time Left
-                        </div>
-                        <Timer
-                          initMinute={1}
-                          initSeconds={0}
-                          studentAnswersData={questionStatus}
-                        />
+                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
+                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -440,46 +414,28 @@ function CenterMain() {
 
           <div
             className="row px-1 py-4  mt-2"
-              style={{
+            style={{
               background: "var(--light-background)",
-               borderRadius: "30px",
-               height:"70vh"
-             
+              borderRadius: "30px",
+              height: "70vh",
             }}
           >
             {/* left side content div */}
-            <div
-              className={
-                questionStatus?.length > 0 &&
-                questionStatus[selectedQuestionIndex]?.isPara === "Yes"
-                  ? "col-7 overflow-auto" 
-                  : "d-none"
-              }
-            >
+            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
               <div className="container leftContent">
                 {
                   <ContentDrawer
                     question={
-                      questionStatus?.length > 0 &&
-                      questionStatus[selectedQuestionIndex].isPara === "Yes"
+                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
                         ? questionStatus[selectedQuestionIndex].paragraph
                         : "No paragraph"
                     }
                     image={
                       questionStatus?.length > 0 && // Check if Data array has at least one element
                       questionStatus[selectedQuestionIndex]?.image
-                        ? questionStatus[selectedQuestionIndex]?.image.map(
-                            (item) => {
-                              return (
-                                <img
-                                  src={item}
-                                  alt=""
-                                  className="img-fluid "
-                                  width={150}
-                                />
-                              );
-                            }
-                          )
+                        ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
+                            return <img src={item} alt="" className="img-fluid " width={150} />;
+                          })
                         : null
                     }
                   />
@@ -489,10 +445,7 @@ function CenterMain() {
             {/*  right side question  div */}
             <div
               className={
-                questionStatus?.length > 0 &&
-                questionStatus[selectedQuestionIndex].isPara === "Yes"
-                  ? "col-5 text-justify"
-                  : "col-12  text-justify"
+                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
               }
             >
               <div className="container p-3 rightContent overflow-auto">
@@ -504,15 +457,14 @@ function CenterMain() {
                 <br /> <br />
                 {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {questionStatus[selectedQuestionIndex]?.type === 0 ||
-                    questionStatus[selectedQuestionIndex]?.type === null ? (
+                    {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
                           label="Enter Answer"
                           variant="outlined"
                           value={inputVal !== "" ? inputVal : ""}
-                          onChange={(e) => setInputVal(e.target.value)}
+                          // onChange={(e) => setInputVal(e.target.value)}
                           inputRef={(input) => input && input.focus()}
                           sx={{
                             my: 3,
@@ -647,9 +599,7 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={
-                            selectedAnswer !== undefined ? selectedAnswer : null
-                          }
+                          value={selectedAnswer !== undefined ? selectedAnswer : null}
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
@@ -658,18 +608,19 @@ function CenterMain() {
                             // // setData(updatedData);
                           }}
                         >
-                          {questionStatus[selectedQuestionIndex]?.options !=
-                            null &&
-                            questionStatus[selectedQuestionIndex]?.options.map(
-                              (option, index) => (
-                                <FormControlLabel
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<small>{option}</small>}
-                                />
-                              )
-                            )}
+                          {questionStatus[selectedQuestionIndex]?.options != null &&
+                            questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                              <FormControlLabel
+                                key={index}
+                                value={index}
+                                control={<Radio />}
+                                label={
+                                  <small>
+                                    <Latex>{option}</Latex>
+                                  </small>
+                                }
+                              />
+                            ))}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -681,11 +632,7 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between py-3 align-items-center ">
               <div>
-                <MyButton
-                  variant="contained"
-                  height="41"
-                  onClick={() => setStage("review")}
-                >
+                <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -715,7 +662,7 @@ function CenterMain() {
         </div>
 
         {/* Right main */}
-        <div className="col-3 justify-content-center align-content-bottom mx-auto"   >
+        <div className="col-3 justify-content-center align-content-bottom mx-auto">
           <div className="d-flex flex-column gap-1 p-2 rightMain">
             <div className="flex-item flex-fill py-2">
               <Typography
@@ -727,15 +674,7 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing{" "}
-                <b>
-                  {params.type === "varc"
-                    ? "Verbal Ability"
-                    : params.type === "lrdi"
-                    ? "LRDI"
-                    : "Quant"}
-                </b>{" "}
-                section
+                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "LRDI" : "Quant"}</b> section
               </Typography>
 
               <SubHeading
@@ -749,51 +688,49 @@ function CenterMain() {
                 QUESTION PALETTE
               </SubHeading>
             </div>
-           
-           {/* Question pallete */}
+
+            {/* Question pallete */}
             <div className="flex-item mt-2 flex-fill ">
-            <div className=" container keyboard ">
-              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
-                {questionStatus &&
-                  questionStatus.map((item, index) => {
-                    return (
-                      <div className="col">
-                        <Box
-                          component="div"
-                          onClick={() => handleQuestionClick(index)}
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "45px",
-                            p: 2,
-                            height: "45px",
-                            cursor: "pointer",
-                            backgroundImage: `url(${
-                              item.stage === 0
-                                ? "/BL.png"
-                                : item.stage === 1
-                                ? "/Answered.png"
-                                : item.stage === 2
-                                ? "/NotAnswered.png"
-                                : item.stage === 3
-                                ? "/MarkedforReview.png"
-                                : "/Answered&MarkedReview.png"
-                            })`,
-                            backgroundSize: "cover",
-                            objectFit: "cover",
-                            fontWeight: "bold",
-                            fontSize: "15px",
-                          }}
-                        >
-                          <span style={{ position: "relative", bottom: "4px" }}>
-                            {index + 1}
-                          </span>
-                        </Box>
-                      </div>
-                    );
-                  })}
+              <div className=" container keyboard ">
+                <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
+                  {questionStatus &&
+                    questionStatus.map((item, index) => {
+                      return (
+                        <div className="col">
+                          <Box
+                            component="div"
+                            onClick={() => handleQuestionClick(index)}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              width: "45px",
+                              p: 2,
+                              height: "45px",
+                              cursor: "pointer",
+                              backgroundImage: `url(${
+                                item.stage === 0
+                                  ? "/BL.png"
+                                  : item.stage === 1
+                                  ? "/Answered.png"
+                                  : item.stage === 2
+                                  ? "/NotAnswered.png"
+                                  : item.stage === 3
+                                  ? "/MarkedforReview.png"
+                                  : "/Answered&MarkedReview.png"
+                              })`,
+                              backgroundSize: "cover",
+                              objectFit: "cover",
+                              fontWeight: "bold",
+                              fontSize: "15px",
+                            }}
+                          >
+                            <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
+                          </Box>
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
-            </div>
             </div>
 
             {/* Modal for questions and instructions */}
@@ -809,52 +746,22 @@ function CenterMain() {
               <div className="d-flex   flex-wrap row-gap-3  text-start ">
                 {" "}
                 <div className=" flex-item  " style={{ flexBasis: "50%" }}>
-                  <img
-                    src={require("../images/Vector 1.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered</b>
+                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
                 </div>
                 <div className="flex-item  " style={{ flexBasis: "50%" }}>
-                  <img
-                    src={require("../images/Vector 1 (1).png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Not Answered</b>
+                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
                 </div>
                 <div className="flex-item  " style={{ flexBasis: "50%" }}>
-                  <img
-                    src={require("../images/Ellipse 12.png")}
-                    className="img-fluid"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b>Marked for Review</b>
+                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "50%" }}>
-                  <img
-                    src="/BL.png"
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Not Visited {} </b>
+                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "100%" }}>
-                  <img
-                    src="/Answered&MarkedReview.png"
-                    className="img-fluid shadow-lg"
-                    width="20"
-                    alt=""
-                  />{" "}
-                  <b> Answered & Marked for review </b>
+                  <img src="/Answered&MarkedReview.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review </b>
                 </div>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       </div>
