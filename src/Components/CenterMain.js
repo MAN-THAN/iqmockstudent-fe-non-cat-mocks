@@ -426,7 +426,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={40}
+                          initMinute={1}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
@@ -732,8 +732,8 @@ function CenterMain() {
                   {params.type === "varc"
                     ? "Verbal Ability"
                     : params.type === "lrdi"
-                    ? "Lrdi"
-                    : "Quants"}
+                    ? "LRDI"
+                    : "Quant"}
                 </b>{" "}
                 section
               </Typography>

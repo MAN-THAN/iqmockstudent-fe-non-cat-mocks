@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useNavigate ,useParams} from "react-router";
 import { getAttemptId } from "../services/Mock_api";
+import { ClimbingBoxLoader, RingLoader } from "react-spinners";
 
 const UserAuth = () => {
   const navigate = useNavigate();
@@ -37,10 +38,11 @@ const UserAuth = () => {
 
   return (
     <React.Fragment>
-      <div style={{ display: "flex",flexDirection:"column", width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}>
-      <img src="/AuthLoader.gif"  className="img-fluid"  alt=""  width={150} />
-            <h5 className=" text-muted" style={{color:"", textAlign:"center"}}>Authenticating..... Please wait</h5>
-      
+      <div style={{ display: "flex", flexDirection: "column", width: "100vw", height: "95vh", justifyContent: "center", alignItems: "center" }}>
+        <RingLoader color="var(--orange)" size='150' />
+        <h5 className="loader_title" style={{ textAlign: "center", marginTop : "1em" }}>
+          Authenticating..... Please wait!
+        </h5>
       </div>
     </React.Fragment>
   );

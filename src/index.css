@@ -6,29 +6,30 @@
 }
 body {
   overflow: hidden;
- 
-
+}
+.loader_title {
+  font-size: 20px;
+  background: -webkit-linear-gradient(#0f0c29, #302b63, #24243e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 :root {
   --orange: #ff9000;
   --green: #00cc2f;
   --blue: #8d39ff;
-  --button-blue:#0654CE;
+  --button-blue: #0654ce;
   --light-background: #e4ecf7;
-  --dark-blue:#0654CE;
+  --dark-blue: #0654ce;
   --font-color: #000000;
   --font-inter: "Inter", sans-serif;
   --font-inder: "Inder", sans-serif;
-  --background:#F9FAFF;
+  --background: #f9faff;
 }
-
-
 
 @media (min-width: 1250px) {
   body {
     overflow: hidden;
-   overflow-y: scroll;
-  
+    overflow-y: scroll;
   }
 }
