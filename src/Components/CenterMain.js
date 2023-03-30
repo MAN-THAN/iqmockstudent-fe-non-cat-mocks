@@ -114,6 +114,8 @@ function CenterMain() {
     } else {
       console.log("setting from local");
       setQuestionStatus(storedQuestionStatus);
+      setInputVal("");
+      setSelectedAnswer(null);
       setLoading(false);
     }
   }, [params.type]);
@@ -135,6 +137,8 @@ function CenterMain() {
       stage: 0,
     }));
     setQuestionStatus(updatedQuestionStatus);
+    setInputVal("");
+    setSelectedAnswer(null);
   };
 
   // Function for setting different stages(accrd to student input)
@@ -422,7 +426,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={3}
+                          initMinute={1}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
