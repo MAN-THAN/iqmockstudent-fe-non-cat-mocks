@@ -9,17 +9,15 @@ import { SubHeading } from './../styleSheets/Style';
 
 const style = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 350,
+  top: "20%",
+  right:"2.5%",
+  width: 360,
   textAlign: "center",
   height: 420,
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
    p: 2,
-  
    zIndex:1000,
 
 };

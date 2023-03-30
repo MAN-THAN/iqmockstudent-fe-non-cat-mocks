@@ -422,7 +422,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={40}
+                          initMinute={3}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
