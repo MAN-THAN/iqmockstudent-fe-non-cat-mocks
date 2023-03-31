@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import {
   SubHeading,
   BootstrapButton,
   MyButton,
-  SubmitButton,
-} from "../styleSheets/Style";
+  } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import ClipLoader from "react-spinners/ClipLoader";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
@@ -19,13 +17,11 @@ import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
-import Latex from "react-latex-next";
+import Latex from "react-latex-next";   
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
-import { Space, Spin } from "antd";
-import { useRef } from "react";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
+
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -37,13 +33,8 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
-  // Timer state
-  const [timer, setTimer] = useState(0);
-  const [isRunning, setRunning] = useState(false);
-  const intervalRef = useRef(null);
-
-  console.log("timer", timer);
   
+
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
@@ -142,8 +133,8 @@ function CenterMain() {
   };
 
   // Function for setting different stages(accrd to student input)
-  console.log("data", Data);
-  console.log("questionStatus", questionStatus);
+  // console.log("data", Data);
+  // console.log("questionStatus", questionStatus);
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
@@ -177,7 +168,7 @@ function CenterMain() {
         stage: 1,
         studentAnswer,
         studentAnswerIndex,
-        duration: timer,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -193,7 +184,7 @@ function CenterMain() {
         stage: 3,
         studentAnswer,
         studentAnswerIndex,
-        duration: timer,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -211,7 +202,7 @@ function CenterMain() {
         stage: 4,
         studentAnswer,
         studentAnswerIndex,
-        duration: timer,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -251,9 +242,10 @@ function CenterMain() {
   };
   useEffect(() => {
     showPreviousValue();
-    setTimer(0);
+    setCount(0)
+    
   }, [selectedQuestionIndex]);
-
+  
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
 
   useEffect(() => {
@@ -278,15 +270,44 @@ function CenterMain() {
     settingStage2();
   }, [selectedQuestionIndex]);
 
-  console.log("inputVal-->", inputVal);
-  console.log("selectedAnswer", selectedAnswer);
+  // console.log("inputVal-->", inputVal);
+  // console.log("selectedAnswer", selectedAnswer);
 
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
     prevQuestionIndex.current = selectedQuestionIndex;
   };
-  // button for next func
+
+  // clear Response
+  const clearResponse = () => {
+    setSelectedAnswer(null);
+    setInputVal("");
+  };
+
+  // Duration response timer
+
+
+
+  const [count, setCount] = useState(0);
+  const intervalRef = useRef();
+
+  useEffect(() => {
+    console.log("Component rendered");
+    intervalRef.current = setInterval(() => {
+      setCount(prevCount => prevCount + 1);
+    }, 1000);
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  const stopTimer = () => {
+    clearInterval(intervalRef.current);
+  };
+  
+
+// console.log(elapsed)
+  // button for next func 
+ 
   const nextInd = () => {
     if (selectedQuestionIndex === questionStatus.length - 1) {
       // alert("You can not go to next section!!!");
@@ -297,22 +318,7 @@ function CenterMain() {
     setInputVal("");
   };
 
-  // clear Response
-  const clearResponse = () => {
-    setSelectedAnswer(null);
-    setInputVal("");
-  };
-  // Timer code
 
-   useEffect(() => {
-     let intervalId;
-     if (true) {
-       // setting time from 0 to 1 every 1000 milisecond using setInterval method
-       intervalId = setInterval(() => setTimer(timer + 1), 1000);
-     }
-     return () => clearInterval(intervalId);
-   }, [timer]);
-  
   return loading ? (
     <div
       style={{
@@ -334,7 +340,7 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      <div className="row p-3 pe-1" style={{ height: "100%" }}>
+      <div className="row p-3 pe-1" style={{height:"100%"}}>
         {/* Left main container */}
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
@@ -402,8 +408,14 @@ function CenterMain() {
                   >
                     {
                       <>
-                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <div style={{ color: "black", fontSize: "14px" }}>
+                          Time Left
+                        </div>
+                        <Timer
+                          initMinute={2}
+                          initSeconds={0}
+                          studentAnswersData={questionStatus}
+                        />
                       </>
                     }
                   </div>

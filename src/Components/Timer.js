@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
 import Modal from "@mui/material/Modal";
@@ -26,12 +26,12 @@ const Timer = (props) => {
     setMinutes(countDownTimeMin);
   }, []);
 
-  // submitting section wise
-  const submitSectionFunc = async (subject) => {
+  // memoize submitSectionFunc using useCallback hook
+  const submitSectionFunc = useCallback(async (subject) => {
     const response = await submitSection(attemptID, subject, studentAnswersData);
-    if (response.status == 200) {
+    if (response.status === 200) {
       window.localStorage.removeItem(COUNTER_KEY_MIN);
-      window.localStorage.removeItem (COUNTER_KEY_SEC);
+      window.localStorage.removeItem(COUNTER_KEY_SEC);
       window.localStorage.removeItem("questionStatus");
       if (subject === "varc") {
         console.log("varc submitted");
@@ -44,15 +44,17 @@ const Timer = (props) => {
         navigate(`/analysis/${attemptID}/overall`);
       }
     }
-  };
+  }, [attemptID, navigate, params.mockid, studentAnswersData]);
+
+
 
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
       }
-      if (seconds == 0) {
-        if (minutes == 0) {
+      if (seconds === 0) {
+        if (minutes === 0) {
           if (params.type === "varc") {
             submitSectionFunc("varc");
           } else if (params.type === "lrdi") {
@@ -61,8 +63,8 @@ const Timer = (props) => {
             submitSectionFunc("quants");
           }
         } else {
-          if (minutes > 0) { 
-             setMinutes(minutes - 1);
+          if (minutes > 0) {
+            setMinutes(minutes - 1);
           }
           setSeconds(59);
         }
@@ -75,7 +77,7 @@ const Timer = (props) => {
     return () => {
       clearInterval(myInterval);
     };
-  }, [seconds, minutes]);
+      }, [seconds, minutes, params.type, submitSectionFunc]);
 
   const style = {
     position: "absolute",

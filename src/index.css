@@ -6,6 +6,7 @@
 }
 body {
   overflow: hidden;
+  overflow-y: scroll;
 }
 .loader_title {
   font-size: 20px;
@@ -27,7 +28,9 @@ body {
   --background: #f9faff;
 }
 
-@media (min-width: 1250px) {
+
+
+@media (max-width: 1300px) {
   body {
     overflow: hidden;
     overflow-y: scroll;
