@@ -2,24 +2,23 @@ import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import Modal from "@mui/material/Modal";
 import React, { Component } from "react";
-import { RxCross1 } from 'react-icons/rx';
+import { RxCross1 } from "react-icons/rx";
 import Calculator from "awesome-react-calculator";
-import { SubHeading } from './../styleSheets/Style';
-
+import Backdrop from "@mui/material/Backdrop";
+import { SubHeading } from "./../styleSheets/Style";
+import { PaperComponent } from "./PaperCompo";
+import { Dialog } from "@mui/material";
 
 const style = {
-  position: "absolute",
-  top: "20%",
-  right:"2.5%",
+  cursor : "move",
   width: 360,
   textAlign: "center",
   height: 420,
   bgcolor: "white",
   borderRadius: "10px ",
   boxShadow: 24,
-   p: 2,
-   zIndex:1000,
-
+  p: 2,
+  zIndex: 1000,
 };
 
 export default function Calc() {
@@ -27,38 +26,29 @@ export default function Calc() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
   return (
     <span>
-      <img
-        src={require("../images/Icon.png")}
-        width="70"
-        role="button"
-        className="img-fluid p-2"
-        alt="arrow-icon"
-        onClick={handleOpen}
-      />
-      <Modal
+      <img src={require("../images/Icon.png")} width="70" role="button" className="img-fluid p-2" alt="arrow-icon" onClick={handleOpen} />
+      <Dialog
         open={open}
-      onClose={handleClose}
-        aria-labelledby="modal-modal-title"
+        onClose={handleClose}
         aria-describedby="modal-modal-description"
-        sx={{ zIndex: 10000,}}
-   
+        sx={{ zIndex: 10000 }}
+        hideBackdrop={true}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
       >
-        <Box sx={style}>
-      
-         <div className="d-flex justify-content-between">
-         <SubHeading className= "m-0 p-0">Calculator </SubHeading>
-        <RxCross1 role="button" onClick={handleClose}/>
-         </div>
-         
-          <div className="container calcContainer" >
+        <Box sx={style} id="draggable-dialog-title">
+          <div className="d-flex justify-content-between">
+            <SubHeading className="m-0 p-0">Calculator </SubHeading>
+            <RxCross1 role="button" onClick={handleClose} />
+          </div>
 
-          <Calculator />
+          <div className="container calcContainer">
+            <Calculator />
           </div>
         </Box>
-      </Modal>
+      </Dialog>
     </span>
   );
 }
