@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useMemo,useCallback} from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import {
   SubHeading,
   BootstrapButton,
@@ -21,7 +21,7 @@ import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
-import { useRef } from "react";
+
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ function CenterMain() {
         stage: 1,
         studentAnswer,
         studentAnswerIndex,
-        duration: elapsed,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -184,7 +184,7 @@ function CenterMain() {
         stage: 3,
         studentAnswer,
         studentAnswerIndex,
-        duration: elapsed,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -202,7 +202,7 @@ function CenterMain() {
         stage: 4,
         studentAnswer,
         studentAnswerIndex,
-        duration: elapsed,
+        duration: count,
       };
       console.log(newObj);
       let arr = [...questionStatus];
@@ -210,7 +210,7 @@ function CenterMain() {
       setQuestionStatus(arr);
       return nextInd();
     } else {
-      const newObj = { ...obj, stage: 2, duration : null, studentAnswer, studentAnswerIndex,duration: elapsed };
+      const newObj = { ...obj, stage: 2, duration : null, studentAnswer, studentAnswerIndex,duration: count };
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -242,10 +242,10 @@ function CenterMain() {
   };
   useEffect(() => {
     showPreviousValue();
-    setElapsedTime(0);
-     
+    setCount(0)
+    
   }, [selectedQuestionIndex]);
-
+  
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
 
   useEffect(() => {
@@ -288,27 +288,25 @@ function CenterMain() {
 
   // Duration response timer
 
-  const [elapsedTime, setElapsedTime] = useState(0);
 
 
-  const handleElapsedTime = useCallback(() => {
-    setElapsedTime(prevTime => prevTime + 1000);
-  }, []);
-  
-  const elapsed = useMemo(() => {
-    return Math.floor(elapsedTime / 1000);
-  }, [elapsedTime]);
-  
+  const [count, setCount] = useState(0);
+  const intervalRef = useRef();
+
   useEffect(() => {
-    const intervalId = setInterval(handleElapsedTime, 1000);
-    return () => clearInterval(intervalId);
-  }, [handleElapsedTime]);
-  
-  
-  
+    console.log("Component rendered");
+    intervalRef.current = setInterval(() => {
+      setCount(prevCount => prevCount + 1);
+    }, 1000);
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  const stopTimer = () => {
+    clearInterval(intervalRef.current);
+  };
   
 
-console.log(elapsed)
+// console.log(elapsed)
   // button for next func 
  
   const nextInd = () => {
@@ -324,7 +322,7 @@ console.log(elapsed)
     
   };
 
-console.log(questionStatus)
+
   return loading ? (
     <div
       style={{
@@ -346,6 +344,7 @@ console.log(questionStatus)
     </div>
   ) : (
     <div className="container-fluid bg-white">
+      {count}
       <div className="row p-3 pe-1" style={{height:"100%"}}>
         {/* Left main container */}
         <div className="col-9 " style={{height:"100%"}}>
