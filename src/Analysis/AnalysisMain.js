@@ -20,6 +20,7 @@ import { tooltipClasses } from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import "../styleSheets/AnalysisMain.css";
+import { PacmanLoader } from "react-spinners";
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -99,11 +100,9 @@ function AnalysisMain() {
             alignItems: "center",
           }}
         >
-          {/* <PulseLoader color="var(--button-blue)" size={15} text="Loading data..." />
-         x*/}
-          <img src="/Analysis.gif" alt="Loader" className="img-fluid" width={200} />
-          <h5 className=" mt-4 ms-2" style={{ color: "var(--button-blue)", textAlign: "center" }}>
-            Prepare Analysis....
+          <PacmanLoader color="var(--orange)" size="100" />
+          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
+            Preparing Analysis!
           </h5>
         </div>
       ) : (
@@ -214,7 +213,9 @@ function AnalysisMain() {
               <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>This is your mock analysis for {title ? title :"iCAT 1.0"}.</Typography>
+              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>
+                This is your mock analysis for {title ? title : "iCAT 1.0"}.
+              </Typography>
               <br />
               <div className="d-flex gap-3 m-3 ms-0 ">
                 <ModifyButton
