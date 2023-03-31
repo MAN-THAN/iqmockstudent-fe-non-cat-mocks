@@ -301,12 +301,8 @@ function CenterMain() {
     return () => clearInterval(intervalRef.current);
   }, []);
 
-  const stopTimer = () => {
-    clearInterval(intervalRef.current);
-  };
-  
 
-// console.log(elapsed)
+
   // button for next func 
  
   const nextInd = () => {
@@ -344,7 +340,7 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      {count}
+  
       <div className="row p-3 pe-1" style={{height:"100%"}}>
         {/* Left main container */}
         <div className="col-9 " style={{height:"100%"}}>
@@ -763,8 +759,8 @@ function CenterMain() {
            
            {/* Question pallete */}
             <div className="flex-item mt-2 flex-fill ">
-            <div className=" container keyboard ">
-              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
+            <div className=" container py-1 keyboard ">
+              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  gap-2  justify-content-center ">
                 {questionStatus &&
                   questionStatus.map((item, index) => {
                     return (

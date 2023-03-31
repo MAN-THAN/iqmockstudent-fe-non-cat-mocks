@@ -6,9 +6,8 @@
 }
 body {
   overflow: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
  
-
 }
 
 :root {

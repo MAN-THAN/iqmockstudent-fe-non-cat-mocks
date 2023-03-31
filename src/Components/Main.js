@@ -9,7 +9,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function Main() {
   return (
-    <div className="overflow-hidden">
+    <div >
       <Header />
       <CenterMain />
     </div>
