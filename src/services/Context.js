@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 
 export const Context = React.createContext();
@@ -13,7 +13,7 @@ export const ContextProvider = ({ children }) => {
   const analysisDataApi = async (attemptId) => {
     const response = await fetchAnalysisData(attemptId);
     console.log(response);
-    if (response?.status == 200) {
+    if (response?.status === 200) {
       setAnalysisData(response.data.data);
       setLoading(false);
     } else {

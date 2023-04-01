@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { SubHeading } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
-import { Puff, InfinitySpin } from "react-loader-spinner";
+import { InfinitySpin } from "react-loader-spinner";
 
 const Timer = (props) => {
   const navigate = useNavigate();
@@ -45,39 +45,34 @@ const Timer = (props) => {
       }
     }
   }, [attemptID, navigate, params.mockid, studentAnswersData]);
-
-
+ 
 
   useEffect(() => {
-    let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          if (params.type === "varc") {
-            submitSectionFunc("varc");
-          } else if (params.type === "lrdi") {
-            submitSectionFunc("lrdi");
-          } else if (params.type === "quants") {
-            submitSectionFunc("quants");
-          }
-        } else {
-          if (minutes > 0) {
-            setMinutes(minutes - 1);
-          }
-          setSeconds(59);
-        }
+  let myInterval = setInterval(() => {
+    if (seconds > 0) {
+      setSeconds(seconds - 1);
+    } else {
+      if (minutes > 0) {
+        setMinutes(minutes - 1);
+        setSeconds(59);
       } else {
-        window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
-        window.localStorage.setItem(COUNTER_KEY_SEC, seconds - 1);
+        clearInterval(myInterval);
+        if (params.type === "varc") {
+          submitSectionFunc("varc");
+        } else if (params.type === "lrdi") {
+          submitSectionFunc("lrdi");
+        } else if (params.type === "quants") {
+          submitSectionFunc("quants");
+        }
       }
-    }, 1000);
+    }
+  }, 1000);
 
-    return () => {
-      clearInterval(myInterval);
-    };
-      }, [seconds, minutes, params.type, submitSectionFunc]);
+  return () => {
+    clearInterval(myInterval);
+  };
+}, [seconds, minutes, params.type, submitSectionFunc]);
+
 
   const style = {
     position: "absolute",

@@ -10,7 +10,6 @@ import Badge from "react-bootstrap/Badge";
 import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
-import PulseLoader from "react-spinners/PulseLoader";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Fade from "@mui/material/Fade";

@@ -1,9 +1,5 @@
-import React, { useState, useEffect ,useRef} from "react";
-import {
-  SubHeading,
-  BootstrapButton,
-  MyButton,
-  } from "../styleSheets/Style";
+import React, { useState, useEffect, useRef } from "react";
+import { SubHeading, BootstrapButton, MyButton } from "../styleSheets/Style";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -17,11 +13,10 @@ import ContentDrawer from "./ContentDrawer";
 import QuestionPaper from "./QuestionPaper";
 import InstructionButton from "./InstructionButton";
 import "katex/dist/katex.min.css";
-import Latex from "react-latex-next";   
+import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
-
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -33,9 +28,6 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
-  
-  
-
 
   // syncing question status with local
   useEffect(() => {
@@ -90,7 +82,7 @@ function CenterMain() {
     const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);
       console.log(response);
-      if (response?.status == 200) {
+      if (response?.status === 200) {
         setData(response.data.data);
         setLoading(false);
       } else {
@@ -212,7 +204,13 @@ function CenterMain() {
       setQuestionStatus(arr);
       return nextInd();
     } else {
-      const newObj = { ...obj, stage: 2, duration : null, studentAnswer, studentAnswerIndex };
+      const newObj = {
+        ...obj,
+        stage: 2,
+        duration: null,
+        studentAnswer,
+        studentAnswerIndex,
+      };
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -244,12 +242,10 @@ function CenterMain() {
   };
   useEffect(() => {
     showPreviousValue();
-    setCount(0)
-    
+    setCount(0);
   }, [selectedQuestionIndex]);
-  
-  // Function setting stage "Not Answered" on just changing selectedQuestionIndex
 
+// Function setting stage "Not Answered" on just changing selectedQuestionIndex
   useEffect(() => {
     const settingStage2 = () => {
       if (questionStatus?.length > 0) {
@@ -260,7 +256,7 @@ function CenterMain() {
           const newObj = {
             ...obj,
             stage: 2,
-            duration : null
+            duration: null,
           };
           console.log(newObj);
           let arr = [...questionStatus];
@@ -274,7 +270,6 @@ function CenterMain() {
 
   // console.log("inputVal-->", inputVal);
   // console.log("selectedAnswer", selectedAnswer);
-
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
@@ -288,25 +283,18 @@ function CenterMain() {
   };
 
   // Duration response timer
-
-   
-
   const [count, setCount] = useState(0);
   const intervalRef = useRef();
 
   useEffect(() => {
-
     console.log("Component rendered");
     intervalRef.current = setInterval(() => {
-      setCount(prevCount => prevCount + 1);
+      setCount((prevCount) => prevCount + 1);
     }, 1000);
     return () => clearInterval(intervalRef.current);
   }, []);
 
-
-
-  // button for next func 
- 
+  // button for next func
   const nextInd = () => {
     if (selectedQuestionIndex === questionStatus.length - 1) {
       // alert("You can not go to next section!!!");
@@ -316,7 +304,6 @@ function CenterMain() {
     setSelectedAnswer(null);
     setInputVal("");
   };
-
 
   return loading ? (
     <div
@@ -344,20 +331,30 @@ function CenterMain() {
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
             <div className="container">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>
+                Section
+              </SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   <BootstrapButton
                     height="41"
                     sx={{ borderRadius: "20px" }}
-                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    disabled={
+                      params.type === "quants" || params.type === "lrdi"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    disabled={
+                      params.type === "varc" || params.type === "quants"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -365,7 +362,11 @@ function CenterMain() {
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    disabled={
+                      params.type === "varc" || params.type === "lrdi"
+                        ? true
+                        : false
+                    }
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -375,9 +376,15 @@ function CenterMain() {
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <span>
-                    <Tooltip title={isFullScreen ? "Exit full screen" : "Full screen"}>
+                    <Tooltip
+                      title={isFullScreen ? "Exit full screen" : "Full screen"}
+                    >
                       <img
-                        src={isFullScreen ? "/Group28.jpg" : require("../images/Open vector.png")}
+                        src={
+                          isFullScreen
+                            ? "/Group28.jpg"
+                            : require("../images/Open vector.png")
+                        }
                         width="70"
                         className="img-fluid p-2"
                         onClick={handleFullScreen}
@@ -407,19 +414,14 @@ function CenterMain() {
                   >
                     {
                       <>
-<<<<<<< HEAD
                         <div style={{ color: "black", fontSize: "14px" }}>
                           Time Left
                         </div>
                         <Timer
-                          initMinute={20}
+                          initMinute={10}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
-=======
-                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
->>>>>>> acc150eaa985ee89e22e8e752fb9c8bcb552d9f4
                       </>
                     }
                   </div>
@@ -437,22 +439,42 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 " : "d-none"}>
-              <div className="p-2" style={{borderRadius:"30px", background:"white"}}>
+            <div
+              className={
+                questionStatus?.length > 0 &&
+                questionStatus[selectedQuestionIndex]?.isPara === "Yes"
+                  ? "col-7 "
+                  : "d-none"
+              }
+            >
+              <div
+                className="p-2"
+                style={{ borderRadius: "30px", background: "white" }}
+              >
                 <div className="leftContent">
                   {
                     <ContentDrawer
                       question={
-                        questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
+                        questionStatus?.length > 0 &&
+                        questionStatus[selectedQuestionIndex].isPara === "Yes"
                           ? questionStatus[selectedQuestionIndex].paragraph
                           : "No paragraph"
                       }
                       image={
                         questionStatus?.length > 0 && // Check if Data array has at least one element
                         questionStatus[selectedQuestionIndex]?.image
-                          ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                              return <img src={item} alt="" className="img-fluid " width={150} />;
-                            })
+                          ? questionStatus[selectedQuestionIndex]?.image.map(
+                              (item) => {
+                                return (
+                                  <img
+                                    src={item}
+                                    alt=""
+                                    className="img-fluid "
+                                    width={150}
+                                  />
+                                );
+                              }
+                            )
                           : null
                       }
                     />
@@ -463,19 +485,27 @@ function CenterMain() {
             {/*  right side question  div */}
             <div
               className={
-                questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
+                questionStatus?.length > 0 &&
+                questionStatus[selectedQuestionIndex].isPara === "Yes"
+                  ? "col-5 text-justify"
+                  : "col-12  text-justify"
               }
             >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
                   Question : {selectedQuestionIndex + 1}
                   <br />
-                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
+                  {questionStatus?.length > 0 && (
+                    <Latex>
+                      {questionStatus[selectedQuestionIndex]?.question}
+                    </Latex>
+                  )}
                 </Typography>
                 <br /> <br />
                 {questionStatus?.length > 0 && (
                   <div className="text-start">
-                    {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
+                    {questionStatus[selectedQuestionIndex]?.type === 0 ||
+                    questionStatus[selectedQuestionIndex]?.type === null ? (
                       <>
                         <TextField
                           id="outlined-basic"
@@ -618,7 +648,9 @@ function CenterMain() {
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
                           name={`answer_${selectedQuestionIndex}`}
-                          value={selectedAnswer !== undefined ? selectedAnswer : null}
+                          value={
+                            selectedAnswer !== undefined ? selectedAnswer : null
+                          }
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedAnswer(parseInt(value));
@@ -627,19 +659,22 @@ function CenterMain() {
                             // // setData(updatedData);
                           }}
                         >
-                          {questionStatus[selectedQuestionIndex]?.options != null &&
-                            questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
-                              <FormControlLabel
-                                key={index}
-                                value={index}
-                                control={<Radio />}
-                                label={
-                                  <small>
-                                    <Latex>{option}</Latex>
-                                  </small>
-                                }
-                              />
-                            ))}
+                          {questionStatus[selectedQuestionIndex]?.options !=
+                            null &&
+                            questionStatus[selectedQuestionIndex]?.options.map(
+                              (option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={
+                                    <small>
+                                      <Latex>{option}</Latex>
+                                    </small>
+                                  }
+                                />
+                              )
+                            )}
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -651,7 +686,11 @@ function CenterMain() {
             {/* Bottom button div */}
             <div className="d-flex justify-content-between py-3 align-items-center ">
               <div>
-                <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
+                <MyButton
+                  variant="contained"
+                  height="41"
+                  onClick={() => setStage("review")}
+                >
                   Mark for Review & Next
                 </MyButton>
                 <MyButton
@@ -693,7 +732,15 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "LRDI" : "Quant"}</b> section
+                You are viewing{" "}
+                <b>
+                  {params.type === "varc"
+                    ? "Verbal Ability"
+                    : params.type === "lrdi"
+                    ? "LRDI"
+                    : "Quant"}
+                </b>{" "}
+                section
               </Typography>
 
               <SubHeading
@@ -743,7 +790,11 @@ function CenterMain() {
                               fontSize: "15px",
                             }}
                           >
-                            <span style={{ position: "relative", bottom: "4px" }}>{index + 1}</span>
+                            <span
+                              style={{ position: "relative", bottom: "4px" }}
+                            >
+                              {index + 1}
+                            </span>
                           </Box>
                         </div>
                       );
@@ -765,19 +816,49 @@ function CenterMain() {
               <div className="d-flex   flex-wrap row-gap-3  text-start ">
                 {" "}
                 <div className=" flex-item  " style={{ flexBasis: "50%" }}>
-                  <img src={require("../images/Vector 1.png")} className="img-fluid" width="20" alt="" /> <b> Answered</b>
+                  <img
+                    src={require("../images/Vector 1.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered</b>
                 </div>
                 <div className="flex-item  " style={{ flexBasis: "50%" }}>
-                  <img src={require("../images/Vector 1 (1).png")} className="img-fluid" width="20" alt="" /> <b>Not Answered</b>
+                  <img
+                    src={require("../images/Vector 1 (1).png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Not Answered</b>
                 </div>
                 <div className="flex-item  " style={{ flexBasis: "50%" }}>
-                  <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
+                  <img
+                    src={require("../images/Ellipse 12.png")}
+                    className="img-fluid"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b>Marked for Review</b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "50%" }}>
-                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                  <img
+                    src="/BL.png"
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Not Visited {} </b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "100%" }}>
-                  <img src="/Answered&MarkedReview.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review </b>
+                  <img
+                    src="/Answered&MarkedReview.png"
+                    className="img-fluid shadow-lg"
+                    width="20"
+                    alt=""
+                  />{" "}
+                  <b> Answered & Marked for review </b>
                 </div>
               </div>
             </div>
