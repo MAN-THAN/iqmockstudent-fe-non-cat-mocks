@@ -8,8 +8,8 @@ function Instructions() {
   const navigate = useNavigate();
 
   return (
-    <div className="container ">
-      <div className="logo container text-center my-4">
+    <div className="container overflow-hidden ">
+      <div className="logo container text-center mt-4">
         <img
           src={require("../images/iQuanta.png")}
           className="img-fuid mx-auto "
@@ -18,14 +18,14 @@ function Instructions() {
         />
       </div>
 
-      <div className="container border-2 mt-3 p-4 text-center ">
+      <div className="container border-2 mt-4 p-2 text-center ">
         <SubHeading className="text-center"> Instructions</SubHeading>
         <div
           className="container m-2 p-4 mx-auto overflow-auto text-start"
           style={{
             border: "2px solid black",
             background: "var(--background-color)",
-            height: "30em",
+            height: "60vh",
           }}
         >
           <Typography variant="paragraph">General instructions:</Typography>

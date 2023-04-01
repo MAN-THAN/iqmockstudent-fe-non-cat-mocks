@@ -101,7 +101,7 @@ function AnalysisMain() {
           }}
         >
           <PacmanLoader color="var(--orange)" size="100" />
-          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
+          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em"}}>
             Preparing Analysis!
           </h5>
         </div>

@@ -1,10 +1,10 @@
 .leftContent {
-  height: 55vh;
-  background: #ffffff;
-  border-radius: 30px 10px 10px 30px;
-  text-align: justify;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  height: 53vh;
+   text-align: justify;
+ overflow: hidden;
+ overflow-y: scroll;
+   
+
 }
 
 .rightContent {
@@ -29,17 +29,22 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
+  
+  
+
 }
 
 ::-webkit-scrollbar-track {
-  /* -webkit-box-shadow: inset 0 0 6px rgb(255, 250, 250); */
-  /* border-radius: 50px; */
+  background-color: #ce1a1a;
+  display: none;
+ 
+  
 }
 
 ::-webkit-scrollbar-thumb {
+   background-color: #ccc;
   border-radius: 20px;
-  -webkit-box-shadow: inset 20px 6px rgba(58, 58, 58, 0.728);
 }
 
 .markingNotation {

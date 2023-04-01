@@ -12,23 +12,23 @@ function Terms() {
  
   console.log(params)
   return (
-    <div className="container d-flex-col justify-content-center align-content-center" style={{ marginTop: "5%", height: "100vh" }}>
+    <div className="container overflow-hidden d-flex-col justify-content-center align-content-center">
       <div className="logo container text-center my-4">
         <img src={require("../images/iQuanta.png")} className="img-fuid mx-auto" width={150} alt="" />
       </div>
 
-      <div className="container mt-3 p-4 text-center">
+      <div className="container mt-3 p-2 text-center">
         <SubHeading className="text-center"> Terms & conditions</SubHeading>
-        <div className="container d-flex justify-content-center   m-2">
-          <div className=" d-flex justify-content-center  " style={{ height: "60vh", width: "75vw" }}>
-            <div
-              className=" flex-item text-start overflow-auto p-4 "
-              style={{
-                border: "2px solid black",
-                background: "var(--background-color)",
-                borderRadius: "0px",
-              }}
-            >
+        <div
+          className="container m-2 p-4 mx-auto overflow-auto text-start"
+          style={{
+            border: "2px solid black",
+            background: "var(--background-color)",
+            height: "60vh",
+          }}
+        >
+          <div className=" d-flex justify-content-center ">
+            <div className=" flex-item text-start overflow-auto p-3 ">
               <Typography variant="text">
                 Every company that manufactures and sells products uses this clause to limit what customers can hold them accountable for.
               </Typography>
@@ -73,12 +73,12 @@ function Terms() {
           <BootstrapButton
             variant="contained mx-auto"
             disabled={agree ? true : false}
-            height="30"
+            height="45"
             sx={{
               color: agree ? "black" : "white",
               p: 2.5,
               backgroundColor: agree ? "#d2d4d6" : "",
-              borderRadius:"30px"
+              borderRadius: "30px",
             }}
             onClick={() => setAgree(true)}
           >
@@ -88,12 +88,12 @@ function Terms() {
           <BootstrapButton
             variant="contained mx-auto"
             disabled={agree ? false : true}
-            height="30"
+            height="45"
             sx={{
               color: "white",
               p: 2.5,
               background: agree ? "" : "#d2d4d6",
-              borderRadius:"30px"
+              borderRadius: "30px",
             }}
             onClick={() => navigate(`/user_authentication/${params.name}/${params.email}/${params.uid}`)}
           >

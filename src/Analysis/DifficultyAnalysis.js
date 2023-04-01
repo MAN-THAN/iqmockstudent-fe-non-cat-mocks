@@ -10,8 +10,9 @@ function DifficultyAnalysis() {
   const [activeButton, setActiveButton] = useState('varc');
   const [show, setShow] = useState([]);
   useEffect(() => {
-    setData(difficulty);
-    setShow(difficulty.varc)
+    setData(difficulty?.difficultyWiseAnalysis);
+    console.log("data", data)
+    setShow(difficulty?.difficultyWiseAnalysis.varc);
   }, []);
 
 
