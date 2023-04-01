@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 
 export const Context = React.createContext();
@@ -20,6 +20,34 @@ export const ContextProvider = ({ children }) => {
       console.log("--> Error in analysis data fetching");
     }
   };
+
+
+
+
+
+  // function  for disable the right click and inspect panel from keyboard
+
+//   function handleContextMenu(event) {
+//   event.preventDefault();
+// }
+
+// function handleKeyDown(event) {
+//   if (event.ctrlKey && event.shiftKey && event.key === 'I') {
+//     event.preventDefault();
+//   }
+// }
+
+// useEffect(() => {
+//   document.addEventListener('keydown', handleKeyDown);
+//   document.addEventListener('contextmenu', handleContextMenu);
+//   return () => {
+//     document.removeEventListener('keydown', handleKeyDown);
+//     document.removeEventListener('contextmenu', handleContextMenu);
+//   };
+// }, []);
+
+
+
 
   //Set data to vaiables according to category that data exports to pages accordin to need
   const basicAnalysis = analysisData[0];

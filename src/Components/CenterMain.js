@@ -34,6 +34,8 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
   
+  
+
 
   // syncing question status with local
   useEffect(() => {
@@ -287,12 +289,13 @@ function CenterMain() {
 
   // Duration response timer
 
-
+   
 
   const [count, setCount] = useState(0);
   const intervalRef = useRef();
 
   useEffect(() => {
+
     console.log("Component rendered");
     intervalRef.current = setInterval(() => {
       setCount(prevCount => prevCount + 1);
@@ -336,10 +339,6 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-<<<<<<< HEAD
-  
-=======
->>>>>>> 23d16814763ddbba7d7d29334ac9364879515a6e
       <div className="row p-3 pe-1" style={{height:"100%"}}>
         {/* Left main container */}
         <div className="col-9 " style={{ height: "100%" }}>
@@ -412,7 +411,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={2}
+                          initMinute={20}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
@@ -703,48 +702,6 @@ function CenterMain() {
 
             {/* Question pallete */}
             <div className="flex-item mt-2 flex-fill ">
-<<<<<<< HEAD
-            <div className=" container py-1 keyboard ">
-              <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  gap-2  justify-content-center ">
-                {questionStatus &&
-                  questionStatus.map((item, index) => {
-                    return (
-                      <div className="col">
-                        <Box
-                          component="div"
-                          onClick={() => handleQuestionClick(index)}
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "45px",
-                            p: 2,
-                            height: "45px",
-                            cursor: "pointer",
-                            backgroundImage: `url(${
-                              item.stage === 0
-                                ? "/BL.png"
-                                : item.stage === 1
-                                ? "/Answered.png"
-                                : item.stage === 2
-                                ? "/NotAnswered.png"
-                                : item.stage === 3
-                                ? "/MarkedforReview.png"
-                                : "/Answered&MarkedReview.png"
-                            })`,
-                            backgroundSize: "cover",
-                            objectFit: "cover",
-                            fontWeight: "bold",
-                            fontSize: "15px",
-                          }}
-                        >
-                          <span style={{ position: "relative", bottom: "4px" }}>
-                            {index + 1}
-                          </span>
-                        </Box>
-                      </div>
-                    );
-                  })}
-=======
               <div className=" container keyboard ">
                 <div className="row row-cols-md-4  row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5  pe-0 gap-2  justify-content-center ">
                   {questionStatus &&
@@ -784,7 +741,6 @@ function CenterMain() {
                       );
                     })}
                 </div>
->>>>>>> 23d16814763ddbba7d7d29334ac9364879515a6e
               </div>
             </div>
 
