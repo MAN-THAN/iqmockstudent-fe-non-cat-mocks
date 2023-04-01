@@ -47,16 +47,24 @@ const Timer = (props) => {
   }, [attemptID, navigate, params.mockid, studentAnswersData]);
  
 
-  useEffect(() => {
+
+
+useEffect(() => {
+  let storedMinutes = parseInt(window.localStorage.getItem(COUNTER_KEY_MIN));
+  let storedSeconds = parseInt(window.localStorage.getItem(COUNTER_KEY_SEC));
+
+  if (!isNaN(storedMinutes) && !isNaN(storedSeconds)) {
+    setMinutes(storedMinutes);
+    setSeconds(storedSeconds);
+  }
+
   let myInterval = setInterval(() => {
     if (seconds > 0) {
       setSeconds(seconds - 1);
-    } else {
-      if (minutes > 0) {
-        setMinutes(minutes - 1);
-        setSeconds(59);
-      } else {
-        clearInterval(myInterval);
+    }
+    
+    if (seconds === 0) {
+      if (minutes === 0) {
         if (params.type === "varc") {
           submitSectionFunc("varc");
         } else if (params.type === "lrdi") {
@@ -64,7 +72,15 @@ const Timer = (props) => {
         } else if (params.type === "quants") {
           submitSectionFunc("quants");
         }
+      } else {
+        if (minutes > 0) {
+          setMinutes(minutes - 1);
+        }
+        setSeconds(59);
       }
+    } else {
+      window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
+      window.localStorage.setItem(COUNTER_KEY_SEC, seconds - 1);
     }
   }, 1000);
 
@@ -73,6 +89,40 @@ const Timer = (props) => {
   };
 }, [seconds, minutes, params.type, submitSectionFunc]);
 
+
+
+  
+
+  // useEffect(() => {
+  //   let myInterval = setInterval(() => {
+  //     if (seconds > 0) {
+  //       setSeconds(seconds - 1);
+  //     }
+  //     if (seconds === 0) {
+  //       if (minutes === 0) {
+  //         if (params.type === "varc") {
+  //           submitSectionFunc("varc");
+  //         } else if (params.type === "lrdi") {
+  //           submitSectionFunc("lrdi");
+  //         } else if (params.type === "quants") {
+  //           submitSectionFunc("quants");
+  //         }
+  //       } else {
+  //         if (minutes > 0) {
+  //           setMinutes(minutes - 1);
+  //         }
+  //         setSeconds(59);
+  //       }
+  //     } else {
+  //       window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
+  //       window.localStorage.setItem(COUNTER_KEY_SEC, seconds - 1);
+  //     }
+  //   }, 1000);
+
+  //   return () => {
+  //     clearInterval(myInterval);
+  //   };
+  //     }, [seconds, minutes, params.type, submitSectionFunc]);
 
   const style = {
     position: "absolute",

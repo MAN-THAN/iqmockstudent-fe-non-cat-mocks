@@ -104,7 +104,7 @@ function ViewSolution() {
     } else {
       setSelectedAnswer(null);
     }
-  }, [, selectedQuestionIndex, selectedAnswer]);
+  }, [selectedQuestionIndex,AnswerStatus]);
 
   // function for get index
   const handleQuestionClick = (index) => {

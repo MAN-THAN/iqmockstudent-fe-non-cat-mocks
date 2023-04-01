@@ -1,10 +1,8 @@
 import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
-import Modal from "@mui/material/Modal";
-import React, { Component } from "react";
+import React from "react";
 import { RxCross1 } from "react-icons/rx";
 import Calculator from "awesome-react-calculator";
-import Backdrop from "@mui/material/Backdrop";
 import { SubHeading } from "./../styleSheets/Style";
 import { PaperComponent } from "./PaperCompo";
 import { Dialog } from "@mui/material";
