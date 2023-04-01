@@ -340,7 +340,7 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      <div className="row p-3 pe-1" style={{height:"100%"}}>
+      <div className="row p-3 pe-1" style={{ height: "100%" }}>
         {/* Left main container */}
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
@@ -408,14 +408,8 @@ function CenterMain() {
                   >
                     {
                       <>
-                        <div style={{ color: "black", fontSize: "14px" }}>
-                          Time Left
-                        </div>
-                        <Timer
-                          initMinute={2}
-                          initSeconds={0}
-                          studentAnswersData={questionStatus}
-                        />
+                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
+                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -433,25 +427,27 @@ function CenterMain() {
             }}
           >
             {/* left side content div */}
-            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 overflow-auto" : "d-none"}>
-              <div className="container leftContent">
-                {
-                  <ContentDrawer
-                    question={
-                      questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
-                        ? questionStatus[selectedQuestionIndex].paragraph
-                        : "No paragraph"
-                    }
-                    image={
-                      questionStatus?.length > 0 && // Check if Data array has at least one element
-                      questionStatus[selectedQuestionIndex]?.image
-                        ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid " width={150} />;
-                          })
-                        : null
-                    }
-                  />
-                }
+            <div className={questionStatus?.length > 0 && questionStatus[selectedQuestionIndex]?.isPara === "Yes" ? "col-7 " : "d-none"}>
+              <div className="p-2" style={{borderRadius:"30px", background:"white"}}>
+                <div className="leftContent">
+                  {
+                    <ContentDrawer
+                      question={
+                        questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes"
+                          ? questionStatus[selectedQuestionIndex].paragraph
+                          : "No paragraph"
+                      }
+                      image={
+                        questionStatus?.length > 0 && // Check if Data array has at least one element
+                        questionStatus[selectedQuestionIndex]?.image
+                          ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
+                              return <img src={item} alt="" className="img-fluid " width={150} />;
+                            })
+                          : null
+                      }
+                    />
+                  }
+                </div>
               </div>
             </div>
             {/*  right side question  div */}
@@ -500,6 +496,7 @@ function CenterMain() {
                               },
                             },
                           }}
+                          autoComplete="off"
                         />
                         <div className="keys  p-3 rounded shadow">
                           <div className="d-flex gap-2 fs-5 m-2 ">
