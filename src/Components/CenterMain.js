@@ -5,7 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@mui/material/Tooltip"
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
@@ -76,7 +76,7 @@ function CenterMain() {
 
   // fetching main data
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
@@ -86,6 +86,7 @@ function CenterMain() {
       if (response?.status === 200) {
         setData(response.data.data);
         setLoading(false);
+        prevQuestionIndex.current = null;
       } else {
         console.error("Error in  fetching data");
         setLoading(true);
@@ -419,7 +420,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={2}
+                          initMinute={1}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />

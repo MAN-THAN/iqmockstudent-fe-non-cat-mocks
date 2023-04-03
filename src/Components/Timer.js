@@ -14,12 +14,20 @@ const Timer = (props) => {
   const { initMinute, initSeconds, studentAnswersData } = props;
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [currentSection, setCurrentSection] = useState(params.type);
+
+  
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
+  
   const attemptID = JSON.parse(
     window.localStorage.getItem("userData")
   )?.attemptId;
 
+
+
+  
   // taking the local storage value of timer
   useEffect(() => {
     let countDownTimeSec =
@@ -31,6 +39,7 @@ const Timer = (props) => {
   }, []);
 
   // memoize submitSectionFunc using useCallback hook
+
   const submitSectionFunc = useCallback(
     async (subject) => {
       const response = await submitSection(
@@ -52,9 +61,11 @@ const Timer = (props) => {
           console.log("Your mock is submitted!!!");
           navigate(`/analysis/${attemptID}/overall`);
         }
+     
       }
+  
     },
-    [attemptID, navigate, params.mockid, studentAnswersData]
+    [currentSection]
   );
 
   useEffect(() => {
@@ -65,27 +76,34 @@ const Timer = (props) => {
         if (minutes > 0) {
           setMinutes(minutes - 1);
           setSeconds(59);
-        }
-        if (minutes === 0 && seconds === 0) {
-          if (params.type === "varc") {
-            submitSectionFunc("varc");
-          } else if (params.type === "lrdi") {
-            submitSectionFunc("lrdi");
-          } else if (params.type === "quants") {
-            submitSectionFunc("quants");
-          }
+        } else {
           clearInterval(myInterval);
+          setIsLoaded(true);
+          submitSectionFunc(currentSection).then(() => {
+            setMinutes(initMinute);
+            setSeconds(initSeconds);
+            if (currentSection === "varc") {
+              setCurrentSection("lrdi");
+            } else if (currentSection === "lrdi") {
+              setCurrentSection("quants");
+            } else if (currentSection === "quants") {
+              setCurrentSection("");
+            }
+            setIsLoaded(false);
+          });
         }
       }
-
+  
       window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
       window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
     }, 1000);
-
+  
     return () => {
       clearInterval(myInterval);
     };
-  }, [seconds, minutes, params.type, submitSectionFunc]);
+  }, [seconds, minutes, currentSection, submitSectionFunc]);
+
+  console.log(currentSection);
 
   const style = {
     position: "absolute",
@@ -105,7 +123,7 @@ const Timer = (props) => {
   return (
     <React.Fragment>
       <span>
-        {minutes === 0 && seconds === 0 ? (
+        {isLoaded ? (
           <React.Fragment>
             <Modal
               open={true}
@@ -152,3 +170,8 @@ const Timer = (props) => {
   );
 };
 export default Timer;
+
+
+
+
+
