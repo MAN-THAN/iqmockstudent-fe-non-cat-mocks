@@ -5,7 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@mui/material/Tooltip"
 import { useNavigate, useParams } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
@@ -419,7 +419,7 @@ function CenterMain() {
                           Time Left
                         </div>
                         <Timer
-                          initMinute={2}
+                          initMinute={1}
                           initSeconds={0}
                           studentAnswersData={questionStatus}
                         />
