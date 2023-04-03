@@ -61,8 +61,9 @@ const Timer = (props) => {
           console.log("Your mock is submitted!!!");
           navigate(`/analysis/${attemptID}/overall`);
         }
+     
       }
-      setIsLoaded(false);
+  
     },
     [currentSection]
   );
@@ -88,6 +89,7 @@ const Timer = (props) => {
             } else if (currentSection === "quants") {
               setCurrentSection("");
             }
+            setIsLoaded(false);
           });
         }
       }
@@ -168,3 +170,8 @@ const Timer = (props) => {
   );
 };
 export default Timer;
+
+
+
+
+
