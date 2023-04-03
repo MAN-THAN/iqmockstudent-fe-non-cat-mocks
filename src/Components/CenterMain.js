@@ -76,7 +76,7 @@ function CenterMain() {
 
   // fetching main data
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
