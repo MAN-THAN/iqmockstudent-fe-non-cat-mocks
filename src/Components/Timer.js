@@ -78,25 +78,24 @@ const Timer = (props) => {
         } else {
           clearInterval(myInterval);
           setIsLoaded(true);
-          if (currentSection === "varc") {
-            setCurrentSection("lrdi");
-          } else if (currentSection === "lrdi") {
-            setCurrentSection("quants");
-          } else if (currentSection === "quants") {
-            setCurrentSection("");
-          }
-          submitSectionFunc(currentSection);
-          setTimeout(() => {
+          submitSectionFunc(currentSection).then(() => {
             setMinutes(initMinute);
             setSeconds(initSeconds);
-          }, 1000);
+            if (currentSection === "varc") {
+              setCurrentSection("lrdi");
+            } else if (currentSection === "lrdi") {
+              setCurrentSection("quants");
+            } else if (currentSection === "quants") {
+              setCurrentSection("");
+            }
+          });
         }
       }
-
+  
       window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
       window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
     }, 1000);
-
+  
     return () => {
       clearInterval(myInterval);
     };
