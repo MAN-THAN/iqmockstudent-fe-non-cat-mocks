@@ -86,6 +86,7 @@ function CenterMain() {
       if (response?.status === 200) {
         setData(response.data.data);
         setLoading(false);
+        prevQuestionIndex.current = null;
       } else {
         console.error("Error in  fetching data");
         setLoading(true);
