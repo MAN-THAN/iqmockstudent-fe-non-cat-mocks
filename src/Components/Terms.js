@@ -1,5 +1,5 @@
 import { Link, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { BootstrapButton, SubHeading } from "./../styleSheets/Style";
 import { useNavigate,useParams } from "react-router-dom";
 

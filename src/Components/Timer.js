@@ -87,19 +87,17 @@ const Timer = (props) => {
     };
   }, [seconds, minutes, params.type, submitSectionFunc]);
 
- 
-
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 650,
-    textAlign: "",
+    border: "none",
     height: 400,
     bgcolor: "white",
-    borderRadius: "10px ",
-    boxShadow: 24,
+    borderRadius: "20px ",
+    boxShadow: 10,
     p: 0,
     m: 0,
   };

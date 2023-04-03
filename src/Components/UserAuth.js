@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useNavigate ,useParams} from "react-router";
 import { getAttemptId } from "../services/Mock_api";
 import {  RingLoader } from "react-spinners";
@@ -10,7 +10,7 @@ const UserAuth = () => {
 
   useEffect(() => {
     userAuthCheck();
-  }, []);
+  },[]);
 
   // Function for checking authorising user
   const userAuthCheck = () => {
@@ -30,7 +30,7 @@ const UserAuth = () => {
     console.log("creating attemptid");
     const response = await getAttemptId(name,email,uid);
     console.log(response);
-    if (response?.status == 200) {
+    if (response?.status === 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));
       userAuthCheck();
     }

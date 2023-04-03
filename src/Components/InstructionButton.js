@@ -8,8 +8,6 @@ import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 
-
-
 const style = {
   position: "fixed",
   top: "50%",
@@ -24,9 +22,9 @@ const style = {
   p: 2,
   backgroundImage: "url('/instructions.jpg')",
   backroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    objectfit:"cover"
- 
+  backgroundRepeat: "no-repeat",
+  objectfit: "cover",
+
   // Add this line to set a higher z-index value
 };
 
@@ -42,28 +40,47 @@ export default function InstructionButton() {
 
   return (
     <span>
-      <MyButton variant="contained"  height="41" sx={{ width: "150px", margin : 0, marginTop : '1em',":hover":{boxShadow:5} }} onClick={handleOpen}>
+      <MyButton
+        variant="contained"
+        height="41"
+        sx={{
+          width: "150px",
+          margin: 0,
+          marginTop: "1em",
+          ":hover": { boxShadow: 5 },
+        }}
+        onClick={handleOpen}
+      >
         Instructions
       </MyButton>
-      <Modal open={open}   onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style} >
-          <div className="d-flex justify-content-between">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className="d-flex justify-content-center">
             <SubHeading className="m-0 ps-3">Instructions </SubHeading>
-            <RxCross1 role="button" onClick={handleClose} />
           </div>
           <Typography>
             <ul style={{ listStyleType: "disc", marginTop: "20px" }}>
               <li style={{ fontWeight: "700" }}>
                 {" "}
-                The clock has been set on the server and countdown timer at top right corner of your screen will display the remaining time for you to
-                complete the exam. When the clock runs out the exams ends by default- you are not required to end or submit your exam
+                The clock has been set on the server and countdown timer at top
+                right corner of your screen will display the remaining time for
+                you to complete the exam. When the clock runs out the exams ends
+                by default- you are not required to end or submit your exam
               </li>
               <li style={{ fontWeight: "700", marginTop: "20px" }}>
-                The questions palette at the right of screen shows one of the following status of each of the questions numbered
+                The questions palette at the right of screen shows one of the
+                following status of each of the questions numbered
               </li>
               <li style={{ fontWeight: "700", marginTop: "20px" }}>
-                The Marked for Review status simply acts as a reminder that you have set to look at the question again. If an answer is selected for a
-                question that is Marked for Review, the answer will be considered in the final evaluation
+                The Marked for Review status simply acts as a reminder that you
+                have set to look at the question again. If an answer is selected
+                for a question that is Marked for Review, the answer will be
+                considered in the final evaluation
               </li>
             </ul>
           </Typography>

@@ -17,11 +17,12 @@ import Latex from "react-latex-next";
 import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
+import {  PuffLoader } from "react-spinners";
 
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
   const [inputVal, setInputVal] = useState(null); //if have iinput box data store in this state
   const [Data, setData] = useState([]); //Main mock data get state
@@ -75,7 +76,7 @@ function CenterMain() {
 
   // fetching main data
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     setSelectedQuestionIndex(0);
     const mockId = params.mockid;
     const subject_type = params.type;
@@ -240,6 +241,8 @@ function CenterMain() {
       }
     }
   };
+
+  
   useEffect(() => {
     showPreviousValue();
     setCount(0);
@@ -317,12 +320,10 @@ function CenterMain() {
         alignItems: "center",
       }}
     >
-      {/* <ClipLoader
+      <PuffLoader
 
- color="var(--orange)" loading size={50} speedMultiplier={1} /> */}
-      <div className="flex-item">
-        <img src="/TryThisOne.gif" className="img-fluid" alt="" width={130} />
-      </div>
+ color="#202021" loading size={70} speedMultiplier={1} />
+     
     </div>
   ) : (
     <div className="container-fluid bg-white">

@@ -1,9 +1,7 @@
 import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import Modal from "@mui/material/Modal";
-import React, { Component } from "react";
-import { RxCross1 } from "react-icons/rx";
-import Calculator from "awesome-react-calculator";
+import React from "react";
 import { SubHeading } from "./../styleSheets/Style";
 import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
@@ -14,6 +12,8 @@ import { InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
+
+
 
 const style = {
   position: "absolute",
@@ -30,14 +30,12 @@ const style = {
   m: 0,
 };
 
-
-
 export default function ButtonSubmit({ studentAnswersData }) {
-    const buttonStyle = {
+  const buttonStyle = {
     background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
     width: "138px",
     color: "#fff",
-    borderRadius:"20px"
+    borderRadius: "20px",
   };
   const [openConfirm, setOpenConfirm] = useState(false);
   const [state, setState] = useState(0);
@@ -47,25 +45,29 @@ export default function ButtonSubmit({ studentAnswersData }) {
 
   const submitSectionFunc = async (subject) => {
     setState(1);
-    const response = await submitSection(attemptID, subject, studentAnswersData);
+    const response = await submitSection(
+      attemptID,
+      subject,
+      studentAnswersData
+    );
     console.log(response);
-    if (response?.status == 200) { 
+    if (response?.status == 200) {
       setState(2);
     }
   };
 
-  const goToAnalysis = async () => {
-    navigate(`/analysis/${attemptID}/overall`);
-  }
-  
   return (
     <span>
       <SubmitButton
-        sx={{ width: "96%", marginTop: "1em" , background: params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : ""}}
+        sx={{
+          width: "96%",
+          marginTop: "1em",
+          background:
+            params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : "",
+        }}
         disabled={
           params.type === "varc" || params.type === "lrdi" ? true : false
         }
-    
         variant="contained"
         onClick={() => setOpenConfirm(true)}
       >
@@ -89,7 +91,6 @@ export default function ButtonSubmit({ studentAnswersData }) {
                   }}
                   alt="no IMage"
                   src="/ModalImage.png"
-               
                 />
               </div>
               <div className="d-flex justify-content-center">
@@ -106,7 +107,12 @@ export default function ButtonSubmit({ studentAnswersData }) {
               >
                 <MyButton
                   variant="contained"
-                  sx={{ bgcolor: "#EBEBEB", color: "black", borderRadius:"20px", ":hover":{ background:"#EBEBEB", color:"black" } }}
+                  sx={{
+                    bgcolor: "#EBEBEB",
+                    color: "black",
+                    borderRadius: "20px",
+                    ":hover": { background: "#EBEBEB", color: "black" },
+                  }}
                   onClick={() => setOpenConfirm(false)}
                 >
                   Have a doubt? Back to test
@@ -135,10 +141,10 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 className="d-flex justify-content-center"
                 style={{ marginTop: "1em" }}
               >
-                  <div style={{ marginLeft: "12px" }}>
-                    {" "}
-                    <InfinitySpin color="blue" />
-                  </div>
+                <div style={{ marginLeft: "12px" }}>
+                  {" "}
+                  <InfinitySpin color="blue" />
+                </div>
               </div>
               <div className="d-flex justify-content-center mt-4 ">
                 <Typography>Please Wait...</Typography>
@@ -166,7 +172,6 @@ export default function ButtonSubmit({ studentAnswersData }) {
                     src="/Group103.png"
                     alt="no IMage"
                     width={300}
-
                   ></Image>
                 </div>
               </div>
@@ -176,7 +181,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 </SubHeading>
               </div>
               <div className="d-flex justify-content-center text-muted">
-                <Typography  fontWeight={700}>
+                <Typography fontWeight={700}>
                   Congrats! You have completed the Mock test
                 </Typography>
               </div>
@@ -186,8 +191,13 @@ export default function ButtonSubmit({ studentAnswersData }) {
               >
                 <MyButton
                   variant="contained"
-                  sx={{...buttonStyle,background:" linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",  borderRadius:"30px"}}
-                  onClick={ goToAnalysis }
+                  sx={{
+                    ...buttonStyle,
+                    background:
+                      " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
+                    borderRadius: "30px",
+                  }}
+                  onClick={() => navigate(`/analysis/${attemptID}/overall`)}
                 >
                   DONE
                 </MyButton>

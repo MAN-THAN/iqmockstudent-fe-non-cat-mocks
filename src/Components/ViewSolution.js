@@ -72,6 +72,7 @@ function ViewSolution() {
   // fetching answers status
   
   useEffect(() => {
+    console.log("fetch answer status")
     const fetchAnswersStatus = async () => {
       try {
         const url = `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${params.attemptId}/${params.mocktype}`;
@@ -89,8 +90,6 @@ function ViewSolution() {
         setSelectedAnswer(arr[selectedQuestionIndex].studentAnswerIndex);
       } catch (err) {
         console.log(err);
-      } finally {
-        //  checkAnswered()
       }
     };
     fetchAnswersStatus();
