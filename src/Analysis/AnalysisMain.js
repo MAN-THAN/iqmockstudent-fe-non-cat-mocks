@@ -37,7 +37,7 @@ function AnalysisMain() {
   useEffect(() => {
     localStorage.clear();
     analysisDataApi(attemptId); //call analysis data api and send attempt id to api function also!
-  }, [attemptId, analysisDataApi]);
+  }, [attemptId]);
 
   useEffect(() => {
     if (basicAnalysis) {
