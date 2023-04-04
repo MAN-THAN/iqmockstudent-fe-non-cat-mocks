@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import { SubHeading } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { InfinitySpin } from "react-loader-spinner";
+import { Button } from "antd";
 
 const Timer = (props) => {
   const navigate = useNavigate();
@@ -16,21 +17,17 @@ const Timer = (props) => {
   const [seconds, setSeconds] = useState(initSeconds);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSection, setCurrentSection] = useState(params.type);
+  const [err, setErr] = useState(false);
 
-  
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
-  
-  const attemptID = JSON.parse(
-    window.localStorage.getItem("userData")
-  )?.attemptId;
+
+  const attemptID = JSON.parse(window.localStorage.getItem("userData"))?.attemptId;
 
   // taking the local storage value of timer
   useEffect(() => {
-    let countDownTimeSec =
-      window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
-    let countDownTimeMin =
-      window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
+    let countDownTimeSec = window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
+    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
     setSeconds(countDownTimeSec);
     setMinutes(countDownTimeMin);
   }, []);
@@ -39,12 +36,8 @@ const Timer = (props) => {
 
   const submitSectionFunc = useCallback(
     async (subject) => {
-      const response = await submitSection(
-        attemptID,
-        subject,
-        studentAnswersData
-      );
-      if (response.status === 200) {
+      const response = await submitSection(attemptID, subject, studentAnswersData);
+      if (response.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);
         window.localStorage.removeItem(COUNTER_KEY_SEC);
         window.localStorage.removeItem("questionStatus");
@@ -58,9 +51,12 @@ const Timer = (props) => {
           console.log("Your mock is submitted!!!");
           navigate(`/analysis/${attemptID}/overall`);
         }
-     
+        return true;
+
+      } else {
+        setErr(true);
+        return false
       }
-  
     },
     [currentSection]
   );
@@ -76,25 +72,28 @@ const Timer = (props) => {
         } else {
           clearInterval(myInterval);
           setIsLoaded(true);
-          submitSectionFunc(currentSection).then(() => {
-            setMinutes(initMinute);
-            setSeconds(initSeconds);
-            if (currentSection === "varc") {
-              setCurrentSection("lrdi");
-            } else if (currentSection === "lrdi") {
-              setCurrentSection("quants");
-            } else if (currentSection === "quants") {
-              setCurrentSection("");
+          submitSectionFunc(currentSection).then((res) => {
+            console.log(res);
+            if (res) {
+              setMinutes(initMinute);
+              setSeconds(initSeconds);
+              if (currentSection === "varc") {
+                setCurrentSection("lrdi");
+              } else if (currentSection === "lrdi") {
+                setCurrentSection("quants");
+              } else if (currentSection === "quants") {
+                setCurrentSection("");
+              }
+                setIsLoaded(false);
             }
-            setIsLoaded(false);
           });
         }
       }
-  
+
       window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
       window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
     }, 1000);
-  
+
     return () => {
       clearInterval(myInterval);
     };
@@ -122,43 +121,49 @@ const Timer = (props) => {
       <span>
         {isLoaded ? (
           <React.Fragment>
-            <Modal
-              open={true}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
+            <Modal open={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
-                <>
-                  {" "}
-                  <div
-                    style={{ marginTop: "3em" }}
-                    className="d-flex justify-content-center"
-                  >
-                    <SubHeading className="m-4 ps-3">
-                      Section Submitting...{" "}
-                    </SubHeading>
-                  </div>
-                  <div
-                    className="d-flex justify-content-center"
-                    style={{ marginTop: "1em" }}
-                  >
-                    <div style={{ marginLeft: "12px" }}>
-                      {" "}
-                      <InfinitySpin color="blue" />
+                {!err ? (
+                  <>
+                    {" "}
+                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
                     </div>
-                  </div>
-                  <div className="d-flex justify-content-center mt-4 ">
-                    <Typography>Please Wait...</Typography>
-                  </div>
-                </>
+                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                      <div style={{ marginLeft: "12px" }}>
+                        {" "}
+                        <InfinitySpin color="blue" />
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-center mt-4 ">
+                      <Typography>Please Wait...</Typography>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+                    </div>
+                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                      <div style={{ marginLeft: "12px" }}>
+                        {" "}
+                        <SubHeading style={{ color: "red" }} className="m-4 ps-3">
+                          Some Error Occurred!!!{" "}
+                        </SubHeading>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-center mt-4 ">
+                      <Button>Try Again</Button>
+                    </div>
+                  </>
+                )}
               </Box>
             </Modal>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <span className="Timer">
-              {minutes < 10 ? `0${minutes}` : minutes}:
-              {seconds < 10 ? `0${seconds}` : seconds}
+              {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
             </span>
           </React.Fragment>
         )}
