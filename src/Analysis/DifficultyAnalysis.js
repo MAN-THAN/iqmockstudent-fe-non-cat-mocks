@@ -22,9 +22,9 @@ function DifficultyAnalysis() {
     setShow(data[button]);
   };
 
-  console.log(activeButton);
+  
 
-  console.log(show);
+ 
 
   return (
     <div
@@ -121,8 +121,8 @@ function DifficultyAnalysis() {
           borderColor: "black!important",
         }}
       />
-      <h1 className="text-center pt-4">Chart Title</h1>
-      <div className="d-flex flex-row flex-wrap justify-content-between align-items-center gap-5  mt-5 p-5">
+      <h1 className="text-center pt-4 text-capitalize">{`${activeButton} Analysis`}</h1>
+      <div className="d-flex flex-row flex-wrap justify-content-between align-items-center mt-5 gap-3 mx-auto ">
         {/* Bar graphs */}
 
         {show.length > 0 &&

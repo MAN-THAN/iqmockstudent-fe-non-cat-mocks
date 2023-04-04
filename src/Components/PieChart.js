@@ -55,6 +55,24 @@ function MyPieChart() {
     >
       <ResponsiveContainer width="100%" height={400}>
         <PieChart>
+          <defs>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feOffset result="offOut" in="SourceGraphic" dx="2" dy="9" />
+              <feColorMatrix
+                result="matrixOut"
+                in="offOut"
+                type="matrix"
+                values="0.8 0 0 0 0 0 0.5 0 0 0 0 0 0.5 0 0 0 0 0 1 0"
+
+              />
+              <feGaussianBlur
+                result="blurOut"
+                in="matrixOut"
+                stdDeviation="5"
+              />
+              <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+          </defs>
           <text
             x={200}
             y={200}
@@ -72,12 +90,15 @@ function MyPieChart() {
             isAnimationActive={true}
             data={data01}
             cx={200}
+            cornerRadius={8}
             cy={200}
+            stroke="none"
             labelLine={false}
             label={renderCustomizedLabel}
-            paddingAngle={5}
+            paddingAngle={10}
             innerRadius={80}
             outerRadius={150}
+            filter="url(#shadow)"
           >
             {data01.map((entry, index) => (
               <Cell
