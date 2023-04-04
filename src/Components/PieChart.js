@@ -45,30 +45,51 @@ function MyPieChart() {
     );
   };
   return (
-
-    <div className="container ">
-    <ResponsiveContainer width="37%" height={400}>
-      <PieChart>
-        <Pie
-          dataKey="value"
-          isAnimationActive={true}
-          data={data01}
-          cx={200}
-          cy={200}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          paddingAngle={5}
-          innerRadius={80}
-          outerRadius={150}
-        >
-          {data01.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-        <Legend layout="vertical" verticalAlign="middle" align="right" />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    <div
+      className="mx-auto"
+      style={{
+        width: "35vw",
+        height: "auto",
+        borderRadius: "15px",
+      }}
+    >
+      <ResponsiveContainer width="100%" height={400}>
+        <PieChart>
+          <text
+            x={200}
+            y={200}
+            color="#484747"
+            fontFamily="var(--inter)"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontWeight={500}
+            fontSize={22}
+          >
+            Overall
+          </text>
+          <Pie
+            dataKey="value"
+            isAnimationActive={true}
+            data={data01}
+            cx={200}
+            cy={200}
+            labelLine={false}
+            label={renderCustomizedLabel}
+            paddingAngle={5}
+            innerRadius={80}
+            outerRadius={150}
+          >
+            {data01.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={colors[index % colors.length]}
+              />
+            ))}
+          </Pie>
+          <Legend layout="vertical" verticalAlign="middle" align="right" />
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 }
