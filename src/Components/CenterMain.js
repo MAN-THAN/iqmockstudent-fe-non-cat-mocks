@@ -370,7 +370,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={10} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -402,7 +402,7 @@ function CenterMain() {
                         questionStatus?.length > 0 && // Check if Data array has at least one element
                         questionStatus[selectedQuestionIndex]?.image
                           ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                              return <img src={item} alt="" className="img-fluid " width={150} />;
+                            return <img src={item} alt="" className="img-fluid hover-zoom" width="100%" style={{cursor : 'pointer', transition : "all 0.4s"}} />;
                             })
                           : null
                       }
@@ -423,8 +423,10 @@ function CenterMain() {
                   <br />
                   {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
                 </Typography>
-                <br />
-                <img src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid" />
+               
+                {/* <div className="img-wrapper">
+                  <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
+                </div> */}
                 <br /> <br />
                 {questionStatus?.length > 0 && (
                   <div className="text-start">
