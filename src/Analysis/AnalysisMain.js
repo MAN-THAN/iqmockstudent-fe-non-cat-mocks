@@ -88,19 +88,6 @@ function AnalysisMain() {
     },
   }));
 
-  const url = "https://admin-storage.s3.ap-south-1.amazonaws.com/iq-mocks/19d73909-3c3c-4ed3-ae7a-cd2e03c9477a/-paragraph.html";
-  const container = document.getElementById("tahml");
-  useEffect(() => {
-    fetch(url)
-      .then((response) => response.text())
-      .then((html) => {
-        container.innerHTML = html;
-      })
-      .catch((error) => {
-        console.error(`Error fetching ${url}:`, error);
-      });
-  }, []);
-
   return (
     <>
       {isLoading ? (
@@ -212,7 +199,6 @@ function AnalysisMain() {
             </div>
           </header>
           {/* Header end */}
-          <div id="tahml" className="w-100 h-100"></div>
           <div
             className={
               pdfStyle
