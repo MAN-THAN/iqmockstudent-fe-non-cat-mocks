@@ -102,19 +102,12 @@ function AnalysisMain() {
           }}
         >
           <PacmanLoader color="var(--orange)" size="100" />
-          <h5
-            className="loader_title"
-            style={{ textAlign: "center", marginTop: "1em" }}
-          >
+          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
             Preparing Analysis!
           </h5>
         </div>
       ) : (
-        <div
-          id="my-component"
-          className=" p-0 "
-          style={{ background: "var(--background)" }}
-        >
+          <div id="my-component" className=" p-0 " style={{ background: "var(--background)" }}>
           {/* Header */}
           <header
             className=" mx-4
@@ -124,22 +117,13 @@ function AnalysisMain() {
               <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
                 <div>
                   <NavLink to="/">
-                    <img
-                      src="/iQuanta.png"
-                      alt="iquanta_logo"
-                      className="img-fluid iquanta_logo"
-                    />
+                    <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
                   </NavLink>
                 </div>
 
                 <div className="d-flex gap-3  align-items-center ">
                   <div className="text-end ps-5">
-                    <img
-                      src="/LeaderBoard.png"
-                      className="img-fluid"
-                      alt=""
-                      width={100}
-                    />
+                    <img src="/LeaderBoard.png" className="img-fluid" alt="" width={100} />
                   </div>
 
                   <div className="text-end">
@@ -166,9 +150,7 @@ function AnalysisMain() {
 
                   <div className="text-end">
                     <Button
-                      startIcon={
-                        <img src="/Help.png" className="img-fluid" width={25} />
-                      }
+                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
                       variant="contained"
                       sx={{
                         background: "black",
@@ -211,18 +193,8 @@ function AnalysisMain() {
                   </div>
 
                   <div className="d-flex">
-                    <a
-                      href="#"
-                      className="d-block link-dark text-decoration-none "
-                      aria-expanded="false"
-                    >
-                      <img
-                        src="https://github.com/mdo.png"
-                        alt="mdo"
-                        width="50"
-                        height="50"
-                        className="rounded"
-                      />
+                    <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                      <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                     </a>
                   </div>
                 </div>
@@ -239,15 +211,10 @@ function AnalysisMain() {
             }
           >
             <div className="flex-item p-3 flex-fill">
-              <Typography
-                variant="h4"
-                sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
-              >
+              <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
                 Hey {name},
               </Typography>
-              <Typography
-                sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}
-              >
+              <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>
                 This is your mock analysis for {title ? title : "iCAT 1.0"}.
               </Typography>
               <br />
@@ -270,9 +237,7 @@ function AnalysisMain() {
                 </ModifyButton>
                 <ModifyButton
                   variant="outlined"
-                  startIcon={
-                    <img src="/Download.png" className="img-fluid" width={13} />
-                  }
+                  startIcon={<img src="/Download.png" className="img-fluid" width={13} />}
                   onClick={handleDownloadPDF}
                   sx={{
                     p: 2,
@@ -290,10 +255,7 @@ function AnalysisMain() {
             </div>
 
             <div className="flex-item p-3  flex-fill">
-              <div
-                className="container bg-warning   "
-                style={{ borderRadius: "15px", width: "auto" }}
-              >
+              <div className="container bg-warning   " style={{ borderRadius: "15px", width: "auto" }}>
                 <div className=" d-flex gap-2 flex-column justify-content-center align-items-center py-3">
                   <div className="text-center">
                     <Typography
@@ -380,12 +342,7 @@ function AnalysisMain() {
 
             <div className="  flex-item p-3 flex-fill   ">
               <div className=" d-flex  justify-content-center  flex-wrap gap-4">
-                <BootstrapTooltip
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 300 }}
-                  title="Potential"
-                  followCursor
-                >
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 300 }} title="Potential" followCursor>
                   <div
                     className="card shadow flex-item  flex-fill  my-2 "
                     style={{
@@ -396,35 +353,20 @@ function AnalysisMain() {
                   >
                     <div className="card-body d-flex flex-row justify-content-between align-items-center">
                       <div className="flex-item ">
-                        <SubHeading className="card-title">
-                          {potentialScore}
-                        </SubHeading>
+                        <SubHeading className="card-title">{potentialScore}</SubHeading>
 
-                        <Typography
-                          variant="paragraph"
-                          sx={{ fontSize: "13px" }}
-                        >
+                        <Typography variant="paragraph" sx={{ fontSize: "13px" }}>
                           Potential Mark
                         </Typography>
                       </div>
 
                       <div className="flex-item">
-                        <img
-                          src="/PM.png"
-                          alt=""
-                          className="img-fluid"
-                          width={50}
-                        />
+                        <img src="/PM.png" alt="" className="img-fluid" width={50} />
                       </div>
                     </div>
                   </div>
                 </BootstrapTooltip>
-                <BootstrapTooltip
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 300 }}
-                  title="Negative Mark"
-                  followCursor
-                >
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 300 }} title="Negative Mark" followCursor>
                   <div
                     className="card shadow flex-item flex-fill  my-2 "
                     style={{
@@ -435,31 +377,17 @@ function AnalysisMain() {
                   >
                     <div className="card-body d-flex flex-row justify-content-between align-items-center">
                       <div className="flex-item">
-                        <SubHeading className="card-title">
-                          {negativeMarks}
-                        </SubHeading>
-                        <Typography variant="paragraph">
-                          Negative Mark
-                        </Typography>
+                        <SubHeading className="card-title">{negativeMarks}</SubHeading>
+                        <Typography variant="paragraph">Negative Mark</Typography>
                       </div>
 
                       <div className="flex-item">
-                        <img
-                          src="/NM.png"
-                          alt=""
-                          className="img-fluid"
-                          width={50}
-                        />
+                        <img src="/NM.png" alt="" className="img-fluid" width={50} />
                       </div>
                     </div>
                   </div>
                 </BootstrapTooltip>
-                <BootstrapTooltip
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 300 }}
-                  title="Your Accuracy boy!!!"
-                  followCursor
-                >
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 300 }} title="Your Accuracy boy!!!" followCursor>
                   <div
                     className="card shadow flex-item flex-fill  my-2"
                     style={{
@@ -470,29 +398,17 @@ function AnalysisMain() {
                   >
                     <div className="card-body d-flex flex-row justify-content-between align-items-center ">
                       <div className="flex-item ">
-                        <SubHeading className="card-title">
-                          {accuracy}
-                        </SubHeading>
+                        <SubHeading className="card-title">{accuracy}</SubHeading>
                         <Typography variant="paragraph">% Accuracy</Typography>
                       </div>
 
                       <div className="flex-item">
-                        <img
-                          src="/Acc.png"
-                          alt=""
-                          className="img-fluid"
-                          width={50}
-                        />
+                        <img src="/Acc.png" alt="" className="img-fluid" width={50} />
                       </div>
                     </div>
                   </div>
                 </BootstrapTooltip>
-                <BootstrapTooltip
-                  TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 300 }}
-                  title="Overall Percentage boy!!!"
-                  followCursor
-                >
+                <BootstrapTooltip TransitionComponent={Fade} TransitionProps={{ timeout: 300 }} title="Overall Percentage boy!!!" followCursor>
                   <div
                     className="card shadow flex-item  flex-fill  my-2"
                     style={{
@@ -503,19 +419,12 @@ function AnalysisMain() {
                   >
                     <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
                       <div className="flex-item ">
-                        <SubHeading className="card-title">
-                          {+overallPercentage < 0 ? 0 : +overallPercentage}
-                        </SubHeading>
+                        <SubHeading className="card-title">{+overallPercentage < 0 ? 0 : +overallPercentage}</SubHeading>
                         <Typography variant="paragraph">% Score</Typography>
                       </div>
 
                       <div className="flex-item">
-                        <img
-                          src="/PS.png"
-                          alt="ps.png"
-                          className="img-fluid"
-                          width={50}
-                        />
+                        <img src="/PS.png" alt="ps.png" className="img-fluid" width={50} />
                       </div>
                     </div>
                   </div>
@@ -527,11 +436,7 @@ function AnalysisMain() {
           {/* Buttons for changing sections */}
           <div className=" d-flex  m-5 ms-4  align-items-center">
             <div style={{ flexBasis: "70%" }} className=" d-flex  gap-3 ms-3">
-              <NavLink
-                to="overall"
-                activeClassName="active "
-                className="link flex-item"
-              >
+              <NavLink to="overall" activeClassName="active " className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
                   Score Card
                 </ModifyButton>
@@ -540,15 +445,8 @@ function AnalysisMain() {
                 <ModifyButton
                   variant="filled"
                   style={{
-                    background:
-                      location.pathname ===
-                      `/analysis/${attemptId}/sectionwise/${subject}`
-                        ? "#0057CB"
-                        : "",
-                    color:
-                      location.pathname ===
-                        `/analysis/${attemptId}/sectionwise/${subject}` &&
-                      "white",
+                    background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
+                    color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
                   }}
                   id="demo-customized-button"
                   aria-controls={open ? "demo-customized-menu" : undefined}
@@ -587,35 +485,20 @@ function AnalysisMain() {
                 </MenuItem>
               </StyledMenu>
 
-              <NavLink
-                to="topicwise"
-                activeClassName="active "
-                className="link flex-item"
-              >
+              <NavLink to="topicwise" activeClassName="active " className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
                   Topic-wise
                 </ModifyButton>
               </NavLink>
 
-              <NavLink
-                to="difficulty"
-                activeClassName="active"
-                className="link flex-item"
-              >
+              <NavLink to="difficulty" activeClassName="active" className="link flex-item">
                 <ModifyButton variant="filled" className="nav-button">
                   Difficulty-wise
                 </ModifyButton>
               </NavLink>
             </div>
 
-            <div
-              style={{ flexBasis: "30%" }}
-              className={
-                location.pathname === `/analysis/${attemptId}/overall`
-                  ? "flex-item ps-4"
-                  : "d-none"
-              }
-            >
+            <div style={{ flexBasis: "30%" }} className={location.pathname === `/analysis/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}>
               <Box
                 component="span"
                 sx={{
