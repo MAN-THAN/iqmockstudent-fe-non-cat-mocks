@@ -25,9 +25,6 @@ const Timer = (props) => {
     window.localStorage.getItem("userData")
   )?.attemptId;
 
-
-
-  
   // taking the local storage value of timer
   useEffect(() => {
     let countDownTimeSec =
@@ -170,8 +167,3 @@ const Timer = (props) => {
   );
 };
 export default Timer;
-
-
-
-
-
