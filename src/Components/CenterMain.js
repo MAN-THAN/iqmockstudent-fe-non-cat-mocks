@@ -402,7 +402,15 @@ function CenterMain() {
                         questionStatus?.length > 0 && // Check if Data array has at least one element
                         questionStatus[selectedQuestionIndex]?.image
                           ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                            return <img src={item} alt="" className="img-fluid hover-zoom" width="100%" style={{cursor : 'pointer', transition : "all 0.4s"}} />;
+                              return (
+                                <img
+                                  src={item}
+                                  alt=""
+                                  className="img-fluid hover-zoom"
+                                  width="100%"
+                                  style={{ cursor: "pointer", transition: "all 0.4s" }}
+                                />
+                              );
                             })
                           : null
                       }
@@ -417,189 +425,190 @@ function CenterMain() {
                 questionStatus?.length > 0 && questionStatus[selectedQuestionIndex].isPara === "Yes" ? "col-5 text-justify" : "col-12  text-justify"
               }
             >
-              <div className="container p-3 rightContent overflow-auto">
-                <Typography variant="paragraph fw-bold">
-                  Question : {selectedQuestionIndex + 1}
-                  <br />
-                  {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
-                </Typography>
-               
-                {/* <div className="img-wrapper">
+              <div className="p-2" style={{ borderRadius: "30px", background: "white" }}>
+                <div className="container p-3 rightContent overflow-auto">
+                  <Typography variant="paragraph fw-bold">
+                    Question : {selectedQuestionIndex + 1}
+                    <br />
+                    {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
+                  </Typography>
+                  {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
                 </div> */}
-                <br /> <br />
-                {questionStatus?.length > 0 && (
-                  <div className="text-start">
-                    {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
-                      <>
-                        <TextField
-                          id="outlined-basic"
-                          label="Enter Answer"
-                          variant="outlined"
-                          value={inputVal !== "" ? inputVal : ""}
-                          // onChange={(e) => setInputVal(e.target.value)}
-                          inputRef={(input) => input && input.focus()}
-                          sx={{
-                            my: 3,
-                            color: "black",
-                            width: "400px",
-                            "& label.Mui-focused": {
+                  <br /> <br />
+                  {questionStatus?.length > 0 && (
+                    <div className="text-start">
+                      {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
+                        <>
+                          <TextField
+                            id="outlined-basic"
+                            label="Enter Answer"
+                            variant="outlined"
+                            value={inputVal !== "" ? inputVal : ""}
+                            // onChange={(e) => setInputVal(e.target.value)}
+                            inputRef={(input) => input && input.focus()}
+                            sx={{
+                              my: 3,
                               color: "black",
-                            },
-                            "& .MuiInput-underline:after": {
-                              borderBottomColor: "var(--orange)",
-                            },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                borderColor: "var(--orange)",
+                              width: "400px",
+                              "& label.Mui-focused": {
+                                color: "black",
                               },
-                              "&:hover fieldset": {
-                                borderColor: "var(--orange)",
+                              "& .MuiInput-underline:after": {
+                                borderBottomColor: "var(--orange)",
                               },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "var(--orange)",
+                              "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                  borderColor: "var(--orange)",
+                                },
+                                "&:hover fieldset": {
+                                  borderColor: "var(--orange)",
+                                },
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "var(--orange)",
+                                },
                               },
-                            },
-                          }}
-                          autoComplete="off"
-                        />
-                        <div className="keys  p-3 rounded shadow">
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("1")}
-                            >
-                              1
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "30px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("2")}
-                            >
-                              2
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("3")}
-                            >
-                              3
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("4")}
-                            >
-                              4
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("5")}
-                            >
-                              5
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("6")}
-                            >
-                              6
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("7")}
-                            >
-                              7
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("8")}
-                            >
-                              8
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("9")}
-                            >
-                              9
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("0")}
-                            >
-                              0
-                            </BootstrapButton>
-                          </div>
-                          <div className="d-flex gap-2 fs-5 m-2 ">
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress(".")}
-                            >
-                              .
-                            </BootstrapButton>
-                            <BootstrapButton
-                              sx={{ width: "auto", p: 1, borderRadius: "25px" }}
-                              variant="contained"
-                              onClick={() => handleKeyPress("-")}
-                            >
-                              -
-                            </BootstrapButton>
+                            }}
+                            autoComplete="off"
+                          />
+                          <div className="keys  p-3 rounded shadow">
+                            <div className="d-flex gap-2 fs-5 m-2 ">
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("1")}
+                              >
+                                1
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("2")}
+                              >
+                                2
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("3")}
+                              >
+                                3
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("4")}
+                              >
+                                4
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("5")}
+                              >
+                                5
+                              </BootstrapButton>
+                            </div>
+                            <div className="d-flex gap-2 fs-5 m-2 ">
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("6")}
+                              >
+                                6
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("7")}
+                              >
+                                7
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("8")}
+                              >
+                                8
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("9")}
+                              >
+                                9
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("0")}
+                              >
+                                0
+                              </BootstrapButton>
+                            </div>
+                            <div className="d-flex gap-2 fs-5 m-2 ">
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress(".")}
+                              >
+                                .
+                              </BootstrapButton>
+                              <BootstrapButton
+                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                variant="contained"
+                                onClick={() => handleKeyPress("-")}
+                              >
+                                -
+                              </BootstrapButton>
 
-                            <BootstrapButton
-                              sx={{
-                                width: "151px",
-                                p: 1,
-                                borderRadius: "25px",
-                              }}
-                              variant="contained"
-                              onClick={() => handleBackspace()}
-                            >
-                              Backspace
-                            </BootstrapButton>
+                              <BootstrapButton
+                                sx={{
+                                  width: "151px",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
+                                variant="contained"
+                                onClick={() => handleBackspace()}
+                              >
+                                Backspace
+                              </BootstrapButton>
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    ) : (
-                      <FormControl key={selectedQuestionIndex}>
-                        <RadioGroup
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          name={`answer_${selectedQuestionIndex}`}
-                          value={selectedAnswer !== undefined ? selectedAnswer : null}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setSelectedAnswer(parseInt(value));
-                            // const updatedData = [...Data];
-                            // updatedData[selectedQuestionIndex].selectedAnswer = value;
-                            // // setData(updatedData);
-                          }}
-                        >
-                          {questionStatus[selectedQuestionIndex]?.options != null &&
-                            questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
-                              <FormControlLabel
-                                key={index}
-                                value={index}
-                                control={<Radio />}
-                                label={
-                                  <small>
-                                    <Latex>{option}</Latex>
-                                  </small>
-                                }
-                              />
-                            ))}
-                        </RadioGroup>
-                      </FormControl>
-                    )}
-                  </div>
-                )}
+                        </>
+                      ) : (
+                        <FormControl key={selectedQuestionIndex}>
+                          <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name={`answer_${selectedQuestionIndex}`}
+                            value={selectedAnswer !== undefined ? selectedAnswer : null}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setSelectedAnswer(parseInt(value));
+                              // const updatedData = [...Data];
+                              // updatedData[selectedQuestionIndex].selectedAnswer = value;
+                              // // setData(updatedData);
+                            }}
+                          >
+                            {questionStatus[selectedQuestionIndex]?.options != null &&
+                              questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={
+                                    <small>
+                                      <Latex>{option}</Latex>
+                                    </small>
+                                  }
+                                />
+                              ))}
+                          </RadioGroup>
+                        </FormControl>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
