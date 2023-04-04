@@ -41,7 +41,7 @@ const UserAuth = () => {
     }
   };
   const showToastMessage = () => {
-    toast.error("Some error occurred!   Please reload the page.", {
+    toast.error("Some error occurred! Please reload the page.", {
       position: toast.POSITION.TOP_CENTER,
     });
     return setLoader(false)
