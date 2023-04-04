@@ -1,50 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../services/Context";
 import { ModifyButton } from "../styleSheets/Style";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { NavLink } from "react-router-dom";
-import "../styleSheets/AnalysisMain.css"
+import "../styleSheets/AnalysisMain.css";
+import BarGrapgh from "../Components/BarGrapgh";
+import PieChart from "../Components/PieChart";
+
 function DifficultyAnalysis() {
   const { difficulty } = useAuth();
   const [data, setData] = useState({});
-  const [activeButton, setActiveButton] = useState('varc');
+  const [activeButton, setActiveButton] = useState("varc");
   const [show, setShow] = useState([]);
+
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
-    console.log("data", data)
+    console.log("data", data);
     setShow(difficulty?.difficultyWiseAnalysis.varc);
   }, []);
-
-
-  console.log(activeButton)
-
- 
 
   const handleClick = (button) => {
     setActiveButton(button);
     setShow(data[button]);
   };
 
-  console.log(show)
+  console.log(activeButton);
+
+  console.log(show);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "3em"}}>
+    <div
+      style={{
+        width: "100%",
+        padding: "3em",
+      }}
+    >
       <h1>Analysis Review,</h1>
       <h6 style={{ marginTop: "0.5em" }}>A Quick Analysis Overview</h6>
-      <div style={{ display: "flex", flexDirection: "row", gap: "3em", marginTop: "2em" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "3em",
+          marginTop: "2em",
+        }}
+      >
         <ModifyButton
           variant="outlined"
-          onClick={() => handleClick('varc')}
-          className={`${activeButton === 'varc' ? 'active' : ''}`}
+          onClick={() => handleClick("varc")}
+          className={`${activeButton === "varc" ? "active" : ""}`}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
             color: "#0057CB",
-            color: activeButton === "varc"? "white": "#0057CB",
+            color: activeButton === "varc" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "varc" && "#0057CB"
+            background: activeButton === "varc" && "#0057CB",
           }}
           autoFocus={true}
         >
@@ -53,60 +64,75 @@ function DifficultyAnalysis() {
         <ModifyButton
           variant="outlined"
           className="nav-button"
-          onClick={() => handleClick('lrdi')}
+          onClick={() => handleClick("lrdi")}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
             color: "#0057CB",
-            color: activeButton === "lrdi"? "white": "#0057CB",
+            color: activeButton === "lrdi" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "lrdi" && "#0057CB"
+            background: activeButton === "lrdi" && "#0057CB",
           }}
         >
           LRDI
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          onClick={() => handleClick('quants')}
+          onClick={() => handleClick("quants")}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
-            color: activeButton === "quants"? "white": "#0057CB",
+            color: activeButton === "quants" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background:activeButton === "quants" && "#0057CB"
+            background: activeButton === "quants" && "#0057CB",
           }}
         >
           QUANT
         </ModifyButton>
       </div>
-      <div style={{ width: "100%", height: "60vh", marginTop: "4em" }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            width={500}
-            height={300}
-            data={show}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 10,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="total" fill="#8B30FF" />
-            <Bar dataKey="incorrect" fill="#685BFB" />
-            <Bar dataKey="correct" fill="#00C2FF" />
-            <Bar dataKey="skipped" fill="#FF519A" />
-          </BarChart>
-        </ResponsiveContainer>
+
+      <div className="d-flex flex-column justify-content-center mt-5 py-5">
+        <div className="flex-item">
+          <h1 className="text-center">Question Distributions</h1>
+        </div>
+        <hr
+          className="mx-auto"
+          style={{
+            height: "2px",
+            width: "50%",
+            borderTop: "2px solid black",
+            borderColor: "black!important",
+          }}
+        />
+        <div className="flex-item">
+          <PieChart />
+        </div>
+      </div>
+      <hr
+        className="mx-auto"
+        style={{
+          height: "2px",
+          width: "85%",
+          borderTop: "2px solid black",
+          borderColor: "black!important",
+        }}
+      />
+      <h1 className="text-center pt-4">Chart Title</h1>
+      <div className="d-flex flex-row flex-wrap justify-content-between align-items-center gap-5  mt-5 p-5">
+        {/* Bar graphs */}
+
+        {show.length > 0 &&
+          show.map((item, ind) => {
+            return (
+              <div className="mx-auto">
+                <BarGrapgh Data={item} title={item.name} />
+              </div>
+            );
+          })}
       </div>
     </div>
   );

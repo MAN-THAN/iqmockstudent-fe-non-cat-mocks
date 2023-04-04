@@ -471,7 +471,7 @@ function CenterMain() {
                             }}
                             autoComplete="off"
                           />
-                          <div className="keys  p-3 rounded shadow">
+                          <div className="keys p-3 rounded shadow">
                             <div className="d-flex gap-2 fs-5 m-2 ">
                               <BootstrapButton
                                 sx={{ width: "auto", p: 1, borderRadius: "30px" }}
