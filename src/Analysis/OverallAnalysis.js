@@ -88,7 +88,7 @@ function OverallAnalysis() {
                     {item.accuracy}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {Math.round(item.perScore)}
+                    {+item.perScore < 0 ? 0 : +item.perScore}
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
                     {item.percentile}

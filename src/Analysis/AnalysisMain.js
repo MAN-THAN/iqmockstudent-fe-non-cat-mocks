@@ -382,7 +382,7 @@ function AnalysisMain() {
               <div className=" d-flex  justify-content-center  flex-wrap gap-4">
                 <BootstrapTooltip
                   TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 600 }}
+                  TransitionProps={{ timeout: 300 }}
                   title="Potential"
                   followCursor
                 >
@@ -421,7 +421,7 @@ function AnalysisMain() {
                 </BootstrapTooltip>
                 <BootstrapTooltip
                   TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 600 }}
+                  TransitionProps={{ timeout: 300 }}
                   title="Negative Mark"
                   followCursor
                 >
@@ -456,7 +456,7 @@ function AnalysisMain() {
                 </BootstrapTooltip>
                 <BootstrapTooltip
                   TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 600 }}
+                  TransitionProps={{ timeout: 300 }}
                   title="Your Accuracy boy!!!"
                   followCursor
                 >
@@ -489,7 +489,7 @@ function AnalysisMain() {
                 </BootstrapTooltip>
                 <BootstrapTooltip
                   TransitionComponent={Fade}
-                  TransitionProps={{ timeout: 600 }}
+                  TransitionProps={{ timeout: 300 }}
                   title="Overall Percentage boy!!!"
                   followCursor
                 >
@@ -504,7 +504,7 @@ function AnalysisMain() {
                     <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
                       <div className="flex-item ">
                         <SubHeading className="card-title">
-                          {Math.round(overallPercentage)}
+                          {+overallPercentage < 0 ? 0 : +overallPercentage}
                         </SubHeading>
                         <Typography variant="paragraph">% Score</Typography>
                       </div>
@@ -634,7 +634,7 @@ function AnalysisMain() {
                   fontFamily: "var(--font-inter)",
                 }}
               >
-                Time spent on questions:
+                Time spent on questions(min):
               </Box>
               <span>
                 <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
