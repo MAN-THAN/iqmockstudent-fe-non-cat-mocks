@@ -494,12 +494,16 @@ function CenterMain() {
             >
               <div className="container p-3 rightContent overflow-auto">
                 <Typography variant="paragraph fw-bold">
-                  Question : {selectedQuestionIndex + 1}
+                  Question : {selectedQuestionIndex + 1} 
                   <br />
+                
                   {questionStatus?.length > 0 && (
+                    
                     <Latex>
                       {questionStatus[selectedQuestionIndex]?.question}
+                      {questionStatus[selectedQuestionIndex]?.image}
                     </Latex>
+
                   )}
                 </Typography>
                 <br /> <br />

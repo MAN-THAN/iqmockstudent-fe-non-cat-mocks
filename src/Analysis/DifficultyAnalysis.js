@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../services/Context";
 import { ModifyButton } from "../styleSheets/Style";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { NavLink } from "react-router-dom";
 import "../styleSheets/AnalysisMain.css";
+import BarGrapgh from "../Components/BarGrapgh";
+import PieChart from "../Components/PieChart";
+
 function DifficultyAnalysis() {
   const { difficulty } = useAuth();
   const [data, setData] = useState({});
   const [activeButton, setActiveButton] = useState("varc");
   const [show, setShow] = useState([]);
+
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
     console.log("data", data);
     setShow(difficulty?.difficultyWiseAnalysis.varc);
   }, []);
 
-  console.log(activeButton);
-
   const handleClick = (button) => {
     setActiveButton(button);
     setShow(data[button]);
   };
+
+  console.log(activeButton);
 
   console.log(show);
 
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
         width: "100%",
         padding: "3em",
       }}
@@ -103,49 +94,45 @@ function DifficultyAnalysis() {
           QUANT
         </ModifyButton>
       </div>
-      <div className="shadow pt-3 " style={{ width: "100%", height: "60vh", marginTop: "3em"  ,borderRadius:"15px"}}>
-        <ResponsiveContainer width="100%" height="100%" >
-          <BarChart
-            width={500}
-            height={300}
-            data={show}
-           
-            margin={{
-              top: 5,
-              right: 30,
-              left: 10,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="total" fill="url(#total)" radius={[10, 10, 0, 0]}/>
-            <Bar dataKey="incorrect" fill="url(#incorrect)"  radius={[10, 10, 0, 0]} />
-            <Bar dataKey="correct" fill="url(#correct)"   radius={[10, 10, 0, 0]}/>
-            <Bar dataKey="skipped" fill="url(#skipped)"   radius={[10, 10, 0, 0]}/>
-            <defs>
-              <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#8B30FF" />
-                <stop offset="100%" stopColor="#B072FF" />
-              </linearGradient>
-              <linearGradient id="correct" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#685BFB" />
-                <stop offset="100%" stopColor="#8C82FF" />
-              </linearGradient>
-              <linearGradient id="incorrect" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#00C2FF" />
-                <stop offset="100%" stopColor="#BAE6FF" />
-              </linearGradient>
-              <linearGradient id="skipped" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#FF519A" />
-                <stop offset="100%" stopColor="#FFAED0" />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+
+      <div className="d-flex flex-column justify-content-center mt-5 py-5">
+        <div className="flex-item">
+          <h1 className="text-center">Question Distributions</h1>
+        </div>
+        <hr
+          className="mx-auto"
+          style={{
+            height: "2px",
+            width: "50%",
+            borderTop: "2px solid black",
+            borderColor: "black!important",
+          }}
+        />
+        <div className="flex-item">
+          <PieChart />
+        </div>
+      </div>
+      <hr
+        className="mx-auto"
+        style={{
+          height: "2px",
+          width: "85%",
+          borderTop: "2px solid black",
+          borderColor: "black!important",
+        }}
+      />
+      <h1 className="text-center pt-4">Chart Title</h1>
+      <div className="d-flex flex-row flex-wrap justify-content-between align-items-center gap-5  mt-5 p-5">
+        {/* Bar graphs */}
+
+        {show.length > 0 &&
+          show.map((item, ind) => {
+            return (
+              <div className="mx-auto">
+                <BarGrapgh Data={item} title={item.name} />
+              </div>
+            );
+          })}
       </div>
     </div>
   );
