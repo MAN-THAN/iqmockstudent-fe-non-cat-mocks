@@ -13,14 +13,13 @@ import {
 
 function BarGrapgh({Data,title}) {
 
-    console.log("Bar data", Data)
+   
   return (
     <div
-    className="  shadow-lg flex-item"
+    className="shadow flex-item"
     style={{
-      width: "35vw",
+      width: "30vw",
       height: "auto",
-
       borderRadius: "15px",
     }}
   >
