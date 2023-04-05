@@ -20,7 +20,6 @@ import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
 import { useAuth } from "../services/Context";
 function CenterMain() {
-  const { simpleGetQuizs } = useAuth();
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(true);
@@ -30,13 +29,11 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
+
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    const url =
-      "https://admin-storage.s3.ap-south-1.amazonaws.com/iq-mocks/19d73909-3c3c-4ed3-ae7a-cd2e03c9477a/-paragraph.html";
-
-    const fetchData = async () => {
+    const fetchContent = async (url) => {
       try {
         const response = await fetch(url);
         const data = await response.text();
@@ -46,8 +43,17 @@ function CenterMain() {
       }
     };
 
-    fetchData();
-  }, []);
+    if (
+      questionStatus?.length > 0 &&
+      questionStatus[selectedQuestionIndex]?.options
+    ) {
+      const link = questionStatus[selectedQuestionIndex].options[0];
+
+      if (link.endsWith(".html")) {
+        fetchContent(link);
+      }
+    }
+  }, [questionStatus, selectedQuestionIndex]);
 
   // syncing question status with local
   useEffect(() => {
@@ -472,9 +478,20 @@ function CenterMain() {
                     <ContentDrawer
                       question={
                         questionStatus?.length > 0 &&
-                        questionStatus[selectedQuestionIndex].isPara === "Yes"
-                          ? questionStatus[selectedQuestionIndex].paragraph
-                          : "No paragraph"
+                        questionStatus[selectedQuestionIndex].isPara ===
+                          "Yes" ? (
+                          questionStatus[
+                            selectedQuestionIndex
+                          ].paragraph.endsWith(".html") ? (
+                            <div
+                              dangerouslySetInnerHTML={{ __html: content }}
+                            />
+                          ) : (
+                            questionStatus[selectedQuestionIndex].paragraph
+                          )
+                        ) : (
+                          "No paragraph"
+                        )
                       }
                       image={
                         questionStatus?.length > 0 && // Check if Data array has at least one element
@@ -519,8 +536,12 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                    {questionStatus?.length > 0 && (
+                    {questionStatus?.length > 0 &&
+                    questionStatus[selectedQuestionIndex].question.endsWith(
+                      ".html"
+                    ) ? (
+                      <div dangerouslySetInnerHTML={{ __html: content }} />
+                    ) : (
                       <Latex>
                         {questionStatus[selectedQuestionIndex]?.question}
                       </Latex>
@@ -744,9 +765,17 @@ function CenterMain() {
                                   value={index}
                                   control={<Radio />}
                                   label={
-                                    <small>
-                                      <Latex>{option}</Latex>
-                                    </small>
+                                    <div>
+                                      {option.endsWith(".html") ? (
+                                        <div
+                                          dangerouslySetInnerHTML={{
+                                            __html: content,
+                                          }}
+                                        />
+                                      ) : (
+                                        <Latex>{option}</Latex>
+                                      )}
+                                    </div>
                                   }
                                 />
                               ))}
