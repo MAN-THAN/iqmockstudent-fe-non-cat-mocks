@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 export const Context = React.createContext();
@@ -30,6 +29,25 @@ export const ContextProvider = ({ children }) => {
 
 
 
+  //Function for getting a response from domain and convert to http
+
+  // const simpleGetQuizs = (myURL) => {
+  //    https.get(myURL, function (remoteRes) {
+  //     let data = '';
+  //     remoteRes.on('data', function (chunk) {
+  //       data += chunk;
+  //     });
+  //     remoteRes.on('end', function () {
+  //       res.writeHead(200, { 'Content-Type': 'text/html' });
+  //       res.write(data);
+  //     return  res.end();
+
+  //     });
+  //   }).on('error', function (err) {
+  //     res.writeHead(500);
+  //    return res.end('Error: ' + err.message);
+  //   });
+  // }
 
  
 
@@ -76,6 +94,7 @@ export const ContextProvider = ({ children }) => {
           difficulty,
           analysisDataApi,
           isLoading,
+   
         }}
       >
         {children}

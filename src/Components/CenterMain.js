@@ -18,8 +18,9 @@ import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
-
+import { useAuth } from "../services/Context";
 function CenterMain() {
+  const{simpleGetQuizs}=useAuth()
   const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,26 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
+  const [content, setContent] = useState('');
+ 
+  useEffect(() => {
+    const url = 'https://admin-storage.s3.ap-south-1.amazonaws.com/iq-mocks/19d73909-3c3c-4ed3-ae7a-cd2e03c9477a/-paragraph.html';
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const data = await response.text();
+        setContent(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  
+
 
   // syncing question status with local
   useEffect(() => {
@@ -430,6 +451,9 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                
+
                     {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
                   </Typography>
                   {/* <div className="img-wrapper">

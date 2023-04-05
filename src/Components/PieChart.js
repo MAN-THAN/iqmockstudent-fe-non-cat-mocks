@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function MyPieChart() {
+function MyPieChart({Data}) {
   const data01 = [
     { name: "Group A", value: 60 },
     { name: "Group B", value: 10 },
@@ -88,7 +88,7 @@ function MyPieChart() {
           <Pie
             dataKey="value"
             isAnimationActive={true}
-            data={data01}
+            data={Data}
             cx={200}
             cornerRadius={8}
             cy={200}
@@ -100,7 +100,7 @@ function MyPieChart() {
             outerRadius={150}
             filter="url(#shadow)"
           >
-            {data01.map((entry, index) => (
+            {Data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}
