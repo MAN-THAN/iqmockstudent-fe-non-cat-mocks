@@ -23,7 +23,7 @@ export const getAttemptId = async (name,email,uid) => {
   } catch (err) {
     console.error(err);
     console.log("Error --> attempt id can not be created!!!");
-    throw err;
+    return err;
   }
 };
 
