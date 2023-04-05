@@ -742,13 +742,7 @@ function CenterMain() {
                                   value={index}
                                   control={<Radio />}
                                   label={
-<<<<<<< HEAD
-                               
-                                      <iframe src={option} ></iframe>
-                                   
-=======
                                       <iframe style={{ width: "100%", height: "100%" }} src={option}></iframe>
->>>>>>> 4b966e452300f37d08aa3ee95b6fff0933a60801
                                   }
                                 />
                               ))}
