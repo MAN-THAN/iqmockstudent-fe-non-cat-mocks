@@ -37,7 +37,9 @@ body {
 img.hover-zoom:hover {
   transform: scale(1.03);
 }
-
+.css-t1fmnr-MuiFormControlLabel-root .MuiFormControlLabel-label{
+  width : "100%" !important;
+}
 
 
 @media (max-width: 1300px) {
