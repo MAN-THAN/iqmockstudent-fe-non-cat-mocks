@@ -88,7 +88,7 @@ function MyPieChart({Data}) {
           <Pie
             dataKey="value"
             isAnimationActive={true}
-            data={Data}
+            data={data01}
             cx={200}
             cornerRadius={8}
             cy={200}
@@ -100,7 +100,7 @@ function MyPieChart({Data}) {
             outerRadius={150}
             filter="url(#shadow)"
           >
-            {Data.map((entry, index) => (
+            {data01.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}

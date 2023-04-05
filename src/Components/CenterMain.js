@@ -18,12 +18,8 @@ import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
-<<<<<<< HEAD
-import { useAuth } from "../services/Context";
-=======
 import ImageButton from "./ImageButton";
 
->>>>>>> 9e2ec7895862c89d8f6fd0a75f0b2824569cdad8
 function CenterMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -441,19 +437,8 @@ function CenterMain() {
                   >
                     {
                       <>
-<<<<<<< HEAD
-                        <div style={{ color: "black", fontSize: "14px" }}>
-                          Time Left
-                        </div>
-                        <Timer
-                          initMinute={5}
-                          initSeconds={0}
-                          studentAnswersData={questionStatus}
-                        />
-=======
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
                         <Timer initMinute={10} initSeconds={0} studentAnswersData={questionStatus} />
->>>>>>> 9e2ec7895862c89d8f6fd0a75f0b2824569cdad8
                       </>
                     }
                   </div>
@@ -506,28 +491,9 @@ function CenterMain() {
                       image={
                         questionStatus?.length > 0 && // Check if Data array has at least one element
                         questionStatus[selectedQuestionIndex]?.image
-<<<<<<< HEAD
-                          ? questionStatus[selectedQuestionIndex]?.image.map(
-                              (item) => {
-                                return (
-                                  <img
-                                    src={item}
-                                    alt=""
-                                    className="img-fluid hover-zoom"
-                                    width="100%"
-                                    style={{
-                                      cursor: "pointer",
-                                      transition: "all 0.4s",
-                                    }}
-                                  />
-                                );
-                              }
-                            )
-=======
                           ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
                               return <ImageButton src={item} />;
                             })
->>>>>>> 9e2ec7895862c89d8f6fd0a75f0b2824569cdad8
                           : null
                       }
                     />
@@ -552,20 +518,7 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-<<<<<<< HEAD
-                    {questionStatus.length > 0 &&
-                    questionStatus[selectedQuestionIndex]?.question?.endsWith(
-                      ".html"
-                    ) ? (
-                      <div dangerouslySetInnerHTML={{ __html: content }} />
-                    ) : (
-                      <Latex>
-                        {questionStatus[selectedQuestionIndex].question}
-                      </Latex>
-                    )}
-=======
                     {questionStatus?.length > 0 && <iframe src={questionStatus[selectedQuestionIndex]?.question}></iframe>}
->>>>>>> 9e2ec7895862c89d8f6fd0a75f0b2824569cdad8
                   </Typography>
                   {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
@@ -785,23 +738,9 @@ function CenterMain() {
                                   value={index}
                                   control={<Radio />}
                                   label={
-<<<<<<< HEAD
-                                    <div>
-                                      {option.endsWith(".html") ? (
-                                        <div
-                                          dangerouslySetInnerHTML={{
-                                            __html: content,
-                                          }}
-                                        />
-                                      ) : (
-                                        <Latex>{option}</Latex>
-                                      )}
-                                    </div>
-=======
-                                    <small>
-                                      <iframe src={option}></iframe>
-                                    </small>
->>>>>>> 9e2ec7895862c89d8f6fd0a75f0b2824569cdad8
+                               
+                                      <iframe src={option} ></iframe>
+                                   
                                   }
                                 />
                               ))}
