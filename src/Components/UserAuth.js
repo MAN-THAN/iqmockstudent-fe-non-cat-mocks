@@ -38,6 +38,7 @@ const UserAuth = () => {
       userAuthCheck();
     } else {
       showToastMessage();
+      return 
     }
   };
   const showToastMessage = () => {
