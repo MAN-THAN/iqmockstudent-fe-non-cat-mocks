@@ -536,14 +536,14 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-                    {questionStatus?.length > 0 &&
-                    questionStatus[selectedQuestionIndex].question.endsWith(
+                    {questionStatus.length > 0 &&
+                    questionStatus[selectedQuestionIndex]?.question?.endsWith(
                       ".html"
                     ) ? (
                       <div dangerouslySetInnerHTML={{ __html: content }} />
                     ) : (
                       <Latex>
-                        {questionStatus[selectedQuestionIndex]?.question}
+                        {questionStatus[selectedQuestionIndex].question}
                       </Latex>
                     )}
                   </Typography>
