@@ -423,7 +423,9 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-                    {questionStatus?.length > 0 && <iframe src={questionStatus[selectedQuestionIndex]?.question}></iframe>}
+                    {questionStatus?.length > 0 && (
+                      <iframe style={{ width: "100%", height: "100%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
+                    )}
                   </Typography>
                   {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
@@ -570,8 +572,9 @@ function CenterMain() {
                           </div>
                         </>
                       ) : (
-                        <FormControl key={selectedQuestionIndex}>
+                        <FormControl sx={{ width: "100%" }} key={selectedQuestionIndex}>
                           <RadioGroup
+                            sx={{ width: "100%", height: "fit-content" }}
                             aria-labelledby="demo-radio-buttons-group-label"
                             name={`answer_${selectedQuestionIndex}`}
                             value={selectedAnswer !== undefined ? selectedAnswer : null}
@@ -586,13 +589,12 @@ function CenterMain() {
                             {questionStatus[selectedQuestionIndex]?.options != null &&
                               questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
                                 <FormControlLabel
+                                  sx={{ width: "100%", height: "100%" }}
                                   key={index}
                                   value={index}
                                   control={<Radio />}
                                   label={
-                                    <small>
-                                      <iframe src={option}></iframe>
-                                    </small>
+                                      <iframe style={{ width: "100%", height: "100%" }} src={option}></iframe>
                                   }
                                 />
                               ))}
