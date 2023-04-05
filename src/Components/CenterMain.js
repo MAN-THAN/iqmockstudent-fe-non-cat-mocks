@@ -18,6 +18,7 @@ import Timer from "./Timer";
 import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
+import ImageButton from "./ImageButton";
 
 function CenterMain() {
   const navigate = useNavigate();
@@ -370,7 +371,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={10} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -402,15 +403,7 @@ function CenterMain() {
                         questionStatus?.length > 0 && // Check if Data array has at least one element
                         questionStatus[selectedQuestionIndex]?.image
                           ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                              return (
-                                <img
-                                  src={item}
-                                  alt=""
-                                  className="img-fluid hover-zoom"
-                                  width="100%"
-                                  style={{ cursor: "pointer", transition: "all 0.4s" }}
-                                />
-                              );
+                              return <ImageButton src={item} />;
                             })
                           : null
                       }
@@ -430,7 +423,7 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-                    {questionStatus?.length > 0 && <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>}
+                    {questionStatus?.length > 0 && <iframe src={questionStatus[selectedQuestionIndex]?.question}></iframe>}
                   </Typography>
                   {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
@@ -598,7 +591,7 @@ function CenterMain() {
                                   control={<Radio />}
                                   label={
                                     <small>
-                                      <Latex>{option}</Latex>
+                                      <iframe src={option}></iframe>
                                     </small>
                                   }
                                 />
