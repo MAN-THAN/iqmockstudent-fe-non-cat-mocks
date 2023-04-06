@@ -286,6 +286,22 @@ function CenterMain() {
     setSelectedAnswer(null);
     setInputVal("");
   };
+  // options setting after fetching html from link
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const optionsArr = questionStatus?.[selectedQuestionIndex].options; // example array of IDs
+      console.log(optionsArr)
+      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
+      const results = await Promise.all(promises); // wait for all promises to resolve
+      console.log(results)
+      setOptions(results); // update state with the resolved data
+    };
+    if (questionStatus?.length) { 
+      fetchData();
+    }
+  }, [selectedQuestionIndex, questionStatus]);
+
 
   return loading ? (
     <div
@@ -371,7 +387,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={10} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={20} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -423,7 +439,9 @@ function CenterMain() {
                   <Typography variant="paragraph fw-bold">
                     Question : {selectedQuestionIndex + 1}
                     <br />
-                    {questionStatus?.length > 0 && <iframe src={questionStatus[selectedQuestionIndex]?.question}></iframe>}
+                    {questionStatus?.length > 0 && (
+                      <iframe style={{ width: "100%", height: "70%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
+                    )}
                   </Typography>
                   {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
@@ -570,8 +588,9 @@ function CenterMain() {
                           </div>
                         </>
                       ) : (
-                        <FormControl key={selectedQuestionIndex}>
+                        <FormControl sx={{ width: "100%" }} key={selectedQuestionIndex}>
                           <RadioGroup
+                            sx={{ width: "100%" }}
                             aria-labelledby="demo-radio-buttons-group-label"
                             name={`answer_${selectedQuestionIndex}`}
                             value={selectedAnswer !== undefined ? selectedAnswer : null}
@@ -583,17 +602,14 @@ function CenterMain() {
                               // // setData(updatedData);
                             }}
                           >
-                            {questionStatus[selectedQuestionIndex]?.options != null &&
-                              questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                            {
+                              options?.map((option, index) => (
                                 <FormControlLabel
+                                  sx={{ width: "100%" }}
                                   key={index}
                                   value={index}
                                   control={<Radio />}
-                                  label={
-                                    <small>
-                                      <iframe src={option}></iframe>
-                                    </small>
-                                  }
+                                  label={<div style={{display : "flex", alignItems : "center", paddingTop : '12px'}} dangerouslySetInnerHTML={{__html : option}}/>}
                                 />
                               ))}
                           </RadioGroup>
