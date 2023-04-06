@@ -462,7 +462,7 @@ function CenterMain() {
                             sx={{
                               my: 3,
                               color: "black",
-                              width: "400px",
+                              width: "100%",
                               "& label.Mui-focused": {
                                 color: "black",
                               },
@@ -484,12 +484,11 @@ function CenterMain() {
                             autoComplete="off"
                           />
                           <div className="keys p-3 rounded shadow">
-                            <div className="d-flex gap-2 fs-5 m-2 ">
+                            <div className="d-flex gap-2 fs-4 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                sx={{ width:"auto", p:1, borderRadius: "30px" }}
                                 variant="contained"
-                                onClick={() => handleKeyPress("1")}
-                              >
+                                  onClick={() => handleKeyPress("1")}                              >
                                 1
                               </BootstrapButton>
                               <BootstrapButton
