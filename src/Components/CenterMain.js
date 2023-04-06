@@ -441,7 +441,7 @@ function CenterMain() {
                     Question : {selectedQuestionIndex + 1}
                     <br />
                     {questionStatus?.length > 0 && (
-                      <iframe style={{ width: "100%", height: "70%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
+                      <iframe style={{ width: "100%", height: "40%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
                     )}
                   </Typography>
                   {/* <div className="img-wrapper">
@@ -610,7 +610,7 @@ function CenterMain() {
                                   key={index}
                                   value={index}
                                   control={<Radio />}
-                                  label={<div style={{display : "flex", alignItems : "center", paddingTop : '12px'}} dangerouslySetInnerHTML={{__html : option}}/>}
+                                  label={<div style={{display : "flex", alignItems : "center", paddingTop : '0.9em'}} dangerouslySetInnerHTML={{__html : option}}/>}
                                 />
                               ))}
                           </RadioGroup>
