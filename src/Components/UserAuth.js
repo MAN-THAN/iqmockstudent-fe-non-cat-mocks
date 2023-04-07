@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const UserAuth = () => {
   const navigate = useNavigate();
-  const { name, email, uid } = useParams();
+  const { name, email, uid ,mockId} = useParams();
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const UserAuth = () => {
     if (attemptID) {
       console.log("userAttemptID", attemptID);
       console.log("go to m0ck page");
-      navigate(`/main/${process.env.REACT_APP_MOCK_ID}/varc`);
+      navigate(`/main/${mockId}/varc`);
     } else {
       console.log("you dont have an attempt id");
       createAttemptId();
@@ -31,7 +31,7 @@ const UserAuth = () => {
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const response = await getAttemptId(name, email, uid);
+    const response = await getAttemptId(name, email, uid, mockId);
     console.log(response);
     if (response?.status === 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));
