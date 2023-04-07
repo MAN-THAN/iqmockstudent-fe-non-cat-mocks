@@ -55,9 +55,7 @@ export default function LeaderTable() {
               <StyledTableCell component="th" scope="row">
                 1
               </StyledTableCell>
-              <StyledTableCell  align="left" >
-                {row.name}
-              </StyledTableCell>
+              <StyledTableCell align="left">{row.name}</StyledTableCell>
               <StyledTableCell align="left">{row.calories}</StyledTableCell>
               <StyledTableCell align="left">{row.fat}</StyledTableCell>
               <StyledTableCell align="left">{row.carbs}</StyledTableCell>
