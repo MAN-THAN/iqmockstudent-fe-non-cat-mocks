@@ -118,9 +118,7 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    const storedQuestionStatus = JSON.parse(
-      localStorage.getItem("questionStatus")
-    );
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
     console.log("storedQuestionStatus", storedQuestionStatus);
     if (storedQuestionStatus === null) {
       fetchDataFromApi();
@@ -136,9 +134,7 @@ function CenterMain() {
   // Function for making stage 0 in Question status(Only when data fetching from api)
 
   useEffect(() => {
-    const storedQuestionStatus = JSON.parse(
-      localStorage.getItem("questionStatus")
-    );
+    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
     if (storedQuestionStatus === null) {
       setInitialStage();
     }
@@ -169,8 +165,7 @@ function CenterMain() {
     if (questionType === 1) {
       studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
-        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !==
-        undefined
+        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
           ? questionStatus[selectedQuestionIndex].options[studentAnswerIndex]
           : null;
     }
@@ -179,12 +174,7 @@ function CenterMain() {
     }
 
     const obj = questionStatus[selectedQuestionIndex];
-    if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "save"
-    ) {
+    if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "save") {
       const newObj = {
         ...obj,
         stage: 1,
@@ -197,10 +187,7 @@ function CenterMain() {
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
       return nextInd();
-    } else if (
-      (studentAnswer === null || studentAnswer === "") &&
-      buttonType === "review"
-    ) {
+    } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
       const newObj = {
         ...obj,
         stage: 3,
@@ -213,12 +200,7 @@ function CenterMain() {
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
       return nextInd();
-    } else if (
-      studentAnswer !== null &&
-      studentAnswer !== "" &&
-      studentAnswerIndex !== null &&
-      buttonType === "review"
-    ) {
+    } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
       const newObj = {
         ...obj,
         stage: 4,
@@ -255,12 +237,8 @@ function CenterMain() {
         if (questionStatus[selectedQuestionIndex].options === null) {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
         }
-        setSelectedAnswer(
-          questionStatus[selectedQuestionIndex].studentAnswerIndex
-        );
-      } else if (
-        questionStatus[selectedQuestionIndex].studentAnswerIndex === null
-      ) {
+        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
@@ -333,23 +311,22 @@ function CenterMain() {
     setSelectedAnswer(null);
     setInputVal("");
   };
-  
+
   // options setting after fetching their html content
   const [options, setOptions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const optionsArr = questionStatus?.[selectedQuestionIndex].options;
-      console.log(optionsArr)
+      console.log(optionsArr);
       const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
       const results = await Promise.all(promises); // waiting for all promises to resolve
-      console.log(results)
+      console.log(results);
       setOptions(results); // update state with the resolved data
     };
-    if (questionStatus?.length) { 
+    if (questionStatus?.length) {
       fetchData();
     }
   }, [selectedQuestionIndex, questionStatus]);
-
 
   return loading ? (
     <div
@@ -435,7 +412,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={20} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -488,7 +465,9 @@ function CenterMain() {
                     Question : {selectedQuestionIndex + 1}
                     <br />
                     {questionStatus?.length > 0 && (
-                      <iframe style={{ width: "100%", height: "40%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
+                      <div>
+                        <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>
+                      </div>
                     )}
                   </Typography>
                   {/* <div className="img-wrapper">
@@ -509,7 +488,7 @@ function CenterMain() {
                             sx={{
                               my: 3,
                               color: "black",
-                              width: "100%",
+                              width: "400px",
                               "& label.Mui-focused": {
                                 color: "black",
                               },
@@ -695,20 +674,19 @@ function CenterMain() {
                               setSelectedAnswer(parseInt(value));
                             }}
                           >
-                            {options?.map((option, index) => (
-                              <FormControlLabel
-                                sx={{ width: "100%" }}
-                                key={index}
-                                value={index}
-                                control={<Radio />}
-                                label={
-                                  <div
-                                    style={{ display: "flex", alignItems: "center", paddingTop: "0.9em" }}
-                                    dangerouslySetInnerHTML={{ __html: option }}
-                                  />
-                                }
-                              />
-                            ))}
+                            {questionStatus[selectedQuestionIndex]?.options != null &&
+                              questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                                <FormControlLabel
+                                  key={index}
+                                  value={index}
+                                  control={<Radio />}
+                                  label={
+                                    <div style={{paddingTop : "1em"}}>
+                                      <Latex>{option}</Latex>
+                                    </div>
+                                  }
+                                />
+                              ))}
                           </RadioGroup>
                         </FormControl>
                       )}
