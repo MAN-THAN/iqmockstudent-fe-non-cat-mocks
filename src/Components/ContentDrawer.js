@@ -10,14 +10,18 @@ function ContentDrawer(props) {
 
   return (
     <>
-      <Box sx={{ padding: 2, color: "black" , height : "100%"}}>
+      <Box sx={{ padding: 2, color: "black", height: "100%" }}>
         <CssBaseline />
 
-        <div style={{height : "100%"}}>
-          <iframe style={{ width: "100%", height: "100%" }} src={props.question}></iframe>
+        <div style={{ height: "100%" }}>
+          <div >
+            <Latex>{props.question}</Latex>
+          </div>
         </div>
 
-        <div className="container p-2">{props.image}</div>
+        <div className="container p-2">
+         {props.image}
+        </div>
       </Box>
     </>
   );
