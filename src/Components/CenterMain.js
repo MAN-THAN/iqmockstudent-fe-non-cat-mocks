@@ -31,6 +31,31 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
 
+  // const [content, setContent] = useState("");
+
+  // useEffect(() => {
+  //   const fetchContent = async (url) => {
+  //     try {
+  //       const response = await fetch(url);
+  //       const data = await response.text();
+  //       setContent(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   if (
+  //     questionStatus?.length > 0 &&
+  //     questionStatus[selectedQuestionIndex]?.options
+  //   ) {
+  //     const link = questionStatus[selectedQuestionIndex].options[0];
+
+  //     if (link.endsWith(".html")) {
+  //       fetchContent(link);
+  //     }
+  //   }
+  // }, [questionStatus, selectedQuestionIndex]);
+
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
@@ -93,7 +118,9 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    const storedQuestionStatus = JSON.parse(
+      localStorage.getItem("questionStatus")
+    );
     console.log("storedQuestionStatus", storedQuestionStatus);
     if (storedQuestionStatus === null) {
       fetchDataFromApi();
@@ -109,7 +136,9 @@ function CenterMain() {
   // Function for making stage 0 in Question status(Only when data fetching from api)
 
   useEffect(() => {
-    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    const storedQuestionStatus = JSON.parse(
+      localStorage.getItem("questionStatus")
+    );
     if (storedQuestionStatus === null) {
       setInitialStage();
     }
@@ -140,7 +169,8 @@ function CenterMain() {
     if (questionType === 1) {
       studentAnswerIndex = selectedAnswer !== null ? selectedAnswer : null;
       studentAnswer =
-        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !== undefined
+        questionStatus[selectedQuestionIndex].options[studentAnswerIndex] !==
+        undefined
           ? questionStatus[selectedQuestionIndex].options[studentAnswerIndex]
           : null;
     }
@@ -149,7 +179,12 @@ function CenterMain() {
     }
 
     const obj = questionStatus[selectedQuestionIndex];
-    if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "save") {
+    if (
+      studentAnswer !== null &&
+      studentAnswer !== "" &&
+      studentAnswerIndex !== null &&
+      buttonType === "save"
+    ) {
       const newObj = {
         ...obj,
         stage: 1,
@@ -162,7 +197,10 @@ function CenterMain() {
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
       return nextInd();
-    } else if ((studentAnswer === null || studentAnswer === "") && buttonType === "review") {
+    } else if (
+      (studentAnswer === null || studentAnswer === "") &&
+      buttonType === "review"
+    ) {
       const newObj = {
         ...obj,
         stage: 3,
@@ -175,7 +213,12 @@ function CenterMain() {
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
       return nextInd();
-    } else if (studentAnswer !== null && studentAnswer !== "" && studentAnswerIndex !== null && buttonType === "review") {
+    } else if (
+      studentAnswer !== null &&
+      studentAnswer !== "" &&
+      studentAnswerIndex !== null &&
+      buttonType === "review"
+    ) {
       const newObj = {
         ...obj,
         stage: 4,
@@ -212,8 +255,12 @@ function CenterMain() {
         if (questionStatus[selectedQuestionIndex].options === null) {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
         }
-        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
-      } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
+        setSelectedAnswer(
+          questionStatus[selectedQuestionIndex].studentAnswerIndex
+        );
+      } else if (
+        questionStatus[selectedQuestionIndex].studentAnswerIndex === null
+      ) {
         setSelectedAnswer(null);
       } else {
         setSelectedAnswer(null);
@@ -291,10 +338,10 @@ function CenterMain() {
   const [options, setOptions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const optionsArr = questionStatus?.[selectedQuestionIndex].options; // example array of IDs
+      const optionsArr = questionStatus?.[selectedQuestionIndex].options;
       console.log(optionsArr)
       const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
-      const results = await Promise.all(promises); // wait for all promises to resolve
+      const results = await Promise.all(promises); // waiting for all promises to resolve
       console.log(results)
       setOptions(results); // update state with the resolved data
     };
@@ -486,34 +533,55 @@ function CenterMain() {
                           <div className="keys p-3 rounded shadow">
                             <div className="d-flex gap-2 fs-4 m-2 ">
                               <BootstrapButton
-                                sx={{ width:"auto", p:1, borderRadius: "30px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "30px",
+                                }}
                                 variant="contained"
-                                  onClick={() => handleKeyPress("1")}                              >
+                                onClick={() => handleKeyPress("1")}
+                              >
                                 1
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "30px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("2")}
                               >
                                 2
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("3")}
                               >
                                 3
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("4")}
                               >
                                 4
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("5")}
                               >
@@ -522,35 +590,55 @@ function CenterMain() {
                             </div>
                             <div className="d-flex gap-2 fs-5 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("6")}
                               >
                                 6
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("7")}
                               >
                                 7
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("8")}
                               >
                                 8
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("9")}
                               >
                                 9
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("0")}
                               >
@@ -559,14 +647,22 @@ function CenterMain() {
                             </div>
                             <div className="d-flex gap-2 fs-5 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress(".")}
                               >
                                 .
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("-")}
                               >
@@ -597,21 +693,22 @@ function CenterMain() {
                             onChange={(e) => {
                               const value = e.target.value;
                               setSelectedAnswer(parseInt(value));
-                              // const updatedData = [...Data];
-                              // updatedData[selectedQuestionIndex].selectedAnswer = value;
-                              // // setData(updatedData);
                             }}
                           >
-                            {
-                              options?.map((option, index) => (
-                                <FormControlLabel
-                                  sx={{ width: "100%" }}
-                                  key={index}
-                                  value={index}
-                                  control={<Radio />}
-                                  label={<div style={{display : "flex", alignItems : "center", paddingTop : '0.9em'}} dangerouslySetInnerHTML={{__html : option}}/>}
-                                />
-                              ))}
+                            {options?.map((option, index) => (
+                              <FormControlLabel
+                                sx={{ width: "100%" }}
+                                key={index}
+                                value={index}
+                                control={<Radio />}
+                                label={
+                                  <div
+                                    style={{ display: "flex", alignItems: "center", paddingTop: "0.9em" }}
+                                    dangerouslySetInnerHTML={{ __html: option }}
+                                  />
+                                }
+                              />
+                            ))}
                           </RadioGroup>
                         </FormControl>
                       )}

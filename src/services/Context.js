@@ -1,7 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 export const Context = React.createContext();
 export function useAuth() {
@@ -9,14 +7,9 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  const params=useParams()
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
- 
-  
-  
-  
-  
+
   const analysisDataApi = async (attemptId) => {
     const response = await fetchAnalysisData(attemptId);
     console.log(response);
@@ -28,15 +21,20 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  //Function for getting a response from domain and convert to http
 
+  const [content, setContent] = useState("");
 
+  const fetchData = async (url) => {
+    try {
+      const response = await fetch(url);
+      const data = await response.text();
+      setContent(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
- 
-
-  
-
-
-  
   // function  for disable the right click and inspect panel from keyboard
 
   //   function handleContextMenu(event) {
@@ -76,6 +74,7 @@ export const ContextProvider = ({ children }) => {
           difficulty,
           analysisDataApi,
           isLoading,
+          fetchData,
         }}
       >
         {children}

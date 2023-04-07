@@ -22,10 +22,6 @@ function DifficultyAnalysis() {
     setShow(data[button]);
   };
 
-  
-
- 
-
   return (
     <div
       style={{
@@ -109,7 +105,7 @@ function DifficultyAnalysis() {
           }}
         />
         <div className="flex-item">
-          <PieChart />
+          <PieChart Data = {show} />
         </div>
       </div>
       <hr

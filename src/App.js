@@ -18,11 +18,13 @@ import UserAuth from "./Components/UserAuth";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+   
         <Routes>
           <Route path="/" element={<Instructions />} />
-          <Route path="/terms/:name/:email/:uid" element={<Terms />} />
-          <Route path="/user_authentication/:name/:email/:uid" element={<UserAuth />} />
+          <Route path="/terms/:name/:email/:uid/:mockId" element={<Terms />} />
+          <Route path="/user_authentication/:name/:email/:uid/:mockId" element={<UserAuth />} />
+          <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
+
           <Route path="/analysis/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
             <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
@@ -33,7 +35,7 @@ function App() {
           <Route path="/viewsolutions/:attemptId/:mocktype" element={<ViewSolution />} />
           <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
         </Routes>
-      </BrowserRouter>
+    
     </ThemeProvider>
   );
 }

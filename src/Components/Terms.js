@@ -95,7 +95,7 @@ function Terms() {
               background: agree ? "" : "#d2d4d6",
               borderRadius: "30px",
             }}
-            onClick={() => navigate(`/user_authentication/${params.name}/${params.email}/${params.uid}`)}
+            onClick={() => navigate(`/user_authentication/${params.name}/${params.email}/${params.uid}/${params.mockId}`)}
           >
             Start Test
           </BootstrapButton>

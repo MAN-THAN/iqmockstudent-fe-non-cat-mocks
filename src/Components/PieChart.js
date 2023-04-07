@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function MyPieChart() {
+function MyPieChart({Data}) {
   const data01 = [
     { name: "Group A", value: 60 },
     { name: "Group B", value: 10 },

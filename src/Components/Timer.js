@@ -22,12 +22,16 @@ const Timer = (props) => {
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
 
-  const attemptID = JSON.parse(window.localStorage.getItem("userData"))?.attemptId;
+  const attemptID = JSON.parse(
+    window.localStorage.getItem("userData")
+  )?.attemptId;
 
   // taking the local storage value of timer
   useEffect(() => {
-    let countDownTimeSec = window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
-    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
+    let countDownTimeSec =
+      window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
+    let countDownTimeMin =
+      window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
     setSeconds(countDownTimeSec);
     setMinutes(countDownTimeMin);
   }, []);
@@ -36,7 +40,11 @@ const Timer = (props) => {
 
   const submitSectionFunc = useCallback(
     async (subject) => {
-      const response = await submitSection(attemptID, subject, studentAnswersData);
+      const response = await submitSection(
+        attemptID,
+        subject,
+        studentAnswersData
+      );
       if (response.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);
         window.localStorage.removeItem(COUNTER_KEY_SEC);
@@ -52,10 +60,9 @@ const Timer = (props) => {
           navigate(`/analysis/${attemptID}/overall`);
         }
         return true;
-
       } else {
         setErr(true);
-        return false
+        return false;
       }
     },
     [currentSection]
@@ -84,7 +91,7 @@ const Timer = (props) => {
               } else if (currentSection === "quants") {
                 setCurrentSection("");
               }
-                setIsLoaded(false);
+              setIsLoaded(false);
             }
           });
         }
@@ -99,7 +106,7 @@ const Timer = (props) => {
     };
   }, [seconds, minutes, currentSection, submitSectionFunc]);
 
-  console.log(currentSection);
+
 
   const style = {
     position: "absolute",
@@ -121,15 +128,27 @@ const Timer = (props) => {
       <span>
         {isLoaded ? (
           <React.Fragment>
-            <Modal open={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+            <Modal
+              open={true}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
               <Box sx={style}>
                 {!err ? (
                   <>
                     {" "}
-                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+                    <div
+                      style={{ marginTop: "3em" }}
+                      className="d-flex justify-content-center"
+                    >
+                      <SubHeading className="m-4 ps-3">
+                        Section Submitting...{" "}
+                      </SubHeading>
                     </div>
-                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                    <div
+                      className="d-flex justify-content-center"
+                      style={{ marginTop: "1em" }}
+                    >
                       <div style={{ marginLeft: "12px" }}>
                         {" "}
                         <InfinitySpin color="blue" />
@@ -141,13 +160,24 @@ const Timer = (props) => {
                   </>
                 ) : (
                   <>
-                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+                    <div
+                      style={{ marginTop: "3em" }}
+                      className="d-flex justify-content-center"
+                    >
+                      <SubHeading className="m-4 ps-3">
+                        Section Submitting...{" "}
+                      </SubHeading>
                     </div>
-                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                    <div
+                      className="d-flex justify-content-center"
+                      style={{ marginTop: "1em" }}
+                    >
                       <div style={{ marginLeft: "12px" }}>
                         {" "}
-                        <SubHeading style={{ color: "red" }} className="m-4 ps-3">
+                        <SubHeading
+                          style={{ color: "red" }}
+                          className="m-4 ps-3"
+                        >
                           Some Error Occurred!!!{" "}
                         </SubHeading>
                       </div>
@@ -163,7 +193,8 @@ const Timer = (props) => {
         ) : (
           <React.Fragment>
             <span className="Timer">
-              {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+              {minutes < 10 ? `0${minutes}` : minutes}:
+              {seconds < 10 ? `0${seconds}` : seconds}
             </span>
           </React.Fragment>
         )}
