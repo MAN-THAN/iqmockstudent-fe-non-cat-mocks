@@ -10,10 +10,10 @@ import AnalysisMain from "./Analysis/AnalysisMain";
 import TopicAnalysis from "./Analysis/TopicAnalysis";
 import SectionAnalysis from "./Analysis/SectionAnalysis";
 import DifficultyAnalysis from "./Analysis/DifficultyAnalysis";
-import LeaderBoard from "./Analysis/LeaderBoard";
 import OverallAnalysis from "./Analysis/OverallAnalysis";
 import ViewSolution from "./Components/ViewSolution";
 import UserAuth from "./Components/UserAuth";
+import LeaderBoard from "./LeaderBoard.js/LeaderBoard";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>
-          <Route path="/leaderboard/:attemptId" element={<LeaderBoard />} />
+          <Route path="/leaderboard/:attemptId" element={<LeaderBoard/>} />
           <Route path="/viewsolutions/:attemptId/:mocktype" element={<ViewSolution />} />
           <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
         </Routes>
