@@ -29,8 +29,8 @@ function App() {
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>
+          <Route path="/leaderboard/:attemptId" element={<LeaderBoard />} />
           <Route path="/viewsolutions/:attemptId/:mocktype" element={<ViewSolution />} />
-          <Route path="leaderboard" element={<LeaderBoard />} />
           <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
         </Routes>
       </BrowserRouter>
