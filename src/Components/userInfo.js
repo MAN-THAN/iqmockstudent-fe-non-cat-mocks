@@ -10,7 +10,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import InputLabel from '@mui/material/InputLabel';
+import InputLabel from "@mui/material/InputLabel";
 const style = {
   position: "absolute",
   top: "50%",
@@ -34,30 +34,26 @@ const MenuProps = {
     },
   },
 };
-function getStyles(name, personName, theme) {
+
+function getStyles(MockId, mockid, theme) {
   return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
+    backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
+    color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
+
   };
 }
 
 const MockID = [
   "642abc8a9e420ce32ff3693a",
-  "642abc8a9e420ce32ff3693a",
-  "642abc8a9e420ce32ff3693a",
-  "642abc8a9e420ce32ff3693a",
-  "642abc8a9e420ce32ff3693a",
+
 ];
 
 export default function BasicModal() {
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -76,8 +72,8 @@ export default function BasicModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, uid, mockId } = value;
-    navigate(`/terms/${name}/${email}/${uid}/${mockId}`);
+    const { name, email, uid, mockid } = value;
+    navigate(`/terms/${name}/${email}/${uid}/${mockid}`);
     console.log(value);
   };
 
@@ -148,26 +144,29 @@ export default function BasicModal() {
               fullWidth
               required
             />
-               <FormControl variant="standard"  fullWidth sx={{mt:2 }}>
-             <InputLabel id="demo-multiple-name-label">Select the Mock ID</InputLabel>
-            <Select
-             labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-             name="mockid"
-              onChange={handleChange}
-             
-              MenuProps={MenuProps}
-            >
-              {MockID.map((MockID) => (
-                <MenuItem
-                  key={MockID}
-                  value={MockID}
-                  style={getStyles(MockID, personName, theme)}
-                >
-                  {MockID}
+            <FormControl variant="standard" fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="demo-multiple-name-label">
+                Select the Mock ID
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                name="mockid"
+                onChange={handleChange}
+                MenuProps={MenuProps}
+                value={value.mockid || ""}
+            
+              
+              >
+                <MenuItem value="">
+                  <em>None</em>
                 </MenuItem>
-              ))}
-            </Select>
+                {MockID.map((MockID) => (
+                  <MenuItem key={MockID} value={MockID}   style={getStyles(MockID, value.mockid, theme)}>
+                    {MockID}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
             {/* <TextField
               id="standard-basic"
