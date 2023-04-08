@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 function LeaderBoard() {
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
  
 
   // eslint-disable-next-line arrow-body-style
@@ -39,7 +39,7 @@ function LeaderBoard() {
     
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
-        setLoading(true)
+        // setLoading(true)
         const response = await getLeaderBoardData(startDate, endDate, mockId);
         if (response?.status === 200) {
           const data = response;
