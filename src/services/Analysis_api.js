@@ -20,7 +20,7 @@ export const fetchAnalysisData = async (attempt_id) => {
 export const fetchLeaderBoard = async (startDate,endDate,mockId) => {
   try {
     const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}`,
+      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/2023-04-09`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
