@@ -8,18 +8,18 @@ import PieChart from "../Components/PieChart";
 function DifficultyAnalysis() {
   const { difficulty } = useAuth();
   const [data, setData] = useState({});
-  const [activeButton, setActiveButton] = useState("varc");
+  const [activeButton, setActiveButton] = useState("Overall");
   const [show, setShow] = useState([]);
 
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
     console.log("data", data);
-    setShow(difficulty?.difficultyWiseAnalysis.varc);
+    setShow(difficulty?.difficultyWiseAnalysis?.overall);
   }, []);
 
   const handleClick = (button) => {
     setActiveButton(button);
-    setShow(data[button]);
+    setShow(data[button.toLowerCase()]);
   };
 
   return (
@@ -41,53 +41,70 @@ function DifficultyAnalysis() {
       >
         <ModifyButton
           variant="outlined"
-          onClick={() => handleClick("varc")}
-          className={`${activeButton === "varc" ? "active" : ""}`}
+          onClick={() => handleClick("Overall")}
+          className={`${activeButton === "Overall" ? "active" : ""}`}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
             color: "#0057CB",
-            color: activeButton === "varc" ? "white" : "#0057CB",
+            color: activeButton === "Overall" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background: activeButton === "varc" && "#0057CB",
+            background: activeButton === "Overall" && "#0057CB",
           }}
           autoFocus={true}
+        >
+          Overall
+        </ModifyButton>
+        <ModifyButton
+          variant="outlined"
+          onClick={() => handleClick("VARC")}
+          className={`${activeButton === "VARC" ? "active" : ""}`}
+          sx={{
+            p: 2,
+            height: "35px",
+            border: "2px solid #0057CB",
+            width: "200px",
+            color: "#0057CB",
+            color: activeButton === "VARC" ? "white" : "#0057CB",
+            fontWeight: "bold",
+            background: activeButton === "VARC" && "#0057CB",
+          }}
         >
           VARC
         </ModifyButton>
         <ModifyButton
           variant="outlined"
           className="nav-button"
-          onClick={() => handleClick("lrdi")}
+          onClick={() => handleClick("LRDI")}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
             color: "#0057CB",
-            color: activeButton === "lrdi" ? "white" : "#0057CB",
+            color: activeButton === "LRDI" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background: activeButton === "lrdi" && "#0057CB",
+            background: activeButton === "LRDI" && "#0057CB",
           }}
         >
           LRDI
         </ModifyButton>
         <ModifyButton
           variant="outlined"
-          onClick={() => handleClick("quants")}
+          onClick={() => handleClick("Quants")}
           sx={{
             p: 2,
             height: "35px",
             border: "2px solid #0057CB",
             width: "200px",
-            color: activeButton === "quants" ? "white" : "#0057CB",
+            color: activeButton === "Quant" ? "white" : "#0057CB",
             fontWeight: "bold",
-            background: activeButton === "quants" && "#0057CB",
+            background: activeButton === "Quant" && "#0057CB",
           }}
         >
-          QUANT
+          Quants
         </ModifyButton>
       </div>
 
@@ -105,14 +122,14 @@ function DifficultyAnalysis() {
           }}
         />
         <div className="flex-item">
-          <PieChart Data = {show} />
+          <PieChart Data={show} />
         </div>
       </div>
       <hr
         className="mx-auto"
         style={{
           height: "2px",
-          width: "85%",
+          width: "50%",
           borderTop: "2px solid black",
           borderColor: "black!important",
         }}
@@ -121,7 +138,7 @@ function DifficultyAnalysis() {
       <div className="d-flex flex-row flex-wrap justify-content-between align-items-center mt-5 gap-3 mx-auto ">
         {/* Bar graphs */}
 
-        {show.length > 0 &&
+        {show?.length > 0 &&
           show.map((item, ind) => {
             return (
               <div className="mx-auto">
