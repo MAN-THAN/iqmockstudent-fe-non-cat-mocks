@@ -682,9 +682,11 @@ function CenterMain() {
                                   value={index}
                                   control={<Radio />}
                                   label={
-                                    <small>
-                                      <Latex>{option}</Latex>
-                                    </small>
+                                    <div style={{paddingTop : "1em"}}>
+                                      <small>
+                                        <Latex>{option}</Latex>
+                                      </small>
+                                    </div>
                                   }
                                 />
                               ))}
