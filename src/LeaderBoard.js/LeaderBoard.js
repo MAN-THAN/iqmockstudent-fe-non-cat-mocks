@@ -39,7 +39,7 @@ function LeaderBoard() {
     
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
-        // setLoading(true)
+        setLoading(true)
         const response = await getLeaderBoardData(startDate, endDate, mockId);
         if (response?.status === 200) {
           const data = response;
