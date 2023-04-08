@@ -697,7 +697,7 @@ function CenterMain() {
             </div>
 
             {/* Bottom button div */}
-            <div className="d-flex justify-content-between py-3 align-items-center ">
+            <div className="d-flex justify-content-between py-2 align-items-center ">
               <div>
                 <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next
