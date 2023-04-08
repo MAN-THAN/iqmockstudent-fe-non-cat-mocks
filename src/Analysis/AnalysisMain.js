@@ -114,7 +114,7 @@ function AnalysisMain() {
                   <div className="text-end">
                     <Button
                       variant="contained"
-                      onClick={() => navigate(`/leaderboard/${attemptId}`)}
+                      onClick={() => navigate(`/leaderboard/${params.mockId}/${attemptId}`)}
                       sx={{
                         background: "black",
                         textTransform: "none",

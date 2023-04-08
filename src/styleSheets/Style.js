@@ -281,7 +281,7 @@ export const StyledTable = styled(Table)(({ theme }) => ({
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   py: 5,
-  borderRadius: 10,
+  
  
   "& td": {
     paddingBottom: "10px",

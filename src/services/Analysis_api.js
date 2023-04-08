@@ -14,3 +14,18 @@ export const fetchAnalysisData = async (attempt_id) => {
     throw err;
   }
 };
+
+
+
+export const fetchLeaderBoard = async (startDate,endDate,mockId) => {
+  try {
+    const res = request({
+      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}`,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

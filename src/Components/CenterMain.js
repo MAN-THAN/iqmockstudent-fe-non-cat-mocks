@@ -104,7 +104,7 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    const mockId = params.mockid;
+    const mockId = params.mockId;
     const subject_type = params.type;
     const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);

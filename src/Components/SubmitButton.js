@@ -196,7 +196,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
                       " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
                     borderRadius: "30px",
                   }}
-                  onClick={() => navigate(`/analysis/${attemptID}/overall`)}
+                  onClick={() => navigate(`/analysis/${params.mockId}/${attemptID}/overall`)}
                 >
                   DONE
                 </MyButton>
