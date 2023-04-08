@@ -10,30 +10,32 @@ import AnalysisMain from "./Analysis/AnalysisMain";
 import TopicAnalysis from "./Analysis/TopicAnalysis";
 import SectionAnalysis from "./Analysis/SectionAnalysis";
 import DifficultyAnalysis from "./Analysis/DifficultyAnalysis";
-import LeaderBoard from "./Analysis/LeaderBoard";
 import OverallAnalysis from "./Analysis/OverallAnalysis";
 import ViewSolution from "./Components/ViewSolution";
 import UserAuth from "./Components/UserAuth";
+import LeaderBoard from "./LeaderBoard.js/LeaderBoard";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+   
         <Routes>
           <Route path="/" element={<Instructions />} />
-          <Route path="/terms/:name/:email/:uid" element={<Terms />} />
-          <Route path="/user_authentication/:name/:email/:uid" element={<UserAuth />} />
+          <Route path="/terms/:name/:email/:uid/:mockId" element={<Terms />} />
+          <Route path="/user_authentication/:name/:email/:uid/:mockId" element={<UserAuth />} />
+          <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
+
           <Route path="/analysis/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
             <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>
+          <Route path="/leaderboard/:attemptId" element={<LeaderBoard/>} />
           <Route path="/viewsolutions/:attemptId/:mocktype" element={<ViewSolution />} />
-          <Route path="leaderboard" element={<LeaderBoard />} />
           <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
         </Routes>
-      </BrowserRouter>
+    
     </ThemeProvider>
   );
 }

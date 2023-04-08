@@ -31,6 +31,31 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
 
+  // const [content, setContent] = useState("");
+
+  // useEffect(() => {
+  //   const fetchContent = async (url) => {
+  //     try {
+  //       const response = await fetch(url);
+  //       const data = await response.text();
+  //       setContent(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   if (
+  //     questionStatus?.length > 0 &&
+  //     questionStatus[selectedQuestionIndex]?.options
+  //   ) {
+  //     const link = questionStatus[selectedQuestionIndex].options[0];
+
+  //     if (link.endsWith(".html")) {
+  //       fetchContent(link);
+  //     }
+  //   }
+  // }, [questionStatus, selectedQuestionIndex]);
+
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
@@ -303,6 +328,22 @@ function CenterMain() {
   }, [selectedQuestionIndex, questionStatus]);
 
 
+  // options setting after fetching their html content
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const optionsArr = questionStatus?.[selectedQuestionIndex].options;
+      console.log(optionsArr);
+      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
+      const results = await Promise.all(promises); // waiting for all promises to resolve
+      console.log(results);
+      setOptions(results); // update state with the resolved data
+    };
+    if (questionStatus?.length) {
+      fetchData();
+    }
+  }, [selectedQuestionIndex, questionStatus]);
+
   return loading ? (
     <div
       style={{
@@ -440,7 +481,11 @@ function CenterMain() {
                     Question : {selectedQuestionIndex + 1}
                     <br />
                     {questionStatus?.length > 0 && (
-                      <iframe style={{ width: "100%", height: "70%" }} src={questionStatus[selectedQuestionIndex]?.question}></iframe>
+
+                      <div>
+                        <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>
+                      </div>
+
                     )}
                   </Typography>
                   {/* <div className="img-wrapper">
@@ -483,37 +528,57 @@ function CenterMain() {
                             autoComplete="off"
                           />
                           <div className="keys p-3 rounded shadow">
-                            <div className="d-flex gap-2 fs-5 m-2 ">
+                            <div className="d-flex gap-2 fs-4 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "30px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("1")}
                               >
                                 1
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "30px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "30px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("2")}
                               >
                                 2
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("3")}
                               >
                                 3
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("4")}
                               >
                                 4
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("5")}
                               >
@@ -522,35 +587,55 @@ function CenterMain() {
                             </div>
                             <div className="d-flex gap-2 fs-5 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("6")}
                               >
                                 6
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("7")}
                               >
                                 7
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("8")}
                               >
                                 8
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("9")}
                               >
                                 9
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("0")}
                               >
@@ -559,14 +644,22 @@ function CenterMain() {
                             </div>
                             <div className="d-flex gap-2 fs-5 m-2 ">
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress(".")}
                               >
                                 .
                               </BootstrapButton>
                               <BootstrapButton
-                                sx={{ width: "auto", p: 1, borderRadius: "25px" }}
+                                sx={{
+                                  width: "auto",
+                                  p: 1,
+                                  borderRadius: "25px",
+                                }}
                                 variant="contained"
                                 onClick={() => handleKeyPress("-")}
                               >
@@ -597,9 +690,6 @@ function CenterMain() {
                             onChange={(e) => {
                               const value = e.target.value;
                               setSelectedAnswer(parseInt(value));
-                              // const updatedData = [...Data];
-                              // updatedData[selectedQuestionIndex].selectedAnswer = value;
-                              // // setData(updatedData);
                             }}
                           >
                             {
@@ -609,7 +699,12 @@ function CenterMain() {
                                   key={index}
                                   value={index}
                                   control={<Radio />}
-                                  label={<div style={{display : "flex", alignItems : "center", paddingTop : '12px'}} dangerouslySetInnerHTML={{__html : option}}/>}
+                                  label={
+                                    <div style={{paddingTop : "1em"}}>
+                                      <Latex>{option}</Latex>
+                                    </div>
+                                  }
+
                                 />
                               ))}
                           </RadioGroup>
@@ -622,7 +717,7 @@ function CenterMain() {
             </div>
 
             {/* Bottom button div */}
-            <div className="d-flex justify-content-between py-3 align-items-center ">
+            <div className="d-flex justify-content-between py-2 align-items-center ">
               <div>
                 <MyButton variant="contained" height="41" onClick={() => setStage("review")}>
                   Mark for Review & Next

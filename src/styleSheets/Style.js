@@ -263,23 +263,26 @@ export const StyledMenu = styled((props) => (
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.gray,
-
+    
     color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: "17.76px",
+    
   },
 }));
 
 export const StyledTable = styled(Table)(({ theme }) => ({
   borderCollapse: "separate",
   borderSpacing: "0 13px",
+  
   // background:"red",
 }));
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   py: 5,
-
+  borderRadius: 10,
+ 
   "& td": {
     paddingBottom: "10px",
     paddingTop: "10px",

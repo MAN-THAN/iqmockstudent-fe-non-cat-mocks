@@ -1,11 +1,16 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { BootstrapButton } from "../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
-
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 const style = {
   position: "absolute",
   top: "50%",
@@ -19,46 +24,70 @@ const style = {
   p: 4,
 };
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(MockId, mockid, theme) {
+  return {
+    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
+    backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
+    color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
+
+  };
+}
+
+const MockID = [
+  "642abc8a9e420ce32ff3693a",
+  "6430e9e837185e086ad69368",
+  
+
+];
+
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const theme = useTheme();
+  const navigate = useNavigate();
 
-  const navigate= useNavigate()
+  const initialValues = {
+    name: "",
+    email: "",
+    uid: "",
+    mockid: "",
+  };
+  const [value, setValue] = useState(initialValues);
 
+  const handleChange = (e) => {
+    const values = e.target.value;
+    const name = e.target.name;
+    setValue({ ...value, [name]: values });
+  };
 
-
-  const initialValues={
-  name:"",
-  email:"",
-  uid:""
-}
-const [value,setValue]= useState(initialValues)
-
-
-const handleChange=(e)=>{
- const  values = e.target.value;
- const  name = e.target.name;
-  setValue({...value, [name]: values})
-}
-
-
-const handleSubmit=(e)=>{
-   e.preventDefault()
-   const {name,email,uid}=value
-   navigate(`/terms/${name}/${email}/${uid}`)
-   console.log(value)
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, uid, mockid } = value;
+    navigate(`/terms/${name}/${email}/${uid}/${mockid}`);
+    console.log(value);
+  };
 
   return (
     <div>
       <BootstrapButton
-       height="45"
+        height="45"
         variant="contained mx-auto"
         sx={{ color: "white", p: 3, my: 2, borderRadius: "30px" }}
         onClick={handleOpen}
       >
-       Next
+        Next
       </BootstrapButton>
 
       <Modal
@@ -70,7 +99,7 @@ const handleSubmit=(e)=>{
         <Box sx={style}>
           <Typography
             id="modal-modal-title"
-            sx={{ color: "black",ml:1 }}
+            sx={{ color: "black", ml: 1 }}
             variant="h4"
             component="h4"
           >
@@ -78,16 +107,12 @@ const handleSubmit=(e)=>{
           </Typography>
           <Box
             component="form"
-         
             sx={{
               "& > :not(style)": { m: 1, width: "fullWidth" },
-            
             }}
             noValidate
             autoComplete="off"
-          
           >
-           
             <TextField
               id="standard-basic"
               label="Name"
@@ -96,8 +121,8 @@ const handleSubmit=(e)=>{
               variant="standard"
               name="name"
               value={value.name}
-               fullWidth
-               required
+              fullWidth
+              required
             />
             <TextField
               id="standard-basic"
@@ -121,8 +146,48 @@ const handleSubmit=(e)=>{
               fullWidth
               required
             />
+            <FormControl variant="standard" fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="demo-multiple-name-label">
+                Select the Mock ID
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                name="mockid"
+                onChange={handleChange}
+                MenuProps={MenuProps}
+                value={value.mockid || ""}
+            
+              
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {MockID.map((MockID) => (
+                  <MenuItem key={MockID} value={MockID}   style={getStyles(MockID, value.mockid, theme)}>
+                    {MockID}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* <TextField
+              id="standard-basic"
+              label="Your Mock ID"
+              value={value.mockid}
+              name="mockid"
+              type="number"
+              variant="standard"
+              onChange={handleChange}
+              fullWidth
+              required
+            /> */}
           </Box>{" "}
-            <BootstrapButton style={{color:"white", float:"right" ,marginTop:"20px"}} onClick={handleSubmit}>Submit</BootstrapButton>
+          <BootstrapButton
+            style={{ color: "white", float: "right", marginTop: "20px" }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </BootstrapButton>
         </Box>
       </Modal>
     </div>

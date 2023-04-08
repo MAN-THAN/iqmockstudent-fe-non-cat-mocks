@@ -44,17 +44,7 @@ function AnalysisMain() {
       setBasicData(basicAnalysis.basicAnalysis);
     }
   }, [basicAnalysis]);
-  const {
-    uid,
-    name,
-    negativeMarks,
-    overallPercentage,
-    overallScore,
-    potentialScore,
-    accuracy,
-    percentile,
-    title,
-  } = basicData;
+  const { uid, name, negativeMarks, overallPercentage, overallScore, potentialScore, accuracy, percentile, title } = basicData;
 
   const handleDownloadPDF = () => {
     setPDfStyle(true);
@@ -77,9 +67,7 @@ function AnalysisMain() {
 
   // Tooltip Customisation
 
-  const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  const BootstrapTooltip = styled(({ className, ...props }) => <Tooltip {...props} classes={{ popper: className }} />)(({ theme }) => ({
     [`& .${tooltipClasses.arrow}`]: {
       color: theme.palette.common.black,
     },
@@ -126,10 +114,9 @@ function AnalysisMain() {
                   <div className="text-end">
                     <Button
                       variant="contained"
-                      onClick={() => navigate("leaderboard")}
+                      onClick={() => navigate(`/leaderboard/${attemptId}`)}
                       sx={{
                         background: "black",
-
                         textTransform: "none",
                         height: "60px",
                         width: "64px",
