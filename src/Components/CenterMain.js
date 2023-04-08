@@ -313,20 +313,20 @@ function CenterMain() {
   };
 
   // options setting after fetching their html content
-  const [options, setOptions] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const optionsArr = questionStatus?.[selectedQuestionIndex].options;
-      console.log(optionsArr);
-      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
-      const results = await Promise.all(promises); // waiting for all promises to resolve
-      console.log(results);
-      setOptions(results); // update state with the resolved data
-    };
-    if (questionStatus?.length) {
-      fetchData();
-    }
-  }, [selectedQuestionIndex, questionStatus]);
+  // const [options, setOptions] = useState([]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const optionsArr = questionStatus?.[selectedQuestionIndex].options;
+  //     console.log(optionsArr);
+  //     const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
+  //     const results = await Promise.all(promises); // waiting for all promises to resolve
+  //     console.log(results);
+  //     setOptions(results); // update state with the resolved data
+  //   };
+  //   if (questionStatus?.length) {
+  //     fetchData();
+  //   }
+  // }, [selectedQuestionIndex, questionStatus]);
 
   return loading ? (
     <div
@@ -412,7 +412,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={20} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={2} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -422,7 +422,7 @@ function CenterMain() {
           </div>
 
           <div
-            className="row px-1 py-4  mt-2"
+            className="row px-1 py-3  mt-2"
             style={{
               background: "var(--light-background)",
               borderRadius: "30px",
