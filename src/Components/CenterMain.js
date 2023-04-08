@@ -474,7 +474,7 @@ function CenterMain() {
                   {/* <div className="img-wrapper">
                   <img style={{ cursor: "pointer" }} src={questionStatus[selectedQuestionIndex]?.image} className="img-fluid hover-zoom" />
                 </div> */}
-                  <br /> <br />
+                  <br />
                   {questionStatus?.length > 0 && (
                     <div className="text-start">
                       {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
