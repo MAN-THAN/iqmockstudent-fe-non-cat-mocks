@@ -2,26 +2,32 @@ import * as React from "react";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import {
   StyledTableCell,
   StyledTable,
   StyledTableRow,
 } from "../styleSheets/Style";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+const SkeletonRows = () => {
+    return (
+      <>
+        {[...Array(10)].map((_, index) => (
+          <StyledTableRow key={index} sx={{ background: "white" }}>
+            {[...Array(6)].map((_, i) => (
+              <StyledTableCell key={i}>
+                <Skeleton />
+              </StyledTableCell>
+            ))}
+          </StyledTableRow>
+        ))}
+      </>
+    );
+  };
 
-export default function LeaderTable() {
+export default function LeaderTable({data,isLoading}) {
+  console.log(data)
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,24 +50,41 @@ export default function LeaderTable() {
           </StyledTableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow
-              key={row.name}
-              sx={{
-                background: "white",
-                color: "black",
-              }}
-            >
-              <StyledTableCell component="th" scope="row">
-                1
-              </StyledTableCell>
-              <StyledTableCell align="left">{row.name}</StyledTableCell>
-              <StyledTableCell align="left">{row.calories}</StyledTableCell>
-              <StyledTableCell align="left">{row.fat}</StyledTableCell>
-              <StyledTableCell align="left">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="left">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {isLoading ? (
+            <SkeletonRows />
+          ) : (
+            <>
+              {data &&
+                data.map((item, index) => (
+                  <StyledTableRow
+                    key={index}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                    }}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      {index + 1}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.name}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.varcScore}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.lrdiScore}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.qaScore}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.overallScore}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+            </>
+          )}
         </TableBody>
       </StyledTable>
     </TableContainer>
