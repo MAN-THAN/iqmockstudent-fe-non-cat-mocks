@@ -5,11 +5,13 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material";
 import {
   StyledTableCell,
   StyledTable,
   StyledTableRow,
 } from "../styleSheets/Style";
+import { Typography } from "@mui/material";
 
 
 function TopicAnalysis() {
