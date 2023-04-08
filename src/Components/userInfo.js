@@ -47,8 +47,6 @@ function getStyles(MockId, mockid, theme) {
 const MockID = [
   "642abc8a9e420ce32ff3693a",
   "6430e9e837185e086ad69368",
-  
-
 ];
 
 export default function BasicModal() {

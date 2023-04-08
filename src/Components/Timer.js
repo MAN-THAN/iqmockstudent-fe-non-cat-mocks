@@ -51,13 +51,13 @@ const Timer = (props) => {
         window.localStorage.removeItem("questionStatus");
         if (subject === "varc") {
           console.log("varc submitted");
-          navigate(`/main/${params.mockid}/lrdi`);
+          navigate(`/main/${params.mockId}/lrdi`);
         } else if (subject === "lrdi") {
           console.log("lrdi submitted");
-          navigate(`/main/${params.mockid}/quants`);
+          navigate(`/main/${params.mockId}/quants`);
         } else if (subject === "quants") {
           console.log("Your mock is submitted!!!");
-          navigate(`/analysis/${attemptID}/overall`);
+          navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
         }
         return true;
       } else {

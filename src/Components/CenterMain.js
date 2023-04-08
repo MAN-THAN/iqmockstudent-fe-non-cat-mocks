@@ -104,7 +104,7 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    const mockId = params.mockid;
+    const mockId = params.mockId;
     const subject_type = params.type;
     const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);
@@ -311,38 +311,23 @@ function CenterMain() {
     setSelectedAnswer(null);
     setInputVal("");
   };
-  // options setting after fetching html from link
-  const [options, setOptions] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const optionsArr = questionStatus?.[selectedQuestionIndex].options; // example array of IDs
-      console.log(optionsArr)
-      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
-      const results = await Promise.all(promises); // wait for all promises to resolve
-      console.log(results)
-      setOptions(results); // update state with the resolved data
-    };
-    if (questionStatus?.length) { 
-      fetchData();
-    }
-  }, [selectedQuestionIndex, questionStatus]);
 
 
   // options setting after fetching their html content
-  const [options, setOptions] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const optionsArr = questionStatus?.[selectedQuestionIndex].options;
-      console.log(optionsArr);
-      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
-      const results = await Promise.all(promises); // waiting for all promises to resolve
-      console.log(results);
-      setOptions(results); // update state with the resolved data
-    };
-    if (questionStatus?.length) {
-      fetchData();
-    }
-  }, [selectedQuestionIndex, questionStatus]);
+  // const [options, setOptions] = useState([]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const optionsArr = questionStatus?.[selectedQuestionIndex].options;
+  //     console.log(optionsArr);
+  //     const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
+  //     const results = await Promise.all(promises); // waiting for all promises to resolve
+  //     console.log(results);
+  //     setOptions(results); // update state with the resolved data
+  //   };
+  //   if (questionStatus?.length) {
+  //     fetchData();
+  //   }
+  // }, [selectedQuestionIndex, questionStatus]);
 
   return loading ? (
     <div
@@ -428,7 +413,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={20} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={2} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -438,7 +423,7 @@ function CenterMain() {
           </div>
 
           <div
-            className="row px-1 py-4  mt-2"
+            className="row px-1 py-3  mt-2"
             style={{
               background: "var(--light-background)",
               borderRadius: "30px",
@@ -481,11 +466,9 @@ function CenterMain() {
                     Question : {selectedQuestionIndex + 1}
                     <br />
                     {questionStatus?.length > 0 && (
-
                       <div>
                         <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>
                       </div>
-
                     )}
                   </Typography>
                   {/* <div className="img-wrapper">
@@ -692,19 +675,19 @@ function CenterMain() {
                               setSelectedAnswer(parseInt(value));
                             }}
                           >
-                            {
-                              options?.map((option, index) => (
+                            {questionStatus[selectedQuestionIndex]?.options != null &&
+                              questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
                                 <FormControlLabel
-                                  sx={{ width: "100%" }}
                                   key={index}
                                   value={index}
                                   control={<Radio />}
                                   label={
                                     <div style={{paddingTop : "1em"}}>
-                                      <Latex>{option}</Latex>
+                                      <small>
+                                        <Latex>{option}</Latex>
+                                      </small>
                                     </div>
                                   }
-
                                 />
                               ))}
                           </RadioGroup>
