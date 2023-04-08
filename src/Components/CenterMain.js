@@ -311,6 +311,22 @@ function CenterMain() {
     setSelectedAnswer(null);
     setInputVal("");
   };
+  // options setting after fetching html from link
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const optionsArr = questionStatus?.[selectedQuestionIndex].options; // example array of IDs
+      console.log(optionsArr)
+      const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
+      const results = await Promise.all(promises); // wait for all promises to resolve
+      console.log(results)
+      setOptions(results); // update state with the resolved data
+    };
+    if (questionStatus?.length) { 
+      fetchData();
+    }
+  }, [selectedQuestionIndex, questionStatus]);
+
 
   // options setting after fetching their html content
   // const [options, setOptions] = useState([]);
@@ -465,9 +481,11 @@ function CenterMain() {
                     Question : {selectedQuestionIndex + 1}
                     <br />
                     {questionStatus?.length > 0 && (
+
                       <div>
                         <Latex>{questionStatus[selectedQuestionIndex]?.question}</Latex>
                       </div>
+
                     )}
                   </Typography>
                   {/* <div className="img-wrapper">
@@ -674,9 +692,10 @@ function CenterMain() {
                               setSelectedAnswer(parseInt(value));
                             }}
                           >
-                            {questionStatus[selectedQuestionIndex]?.options != null &&
-                              questionStatus[selectedQuestionIndex]?.options.map((option, index) => (
+                            {
+                              options?.map((option, index) => (
                                 <FormControlLabel
+                                  sx={{ width: "100%" }}
                                   key={index}
                                   value={index}
                                   control={<Radio />}
@@ -685,6 +704,7 @@ function CenterMain() {
                                       <Latex>{option}</Latex>
                                     </div>
                                   }
+
                                 />
                               ))}
                           </RadioGroup>
