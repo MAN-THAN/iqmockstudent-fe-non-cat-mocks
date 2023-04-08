@@ -11,9 +11,10 @@ dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
 function LeaderBoard() {
-
-  const {attemptId,mockId}=useParams()
-   console.log(attemptId)
+  const { attemptId, mockId } = useParams();
+  const [leaderData, setLeaderData] = useState([]);
+  const [loading, setLoading] = useState(false);
+ 
 
   // eslint-disable-next-line arrow-body-style
   const disabledDate = (current) => {
@@ -35,21 +36,24 @@ function LeaderBoard() {
   };
 
   useEffect(() => {
-    async function fetchLeaderBoard(startDate, endDate,attemptId) {
+    
+    async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
-        const response = await getLeaderBoardData(startDate, endDate,attemptId,mockId);
+        setLoading(true)
+        const response = await getLeaderBoardData(startDate, endDate, mockId);
         if (response?.status === 200) {
-        const data = await response.json();
-        console.log(data);
+          const data = response;
+          setLeaderData(data.data.leaderList);
+          setLoading(false)
         }
-       
       } catch (error) {
         console.log(error);
+        setLoading(false)
       }
     }
 
     if (dateRange.startDate && dateRange.endDate) {
-      fetchLeaderBoard(dateRange.startDate, dateRange.endDate,attemptId,mockId); // call the API only if both startDate and endDate are not null
+      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId); // call the API only if both startDate and endDate are not null
     }
   }, [dateRange]);
 
@@ -175,7 +179,7 @@ function LeaderBoard() {
           onChange={handleDateRangeChange}
           disabledDate={disabledDate}
         />
-        <LeaderTable />
+        <LeaderTable data={leaderData}  isLoading={loading}/>
       </div>
     </div>
   );
