@@ -13,18 +13,23 @@ const { RangePicker } = DatePicker;
 function LeaderBoard() {
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
-  const [loading, setLoading] = useState(true);
- 
+  const [loading, setLoading] = useState(false);
+  const date = new Date();
 
   // eslint-disable-next-line arrow-body-style
   const disabledDate = (current) => {
     // Can not select days after today and today
     return current && current > dayjs().endOf("day");
   };
+  const date2 = Date.now() - (86400000*10);
   const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
+    startDate: new Date(date2).toISOString().split("T")[0],
+    endDate: date.toISOString().split("T")[0], //Today's date
   });
+  // console.log(date.toISOString().split("T")[0]);
+  // console.log(dateRange)
+
+  // console.log(new Date(date2).toISOString().split("T")[0]);
 
   const handleDateRangeChange = (dates) => {
     // Format the selected date range into a string
@@ -36,19 +41,22 @@ function LeaderBoard() {
   };
 
   useEffect(() => {
-    
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
+<<<<<<< HEAD
         setLoading(true)
+=======
+        setLoading(true);
+>>>>>>> 46569380a6c99e66e406980cebb0be2c9182ba6a
         const response = await getLeaderBoardData(startDate, endDate, mockId);
         if (response?.status === 200) {
           const data = response;
           setLeaderData(data.data.leaderList);
-          setLoading(false)
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
       }
     }
 
@@ -111,18 +119,8 @@ function LeaderBoard() {
               </Typography>
             </div>
             <div className="d-flex">
-              <a
-                href="#"
-                className="d-block link-dark text-decoration-none "
-                aria-expanded="false"
-              >
-                <img
-                  src="https://github.com/mdo.png"
-                  alt="mdo"
-                  width="50"
-                  height="50"
-                  className="rounded"
-                />
+              <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
               </a>
             </div>
           </Box>
@@ -137,37 +135,15 @@ function LeaderBoard() {
         >
           Mr. Manthan
         </Typography>
-        <Typography
-          sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}
-        >
-          Mock Result :
-        </Typography>
+        <Typography sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}>Mock Result :</Typography>
         <Box sx={{ position: "absolute", right: 15, top: "50%" }}>
-          <img
-            src="/Bigmamahere.svg"
-            alt="mdo"
-            width="167px"
-            height="167px"
-            className="rounded"
-          />
+          <img src="/Bigmamahere.svg" alt="mdo" width="167px" height="167px" className="rounded" />
         </Box>
         <Box sx={{ position: "absolute", right: "25%", top: "35%" }}>
-          <img
-            src="/knockknock.svg"
-            alt="mdo"
-            width="70px"
-            height="70px"
-            className="rounded"
-          />
+          <img src="/knockknock.svg" alt="mdo" width="70px" height="70px" className="rounded" />
         </Box>
         <Box sx={{ position: "absolute", right: "40%", bottom: "20%" }}>
-          <img
-            src="/Bigmamahere.svg"
-            alt="mdo"
-            width="20px"
-            height="20px"
-            className="rounded"
-          />
+          <img src="/Bigmamahere.svg" alt="mdo" width="20px" height="20px" className="rounded" />
         </Box>
       </Box>
       <div className="container-fluid my-3 px-5">
@@ -175,11 +151,8 @@ function LeaderBoard() {
           Ranking Overall In India
         </Typography>
 
-        <RangePicker
-          onChange={handleDateRangeChange}
-          disabledDate={disabledDate}
-        />
-        <LeaderTable data={leaderData}  isLoading={loading}/>
+        <RangePicker onChange={handleDateRangeChange} disabledDate={disabledDate} />
+        <LeaderTable data={leaderData} isLoading={loading} />
       </div>
     </div>
   );
