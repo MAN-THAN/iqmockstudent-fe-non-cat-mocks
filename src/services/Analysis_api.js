@@ -6,7 +6,7 @@ export const fetchAnalysisData = async (attempt_id) => {
   try {
     const res = await request({
       url: `api/student/v1/analyse/create/${attempt_id}`,
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
     return res;
   } catch (err) {
@@ -15,9 +15,12 @@ export const fetchAnalysisData = async (attempt_id) => {
   }
 };
 
-
-
-export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
+export const fetchLeaderBoard = async (
+  startDate,
+  endDate,
+  mockId,
+  attemptId
+) => {
   try {
     const res = request({
       url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}/${attemptId}`,

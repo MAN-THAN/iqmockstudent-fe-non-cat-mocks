@@ -73,13 +73,13 @@ export const SubmitButton = styled(Button)({
   height: "41px",
   color: "White",
   borderRadius: "15px",
-  background:" linear-gradient(90deg, #FF9000 0%, #FFB85C 100%)",
+  background: " linear-gradient(90deg, #FF9000 0%, #FFB85C 100%)",
   fontFamily: "var(--font-inder)",
- 
+
   "&:hover": {
     borderColor: "#CECECE",
     boxShadow: "5px",
-      color:"white",
+    color: "white",
     backgroundColor: " var(--orange);",
   },
   "&:active": {
@@ -92,9 +92,7 @@ export const SubmitButton = styled(Button)({
   },
 });
 
-
-
-export const MyButton = styled(Button) (({ height }) =>  ({
+export const MyButton = styled(Button)(({ height }) => ({
   boxShadow: "none",
   textTransform: "none",
   fontSize: "13px",
@@ -106,7 +104,7 @@ export const MyButton = styled(Button) (({ height }) =>  ({
   borderRadius: "15px",
   backgroundColor: "#0654CE;",
   fontFamily: "var(--font-inter)",
-   color: "white",
+  color: "white",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",
@@ -151,7 +149,6 @@ export const BootstrapButton = styled(LoadingButton)(({ height }) => ({
     outerLine: "none",
   },
 }));
-
 
 export const ModifyButton = styled(Button)({
   boxShadow: "none",
@@ -252,9 +249,6 @@ export const StyledMenu = styled((props) => (
           theme.palette.primary.main,
           theme.palette.action.selectedOpacity
         ),
-        "&:hover": {
-          color: "#ff7b0f",
-        },
       },
     },
   },
@@ -263,26 +257,24 @@ export const StyledMenu = styled((props) => (
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.gray,
-    
+
     color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: "17.76px",
-    
   },
 }));
 
 export const StyledTable = styled(Table)(({ theme }) => ({
   borderCollapse: "separate",
   borderSpacing: "0 13px",
-  
+
   // background:"red",
 }));
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   py: 5,
-  
- 
+
   "& td": {
     paddingBottom: "10px",
     paddingTop: "10px",

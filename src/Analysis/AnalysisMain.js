@@ -29,6 +29,7 @@ function AnalysisMain() {
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
+  const [selected, setSelected] = useState("");
 
   useEffect(() => {
     setPDfStyle(false);
@@ -58,13 +59,19 @@ function AnalysisMain() {
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+     setAnchorEl(event.currentTarget);
+  
   };
   const handleClose = (sub) => {
     setAnchorEl(null);
+    setSelected(sub);
+
     navigate(`sectionwise/${sub}`);
   };
 
+
+
+ 
   // Tooltip Customisation
 
   const BootstrapTooltip = styled(({ className, ...props }) => <Tooltip {...props} classes={{ popper: className }} />)(({ theme }) => ({
@@ -133,7 +140,7 @@ function AnalysisMain() {
                   </div>
 
                   <div className="text-end">
-                    <Button
+                    {/* <Button
                       startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
                       variant="contained"
                       sx={{
@@ -152,7 +159,7 @@ function AnalysisMain() {
                       }}
                     >
                       Help
-                    </Button>
+                    </Button> */}
                   </div>
 
                   <div className="text-end">
@@ -452,17 +459,17 @@ function AnalysisMain() {
                   "aria-labelledby": "basic-button",
                 }}
               >
-                <MenuItem onClick={() => handleClose("varc")} disableRipple>
+                <MenuItem   sx={{ backgroundColor: selected === "varc" ? "#f5f5f5" : "" }} onClick={() => handleClose("varc")}  disableRipple>
                   <IoBookSharp className="me-2" />
                   VARC
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
-                <MenuItem onClick={() => handleClose("lrdi")} disableRipple>
+                <MenuItem   sx={{ backgroundColor: selected === "lrdi" ? "#f5f5f5" : "", }} onClick={() => handleClose("lrdi")} disableRipple>
                   <IoBookSharp className="me-2" />
                   LRDI
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
-                <MenuItem onClick={() => handleClose("quants")} disableRipple>
+                <MenuItem   sx={{ backgroundColor: selected === "quants" ? "#f5f5f5" : "" }} onClick={() => handleClose("quants")} disableRipple>
                   <IoBookSharp className="me-2" />
                   QUANTS
                 </MenuItem>
