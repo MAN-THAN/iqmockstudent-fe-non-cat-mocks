@@ -16,6 +16,16 @@ function SectionAnalysis() {
   const [data, setData] = useState([]);
   const { sectionWiseAnalysis } = useAuth();
 
+
+  function getStyles(MockId, mockid, theme) {
+  return {
+    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
+    backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
+    color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
+
+  };
+}
+
   useEffect(() => {
     if (params.subject == "varc") {
       setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
