@@ -15,8 +15,6 @@ export const fetchAnalysisData = async (attempt_id) => {
   }
 };
 
-
-
 export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
   try {
     const res = request({

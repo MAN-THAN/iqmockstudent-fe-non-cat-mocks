@@ -20,7 +20,7 @@ export const ContextProvider = ({ children }) => {
       setLoading(false);
     } else {
       console.log("--> Error in analysis data fetching");
-       return setErr(true);; 
+       return setErr(true); 
     }
   };
 
