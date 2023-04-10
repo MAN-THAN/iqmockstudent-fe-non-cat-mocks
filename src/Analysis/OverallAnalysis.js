@@ -129,24 +129,9 @@ function OverallAnalysis() {
                     border: "none",
                   }}
                 >
-                  <StyledTableCell align="left">
-                    {moment
-                      .duration(item.timeCorrect, "seconds")
-                      .asMinutes()
-                      .toFixed(2)}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {moment
-                      .duration(item.timeInCorrect, "seconds")
-                      .asMinutes()
-                      .toFixed(2)}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {moment
-                      .duration(item.timeSkipped, "seconds")
-                      .asMinutes()
-                      .toFixed(2)}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.timeCorrect}</StyledTableCell>
+                  <StyledTableCell align="left">{item.timeInCorrect}</StyledTableCell>
+                  <StyledTableCell align="left">{item.timeSkipped}</StyledTableCell>
                 </StyledTableRow>
               );
             })}
