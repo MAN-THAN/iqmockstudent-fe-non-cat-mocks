@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 
+
 export const Context = React.createContext();
 export function useAuth() {
   return useContext(Context);
@@ -9,6 +10,7 @@ export function useAuth() {
 export const ContextProvider = ({ children }) => {
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [isErr, setErr] = useState(false);
 
   const analysisDataApi = async (attemptId) => {
     const response = await fetchAnalysisData(attemptId);
@@ -18,6 +20,7 @@ export const ContextProvider = ({ children }) => {
       setLoading(false);
     } else {
       console.log("--> Error in analysis data fetching");
+       return setErr(true);; 
     }
   };
 
@@ -56,7 +59,7 @@ export const ContextProvider = ({ children }) => {
   //   };
   // }, []);
 
-  //Set data to vaiables according to category that data exports to pages accordin to need
+  //Set data to variables according to category that data exports to pages accordin to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
   const sectionWiseAnalysis = analysisData[2];
@@ -75,6 +78,7 @@ export const ContextProvider = ({ children }) => {
           analysisDataApi,
           isLoading,
           fetchData,
+          isErr
         }}
       >
         {children}
