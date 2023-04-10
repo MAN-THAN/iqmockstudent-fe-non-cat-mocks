@@ -15,7 +15,7 @@ function OverallAnalysis() {
   const { overallAnalysis } = useAuth();
   const [data, setData] = useState([]);
   console.log("overall", data);
-  useEffect(() => setData(overallAnalysis.overAllAnalysis), []);
+  useEffect(() => setData(overallAnalysis?.overAllAnalysis), []);
 
   const headings = [
     "Name",
@@ -57,7 +57,7 @@ function OverallAnalysis() {
         </TableHead>
 
         <TableBody>
-          {data.length > 0 &&
+          {data?.length > 0 &&
             data.slice(1).map((item, index) => {
               return (
                 <StyledTableRow
@@ -119,7 +119,7 @@ function OverallAnalysis() {
         </TableHead>
 
         <TableBody>
-          {data.length > 0 &&
+          {data?.length > 0 &&
             data.slice(1).map((item, index) => {
               return (
                 <StyledTableRow

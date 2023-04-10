@@ -20,13 +20,15 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import "../styleSheets/AnalysisMain.css";
 import { PacmanLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
-  const {mockId, attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
+  const { mockId, attemptId, subject } = params;
+  const { analysisDataApi, isLoading, basicAnalysis, isErr } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
 
@@ -76,9 +78,23 @@ function AnalysisMain() {
     },
   }));
 
+  const showToastMessage = () => {
+    toast.error("Some error occurred! Please reload the page.", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return;
+  };
+  console.log(isErr);
+  useEffect(() => { 
+    if (isErr) { 
+      showToastMessage();
+    }
+  }, [isErr])
+
   return (
     <>
-      {isLoading ? (
+      <ToastContainer />
+      {isErr ? (<div></div>) : isLoading ? (
         <div
           style={{
             display: "flex",
@@ -481,7 +497,10 @@ function AnalysisMain() {
               </NavLink>
             </div>
 
-            <div style={{ flexBasis: "30%" }} className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}>
+            <div
+              style={{ flexBasis: "30%" }}
+              className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}
+            >
               <Box
                 component="span"
                 sx={{

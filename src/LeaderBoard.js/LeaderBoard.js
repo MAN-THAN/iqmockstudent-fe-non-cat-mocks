@@ -10,8 +10,8 @@ import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
-function LeaderBoard() {
-  const { attemptId, mockId } = useParams();
+function LeaderBoard()  {
+  const { attemptId, mockId  } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const date = new Date();
@@ -26,10 +26,8 @@ function LeaderBoard() {
     startDate: new Date(date2).toISOString().split("T")[0],
     endDate: date.toISOString().split("T")[0], //Today's date
   });
-  // console.log(date.toISOString().split("T")[0]);
-  // console.log(dateRange)
 
-  // console.log(new Date(date2).toISOString().split("T")[0]);
+
 
   const handleDateRangeChange = (dates) => {
     // Format the selected date range into a string
@@ -44,7 +42,7 @@ function LeaderBoard() {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
         setLoading(true);
-        const response = await getLeaderBoardData(startDate, endDate, mockId);
+        const response = await getLeaderBoardData(startDate, endDate, mockId ,attemptId);
         if (response?.status === 200) {
           const data = response;
           setLeaderData(data.data.leaderList);
@@ -57,7 +55,7 @@ function LeaderBoard() {
     }
 
     if (dateRange.startDate && dateRange.endDate) {
-      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId); // call the API only if both startDate and endDate are not null
+      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId ,attemptId); // call the API only if both startDate and endDate are not null
     }
   }, [dateRange]);
 

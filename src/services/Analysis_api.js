@@ -11,16 +11,16 @@ export const fetchAnalysisData = async (attempt_id) => {
     return res;
   } catch (err) {
     console.error(err);
-    throw err;
+    return err;
   }
 };
 
 
 
-export const fetchLeaderBoard = async (startDate,endDate,mockId) => {
+export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
   try {
     const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/2023-04-09`,
+      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}/${attemptId}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
