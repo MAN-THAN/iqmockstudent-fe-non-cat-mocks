@@ -13,7 +13,7 @@ import {
 
 function BarGrapgh({Data,title}) {
 
-   console.log(title)
+  console.log(title)
   return (
     <div
     className="shadow flex-item"

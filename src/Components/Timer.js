@@ -40,34 +40,40 @@ const Timer = (props) => {
 
   const submitSectionFunc = useCallback(
     async (subject) => {
-      const response = await submitSection(
-        attemptID,
-        subject,
-        studentAnswersData
-      );
-      if (response.status == 200) {
-        window.localStorage.removeItem(COUNTER_KEY_MIN);
-        window.localStorage.removeItem(COUNTER_KEY_SEC);
-        window.localStorage.removeItem("questionStatus");
-        if (subject === "varc") {
-          console.log("varc submitted");
-          navigate(`/main/${params.mockId}/lrdi`);
-        } else if (subject === "lrdi") {
-          console.log("lrdi submitted");
-          navigate(`/main/${params.mockId}/quants`);
-        } else if (subject === "quants") {
-          console.log("Your mock is submitted!!!");
-          navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
-        }
-        return true;
-      } else {
+      console.log("working")
+      try {
+        const response = await submitSection(
+          attemptID,
+          subject,
+          studentAnswersData
+        );
+        console.log(response);
+         if (response?.status == 200) {
+           window.localStorage.removeItem(COUNTER_KEY_MIN);
+           window.localStorage.removeItem(COUNTER_KEY_SEC);
+           window.localStorage.removeItem("questionStatus");
+           if (subject === "varc") {
+             console.log("varc submitted");
+             navigate(`/main/${params.mockId}/lrdi`);
+           } else if (subject === "lrdi") {
+             console.log("lrdi submitted");
+             navigate(`/main/${params.mockId}/quants`);
+           } else if (subject === "quants") {
+             console.log("Your mock is submitted!!!");
+             navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
+           }
+           return true;
+         }
+      }
+      catch (err) { 
+        console.log(err);
         setErr(true);
         return false;
       }
     },
     [currentSection]
   );
-
+// console.log(err)
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
@@ -183,7 +189,7 @@ const Timer = (props) => {
                       </div>
                     </div>
                     <div className="d-flex justify-content-center mt-4 ">
-                      <Button>Try Again</Button>
+                        <Button onClick={ () => window.location.reload()}>Try Again</Button>
                     </div>
                   </>
                 )}

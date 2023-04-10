@@ -15,12 +15,16 @@ export const fetchAnalysisData = async (attempt_id) => {
   }
 };
 
+<<<<<<< HEAD
 export const fetchLeaderBoard = async (
   startDate,
   endDate,
   mockId,
   attemptId
 ) => {
+=======
+export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
+>>>>>>> 964df2100af3768d2fe66c8e123c07db191fb7b6
   try {
     const res = request({
       url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}/${attemptId}`,
