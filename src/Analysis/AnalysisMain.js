@@ -25,7 +25,7 @@ function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
-  const { attemptId, subject } = params;
+  const {mockId, attemptId, subject } = params;
   const { analysisDataApi, isLoading, basicAnalysis } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
@@ -481,7 +481,7 @@ function AnalysisMain() {
               </NavLink>
             </div>
 
-            <div style={{ flexBasis: "30%" }} className={location.pathname === `/analysis/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}>
+            <div style={{ flexBasis: "30%" }} className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item ps-4" : "d-none"}>
               <Box
                 component="span"
                 sx={{
@@ -500,7 +500,7 @@ function AnalysisMain() {
                   fontFamily: "var(--font-inter)",
                 }}
               >
-                Time spent on questions(min):
+                Time spent on questions(sec):
               </Box>
               <span>
                 <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
