@@ -11,7 +11,7 @@ export const fetchAnalysisData = async (attempt_id) => {
     return res;
   } catch (err) {
     console.error(err);
-    throw err;
+    return err;
   }
 };
 
