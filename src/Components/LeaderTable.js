@@ -9,25 +9,24 @@ import {
   StyledTableRow,
 } from "../styleSheets/Style";
 
-
 const SkeletonRows = () => {
-    return (
-      <>
-        {[...Array(10)].map((_, index) => (
-          <StyledTableRow key={index} sx={{ background: "white" }}>
-            {[...Array(6)].map((_, i) => (
-              <StyledTableCell key={i}>
-                <Skeleton />
-              </StyledTableCell>
-            ))}
-          </StyledTableRow>
-        ))}
-      </>
-    );
-  };
+  return (
+    <>
+      {[...Array(10)].map((_, index) => (
+        <StyledTableRow key={index} sx={{ background: "white" }}>
+          {[...Array(6)].map((_, i) => (
+            <StyledTableCell key={i}>
+              <Skeleton />
+            </StyledTableCell>
+          ))}
+        </StyledTableRow>
+      ))}
+    </>
+  );
+};
 
-export default function LeaderTable({data,isLoading}) {
-  console.log(data)
+export default function LeaderTable({ data, isLoading }) {
+  console.log(data);
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -40,13 +39,29 @@ export default function LeaderTable({data,isLoading}) {
             <StyledTableCell align="left">QUANT</StyledTableCell>
             <StyledTableCell align="left">Overall</StyledTableCell>
           </StyledTableRow>
-          <StyledTableRow sx={{ background: "white" }}>
-            <StyledTableCell>Your rank</StyledTableCell>
-            <StyledTableCell align="left">User Name</StyledTableCell>
-            <StyledTableCell align="left">Varc mark</StyledTableCell>
-            <StyledTableCell align="left">lrdi mark</StyledTableCell>
-            <StyledTableCell align="left">quant marks</StyledTableCell>
-            <StyledTableCell align="left">overall mark</StyledTableCell>
+          <StyledTableRow
+            sx={{
+              height: "20px",
+              backgroundColor: "#E1E2FE",
+              "&:hover": { background: "#E1E2FE!important" },
+            }}
+          >
+            {isLoading ? (
+              [...Array(6)].map((_, i) => (
+                <StyledTableCell key={i}>
+                  <Skeleton />
+                </StyledTableCell>
+              ))
+            ) : (
+              <>
+                <StyledTableCell>Your rank</StyledTableCell>
+                <StyledTableCell align="left">User Name</StyledTableCell>
+                <StyledTableCell align="left">Varc mark</StyledTableCell>
+                <StyledTableCell align="left">lrdi mark</StyledTableCell>
+                <StyledTableCell align="left">quant marks</StyledTableCell>
+                <StyledTableCell align="left">overall mark</StyledTableCell>
+              </>
+            )}
           </StyledTableRow>
         </TableHead>
         <TableBody>
@@ -66,9 +81,7 @@ export default function LeaderTable({data,isLoading}) {
                     <StyledTableCell component="th" scope="row">
                       {index + 1}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.name}
-                    </StyledTableCell>
+                    <StyledTableCell align="left">{item.name}</StyledTableCell>
                     <StyledTableCell align="left">
                       {item.varcScore}
                     </StyledTableCell>
