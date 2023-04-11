@@ -310,9 +310,7 @@ function CenterMain() {
     setSelectedQuestionIndex(selectedQuestionIndex + 1);
     setSelectedAnswer(null);
     setInputVal("");
-    // window.scrollTo(0, 0);
   };
-
 
   // options setting after fetching their html content
   // const [options, setOptions] = useState([]);

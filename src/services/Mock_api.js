@@ -42,21 +42,6 @@ export const fetchQuestions = async (mockid, subject_type) => {
   }
 };
 
-// api for fetching answer status
-
-// export const fetchAnswerStatus = async (attempt_id, subject_type) => {
-//   try {
-//     const res = request({
-//       url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/answerstatus/${attempt_id}/${subject_type}`,
-//       headers: { "Content-Type": "application/json" },
-//     });
-//     return res;
-//   } catch (err) {
-//     console.error(err);
-//     throw err;
-//   }
-// };
-
  // api for submit student answers(section-wise)
 
 export const submitSection = async (attempt_id, subject_type, payload) => { 
