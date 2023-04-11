@@ -511,8 +511,9 @@ function CenterMain() {
                             autoComplete="off"
                           />
                           <div className="keys p-3 rounded shadow">
-                            <div className="d-flex gap-2 fs-4 m-2 ">
+                            <div className="d-flex flex-wrap justify-content-center gap-2 fs-4 m-2 ">
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -524,6 +525,7 @@ function CenterMain() {
                                 1
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -535,6 +537,7 @@ function CenterMain() {
                                 2
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -546,6 +549,7 @@ function CenterMain() {
                                 3
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -557,6 +561,7 @@ function CenterMain() {
                                 4
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -567,9 +572,10 @@ function CenterMain() {
                               >
                                 5
                               </BootstrapButton>
-                            </div>
-                            <div className="d-flex gap-2 fs-5 m-2 ">
+                        
+                            
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -581,6 +587,7 @@ function CenterMain() {
                                 6
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -592,6 +599,7 @@ function CenterMain() {
                                 7
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -603,6 +611,7 @@ function CenterMain() {
                                 8
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -614,6 +623,7 @@ function CenterMain() {
                                 9
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -624,9 +634,10 @@ function CenterMain() {
                               >
                                 0
                               </BootstrapButton>
-                            </div>
-                            <div className="d-flex gap-2 fs-5 m-2 ">
+                              
+                            
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -638,6 +649,7 @@ function CenterMain() {
                                 .
                               </BootstrapButton>
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -650,6 +662,7 @@ function CenterMain() {
                               </BootstrapButton>
 
                               <BootstrapButton
+                               className="flex-item"
                                 sx={{
                                   width: "151px",
                                   p: 1,
