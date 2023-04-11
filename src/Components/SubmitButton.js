@@ -12,6 +12,7 @@ import { InfinitySpin } from "react-loader-spinner";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
+import { Button } from "antd";
 
 
 const style = {
@@ -44,15 +45,17 @@ export default function ButtonSubmit({ studentAnswersData }) {
 
   const submitSectionFunc = async (subject) => {
     setState(1);
-    const response = await submitSection(
-      attemptID,
-      subject,
-      studentAnswersData
-    );
-    console.log(response);
-    if (response?.status == 200) {
-      setState(2);
+    try {
+      const response = await submitSection(attemptID, subject, studentAnswersData);
+      console.log(response);
+      if (response?.status == 200) {
+        setState(2);
+      }
+    } catch (err) {
+      console.log(err);
+      setState(3);
     }
+   
   };
 
   return (
@@ -61,23 +64,16 @@ export default function ButtonSubmit({ studentAnswersData }) {
         sx={{
           width: "96%",
           marginTop: "1em",
-          background:
-            params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : "",
+          background: params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : "",
         }}
-        disabled={
-          params.type === "varc" || params.type === "lrdi" ? true : false
-        }
+        disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
         variant="contained"
         onClick={() => setOpenConfirm(true)}
       >
         Submit
       </SubmitButton>
       {/* Confirm modal */}
-      <Modal
-        open={openConfirm}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={openConfirm} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           {state === 0 ? (
             <>
@@ -93,17 +89,11 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 />
               </div>
               <div className="d-flex justify-content-center">
-                <SubHeading
-                  style={{ color: "#494949", fontWeight: "700" }}
-                  className="ps-3"
-                >
+                <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
                   Are you sure to submit your test?{" "}
                 </SubHeading>
               </div>
-              <div
-                className="d-flex justify-content-evenly"
-                style={{ marginTop: "1.8em" }}
-              >
+              <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
                 <MyButton
                   variant="contained"
                   sx={{
@@ -116,11 +106,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 >
                   Have a doubt? Back to test
                 </MyButton>
-                <MyButton
-                  variant="contained"
-                  style={buttonStyle}
-                  onClick={() => submitSectionFunc("quants")}
-                >
+                <MyButton variant="contained" style={buttonStyle} onClick={() => submitSectionFunc("quants")}>
                   Submit
                 </MyButton>
               </div>
@@ -128,18 +114,10 @@ export default function ButtonSubmit({ studentAnswersData }) {
           ) : state === 1 ? (
             <>
               {" "}
-              <div
-                style={{ marginTop: "3em" }}
-                className="d-flex justify-content-center"
-              >
-                <SubHeading className="m-4 ps-3">
-                  Test Submitting...{" "}
-                </SubHeading>
+              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
               </div>
-              <div
-                className="d-flex justify-content-center"
-                style={{ marginTop: "1em" }}
-              >
+              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                 <div style={{ marginLeft: "12px" }}>
                   {" "}
                   <InfinitySpin color="blue" />
@@ -152,10 +130,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
           ) : state === 2 ? (
             <>
               {" "}
-              <div
-                className="d-flex justify-content-center"
-                style={{ height: "50%", width: "100%" }}
-              >
+              <div className="d-flex justify-content-center" style={{ height: "50%", width: "100%" }}>
                 <div
                   style={{
                     height: "100%",
@@ -166,12 +141,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
                   }}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <Image
-                    className="img-fluid text-center ps-4 "
-                    src="/Group103.png"
-                    alt="no IMage"
-                    width={300}
-                  ></Image>
+                  <Image className="img-fluid text-center ps-4 " src="/Group103.png" alt="no IMage" width={300}></Image>
                 </div>
               </div>
               <div className="d-flex justify-content-center ">
@@ -180,20 +150,14 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 </SubHeading>
               </div>
               <div className="d-flex justify-content-center text-muted">
-                <Typography fontWeight={700}>
-                  Congrats! You have completed the Mock test
-                </Typography>
+                <Typography fontWeight={700}>Congrats! You have completed the Mock test</Typography>
               </div>
-              <div
-                className="d-flex justify-content-center"
-                style={{ marginTop: "1em" }}
-              >
+              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                 <MyButton
                   variant="contained"
                   sx={{
                     ...buttonStyle,
-                    background:
-                      " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
+                    background: " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
                     borderRadius: "30px",
                   }}
                   onClick={() => navigate(`/analysis/${params.mockId}/${attemptID}/overall`)}
@@ -202,9 +166,24 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 </MyButton>
               </div>
             </>
-          ) : (
-            ""
-          )}
+          ) : state === 3 ? (
+            <>
+              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+              </div>
+              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+                <div style={{ marginLeft: "12px" }}>
+                  {" "}
+                  <SubHeading style={{ color: "red" }} className="m-4 ps-3">
+                    Some Error Occurred!!!{" "}
+                  </SubHeading>
+                </div>
+              </div>
+              <div className="d-flex justify-content-center mt-4 ">
+                <Button onClick={() => window.location.reload()}>Try Again</Button>
+              </div>
+            </>
+          ) : ("")}
         </Box>
       </Modal>
     </span>
