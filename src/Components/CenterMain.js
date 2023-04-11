@@ -479,35 +479,36 @@ function CenterMain() {
                       {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
                         <>
                           <TextField
-                            id="outlined-basic"
-                            label="Enter Answer"
-                            variant="outlined"
-                            value={inputVal !== "" ? inputVal : ""}
-                            // onChange={(e) => setInputVal(e.target.value)}
-                            inputRef={(input) => input && input.focus()}
-                            sx={{
-                              my: 3,
-                              color: "black",
-                              width: "400px",
-                              "& label.Mui-focused": {
+                              id="outlined-basic"
+                              label="Enter Answer"
+                              variant="outlined"
+                              value={inputVal !== "" ? inputVal : ""}
+                              // onChange={(e) => setInputVal(e.target.value)}
+                              // inputRef={(input) => input && input.focus()}
+                              sx={{
+                                my: 3,
                                 color: "black",
-                              },
-                              "& .MuiInput-underline:after": {
-                                borderBottomColor: "var(--orange)",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                  borderColor: "var(--orange)",
+                                width: "400px",
+                                "& label.Mui-focused": {
+                                  color: "black",
                                 },
-                                "&:hover fieldset": {
-                                  borderColor: "var(--orange)",
+                                "& .MuiInput-underline:after": {
+                                  borderBottomColor: "var(--orange)",
                                 },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "var(--orange)",
+                                "& .MuiOutlinedInput-root": {
+                                  "& fieldset": {
+                                    borderColor: "var(--orange)",
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: "var(--orange)",
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: "var(--orange)",
+                                  },
                                 },
-                              },
-                            }}
-                            autoComplete="off"
+                              }}
+                              autoComplete="off"
+                              
                           />
                           <div className="keys p-3 rounded shadow">
                             <div className="d-flex gap-2 fs-4 m-2 ">
