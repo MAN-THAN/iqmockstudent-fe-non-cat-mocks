@@ -19,6 +19,8 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { NavLink } from "react-router-dom";
+import { RxCross1 } from "react-icons/rx";
+import { BiMenu } from "react-icons/bi";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -110,22 +112,28 @@ export default function MiniDrawer() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+            {open ? (
+              <RxCross1 className="fs-5 fw-bold text-dark" />
             ) : (
-              <ChevronLeftIcon />
+              <BiMenu className="fs-2 fw-bold text-dark" />
             )}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {[
+            { text: "Home", icon: "Group138.png" },
+            { text: "View Solution", icon: "podium1.png" },
+            { text: "Leader Board", icon: "goal1.png" },
+            { text: "Drafts", icon: "shopping-bag.png" },
+          ].map((item, index) => (
+            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
+                  mb: 3,
                 }}
               >
                 <ListItemIcon
@@ -135,17 +143,38 @@ export default function MiniDrawer() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <img
+                    src={process.env.PUBLIC_URL + "/" + item.icon}
+                    className="img-fluid"
+                    alt=""
+                  />
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={item.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
+
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        <List
+          sx ={{
+          position:"absolute",
+          bottom:0,
+        
+
+   
+          }}
+        >
+          {[
+            {
+              name: "Help",
+              icon: "customerService.png",
+            },
+          ].map((item, index) => (
+            <ListItem key={item} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -160,17 +189,19 @@ export default function MiniDrawer() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <img src={process.env.PUBLIC_URL + "/" + item.icon} alt="" />
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={item.name}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p:2 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <Toolbar>
-      
           <header className="w-100 text-dark">
             <div className="d-flex flex-row align-items-center justify-content-between">
               <div className="flex-item ">
