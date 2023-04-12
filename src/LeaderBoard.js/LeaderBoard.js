@@ -10,8 +10,8 @@ import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
-function LeaderBoard()  {
-  const { attemptId, mockId  } = useParams();
+function LeaderBoard() {
+  const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const date = new Date();
@@ -21,18 +21,24 @@ function LeaderBoard()  {
     // Can not select days after today and today
     return current && current > dayjs().endOf("day");
   };
-  const date2 = Date.now() - (86400000*10);
+  const date2 = Date.now() - 86400000 * 10;
+  // Increasing date by 1
+  const IncDateByOne = (actual_date) => {
+    const date = new Date(actual_date);
+    const newDate = date.getTime() + 86400000;
+    // console.log(new Date(newDate).toISOString())
+    return new Date(newDate).toISOString().split("T")[0];
+  };
   const [dateRange, setDateRange] = useState({
     startDate: new Date(date2).toISOString().split("T")[0],
-    endDate: date.toISOString().split("T")[0], //Today's date
+    endDate: IncDateByOne(date.toISOString().split("T")[0]), //Today's date
   });
-
-
 
   const handleDateRangeChange = (dates) => {
     // Format the selected date range into a string
     const formattedStartDate = dates[0].format("YYYY-MM-DD");
-    const formattedEndDate = dates[1].format("YYYY-MM-DD");
+    const formattedEndDate = IncDateByOne(dates[1].format("YYYY-MM-DD"));
+    console.log(formattedEndDate);
 
     // Set the start and end dates in state
     setDateRange({ startDate: formattedStartDate, endDate: formattedEndDate });
@@ -42,10 +48,11 @@ function LeaderBoard()  {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
         setLoading(true);
-        const response = await getLeaderBoardData(startDate, endDate, mockId ,attemptId);
+        const response = await getLeaderBoardData(startDate, endDate, mockId, attemptId);
+        console.log(response);
         if (response?.status === 200) {
           const data = response;
-          setLeaderData(data.data.leaderList);
+          setLeaderData(data.data[0]?.leaderList);
           setLoading(false);
         }
       } catch (error) {
@@ -55,7 +62,7 @@ function LeaderBoard()  {
     }
 
     if (dateRange.startDate && dateRange.endDate) {
-      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId ,attemptId); // call the API only if both startDate and endDate are not null
+      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId, attemptId); // call the API only if both startDate and endDate are not null
     }
   }, [dateRange]);
 

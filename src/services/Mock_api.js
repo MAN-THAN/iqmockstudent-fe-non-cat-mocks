@@ -11,7 +11,7 @@ export const getAttemptId = async (name,email,uid,mockId) => {
   };
   try {
     const res = await request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks`,
+      url: `/api/student/v1/mocks`,
       type: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const getAttemptId = async (name,email,uid,mockId) => {
 export const fetchQuestions = async (mockid, subject_type) => {
   try {
     const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/quizs/${mockid}/${subject_type}`,
+      url: `/api/student/v1/quizs/${mockid}/${subject_type}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
@@ -47,7 +47,7 @@ export const fetchQuestions = async (mockid, subject_type) => {
 export const submitSection = async (attempt_id, subject_type, payload) => { 
   try {
     const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/mocks/submitAnswer/${subject_type}/${attempt_id}`,
+      url: `/api/student/v1/mocks/submitAnswer/${subject_type}/${attempt_id}`,
       type: "POST",
       data: {answers : payload},
       headers: { "Content-Type": "application/json" },
