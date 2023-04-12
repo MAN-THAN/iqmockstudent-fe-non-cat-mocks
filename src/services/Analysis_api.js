@@ -18,11 +18,7 @@ export const fetchAnalysisData = async (attempt_id) => {
 export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
   try {
     const res = request({
-<<<<<<< HEAD
-      url: `${process.env.REACT_APP_LEADER_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${attemptId}/${startDate}/${endDate}`,
-=======
       url: `/api/student/v1/analyse/createleaderBoard/${mockId}/${attemptId}/${startDate}/${endDate}`,
->>>>>>> 57945b8985d4e68226d78600b5fe774d67bb092d
       headers: { "Content-Type": "application/json" },
     });
     return res;
