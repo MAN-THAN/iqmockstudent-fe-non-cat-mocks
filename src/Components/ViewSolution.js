@@ -7,10 +7,7 @@ import MiniDrawer from "./solDrawer";
 function ViewSolution() {
   return (
     <div>
-      {/* Header */}
-     
-      {/* Header end */}
-      <MiniDrawer/>
+<MiniDrawer/>
     </div>
   );
 }
