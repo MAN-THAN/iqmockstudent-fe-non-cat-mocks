@@ -8,6 +8,7 @@ import Menu from "@mui/material/Menu";
 import Table from "@mui/material/Table";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
 export const theme = createTheme({
   typography: {
@@ -281,5 +282,21 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   "&:hover": {
     backgroundColor: " #dedede !important",
+  },
+}));
+
+export const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: "#E9EEF4",
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#E9EEF4",
+    width: 100,
+     height: 55,
+     textAlign: "center",
+    padding:1,
+    borderRadius:10
   },
 }));
