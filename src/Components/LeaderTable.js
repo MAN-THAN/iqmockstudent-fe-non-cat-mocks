@@ -25,8 +25,9 @@ const SkeletonRows = () => {
   );
 };
 
-export default function LeaderTable({ data, isLoading }) {
+export default function LeaderTable({ data, isLoading, studentData, studentRank}) {
   console.log(data);
+  console.log(studentData)
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -54,12 +55,12 @@ export default function LeaderTable({ data, isLoading }) {
               ))
             ) : (
               <>
-                <StyledTableCell>Your rank</StyledTableCell>
-                <StyledTableCell align="left">User Name</StyledTableCell>
-                <StyledTableCell align="left">Varc mark</StyledTableCell>
-                <StyledTableCell align="left">lrdi mark</StyledTableCell>
-                <StyledTableCell align="left">quant marks</StyledTableCell>
-                <StyledTableCell align="left">overall mark</StyledTableCell>
+                <StyledTableCell>{studentData && studentRank}</StyledTableCell>
+                <StyledTableCell align="left">{studentData && studentData[0]?.name}</StyledTableCell>
+                <StyledTableCell align="left">{studentData && studentData[0]?.varcScore}</StyledTableCell>
+                <StyledTableCell align="left">{studentData && studentData[0]?.lrdiScore}</StyledTableCell>
+                <StyledTableCell align="left">{studentData && studentData[0]?.qaScore}</StyledTableCell>
+                <StyledTableCell align="left">{studentData && studentData[0]?.overallScore}</StyledTableCell>
               </>
             )}
           </StyledTableRow>
@@ -82,18 +83,10 @@ export default function LeaderTable({ data, isLoading }) {
                       {index + 1}
                     </StyledTableCell>
                     <StyledTableCell align="left">{item.name}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.varcScore}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.lrdiScore}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.qaScore}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.overallScore}
-                    </StyledTableCell>
+                    <StyledTableCell align="left">{item.varcScore}</StyledTableCell>
+                    <StyledTableCell align="left">{item.lrdiScore}</StyledTableCell>
+                    <StyledTableCell align="left">{item.qaScore}</StyledTableCell>
+                    <StyledTableCell align="left">{item.overallScore}</StyledTableCell>
                   </StyledTableRow>
                 ))}
             </>
