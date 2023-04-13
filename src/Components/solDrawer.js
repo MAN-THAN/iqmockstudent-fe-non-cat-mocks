@@ -26,7 +26,15 @@ import ContentDrawer from "../Components/ContentDrawer";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Paper } from "@mui/material";
 import TempCompo from "./tempCompo";
+<<<<<<< HEAD
 import { MyButton } from "../styleSheets/Style";
+=======
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+>>>>>>> 27f41ff3c0d8052553f129772a508885ab61b340
 
 const drawerWidth = 240;
 
@@ -116,11 +124,7 @@ export default function MiniDrawer() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
-            {open ? (
-              <RxCross1 className="fs-5 fw-bold text-dark" />
-            ) : (
-              <BiMenu className="fs-2 fw-bold text-dark" />
-            )}
+            {open ? <RxCross1 className="fs-5 fw-bold text-dark" /> : <BiMenu className="fs-2 fw-bold text-dark" />}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -147,11 +151,7 @@ export default function MiniDrawer() {
                     justifyContent: "center",
                   }}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/" + item.icon}
-                    className="img-fluid"
-                    alt=""
-                  />
+                  <img src={process.env.PUBLIC_URL + "/" + item.icon} className="img-fluid" alt="" />
                 </ListItemIcon>
                 <ListItemText sx={{ opacity: open ? 1 : 0 }}>
                   <Typography variant="paragraph">{item.text}</Typography>
@@ -191,10 +191,7 @@ export default function MiniDrawer() {
                 >
                   <img src={process.env.PUBLIC_URL + "/" + item.icon} alt="" />
                 </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
+                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -300,8 +297,7 @@ export default function MiniDrawer() {
             >
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Verbal Ability" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Verbal Ability" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Verbal Ability")}
                 disableRipple
@@ -312,8 +308,7 @@ export default function MiniDrawer() {
               <Divider sx={{ my: 0.5 }} />
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Logical Reasoning" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Logical Reasoning" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Logical Reasoning")}
                 disableRipple
@@ -322,11 +317,7 @@ export default function MiniDrawer() {
                 Logical Reasoning
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem
-                sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }}
-                onClick={() => handleClose("Quants")}
-                disableRipple
-              >
+              <MenuItem sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }} onClick={() => handleClose("Quants")} disableRipple>
                 <IoBookSharp className="me-2" />
                 Quants
               </MenuItem>
@@ -574,38 +565,59 @@ export default function MiniDrawer() {
           {/* Right main start */}
           <Box
             sx={{
-              width: "20%",
+              width: "25%",
+              background: "#F1F4F9",
               boxShadow: 3,
               textAlign: "justify",
+              height: "100%",
               overflow: "scroll",
-              p: 3,
+              p: 6,
               borderRadius: 5,
+              position: "relative",
             }}
             component={Paper}
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
-            deserunt at iure saepe quia quod consequatur ut doloremque cum
-            cumque, temporibus debitis? Dicta ea ab quae obcaecati molestiae
-            veritatis placeat libero laboriosam accusamus iusto, quasi
-            laudantium iure ducimus officiis. Vel officia aperiam reprehenderit
-            quidem alias officiis excepturi iure porro consequatur vero sit
-            obcaecati unde odit quia quasi voluptatum praesentium, adipisci
-            totam nostrum! Molestias id tempore maiores odio, ratione eligendi
-            dolores magni ullam eius delectus blanditiis ducimus natus aut!
-            Officiis nisi necessitatibus et aspernatur, ad aperiam ipsam ea
-            voluptatibus obcaecati alias nam totam blanditiis numquam eos esse
-            perspiciatis sapiente aliquam sequi nemo repudiandae sunt quis ipsum
-            officia odit! Sunt minus, eius labore laudantium fuga culpa. Unde,
-            consequuntur. Qui, facere quia. Impedit magnam commodi, temporibus
-            accusamus itaque illum minima exercitationem nihil quo voluptatem ad
-            et amet veritatis enim sint rerum voluptas autem? Nulla inventore
-            earum quaerat hic quam odio. Voluptates harum explicabo eius nobis,
-            tenetur porro cumque laudantium voluptate at possimus dicta
-            incidunt, rerum minus ipsam? A magnam minus quo exercitationem porro
-            atque laboriosam quibusdam illum non natus fugit eligendi velit
-            animi placeat, vero accusantium ratione repudiandae quas similique
-            illo quidem quia iste deserunt nesciunt. In, veniam placeat. Ullam
-            consequatur ex animi!
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}>Why did you get it wrong?</Typography>
+              <FormControl sx={{ paddingTop: 1 }}>
+                <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
+                <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">
+                  <FormControlLabel value="Did not understand the concept" control={<Radio size="small" />} label="Did not understand the concept" />
+                  <FormControlLabel
+                    value="I understood the concept but failed to apply it correctly"
+                    control={<Radio size="small" />}
+                    label="I understood the concept but failed to apply it correctly"
+                  />
+                  <FormControlLabel value="I misread the question" control={<Radio size="small" />} label="I misread the question" />
+                  <FormControlLabel value="I ran out of time" control={<Radio size="small" />} label="I ran out of time" />
+                  <FormControlLabel value="Made a silly mistake" control={<Radio size="small" />} label="Made a silly mistake" />
+                  <FormControlLabel value="Fell for the trap answer" control={<Radio size="small" />} label="Fell for the trap answer" />
+                  <FormControlLabel value="Guessed the answer" control={<Radio size="small" />} label="Guessed the answer" />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+            <Box sx={{display : "flex", justifyContent : "center"}}>
+              {" "}
+              <Box
+                sx={{
+                  height: "2.5em",
+                  width: "80%",
+                  background: "#3B36DB",
+                  borderRadius: "1em",
+                  position: "absolute",
+                  top: 0,
+                  zIndex: 1000,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ color: "#FFE401" }}>Error Tracker</Typography>
+                <img></img>
+                <Typography>iQ GPT 1.0</Typography>
+              </Box>
+            </Box>
           </Box>
 
           {/* Right main end */}

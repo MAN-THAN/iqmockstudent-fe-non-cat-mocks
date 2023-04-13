@@ -14,7 +14,10 @@ function LeaderBoard() {
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [studentData, setStudentData] = useState([]);
+  const [studentRank, setStudentRank] = useState(null);
   const date = new Date();
+  
 
   // eslint-disable-next-line arrow-body-style
   const disabledDate = (current) => {
@@ -53,6 +56,8 @@ function LeaderBoard() {
         if (response?.status === 200) {
           const data = response;
           setLeaderData(data.data[0]?.leaderList);
+          setStudentData(data.data[0]?.result);
+          setStudentRank(data.data[0]?.rank);
           setLoading(false);
         }
       } catch (error) {
@@ -153,7 +158,8 @@ function LeaderBoard() {
         </Typography>
 
         <RangePicker onChange={handleDateRangeChange} disabledDate={disabledDate} />
-        <LeaderTable data={leaderData} isLoading={loading} />
+        {/* <LeaderTable data={leaderData} isLoading={loading} /> */}
+        <LeaderTable data={leaderData} studentData={studentData} studentRank={ studentRank} isLoading={loading} />
       </div>
     </div>
   );
