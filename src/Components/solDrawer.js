@@ -22,10 +22,15 @@ import Stack from "@mui/material/Stack";
 import { StyledMenu } from "../styleSheets/Style";
 import Zoom from "@mui/material/Zoom";
 import MenuItem from "@mui/material/MenuItem";
-import ContentDrawer from "../Components/ContentDrawer"
+import ContentDrawer from "../Components/ContentDrawer";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Paper } from "@mui/material";
 import TempCompo from "./tempCompo";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const drawerWidth = 240;
 
@@ -111,16 +116,12 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100vw" , height:"100Vh"}}>
+    <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <CssBaseline />
-  <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={() => setOpen(!open)}>
-            {open ? (
-              <RxCross1 className="fs-5 fw-bold text-dark" />
-            ) : (
-              <BiMenu className="fs-2 fw-bold text-dark" />
-            )}
+            {open ? <RxCross1 className="fs-5 fw-bold text-dark" /> : <BiMenu className="fs-2 fw-bold text-dark" />}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -147,11 +148,7 @@ export default function MiniDrawer() {
                     justifyContent: "center",
                   }}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/" + item.icon}
-                    className="img-fluid"
-                    alt=""
-                  />
+                  <img src={process.env.PUBLIC_URL + "/" + item.icon} className="img-fluid" alt="" />
                 </ListItemIcon>
                 <ListItemText sx={{ opacity: open ? 1 : 0 }}>
                   <Typography variant="paragraph">{item.text}</Typography>
@@ -191,26 +188,19 @@ export default function MiniDrawer() {
                 >
                   <img src={process.env.PUBLIC_URL + "/" + item.icon} alt="" />
                 </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
+                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 2, width: "80%" ,  }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 2, width: "80%" }}>
         <header className="w-100 text-dark p-2 ">
           <div className="d-flex flex-row align-items-center justify-content-between">
             <div className="flex-item ">
               <NavLink to="/">
-                <img
-                  src="/iQuanta.png"
-                  alt="iquanta_logo"
-                  className="img-fluid iquanta_logo"
-                />
+                <img src="/iQuanta.png" alt="iquanta_logo" className="img-fluid iquanta_logo" />
               </NavLink>
             </div>
 
@@ -237,18 +227,8 @@ export default function MiniDrawer() {
               </div>
 
               <div className="d-flex">
-                <a
-                  href="#"
-                  className="d-block link-dark text-decoration-none "
-                  aria-expanded="false"
-                >
-                  <img
-                    src="https://github.com/mdo.png"
-                    alt="mdo"
-                    width="50"
-                    height="50"
-                    className="rounded"
-                  />
+                <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
+                  <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
                 </a>
               </div>
             </div>
@@ -264,7 +244,6 @@ export default function MiniDrawer() {
             justifyContent: "space-between",
             alignItems: "center",
             flexWrap: "wrap",
-           
           }}
         >
           <div style={{ flexBasis: "10%" }}>
@@ -298,8 +277,7 @@ export default function MiniDrawer() {
             >
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Verbal Ability" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Verbal Ability" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Verbal Ability")}
                 disableRipple
@@ -310,8 +288,7 @@ export default function MiniDrawer() {
               <Divider sx={{ my: 0.5 }} />
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Logical Reasoning" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Logical Reasoning" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Logical Reasoning")}
                 disableRipple
@@ -320,11 +297,7 @@ export default function MiniDrawer() {
                 Logical Reasoning
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem
-                sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }}
-                onClick={() => handleClose("Quants")}
-                disableRipple
-              >
+              <MenuItem sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }} onClick={() => handleClose("Quants")} disableRipple>
                 <IoBookSharp className="me-2" />
                 Quants
               </MenuItem>
@@ -338,7 +311,6 @@ export default function MiniDrawer() {
               flexWrap: "wrap",
               columnGap: 6,
               rowGap: 3,
-           
             }}
           >
             {[...Array(24)].map((item, index) => (
@@ -398,31 +370,121 @@ export default function MiniDrawer() {
         {/* Navigation bar end */}
 
         {/* Main center start */}
-        <Box component="div" sx={{display:"flex" ,gap:3 ,height:"56vh",mt:"1em" }}>
-         {/* LEFT Main start */}
-          <Box  sx={{width:"70%" , display:"flex", boxShadow:3, boder:"none" ,borderRadius:5}}component={Paper}>
-           <Box component="div" sx={{flexBasis:"60% " ,textAlign:"justify",height:"100%", overflow:"scroll", p:3}}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit doloribus pariatur quisquam, nostrum vero, eum cumque molestiae debitis optio molestias ipsa repellendus. Quidem eos est recusandae in eius hic explicabo quam maxime deleniti, quas illo. Dolores explicabo temporibus nemo, aspernatur eum nulla adipisci! Sint illo quis officiis vitae molestiae, dolor placeat aliquam non, repellat repellendus quidem, neque eveniet eligendi ab! Delectus, facilis atque distinctio commodi voluptatum aliquam, est sapiente incidunt alias perferendis officia rem ab libero dolorum nisi sunt eveniet corrupti. Distinctio ullam architecto, obcaecati facilis quos veniam soluta laborum et laboriosam, nesciunt magnam placeat pariatur blanditiis. Labore atque dicta, blanditiis cupiditate amet odio eaque possimus rem vel beatae, laudantium itaque suscipit? Excepturi ratione suscipit earum cumque molestiae repudiandae, quasi iusto quod id odio officiis, quisquam deserunt dicta rerum fugiat accusantium dignissimos voluptates maxime itaque. Sed perspiciatis deleniti molestias porro iure veniam eaque nam, magni sequi ullam tenetur sint repudiandae fugiat fugit eum, repellendus similique nostrum? Eaque eum odio saepe a quos consequuntur architecto repellendus, quia ad, esse possimus omnis. Ullam debitis perferendis deleniti numquam obcaecati cum molestias aliquid a neque voluptas, earum optio voluptatum, commodi sapiente quis assumenda nobis nisi at temporibus quo ea nulla quae. Voluptates ipsa eaque numquam, nulla perferendis similique tenetur eum aspernatur consequatur, sequi iusto maiores aliquam soluta assumenda explicabo cumque tempore est! Unde perspiciatis minus, labore dicta maiores beatae maxime consequatur iure explicabo numquam non pariatur alias debitis voluptatem eius nam vitae sunt, tempore, voluptates eveniet. Ipsum maiores voluptatibus, neque praesentium blanditiis suscipit, voluptatum quod fugiat totam consequatur officia magni sit, quos libero possimus voluptas sapiente harum assumenda voluptates natus. Voluptas animi nemo molestiae dolore vitae! Veniam velit voluptate sed rerum inventore? Repudiandae voluptatibus saepe reprehenderit, quae quod distinctio ratione, omnis debitis autem vero ad error id sit repellat in eveniet. Quis odit ea possimus excepturi. Optio ut amet neque autem eum facilis delectus quas dolorem voluptatibus dicta qui cumque incidunt beatae perspiciatis consectetur facere corrupti, officiis corporis ipsum, debitis sequi ullam aperiam magni veniam. Exercitationem asperiores odit veniam nisi esse inventore similique aliquam, error totam tempora aspernatur laborum quae quasi quia iure ex ut pariatur illum fugiat, tempore quisquam id cumque. Deserunt quia quibusdam, ullam dolore quo ipsa exercitationem tempore dolorem nulla adipisci a reiciendis facilis? Magni possimus quas eveniet quaerat doloremque necessitatibus, vel ab ipsa perferendis excepturi! Labore numquam unde, hic facilis soluta molestiae suscipit ducimus quo consectetur nesciunt temporibus magnam dolor repellat repudiandae quia voluptatum. Doloribus, autem accusantium fuga laboriosam qui veritatis voluptates nostrum. Debitis perferendis explicabo ut alias eos accusamus id voluptatem ipsam, doloribus consectetur omnis incidunt recusandae natus exercitationem ab amet at aliquid ipsa velit. Perspiciatis, nesciunt? Assumenda quae sapiente aliquid accusantium maxime deserunt porro impedit. Delectus est similique doloremque, culpa quisquam enim cum. Libero iste possimus cupiditate nostrum quibusdam placeat porro eum, vero qui inventore quod aperiam labore impedit vel quisquam. Omnis, praesentium perspiciatis! Magnam sed consequatur corrupti voluptate officiis eligendi alias sit natus distinctio, nihil nesciunt. Cumque quasi a impedit, blanditiis optio quia dolorum at voluptatem praesentium! 
-           </Box>
-           <Box component="div" sx={{flexBasis:"40%" ,textAlign:"justify",height:"100%", overflow:"scroll", p:3}} >
-             Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita autem odio sint harum corporis obcaecati amet recusandae, unde repellendus laboriosam cum reiciendis fugit sunt exercitationem ducimus facere. Atque similique quibusdam est pariatur velit ipsam odit soluta? Nulla ipsa aut doloremque autem nam tenetur aperiam expedita temporibus voluptate ut. Unde aperiam perspiciatis corrupti iusto aut, ea saepe natus sit illo magnam obcaecati officiis mollitia? Corrupti nemo in sed voluptas! Ex, quia? Commodi id expedita quisquam ipsa laudantium ad consequatur quo non magni saepe fugiat, facere nulla totam suscipit perspiciatis. Alias sit officiis facilis harum. Totam, nulla eveniet molestiae ex similique porro perspiciatis veritatis molestias, quas quis dolore sunt quasi? Quia optio, libero est expedita sit necessitatibus maiores ipsa. Suscipit doloribus minus, aliquam animi consequuntur ex perspiciatis assumenda facilis iusto. Ullam reprehenderit cum pariatur fugit vel odit eveniet quaerat non ducimus placeat praesentium, sunt adipisci, blanditiis dolorem. Mollitia reiciendis quis voluptates, repellat expedita debitis eum, voluptatum nisi, saepe necessitatibus recusandae. Earum obcaecati debitis cupiditate praesentium velit sunt alias quo ratione deserunt quam veritatis nostrum, aspernatur quaerat sit accusantium, voluptate dolorem id! Non dicta quas amet dolorem porro eligendi, veniam eos corporis ad voluptatem obcaecati accusantium eius molestiae sit eveniet error doloremque deserunt.
-           </Box>
+        <Box component="div" sx={{ display: "flex", gap: 3, height: "56vh", mt: "1em" }}>
+          {/* LEFT Main start */}
+          <Box sx={{ width: "75%", display: "flex", boxShadow: 3, boder: "none", borderRadius: 5 }} component={Paper}>
+            <Box component="div" sx={{ flexBasis: "60% ", textAlign: "justify", height: "100%", overflow: "scroll", p: 3 }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit doloribus pariatur quisquam, nostrum vero, eum cumque molestiae debitis
+              optio molestias ipsa repellendus. Quidem eos est recusandae in eius hic explicabo quam maxime deleniti, quas illo. Dolores explicabo
+              temporibus nemo, aspernatur eum nulla adipisci! Sint illo quis officiis vitae molestiae, dolor placeat aliquam non, repellat repellendus
+              quidem, neque eveniet eligendi ab! Delectus, facilis atque distinctio commodi voluptatum aliquam, est sapiente incidunt alias
+              perferendis officia rem ab libero dolorum nisi sunt eveniet corrupti. Distinctio ullam architecto, obcaecati facilis quos veniam soluta
+              laborum et laboriosam, nesciunt magnam placeat pariatur blanditiis. Labore atque dicta, blanditiis cupiditate amet odio eaque possimus
+              rem vel beatae, laudantium itaque suscipit? Excepturi ratione suscipit earum cumque molestiae repudiandae, quasi iusto quod id odio
+              officiis, quisquam deserunt dicta rerum fugiat accusantium dignissimos voluptates maxime itaque. Sed perspiciatis deleniti molestias
+              porro iure veniam eaque nam, magni sequi ullam tenetur sint repudiandae fugiat fugit eum, repellendus similique nostrum? Eaque eum odio
+              saepe a quos consequuntur architecto repellendus, quia ad, esse possimus omnis. Ullam debitis perferendis deleniti numquam obcaecati cum
+              molestias aliquid a neque voluptas, earum optio voluptatum, commodi sapiente quis assumenda nobis nisi at temporibus quo ea nulla quae.
+              Voluptates ipsa eaque numquam, nulla perferendis similique tenetur eum aspernatur consequatur, sequi iusto maiores aliquam soluta
+              assumenda explicabo cumque tempore est! Unde perspiciatis minus, labore dicta maiores beatae maxime consequatur iure explicabo numquam
+              non pariatur alias debitis voluptatem eius nam vitae sunt, tempore, voluptates eveniet. Ipsum maiores voluptatibus, neque praesentium
+              blanditiis suscipit, voluptatum quod fugiat totam consequatur officia magni sit, quos libero possimus voluptas sapiente harum assumenda
+              voluptates natus. Voluptas animi nemo molestiae dolore vitae! Veniam velit voluptate sed rerum inventore? Repudiandae voluptatibus saepe
+              reprehenderit, quae quod distinctio ratione, omnis debitis autem vero ad error id sit repellat in eveniet. Quis odit ea possimus
+              excepturi. Optio ut amet neque autem eum facilis delectus quas dolorem voluptatibus dicta qui cumque incidunt beatae perspiciatis
+              consectetur facere corrupti, officiis corporis ipsum, debitis sequi ullam aperiam magni veniam. Exercitationem asperiores odit veniam
+              nisi esse inventore similique aliquam, error totam tempora aspernatur laborum quae quasi quia iure ex ut pariatur illum fugiat, tempore
+              quisquam id cumque. Deserunt quia quibusdam, ullam dolore quo ipsa exercitationem tempore dolorem nulla adipisci a reiciendis facilis?
+              Magni possimus quas eveniet quaerat doloremque necessitatibus, vel ab ipsa perferendis excepturi! Labore numquam unde, hic facilis
+              soluta molestiae suscipit ducimus quo consectetur nesciunt temporibus magnam dolor repellat repudiandae quia voluptatum. Doloribus,
+              autem accusantium fuga laboriosam qui veritatis voluptates nostrum. Debitis perferendis explicabo ut alias eos accusamus id voluptatem
+              ipsam, doloribus consectetur omnis incidunt recusandae natus exercitationem ab amet at aliquid ipsa velit. Perspiciatis, nesciunt?
+              Assumenda quae sapiente aliquid accusantium maxime deserunt porro impedit. Delectus est similique doloremque, culpa quisquam enim cum.
+              Libero iste possimus cupiditate nostrum quibusdam placeat porro eum, vero qui inventore quod aperiam labore impedit vel quisquam. Omnis,
+              praesentium perspiciatis! Magnam sed consequatur corrupti voluptate officiis eligendi alias sit natus distinctio, nihil nesciunt. Cumque
+              quasi a impedit, blanditiis optio quia dolorum at voluptatem praesentium!
+            </Box>
+            <Box component="div" sx={{ flexBasis: "40%", textAlign: "justify", height: "100%", overflow: "scroll", p: 3 }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita autem odio sint harum corporis obcaecati amet recusandae, unde
+              repellendus laboriosam cum reiciendis fugit sunt exercitationem ducimus facere. Atque similique quibusdam est pariatur velit ipsam odit
+              soluta? Nulla ipsa aut doloremque autem nam tenetur aperiam expedita temporibus voluptate ut. Unde aperiam perspiciatis corrupti iusto
+              aut, ea saepe natus sit illo magnam obcaecati officiis mollitia? Corrupti nemo in sed voluptas! Ex, quia? Commodi id expedita quisquam
+              ipsa laudantium ad consequatur quo non magni saepe fugiat, facere nulla totam suscipit perspiciatis. Alias sit officiis facilis harum.
+              Totam, nulla eveniet molestiae ex similique porro perspiciatis veritatis molestias, quas quis dolore sunt quasi? Quia optio, libero est
+              expedita sit necessitatibus maiores ipsa. Suscipit doloribus minus, aliquam animi consequuntur ex perspiciatis assumenda facilis iusto.
+              Ullam reprehenderit cum pariatur fugit vel odit eveniet quaerat non ducimus placeat praesentium, sunt adipisci, blanditiis dolorem.
+              Mollitia reiciendis quis voluptates, repellat expedita debitis eum, voluptatum nisi, saepe necessitatibus recusandae. Earum obcaecati
+              debitis cupiditate praesentium velit sunt alias quo ratione deserunt quam veritatis nostrum, aspernatur quaerat sit accusantium,
+              voluptate dolorem id! Non dicta quas amet dolorem porro eligendi, veniam eos corporis ad voluptatem obcaecati accusantium eius molestiae
+              sit eveniet error doloremque deserunt.
+            </Box>
           </Box>
-            {/* LEFT Main end */}
+          {/* LEFT Main end */}
 
           {/* Right main start */}
-          <Box sx={{width:"30%" , boxShadow:3 ,textAlign:"justify",height:"100%", overflow:"scroll", p:3 ,borderRadius:5}} component={Paper}>
-           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, deserunt at iure saepe quia quod consequatur ut doloremque cum cumque, temporibus debitis? Dicta ea ab quae obcaecati molestiae veritatis placeat libero laboriosam accusamus iusto, quasi laudantium iure ducimus officiis. Vel officia aperiam reprehenderit quidem alias officiis excepturi iure porro consequatur vero sit obcaecati unde odit quia quasi voluptatum praesentium, adipisci totam nostrum! Molestias id tempore maiores odio, ratione eligendi dolores magni ullam eius delectus blanditiis ducimus natus aut! Officiis nisi necessitatibus et aspernatur, ad aperiam ipsam ea voluptatibus obcaecati alias nam totam blanditiis numquam eos esse perspiciatis sapiente aliquam sequi nemo repudiandae sunt quis ipsum officia odit! Sunt minus, eius labore laudantium fuga culpa. Unde, consequuntur. Qui, facere quia. Impedit magnam commodi, temporibus accusamus itaque illum minima exercitationem nihil quo voluptatem ad et amet veritatis enim sint rerum voluptas autem? Nulla inventore earum quaerat hic quam odio. Voluptates harum explicabo eius nobis, tenetur porro cumque laudantium voluptate at possimus dicta incidunt, rerum minus ipsam? A magnam minus quo exercitationem porro atque laboriosam quibusdam illum non natus fugit eligendi velit animi placeat, vero accusantium ratione repudiandae quas similique illo quidem quia iste deserunt nesciunt. In, veniam placeat. Ullam consequatur ex animi!
+          <Box
+            sx={{
+              width: "25%",
+              background: "#F1F4F9",
+              boxShadow: 3,
+              textAlign: "justify",
+              height: "100%",
+              overflow: "scroll",
+              p: 6,
+              borderRadius: 5,
+              position: "relative",
+            }}
+            component={Paper}
+          >
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}>Why did you get it wrong?</Typography>
+              <FormControl sx={{ paddingTop: 1 }}>
+                <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
+                <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">
+                  <FormControlLabel value="Did not understand the concept" control={<Radio size="small" />} label="Did not understand the concept" />
+                  <FormControlLabel
+                    value="I understood the concept but failed to apply it correctly"
+                    control={<Radio size="small" />}
+                    label="I understood the concept but failed to apply it correctly"
+                  />
+                  <FormControlLabel value="I misread the question" control={<Radio size="small" />} label="I misread the question" />
+                  <FormControlLabel value="I ran out of time" control={<Radio size="small" />} label="I ran out of time" />
+                  <FormControlLabel value="Made a silly mistake" control={<Radio size="small" />} label="Made a silly mistake" />
+                  <FormControlLabel value="Fell for the trap answer" control={<Radio size="small" />} label="Fell for the trap answer" />
+                  <FormControlLabel value="Guessed the answer" control={<Radio size="small" />} label="Guessed the answer" />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+            <Box sx={{display : "flex", justifyContent : "center"}}>
+              {" "}
+              <Box
+                sx={{
+                  height: "2.5em",
+                  width: "80%",
+                  background: "#3B36DB",
+                  borderRadius: "1em",
+                  position: "absolute",
+                  top: 0,
+                  zIndex: 1000,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ color: "#FFE401" }}>Error Tracker</Typography>
+                <img></img>
+                <Typography>iQ GPT 1.0</Typography>
+              </Box>
+            </Box>
           </Box>
 
-             {/* Right main end */}
-
-          
-          </Box>
+          {/* Right main end */}
+        </Box>
         {/* Main center end */}
 
         {/* Lower cards section start */}
-        <TempCompo/>
+        <TempCompo />
         {/* Lower cards section end */}
       </Box>
     </Box>
