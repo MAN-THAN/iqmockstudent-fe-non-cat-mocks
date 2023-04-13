@@ -33,6 +33,7 @@ body {
   --font-inter: "Inter", sans-serif;
   --font-inder: "Inder", sans-serif;
   --background: #f9faff;
+  --blue-new: #0090FF;
 }
 .img-wrapper{
   overflow:hidden;

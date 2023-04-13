@@ -10,8 +10,9 @@ import Typography from "@mui/material/Typography";
 const TempCompo = () => {
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: "1em", py: "1em" }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: "1em", alignItems:"center"}}>
         {" "}
+        
         <Card
           sx={{
             width: "17.5em",
