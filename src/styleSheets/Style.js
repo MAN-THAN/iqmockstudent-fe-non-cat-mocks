@@ -293,8 +293,8 @@ export const BootstrapTooltip = styled(({ className, ...props }) => (
   },
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#E9EEF4",
-    width: 100,
-     height: 55,
+    width: 103,
+     height: 49,
      textAlign: "center",
     padding:1,
     borderRadius:10

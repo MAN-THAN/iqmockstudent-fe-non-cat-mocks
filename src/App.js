@@ -13,10 +13,17 @@ import DifficultyAnalysis from "./Analysis/DifficultyAnalysis";
 import OverallAnalysis from "./Analysis/OverallAnalysis";
 import ViewSolution from "./Components/ViewSolution";
 import UserAuth from "./Components/UserAuth";
-import LeaderBoard from "./LeaderBoard.js/LeaderBoard";
-import TempCompo from "./Components/tempCompo";
+import LeaderBoard from "./LeaderBoard/LeaderBoard";
+import AnalysisAcross from "./Pages/AnalysisAcross";
+import ErrorTracker from "./Pages/ErrorTracker";
+import GoalTracker from "./Pages/GoalTracker";
+import MarketPlace from "./Pages/MarketPlace";
+import MockComparison from "./Pages/MockComparison";
+import OnBoarding from "./Pages/OnBoarding";
+
 
 function App() {
+  
   return (
     <ThemeProvider theme={theme}>
       <Routes>
@@ -32,10 +39,18 @@ function App() {
           <Route path="difficulty" element={<DifficultyAnalysis />} />
         </Route>
         <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
-        <Route path="/viewsolutions/:attemptId/:mocktype" element={<ViewSolution />} />
+        <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
         <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
-        <Route path="/tempCompo" element={<TempCompo />} />
+         
+
+        <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross/>} />
+        <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker/>} />
+        <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker/>} />
+        <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace/>} />
+        <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison/>} />
+        <Route path="/onboarding/:mockId/:attemptId" element={<OnBoarding/>} />
       </Routes>
+      
     </ThemeProvider>
   );
 }

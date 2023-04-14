@@ -1,16 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
-
 
 export const Context = React.createContext();
 export function useAuth() {
   return useContext(Context);
 }
 
-export const ContextProvider = ({ children }) => {
+export const ContextProvider = ({ children }) => { 
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
+
+  const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
 
   const analysisDataApi = async (attemptId) => {
     const response = await fetchAnalysisData(attemptId);
@@ -20,7 +21,7 @@ export const ContextProvider = ({ children }) => {
       setLoading(false);
     } else {
       console.log("--> Error in analysis data fetching");
-       return setErr(true); 
+      return setErr(true);
     }
   };
 
@@ -35,6 +36,12 @@ export const ContextProvider = ({ children }) => {
       setContent(data);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handlePageClick = () => {
+    if (menuBarOpen) {
+      setMenuBarOpen(false);
     }
   };
 
@@ -78,7 +85,10 @@ export const ContextProvider = ({ children }) => {
           analysisDataApi,
           isLoading,
           fetchData,
-          isErr
+          isErr,
+          setMenuBarOpen,
+          menuBarOpen,
+          handlePageClick,
         }}
       >
         {children}

@@ -7,17 +7,20 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api";
+import MenuDrawer from "../Components/MenuDrawer";
+import { useAuth } from "../services/Context";
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
 function LeaderBoard() {
+  const { menuBarOpen } = useAuth();
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState([]);
   const [studentRank, setStudentRank] = useState(null);
+
   const date = new Date();
-  
 
   // eslint-disable-next-line arrow-body-style
   const disabledDate = (current) => {
@@ -51,7 +54,12 @@ function LeaderBoard() {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
         setLoading(true);
-        const response = await getLeaderBoardData(startDate, endDate, mockId, attemptId);
+        const response = await getLeaderBoardData(
+          startDate,
+          endDate,
+          mockId,
+          attemptId
+        );
         console.log(response);
         if (response?.status === 200) {
           const data = response;
@@ -67,12 +75,18 @@ function LeaderBoard() {
     }
 
     if (dateRange.startDate && dateRange.endDate) {
-      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId, attemptId); // call the API only if both startDate and endDate are not null
+      fetchLeaderBoard(
+        dateRange.startDate,
+        dateRange.endDate,
+        mockId,
+        attemptId
+      ); // call the API only if both startDate and endDate are not null
     }
   }, [dateRange]);
 
   return (
-    <div style={{ width: "100vw", background: "#EEEDF5" }}>
+    <div className="d-flex" style={{ width: "100vw", background: "#EEEDF5" }}>
+      <MenuDrawer open={menuBarOpen} />
       <Box
         sx={{
           width: "100%",
@@ -125,8 +139,18 @@ function LeaderBoard() {
               </Typography>
             </div>
             <div className="d-flex">
-              <a href="#" className="d-block link-dark text-decoration-none " aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
+              <a
+                href="#"
+                className="d-block link-dark text-decoration-none "
+                aria-expanded="false"
+              >
+                <img
+                  src="https://github.com/mdo.png"
+                  alt="mdo"
+                  width="50"
+                  height="50"
+                  className="rounded"
+                />
               </a>
             </div>
           </Box>
@@ -141,26 +165,59 @@ function LeaderBoard() {
         >
           Mr. Manthan
         </Typography>
-        <Typography sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}>Mock Result :</Typography>
+        <Typography
+          sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}
+        >
+          Mock Result :
+        </Typography>
         <Box sx={{ position: "absolute", right: 15, top: "50%" }}>
-          <img src="/Bigmamahere.svg" alt="mdo" width="167px" height="167px" className="rounded" />
+          <img
+            src="/Bigmamahere.svg"
+            alt="mdo"
+            width="167px"
+            height="167px"
+            className="rounded"
+          />
         </Box>
         <Box sx={{ position: "absolute", right: "25%", top: "35%" }}>
-          <img src="/knockknock.svg" alt="mdo" width="70px" height="70px" className="rounded" />
+          <img
+            src="/knockknock.svg"
+            alt="mdo"
+            width="70px"
+            height="70px"
+            className="rounded"
+          />
         </Box>
         <Box sx={{ position: "absolute", right: "40%", bottom: "20%" }}>
-          <img src="/Bigmamahere.svg" alt="mdo" width="20px" height="20px" className="rounded" />
+          <img
+            src="/Bigmamahere.svg"
+            alt="mdo"
+            width="20px"
+            height="20px"
+            className="rounded"
+          />
         </Box>
-      </Box>
-      <div className="container-fluid my-3 px-5">
-        <Typography variant="h4" className="text-muted py-5">
-          Ranking Overall In India
-        </Typography>
 
-        <RangePicker onChange={handleDateRangeChange} disabledDate={disabledDate} />
-        {/* <LeaderTable data={leaderData} isLoading={loading} /> */}
-        <LeaderTable data={leaderData} studentData={studentData} studentRank={ studentRank} isLoading={loading} />
-      </div>
+        {/* Table start */}
+        <div className="my-3 ">
+          <Typography variant="h4" className="text-muted py-5">
+            Ranking Overall In India
+          </Typography>
+
+          <RangePicker
+            onChange={handleDateRangeChange}
+            disabledDate={disabledDate}
+          />
+          {/* <LeaderTable data={leaderData} isLoading={loading} /> */}
+          <LeaderTable
+            data={leaderData}
+            studentData={studentData}
+            studentRank={studentRank}
+            isLoading={loading}
+          />
+        </div>
+        {/* Table end */}
+      </Box>
     </div>
   );
 }

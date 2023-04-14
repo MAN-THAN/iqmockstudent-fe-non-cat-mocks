@@ -6,11 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { ContextProvider } from "./services/Context";
 import { BrowserRouter} from "react-router-dom";
 
+
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  
   <BrowserRouter>
     <ContextProvider>
-      <App />
+      <App/>
     </ContextProvider>
   </BrowserRouter>
 );
