@@ -12,8 +12,11 @@ import ListItemText from "@mui/material/ListItemText";
 import { RxCross1 } from "react-icons/rx";
 import { BiMenu } from "react-icons/bi";
 import { useAuth } from "../services/Context";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {  useParams } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
+import { useEffect  } from "react";
+import { useMemo } from "react";
+
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -87,6 +90,8 @@ function MenuDrawer() {
   const params = useParams();
   const navigate = useNavigate();
   const { menuBarOpen, setMenuBarOpen } = useAuth();
+  const location =useLocation()
+  useMemo(() =>setMenuBarOpen(false),[location.pathname])
 
   return (
     <Drawer

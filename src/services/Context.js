@@ -11,6 +11,8 @@ export const ContextProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
 
+
+
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
 
   const analysisDataApi = async (attemptId) => {
