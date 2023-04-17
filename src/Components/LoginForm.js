@@ -16,7 +16,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
 
 
-const LoginForm = () => {
+const LoginForm = ({ setUserData }) => {
 
   function phoneValidationTest(message) {
     return this.test("isValidPhone", message, function (value) {
@@ -59,9 +59,9 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      console.log(values)
-      // api call
+      // alert(JSON.stringify(values, null, 2));
+      setUserData(values)
+      // api call(If any)
     },
   });
 
