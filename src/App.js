@@ -68,7 +68,7 @@ function App() {
           path="/mockcomparison/:mockId/:attemptId"
           element={<MockComparison />}
         />
-        <Route path="/onboarding/:mockId/:attemptId" element={<OnBoarding />} />
+        <Route path="/onboarding" element={<OnBoarding />} />
       </Routes>
     </ThemeProvider>
   );
