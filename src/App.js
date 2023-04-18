@@ -12,7 +12,7 @@ import DifficultyAnalysis from "./Analysis/DifficultyAnalysis";
 import OverallAnalysis from "./Analysis/OverallAnalysis";
 import ViewSolution from "./Pages/ViewSolution";
 import UserAuth from "./Pages/UserAuth";
-import LeaderBoard from "./LeaderBoard/LeaderBoard";
+import LeaderBoard from "./Pages/LeaderBoard";
 import AnalysisAcross from "./Pages/AnalysisAcross";
 import ErrorTracker from "./Pages/ErrorTracker";
 import GoalTracker from "./Pages/GoalTracker";

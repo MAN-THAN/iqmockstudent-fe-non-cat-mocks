@@ -103,16 +103,17 @@ export const MyButton = styled(Button)(({ height }) => ({
   padding: "10px ",
   height: `${height}px`,
   borderRadius: "15px",
-  backgroundColor: "#0654CE;",
+  backgroundColor: "#0090FF;",
   fontFamily: "var(--font-inter)",
   color: "white",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",
+    backgroundColor: "#0090FF;",
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#0062cc",
+    backgroundColor: "#0090FF",
   },
   "&:focus": {
     color: "white",
