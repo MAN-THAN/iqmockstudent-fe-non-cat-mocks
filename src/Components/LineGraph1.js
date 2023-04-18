@@ -23,9 +23,14 @@ export default class LineGraph1 extends PureComponent {
     const minY = Math.min(...this.state.map((d) => d.y));
     return { minX, minY };
   };
+  // if(this.state) { 
+  //   this.forceUpdate();
+  // }
 
     render() {
-       const { minX, minY } = this.getMinValues();
+      const { minX, minY } = this.getMinValues();
+      console.log(minX, minY, this.props.percentile);
+
     return (
       <ResponsiveContainer width="100%" height="100%">
         <LineChart

@@ -14,9 +14,27 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
+import { useEffect } from "react";
+import { format } from "date-fns";
 
 
 const LoginForm = ({ setUserData }) => {
+  const [category, setCategory] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDob] = useState(null);
+
+  useEffect(() => {
+    values.category = category;
+    values.gender = gender;
+    // values.dob = dob;
+  }, [category, gender]);
+
+  useEffect(() => {
+    const selectedDateString = dob?.$d ? format(dob.$d, "MM/dd/yyyy") : "";
+    console.log(selectedDateString);
+    // console.log(selectedDateString)
+    values.dob = selectedDateString;
+  }, [dob])
 
   function phoneValidationTest(message) {
     return this.test("isValidPhone", message, function (value) {
@@ -145,9 +163,9 @@ const LoginForm = ({ setUserData }) => {
               )}
               labelId="gender"
               id="gender"
-              value={values.gender}
+              value={gender}
               label="Age"
-              onChange={handleChange}
+              onChange={(e) => setGender(e.target.value)}
             >
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
@@ -181,8 +199,8 @@ const LoginForm = ({ setUserData }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Date of Birth"
-                value={values.dob}
-                onChange={handleChange}
+                value={dob}
+                onChange={(newVal) => setDob(newVal)}
                 renderInput={(params) => <TextField {...params} />}
                 slotProps={{ textField: { size: "small" } }}
               />
@@ -290,9 +308,9 @@ const LoginForm = ({ setUserData }) => {
               )}
               labelId="Category"
               id="category"
-              value={values.category}
+              value={category}
               label="Category"
-              onChange={handleChange}
+              onChange={(e) => setCategory(e.target.value)}
             >
               <MenuItem value={"general"}>General</MenuItem>
               <MenuItem value={"obc"}>OBC</MenuItem>
@@ -305,7 +323,7 @@ const LoginForm = ({ setUserData }) => {
             id="salary"
             name="salary"
             label="Salary(LPA)"
-            type="text"
+            type="tel"
             value={values.salary}
             onChange={handleChange}
             error={touched.salary && Boolean(errors.salary)}
@@ -326,7 +344,7 @@ const LoginForm = ({ setUserData }) => {
             id="work_experience"
             name="work_experience"
             label="Work Experience(Yr)"
-            type="email"
+            type="tel"
             value={values.work_experience}
             onChange={handleChange}
             error={touched.work_experience && Boolean(errors.work_experience)}
