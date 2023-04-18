@@ -1,35 +1,50 @@
 import React, { PureComponent } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-
-
 export default class LineGraph1 extends PureComponent {
   static demoUrl = "https://codesandbox.io/s/laughing-firefly-dfmkho?file=/src/Chart.tsx";
+
   constructor(props) {
     super(props);
-    this.state = [
-      {
-        x: 0,
-        y: 0,
-      },
-      {
-        x: this.props.percentile,
-        y: this.props.percentile,
-      },
-    ];
+    this.state = {
+      data: [
+        {
+          x: 0,
+          y: 0,
+        },
+        {
+          x: this.props.percentile,
+          y: this.props.percentile,
+        },
+      ],
+    };
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.percentile !== this.props.percentile) {
+      const newData = [
+        {
+          x: 0,
+          y: 0,
+        },
+        {
+          x: this.props.percentile,
+          y: this.props.percentile,
+        },
+      ];
+      this.setState({ data: newData });
+    }
+  }
+
   getMinValues = () => {
-    const minX = Math.min(...this.state.map((d) => d.x));
-    const minY = Math.min(...this.state.map((d) => d.y));
+    const minX = Math.min(...this.state.data.map((d) => d.x));
+    const minY = Math.min(...this.state.data.map((d) => d.y));
     return { minX, minY };
   };
-  // if(this.state) { 
-  //   this.forceUpdate();
-  // }
 
-    render() {
-      const { minX, minY } = this.getMinValues();
-      console.log(minX, minY, this.props.percentile);
+  render() {
+    const { minX, minY } = this.getMinValues();
+    console.log(minX, minY, this.props.percentile);
 
     return (
       <ResponsiveContainer width="100%" height="100%">
@@ -81,7 +96,7 @@ export default class LineGraph1 extends PureComponent {
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {/* <Tooltip /> */}
 
-          <Line strokeWidth={10} data={this.state} type="fill" dataKey="y" stroke="#0091FF" tooltipType="" activeDot={{ r: 40 }} />
+          <Line strokeWidth={10} data={this.state.data} type="fill" dataKey="y" stroke="#0091FF" tooltipType="" activeDot={{ r: 40 }} />
         </LineChart>
       </ResponsiveContainer>
     );

@@ -22,12 +22,16 @@ function OnBoarding() {
     }
   }, [userData]);
   // set percentile state
+
+
   useEffect(() => {
     console.log(a, b, c, d)
     console.log(Number(String(a) + String(b)));
     const newPtle = Number(String(a) + String(b));
     setPercentile(newPtle);
   }, [a, b, c, d]);
+
+
   console.log(percentile)
   const handleSubmit = () => {};
   return (
@@ -88,6 +92,19 @@ function OnBoarding() {
                   {a}
                 </Typography>
               </Box>
+              <img
+                onClick={() => {
+                  if (a > 0) {
+                    setA(a - 1);
+                  }
+                }}
+                src="/DecDown.svg"
+                alt="IncArrow"
+                width="12px"
+                height="12px"
+                style={{ cursor: "pointer" }}
+              />
+              
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <img
