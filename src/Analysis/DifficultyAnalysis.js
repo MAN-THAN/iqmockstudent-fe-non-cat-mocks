@@ -142,7 +142,7 @@ function DifficultyAnalysis() {
           show.map((item, ind) => {
             return (
               <div className="mx-auto">
-                <BarGrapgh Data={item} title={item.name} />
+                <BarGrapgh Data={item} title={item.name} width={"30vw"} legend={true} />
               </div>
             );
           })}
