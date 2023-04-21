@@ -15,8 +15,8 @@ export const CardWrapper = styled.div`
     font-weight: 600;
     margin-bottom: 1em;
     letter-spacing: 0em;
-    transition: opacity 0.4s ease-out;
-    opacity: 1; /* Set the initial opacity to 1 */
+    padding-bottom:2px;
+    border-bottom: 2px solid black;
   }
   .wrapper {
     display: flex;

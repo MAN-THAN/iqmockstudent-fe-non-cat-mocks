@@ -23,8 +23,6 @@ import { PacmanLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
-import HoverCard from "../Components/HoverCard";
-import NavigationGallery from "../Components/NavigationGallery";
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -709,9 +707,6 @@ function AnalysisMain() {
                 </div>
               </div>
               <Outlet />
-            </div>
-            <div className="container-fluid my-4">
-              <NavigationGallery />
             </div>
           </div>
         </>
