@@ -10,7 +10,8 @@ import CardContent from "@mui/material/CardContent";
 import { IoIosArrowForward } from "react-icons/io";
 import Button from "@mui/material/Button";
 import BarGrapgh from "../Components/BarGrapgh";
-import Avatar from "@mui/material/Avatar";
+
+import { useAuth } from "../services/Context";
 
 const disableStyle = {
   ":disabled": {
@@ -23,7 +24,6 @@ const disableStyle = {
     "& > span": {
       // apply style to child span element
       color: "green",
-
     },
   },
 };
@@ -77,21 +77,24 @@ function ErrorTracker() {
   const Subjects = [
     { name: "Varc" },
     { name: "Quants" },
-    {name: "LRdi",},
-    {name: "MBA",},
+    { name: "LRdi" },
+    { name: "MBA" },
     { name: "MIA" },
   ];
 
+  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+
   return (
-    <Box component="main" sx={{ display: "flex", height: "100vh" }}>
+    <>
+    <Box component="main" sx={{ height: "100vh", }}>
       <MenuDrawer />
 
-      <Box sx={{ flexGrow: 1, p: 2, width: "calc(100% -240px)" }}>
+      <Box sx={{p:2 , position:"absolute", left:"70px"}}>
         <Box component="header">
           <HeaderNew />
         </Box>
 
-        <Box component="div" sx={{ mt: 4 }}>
+        <Box component="div" sx={{ mt: 4,  }}>
           <MultipleSelect options={Subjects} />
           <Typography
             sx={{
@@ -106,8 +109,15 @@ function ErrorTracker() {
 
         <Box
           component="main"
-          sx={{ display: "flex", width: "100%", height: "76Vh" }}
+          sx={{ display: "flex", width: "100%", height: "76Vh", }}
         >
+          {menuBarOpen && (
+            <Backdrop
+              sx={{ zIndex: (theme) => theme.zIndex.drawer - 1, color: "#fff" }}
+              open={menuBarOpen}
+              onClick={() => setMenuBarOpen(false)}
+            />
+          )}
           {/* Graph side div start */}
           <Box
             sx={{
@@ -135,14 +145,15 @@ function ErrorTracker() {
             </Typography>
 
             {[...Array(10)].map((item, index) => (
-              <Box sx={{ display: "flex", pt: 3, gap:2 }}>
-              <div style={{width:"10px" ,height:"auto",borderRadius:"15px",backgroundColor:"#FFBD5E"}}></div>
+              <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
                 <Card
                   sx={{
                     maxWidth: " 100% ",
                     background: "#F6F7F8",
                     p: 2,
                     boxShadow: "none",
+                    borderLeft: "8px solid #FFBD5E",
+                    borderRadius: "5px 10px 10px 5px",
                   }}
                 >
                   <CardContent sx={{ display: "flex", gap: 2 }}>
@@ -165,7 +176,14 @@ function ErrorTracker() {
                     </Typography>
                   </CardContent>
                   <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
-                    <Box sx={{ display: "flex", columnGap:2, flexWrap:"wrap" , rowGap:2}}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        columnGap: 2,
+                        flexWrap: "wrap",
+                        rowGap: 2,
+                      }}
+                    >
                       <Button
                         size="medium"
                         disabled={true}
@@ -209,7 +227,6 @@ function ErrorTracker() {
                             color: "black !important",
                           },
                         }}
-                     
                         variant="contained"
                       >
                         Avg Time : <span>00:01:39</span>
@@ -234,6 +251,7 @@ function ErrorTracker() {
         </Box>
       </Box>
     </Box>
+    </>
   );
 }
 

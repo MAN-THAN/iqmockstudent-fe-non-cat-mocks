@@ -106,6 +106,7 @@ export const MyButton = styled(Button)(({ height }) => ({
   backgroundColor: "#0090FF;",
   fontFamily: "var(--font-inter)",
   color: "white",
+  cursor:"pointer",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",

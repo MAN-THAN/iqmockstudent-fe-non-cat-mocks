@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
+import MuiBackdrop from "@mui/material/Backdrop";
+import { styled } from "@mui/material/styles";
 
 export const Context = React.createContext();
 export function useAuth() {
   return useContext(Context);
 }
 
-export const ContextProvider = ({ children }) => { 
+export const ContextProvider = ({ children }) => {
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
-
-
 
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
 
@@ -68,6 +68,11 @@ export const ContextProvider = ({ children }) => {
   //   };
   // }, []);
 
+  const Backdrop = styled(MuiBackdrop)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  }));
+
   //Set data to variables according to category that data exports to pages accordin to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
@@ -91,6 +96,7 @@ export const ContextProvider = ({ children }) => {
           setMenuBarOpen,
           menuBarOpen,
           handlePageClick,
+          Backdrop,
         }}
       >
         {children}

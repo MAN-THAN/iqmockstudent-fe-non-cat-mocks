@@ -8,8 +8,29 @@ export const typographyStyles = {
     fontFamily: "var(--inter)",
     fontSize: "25px",
     fontWeight:600,
-      letterSpacing: " 0em",
+     letterSpacing: " 0em",
     textAlign: "left",
 
   }
 }
+
+
+export const style = {
+  HeadingStyle: {
+    fontFamily: "var(--inter)",
+    fontSize: "26px",
+    fontWeight: 800,
+    lineHeight: "33px",
+    letterSpacing: "-0.01em",
+    textAlign: "left",
+  },
+
+  subHeading: {
+    fontFamily: "var(--inter)",
+    fontSize: "17px",
+    fontWeight: 700,
+    lineHeight: "20px",
+    letterSpacing: "-0.01em",
+    textAlign: "left",
+  },
+};

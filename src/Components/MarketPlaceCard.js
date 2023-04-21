@@ -6,26 +6,9 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { MyButton } from "../styleSheets/Style";
+import {style} from "../styleSheets/StyleNew"
 export default function ImgMediaCard() {
-  const style = {
-    HeadingStyle: {
-      fontFamily: "var(--inter)",
-      fontSize: "26px",
-      fontWeight: 800,
-      lineHeight: "33px",
-      letterSpacing: "-0.01em",
-      textAlign: "left",
-    },
-
-    subHeading: {
-      fontFamily: "var(--inter)",
-      fontSize: "17px",
-      fontWeight: 700,
-      lineHeight: "20px",
-      letterSpacing: "-0.01em",
-      textAlign: "left",
-    },
-  };
+ 
 
   return (
     <Card sx={{ maxWidth: 259, boxShadow: "none" }}>
