@@ -36,8 +36,7 @@ function OverallAnalysis() {
           display: "flex",
           justifyContent: "center",
           alignContent: "center",
-          p: 3,
-          pt: 0,
+           p: 1,
           flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
         }}
       >

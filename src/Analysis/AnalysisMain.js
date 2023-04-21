@@ -6,14 +6,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
-import Badge from "react-bootstrap/Badge";
+import HeaderNew from "../Components/HeaderNew";
 import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Fade from "@mui/material/Fade";
-import Zoom from "@mui/material/Zoom";
 import { styled } from "@mui/material/styles";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -24,13 +23,70 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
 
+const DataCards = ({ tooltip, cardTitle, icon }) => {
+  // Tooltip Customisation
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+    },
+  }));
+
+  return (
+    <BootstrapTooltip
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 300 }}
+      title={tooltip}
+      followCursor
+    >
+      <div
+        className="card shadow flex-item"
+        style={{
+          width: "12.5em",
+          height: "4.979375em",
+          border: "1px solid white",
+        }}
+      >
+        <div className="card-body d-flex flex-row justify-content-between align-items-center">
+          <div className="flex-item ">
+            <SubHeading className="card-title" sx={{ fontSize: 15 }}>
+              {cardTitle}
+            </SubHeading>
+
+            <Typography variant="paragraph" sx={{ fontSize: "10px", mt: 0 }}>
+              Potential Mark
+            </Typography>
+          </div>
+
+          <div className="flex-item">
+            <img src={icon} alt="" className="img-fluid" width={32} />
+          </div>
+        </div>
+      </div>
+    </BootstrapTooltip>
+  );
+};
+
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
   const { mockId, attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis, isErr, handlePageClick } =
-    useAuth();
+  const {
+    analysisDataApi,
+    isLoading,
+    basicAnalysis,
+    isErr,
+    handlePageClick,
+    menuBarOpen,
+    setMenuBarOpen,
+    Backdrop,
+  } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
@@ -49,6 +105,7 @@ function AnalysisMain() {
       setBasicData(basicAnalysis.basicAnalysis);
     }
   }, [basicAnalysis]);
+
   const {
     uid,
     name,
@@ -89,19 +146,6 @@ function AnalysisMain() {
     navigate(`sectionwise/${sub}`);
   };
 
-  // Tooltip Customisation
-
-  const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: theme.palette.common.black,
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-    },
-  }));
-
   const showToastMessage = () => {
     toast.error("Some error occurred! Please reload the page.", {
       position: toast.POSITION.TOP_CENTER,
@@ -114,6 +158,29 @@ function AnalysisMain() {
       showToastMessage();
     }
   }, [isErr]);
+
+  const CardsData = [
+    {
+      tooltip: "Potential",
+      cardTitle: potentialScore,
+      icon: "/PM.png",
+    },
+    {
+      tooltip: "Negative Mark",
+      cardTitle: negativeMarks,
+      icon: "/NM.png",
+    },
+    {
+      tooltip: "Your Accuracy boy!!!",
+      cardTitle: accuracy,
+      icon: "/Acc.png",
+    },
+    {
+      tooltip: "Overall Percentage boy!!!",
+      cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
+      icon: "/PS.png",
+    },
+  ];
 
   return (
     <>
@@ -143,150 +210,55 @@ function AnalysisMain() {
         <>
           <div
             id="my-component"
-            className="p-2 "
             style={{
               background: "var(--background)",
               position: "absolute",
               left: "70px",
+              padding: "15px",
             }}
           >
             <MenuDrawer />
 
-            <div className="flex-grow-1  " onClick={handlePageClick}>
+            <div className=" " onClick={handlePageClick}>
+              {menuBarOpen && (
+                <Backdrop
+                  sx={{
+                    zIndex: (theme) => theme.zIndex.drawer - 1,
+                    color: "#fff",
+                  }}
+                  open={menuBarOpen}
+                  onClick={() => setMenuBarOpen(false)}
+                />
+              )}
               {/* Header */}
-              <header className="mx-4">
-                <div className="container-fluid py-4 ">
-                  <div className="d-flex  align-items-center justify-content-between justify-content-lg-between">
-                    <div>
-                      <NavLink to="/">
-                        <img
-                          src="/iQuanta.png"
-                          alt="iquanta_logo"
-                          className="img-fluid iquanta_logo"
-                        />
-                      </NavLink>
-                    </div>
+              <div className="container-fluid">
+                <HeaderNew />
+              </div>
 
-                    <div className="d-flex gap-3  align-items-center ">
-                      <div className="text-end ps-5">
-                        <img
-                          src="/LeaderBoard.png"
-                          className="img-fluid"
-                          alt=""
-                          width={100}
-                        />
-                      </div>
-
-                      <div className="text-end">
-                        <Button
-                          variant="contained"
-                          onClick={() =>
-                            navigate(
-                              `/leaderboard/${params.mockId}/${attemptId}`
-                            )
-                          }
-                          sx={{
-                            background: "black",
-                            textTransform: "none",
-                            height: "60px",
-                            width: "64px",
-                            fontFamily: "var(--font-inter)",
-                            borderRadius: "50%",
-                            "&:hover": {
-                              border: "1px solid #FFC717",
-                              backgroundColor: "black",
-                            },
-                          }}
-                        >
-                          <img src="/LB.png" className="img-fluid" width={20} />
-                        </Button>
-                      </div>
-
-                      <div className="text-end">
-                        {/* <Button
-                      startIcon={<img src="/Help.png" className="img-fluid" width={25} />}
-                      variant="contained"
-                      sx={{
-                        background: "black",
-                        color: "white",
-                        fontSize: "20px",
-                        textTransform: "none",
-                        fontFamily: "var(--font-inter)",
-                        width: "119px",
-                        height: "60px",
-                        borderRadius: "30px",
-                        "&:hover": {
-                          border: "1px solid #0058FF",
-                          backgroundColor: "black",
-                        },
-                      }}
-                    >
-                      Help
-                    </Button> */}
-                      </div>
-
-                      <div className="text-end">
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--font-inter)",
-                            fontSize: "19px",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {basicData.name}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--font-inter)",
-                            fontSize: "13px",
-                            fontWeight: 400,
-                          }}
-                        >
-                          User id :{uid}
-                        </Typography>
-                      </div>
-
-                      <div className="d-flex">
-                        <a
-                          href="#"
-                          className="d-block link-dark text-decoration-none "
-                          aria-expanded="false"
-                        >
-                          <img
-                            src="https://github.com/mdo.png"
-                            alt="mdo"
-                            width="50"
-                            height="50"
-                            className="rounded"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </header>
               {/* Header end */}
               <div
                 className={
                   pdfStyle
-                    ? " d-flex  flex-wrap  justify-content-center align-items-center mx-4"
-                    : " d-flex   flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center mx-4"
+                    ? " d-flex  flex-wrap  justify-content-center align-items-center "
+                    : " d-flex  flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center py-3 px-2"
                 }
               >
-                <div className="flex-item p-3 flex-fill">
+                <div className="flex-item " style={{ flexBasis: "40%" }}>
                   <Typography
                     variant="h4"
                     sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
                   >
                     Hey {name},
+                    <br />
                   </Typography>
                   <Typography
                     sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}
                   >
-                    This is your mock analysis for {title ? title : "iCAT 1.0"}.
+                    This is your mock analysis for <br />{" "}
+                    {title ? title : "iCAT 1.0"}.
                   </Typography>
                   <br />
-                  <div className="d-flex gap-3 m-3 ms-0 ">
+                  {/* <div className="d-flex gap-3 m-3 ms-0 ">
                     <ModifyButton
                       variant="filled"
                       onClick={() =>
@@ -327,251 +299,127 @@ function AnalysisMain() {
                     >
                       Download report
                     </ModifyButton>
-                  </div>
+                  </div> */}
                 </div>
 
-                <div className="flex-item p-3  flex-fill">
+                <div className="flex-item" style={{ flexBasis: "30%" }}>
                   <div
-                    className="container bg-warning   "
-                    style={{ borderRadius: "15px", width: "auto" }}
+                    className="mx-auto"
+                    style={{
+                      borderRadius: "15px",
+                      width: "auto",
+                      background: "#FFC412",
+                      width: "18.875em",
+                      height: "11em",
+                    }}
                   >
-                    <div className=" d-flex gap-2 flex-column justify-content-center align-items-center py-3">
-                      <div className="text-center">
+                    <div className=" d-flex justify-content-between align-items-center align-content-center p-3 ">
+                      <div className="flex-item">
                         <Typography
                           sx={{
-                            fontSize: "30px",
+                            fontSize: "26px",
                             fontFamily: "var( --font-inter)",
                             fontWeight: "bolder",
                           }}
                         >
                           Your score
+                          <Typography
+                            sx={{
+                              fontSize: "15px",
+                              fontFamily: "var( --font-inter)",
+                              fontWeight: "600",
+                            }}
+                          >
+                            {" "}
+                            out of 196
+                          </Typography>
                         </Typography>
+                      </div>
+                      <div className="flex-item">
                         <Typography
                           sx={{
-                            fontSize: "52px",
+                            fontSize: "46px",
                             fontFamily: "var( --font-inter)",
                             fontWeight: "900",
                           }}
                         >
-                          {" "}
                           {overallScore}
                         </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: "26px",
-                            fontFamily: "var( --font-inter)",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {" "}
-                          out of 196
-                        </Typography>
                       </div>
-                      <div className="pt-1">
-                        <Card
+                    </div>
+                    <div className="pt-1">
+                      <Card
+                        sx={{
+                          height: 49,
+                          width: 262,
+                          borderRadius: "8.25px",
+                          mx: "auto",
+                        }}
+                      >
+                        <CardContent
                           sx={{
-                            height: 70,
-                            width: "maxWidth",
-                            borderRadius: "13px",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            gap: 6,
+                            fontWeight: 600,
+                            alignItem: "center",
                           }}
                         >
-                          <CardContent
-                            sx={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              px: 3,
-                              gap: { md: 3, lg: 5, xl: 5 },
-                              alignItem: "center",
-                            }}
-                          >
-                            <item>
-                              <Typography
-                                sx={{
-                                  fontSize: "23px",
-                                  color: "black",
-                                  fontWeight: 600,
-                                  fontFamily: "var(--font-inter)",
-                                }}
-                                gutterBottom
-                              >
-                                Percentile
-                              </Typography>
-                            </item>
-                            <item>
-                              <Typography
-                                sx={{
-                                  fontSize: "23px",
-                                  color: "black",
-                                  fontWeight: 600,
+                          <item>
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                color: "black",
+                                fontWeight: 600,
+                                fontFamily: "var(--font-inter)",
+                              }}
+                              gutterBottom
+                            >
+                              Percentile
+                            </Typography>
+                          </item>
+                          <item>
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                color: "black",
+                                fontWeight: 600,
 
-                                  fontFamily: "var(--font-inter)",
-                                }}
-                                gutterBottom
-                              >
-                                {percentile}
-                              </Typography>
-                            </item>
-                          </CardContent>
-                        </Card>
-                      </div>
+                                fontFamily: "var(--font-inter)",
+                              }}
+                              gutterBottom
+                            >
+                              {percentile}
+                            </Typography>
+                          </item>
+                        </CardContent>
+                      </Card>
                     </div>
                   </div>
                 </div>
 
-                <div className="  flex-item p-3 flex-fill   ">
-                  <div className=" d-flex  justify-content-center  flex-wrap gap-4">
-                    <BootstrapTooltip
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 300 }}
-                      title="Potential"
-                      followCursor
-                    >
-                      <div
-                        className="card shadow flex-item  flex-fill  my-2 "
-                        style={{
-                          width: "43%",
-                          height: "7em",
-                          border: "1px solid white",
-                        }}
-                      >
-                        <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                          <div className="flex-item ">
-                            <SubHeading className="card-title">
-                              {potentialScore}
-                            </SubHeading>
+                {/* Cards sections */}
 
-                            <Typography
-                              variant="paragraph"
-                              sx={{ fontSize: "13px" }}
-                            >
-                              Potential Mark
-                            </Typography>
-                          </div>
-
-                          <div className="flex-item">
-                            <img
-                              src="/PM.png"
-                              alt=""
-                              className="img-fluid"
-                              width={50}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </BootstrapTooltip>
-                    <BootstrapTooltip
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 300 }}
-                      title="Negative Mark"
-                      followCursor
-                    >
-                      <div
-                        className="card shadow flex-item flex-fill  my-2 "
-                        style={{
-                          width: "43%",
-                          height: "7em",
-                          border: "1px solid white",
-                        }}
-                      >
-                        <div className="card-body d-flex flex-row justify-content-between align-items-center">
-                          <div className="flex-item">
-                            <SubHeading className="card-title">
-                              {negativeMarks}
-                            </SubHeading>
-                            <Typography variant="paragraph">
-                              Negative Mark
-                            </Typography>
-                          </div>
-
-                          <div className="flex-item">
-                            <img
-                              src="/NM.png"
-                              alt=""
-                              className="img-fluid"
-                              width={50}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </BootstrapTooltip>
-                    <BootstrapTooltip
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 300 }}
-                      title="Your Accuracy boy!!!"
-                      followCursor
-                    >
-                      <div
-                        className="card shadow flex-item flex-fill  my-2"
-                        style={{
-                          width: "43%",
-                          height: "7em",
-                          border: "1px solid white",
-                        }}
-                      >
-                        <div className="card-body d-flex flex-row justify-content-between align-items-center ">
-                          <div className="flex-item ">
-                            <SubHeading className="card-title">
-                              {accuracy}
-                            </SubHeading>
-                            <Typography variant="paragraph">
-                              % Accuracy
-                            </Typography>
-                          </div>
-
-                          <div className="flex-item">
-                            <img
-                              src="/Acc.png"
-                              alt=""
-                              className="img-fluid"
-                              width={50}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </BootstrapTooltip>
-                    <BootstrapTooltip
-                      TransitionComponent={Fade}
-                      TransitionProps={{ timeout: 300 }}
-                      title="Overall Percentage boy!!!"
-                      followCursor
-                    >
-                      <div
-                        className="card shadow flex-item  flex-fill  my-2"
-                        style={{
-                          width: "43%",
-                          height: "7em",
-                          border: "1px solid white",
-                        }}
-                      >
-                        <div className="card-body d-flex flex-row justify-content-between align-items-center flex-fill">
-                          <div className="flex-item ">
-                            <SubHeading className="card-title">
-                              {+overallPercentage < 0 ? 0 : +overallPercentage}
-                            </SubHeading>
-                            <Typography variant="paragraph">% Score</Typography>
-                          </div>
-
-                          <div className="flex-item">
-                            <img
-                              src="/PS.png"
-                              alt="ps.png"
-                              className="img-fluid"
-                              width={50}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </BootstrapTooltip>
+                <div className="  flex-item " style={{ flexBasis: "30%" }}>
+                  <div className=" d-flex  justify-content-start  flex-wrap gap-3 row-gap-2 ">
+                    {CardsData.map((item, index) => (
+                      <DataCards
+                        key={index}
+                        tooltip={item.tooltip}
+                        cardTitle={item.cardTitle}
+                        icon={item.icon}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
 
               {/* Buttons for changing sections */}
-              <div className=" d-flex  m-5 ms-4  align-items-center">
+              <div className=" d-flex mt-3">
                 <div
                   style={{ flexBasis: "70%" }}
-                  className=" d-flex  gap-3 ms-3"
+                  className=" d-flex gap-3 ps-2"
                 >
                   <NavLink
                     to="overall"
@@ -677,7 +525,7 @@ function AnalysisMain() {
                   className={
                     location.pathname ===
                     `/analysis/${mockId}/${attemptId}/overall`
-                      ? "flex-item ps-4"
+                      ? "flex-item "
                       : "d-none"
                   }
                 >
@@ -686,13 +534,12 @@ function AnalysisMain() {
                     sx={{
                       boxShadow: "none",
                       textTransform: "none",
-                      fontSize: "18px",
+                      fontSize: "13px",
                       fontWeight: 500,
                       width: "auto",
                       height: "auto",
                       color: "white",
                       padding: "8px 16px",
-
                       borderRadius: "20px",
                       lineHeight: 1.5,
                       backgroundColor: "#0057CB",
@@ -702,7 +549,12 @@ function AnalysisMain() {
                     Time spent on questions(sec):
                   </Box>
                   <span>
-                    <img src="/Group17.svg" className="ms-2 mb-1" alt="" />
+                    <img
+                      src="/Group17.svg"
+                      className="ms-2"
+                      width={20}
+                      alt=""
+                    />
                   </span>
                 </div>
               </div>

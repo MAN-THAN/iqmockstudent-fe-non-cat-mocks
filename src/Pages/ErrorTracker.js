@@ -90,7 +90,7 @@ function ErrorTracker() {
       <MenuDrawer />
 
       <Box sx={{p:2 , position:"absolute", left:"70px"}}>
-        <Box component="header">
+        <Box component="header" >
           <HeaderNew />
         </Box>
 
