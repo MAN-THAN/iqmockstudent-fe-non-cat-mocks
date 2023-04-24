@@ -14,6 +14,50 @@ import { useAuth } from "../services/Context";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import { DrawerData } from "../services/DataFiles";
+
+// const DrawerData=[
+//   {
+//     text: "Analysis",
+//     icon: "Group138.png",
+//     path: `/analysis/${params.mockId}/${params.attemptId}/overall`,
+//   },
+//   {
+//     text: "View Solution",
+//     icon: "view-sol-menu.png",
+//     path: `/viewsolutions/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Leader Board",
+//     icon: "podium1.png",
+//     path: `/leaderboard/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Goal Tracker",
+//     icon: "goal1.png",
+//     path: `/goaltracker/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Market Place",
+//     icon: "shopping-bag.png",
+//     path: `/marketplace/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Error Tracker",
+//     icon: "errorTracker.png",
+//     path: `/errortracker/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Overall across analysis",
+//     icon: "overallAcross.png",
+//     path: `/analysisacross/${params.mockId}/${params.attemptId}`,
+//   },
+//   {
+//     text: "Mock comparison",
+//     icon: "mockCompare.png",
+//     path: `/mockcomparison/${params.mockId}/${params.attemptId}`,
+//   },
+// ]
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -72,6 +116,8 @@ function MenuDrawer() {
   const location = useLocation();
   useMemo(() => setMenuBarOpen(false), [location.pathname]);
 
+  const drawer = DrawerData(params.mockId, params.attemptId);
+
   return (
     <>
       <Drawer
@@ -90,78 +136,42 @@ function MenuDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {[
-            {
-              text: "Analysis",
-              icon: "Group138.png",
-              path: `/analysis/${params.mockId}/${params.attemptId}/overall`,
-            },
-            {
-              text: "View Solution",
-              icon: "view-sol-menu.png",
-              path: `/viewsolutions/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Leader Board",
-              icon: "podium1.png",
-              path: `/leaderboard/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Goal Tracker",
-              icon: "goal1.png",
-              path: `/goaltracker/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Market Place",
-              icon: "shopping-bag.png",
-              path: `/marketplace/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Error Tracker",
-              icon: "errorTracker.png",
-              path: `/errortracker/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Overall across analysis",
-              icon: "overallAcross.png",
-              path: `/analysisacross/${params.mockId}/${params.attemptId}`,
-            },
-            {
-              text: "Mock comparison",
-              icon: "mockCompare.png",
-              path: `/mockcomparison/${params.mockId}/${params.attemptId}`,
-            },
-          ].map((item, _) => (
-            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: menuBarOpen ? "initial" : "center",
-                  px: 2.5,
-                  mb: 1,
-                }}
-                onClick={() => navigate(item.path)}
+          {drawer &&
+            drawer.map((item, _) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: menuBarOpen ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: menuBarOpen ? "initial" : "center",
+                    px: 2.5,
+                    mb: 1,
                   }}
+                  onClick={() => navigate(item.path)}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/" + item.icon}
-                    className="img-fluid"
-                    width={22}
-                    alt=""
-                  />
-                </ListItemIcon>
-                <ListItemText sx={{ opacity: menuBarOpen ? 1 : 0 }}>
-                  <Typography variant="paragraph">{item.text}</Typography>
-                </ListItemText>
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: menuBarOpen ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/" + item.icon}
+                      className="img-fluid"
+                      width={22}
+                      alt=""
+                    />
+                  </ListItemIcon>
+                  <ListItemText sx={{ opacity: menuBarOpen ? 1 : 0 }}>
+                    <Typography variant="paragraph">{item.text}</Typography>
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+            ))}
         </List>
         <Divider />
         <List
