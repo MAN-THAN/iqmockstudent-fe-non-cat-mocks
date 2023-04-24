@@ -21,7 +21,6 @@ import { PuffLoader } from "react-spinners";
 import ImageButton from "./ImageButton";
 
 function CenterMain() {
-  const navigate = useNavigate();
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState(null); //state store select options index
@@ -31,31 +30,7 @@ function CenterMain() {
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
 
-  // const [content, setContent] = useState("");
-
-  // useEffect(() => {
-  //   const fetchContent = async (url) => {
-  //     try {
-  //       const response = await fetch(url);
-  //       const data = await response.text();
-  //       setContent(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   if (
-  //     questionStatus?.length > 0 &&
-  //     questionStatus[selectedQuestionIndex]?.options
-  //   ) {
-  //     const link = questionStatus[selectedQuestionIndex].options[0];
-
-  //     if (link.endsWith(".html")) {
-  //       fetchContent(link);
-  //     }
-  //   }
-  // }, [questionStatus, selectedQuestionIndex]);
-
+ 
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
