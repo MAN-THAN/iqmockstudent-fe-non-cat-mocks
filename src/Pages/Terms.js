@@ -1,16 +1,16 @@
 import { Link, Typography } from "@mui/material";
 import React, {useState } from "react";
 import { BootstrapButton, SubHeading } from "../styleSheets/Style";
-import { useNavigate,useParams } from "react-router-dom";
+import { useLocation, useNavigate,useParams } from "react-router-dom";
 
 
 
 function Terms() {
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
-  const params = useParams()
+  const { state } = useLocation();
  
-  console.log(params)
+  // console.log(params)
   return (
     <div className="container overflow-hidden d-flex-col justify-content-center align-content-center">
       <div className="logo container text-center my-4">
@@ -95,7 +95,7 @@ function Terms() {
               background: agree ? "" : "#d2d4d6",
               borderRadius: "30px",
             }}
-            onClick={() => navigate(`/user_authentication/${params.name}/${params.email}/${params.uid}/${params.mockId}`)}
+            onClick={() => navigate(`/main/${state.mockId}/varc`)}
           >
             Start Test
           </BootstrapButton>

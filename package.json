@@ -20,8 +20,10 @@
     "antd": "^5.3.1",
     "awesome-react-calculator": "^1.1.0",
     "axios": "^1.3.4",
+    "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "formik": "^2.2.9",
     "html2pdf.js": "^0.10.1",
     "iframe-resizer": "^4.3.6",
     "material-ui-popup-state": "^5.0.5",
@@ -42,9 +44,14 @@
     "react-spinners": "^0.13.8",
     "react-toastify": "^9.1.2",
     "recharts": "^2.5.0",
+<<<<<<< HEAD
     "styled-components": "^5.3.9",
     "swiper": "^9.2.3",
     "web-vitals": "^2.1.4"
+=======
+    "web-vitals": "^2.1.4",
+    "yup": "^1.1.0"
+>>>>>>> 566fd3a952748adf88e98cedc667af22c9896622
   },
   "scripts": {
     "start": "react-scripts start",

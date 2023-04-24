@@ -19,17 +19,15 @@ import GoalTracker from "./Pages/GoalTracker";
 import MarketPlace from "./Pages/MarketPlace";
 import MockComparison from "./Pages/MockComparison";
 import OnBoarding from "./Pages/OnBoarding";
+import Login from "./Pages/Login";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<Instructions />} />
-        <Route path="/terms/:name/:email/:uid/:mockId" element={<Terms />} />
-        <Route
-          path="/user_authentication/:name/:email/:uid/:mockId"
-          element={<UserAuth />}
-        />
+        <Route path="/instructions" element={<Instructions />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/user_authentication" element={<UserAuth />} />
         <Route path="/main/:mockId/:type" element={<Protected Comp={Main} />} />
 
         <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
@@ -38,37 +36,16 @@ function App() {
           <Route path="overall" element={<OverallAnalysis />} />
           <Route path="difficulty" element={<DifficultyAnalysis />} />
         </Route>
-        <Route
-          path="/leaderboard/:mockId/:attemptId"
-          element={<LeaderBoard />}
-        />
-        <Route
-          path="/viewsolutions/:mockId/:attemptId"
-          element={<ViewSolution />}
-        />
+        <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
+        <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
         <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
 
-        <Route
-          path="/analysisacross/:mockId/:attemptId"
-          element={<AnalysisAcross />}
-        />
-        <Route
-          path="/errortracker/:mockId/:attemptId"
-          element={<ErrorTracker />}
-        />
-        <Route
-          path="/goaltracker/:mockId/:attemptId"
-          element={<GoalTracker />}
-        />
-        <Route
-          path="/marketplace/:mockId/:attemptId"
-          element={<MarketPlace />}
-        />
-        <Route
-          path="/mockcomparison/:mockId/:attemptId"
-          element={<MockComparison />}
-        />
-        <Route path="/onboarding/:mockId/:attemptId" element={<OnBoarding />} />
+        <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross />} />
+        <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker />} />
+        <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker />} />
+        <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace />} />
+        <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison />} />
+        <Route path="/" element={<OnBoarding />} />
       </Routes>
     </ThemeProvider>
   );

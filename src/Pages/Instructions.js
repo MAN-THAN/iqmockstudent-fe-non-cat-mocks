@@ -1,11 +1,12 @@
 import { Link, ListItemText, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { BootstrapButton, SubHeading } from "../styleSheets/Style";
-import { useNavigate } from "react-router-dom";
+import { UNSAFE_LocationContext, useLocation, useNavigate, useParams } from "react-router-dom";
 import BasicModal from "../Components/userInfo";
 
 function Instructions() {
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   return (
     <div className="container overflow-hidden ">
@@ -227,17 +228,21 @@ function Instructions() {
           </ol>
         </div>
         <div className="d-flex w-100 justify-content-center">
-          {/* <BootstrapButton
-          height="30"
-          variant="contained mx-auto"
-          sx={{ color: "white", p: 3, my: 2 ,borderRadius:"30px"}}
-          onClick={() => navigate(`/terms`)}
-        
-        >
-          Next
-        </BootstrapButton> */}
-
-          <BasicModal />
+          <BootstrapButton
+            height="30"
+            variant="contained mx-auto"
+            sx={{ color: "white", p: 3, my: 2, borderRadius: "30px" }}
+            onClick={() =>
+              navigate(`/terms`, {
+                state: {
+                  mockId: state.mockId,
+                },
+              })
+            }
+          >
+            Next
+          </BootstrapButton>
+          {/* <BasicModal /> */}
         </div>
       </div>
     </div>
