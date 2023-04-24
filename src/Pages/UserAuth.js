@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { getAttemptId } from "../services/Mock_api";
 import { RingLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,9 +8,10 @@ import { useState } from "react";
 
 const UserAuth = () => {
   const navigate = useNavigate();
-  const { name, email, uid ,mockId} = useParams();
+  // const { name, email, uid , mockId } = useParams();
   const [loader, setLoader] = useState(true);
-
+  const { state } = useLocation();
+console.log(state)
   useEffect(() => {
     userAuthCheck();
   }, []);
@@ -22,7 +23,11 @@ const UserAuth = () => {
     if (attemptID) {
       console.log("userAttemptID", attemptID);
       console.log("go to m0ck page");
-      navigate(`/main/${mockId}/varc`);
+      // navigate(`/main/${state.mockId}/varc`);
+      navigate(`/instructions`, {
+        state: {
+        mockId : state.mockId
+      } });
     } else {
       console.log("you dont have an attempt id");
       createAttemptId();
@@ -31,7 +36,7 @@ const UserAuth = () => {
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const response = await getAttemptId(name, email, uid, mockId);
+    const response = await getAttemptId(state.name, state.email, state.uid, state.mockId);
     console.log(response);
     if (response?.status === 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));

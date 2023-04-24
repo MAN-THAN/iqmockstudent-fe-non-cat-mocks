@@ -6,6 +6,7 @@ import LineChart1 from "../Components/LineGraph1";
 import LoginForm from "../Components/LoginForm";
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -15,25 +16,29 @@ function OnBoarding() {
   const [b, setB] = useState(8);
   const [c, setC] = useState(0);
   const [d, setD] = useState(0);
+  const navigate = useNavigate();
   console.log(userData);
+ 
   useEffect(() => {
     if (userData) {
       setUserVerified(true);
     }
   }, [userData]);
   // set percentile state
-
-
+console.log(userData)
   useEffect(() => {
-    console.log(a, b, c, d)
+    console.log(a, b, c, d);
     console.log(Number(String(a) + String(b)));
-    const newPtle = Number(String(a) + String(b));
+    const newPtle = Number(String(a) + String(b) + "." + String(c) + String(d));
     setPercentile(newPtle);
   }, [a, b, c, d]);
 
-
-  console.log(percentile)
-  const handleSubmit = () => {};
+  console.log(percentile);
+  const handleSubmit = () => {
+    navigate("/user_authentication", {
+      state: { name: "manthan", email: "xyz@gmail.com", uid: "323445343356", mockId: "6430e9e837185e086ad69368" },
+    });
+  };
   return (
     <Box
       component="main"
@@ -60,16 +65,19 @@ function OnBoarding() {
         <LoginForm setUserData={setUserData} />
       </Box>
       <Box sx={{ position: "absolute", bottom: "28.5%", right: 50 }}>
-        <Button
-          startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
-          sx={{ background: "linear-gradient(to bottom, #306DF8, #661FCF)" }}
-          variant="contained"
-          style={{ borderRadius: "25px", padding: "14px" }}
-          disabled={!isUserVerified}
-          onClick={handleSubmit}
-        >
-          Start Mock
-        </Button>
+        {isUserVerified ? (
+          <Button
+            startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
+            sx={{ background: "linear-gradient(to bottom, #306DF8, #661FCF)" }}
+            variant="contained"
+            style={{ borderRadius: "25px", padding: "14px" }}
+            onClick={handleSubmit}
+          >
+            Start Mock
+          </Button>
+        ) : (
+          <></>
+        )}
       </Box>
       <Box sx={{ position: "absolute", right: 200, top: 120, display: "flex", flexDirection: "row", gap: "10px" }}>
         <Box sx={{ width: "9.43em", height: "4.87em", background: "white", borderRadius: "10px", paddingLeft: 2, paddingRight: 2, paddingTop: 0.4 }}>
@@ -104,7 +112,6 @@ function OnBoarding() {
                 height="12px"
                 style={{ cursor: "pointer" }}
               />
-              
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <img
