@@ -22,13 +22,14 @@ import "../styleSheets/AnalysisMain.css";
 import { PacmanLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MenuDrawer from "../Components/MenuDrawer";
 
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
   const { mockId, attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis, isErr } = useAuth();
+  const { analysisDataApi, isLoading, basicAnalysis, isErr,handlePageClick } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
@@ -138,11 +139,19 @@ function AnalysisMain() {
           </h5>
         </div>
       ) : (
+
+    
         <div
           id="my-component"
-          className=" p-0 "
+          className=" p-0  d-flex "
           style={{ background: "var(--background)" }}
         >
+
+         <MenuDrawer/>
+
+
+         <div className="flex-grow-1" onClick={handlePageClick}>
+          
           {/* Header */}
           <header className="mx-4">
             <div className="container-fluid py-4 ">
@@ -679,6 +688,7 @@ function AnalysisMain() {
             </div>
           </div>
           <Outlet />
+         </div>
         </div>
       )}
     </>

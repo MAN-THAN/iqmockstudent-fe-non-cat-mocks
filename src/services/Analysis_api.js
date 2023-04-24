@@ -5,7 +5,7 @@ import request from "./Request";
 export const fetchAnalysisData = async (attempt_id) => {
   try {
     const res = await request({
-      url: `api/student/v1/analyse/create/${attempt_id}`,
+      url: `/api/student/v1/analyse/create/${attempt_id}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
@@ -18,7 +18,7 @@ export const fetchAnalysisData = async (attempt_id) => {
 export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
   try {
     const res = request({
-      url: `${process.env.REACT_APP_BASE_URL}/api/student/v1/analyse/createleaderBoard/${mockId}/${startDate}/${endDate}/${attemptId}`,
+      url: `/api/student/v1/analyse/createleaderBoard/${mockId}/${attemptId}/${startDate}/${endDate}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
