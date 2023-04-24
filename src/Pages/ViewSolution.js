@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { IoBookSharp } from "react-icons/io5";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { BootstrapButton, BootstrapTooltip } from "../styleSheets/Style";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { StyledMenu } from "../styleSheets/Style";
 import Zoom from "@mui/material/Zoom";
@@ -14,6 +14,7 @@ import { Paper } from "@mui/material";
 import TempCompo from "../Components/tempCompo";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import Latex from "react-latex-next";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
@@ -21,11 +22,38 @@ import { MyButton } from "../styleSheets/Style";
 import MenuDrawer from "../Components/MenuDrawer";
 import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
+import { fetchViewSolution } from "../services/Analysis_api";
+
 
 function ViewSolution() {
   const { handlePageClick } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState("Verbal Ability");
+  const { attemptId } = useParams();
+  const [data, setData] = useState();
+  const [show, setShow] = useState([]);
+  const [index, setIndex] = useState(0);
+  console.log(show);
+
+  // function getting data on mounting
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => { 
+  }, [])
+
+  // function for fetching data
+
+  const getData = async () => {
+    const res = await fetchViewSolution(attemptId);
+    if (res?.status == 200) {
+      setData(res.data);
+      setShow(res.data.varc);
+    } else {
+      console.log("error", res);
+    }
+  };
 
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -34,15 +62,23 @@ function ViewSolution() {
   const handleClose = (sub) => {
     setAnchorEl(null);
     setSelected(sub);
+    console.log(sub);
+    if (sub === "Verbal Ability") {
+      setShow(data.varc);
+    }
+    else if (sub === "Logical Reasoning") {
+      setShow(data.lrdi);
+    }
+    else { 
+       setShow(data.quants);
+    }
+    return setIndex(0);
   };
 
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 2,width: "calc(100% - 240px)", height: "100%" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 2, width: "calc(100% - 240px)", height: "100%" }}>
         <Box component="div" sx={{ height: "10%" }}>
           <HeaderNew />
         </Box>
@@ -90,8 +126,7 @@ function ViewSolution() {
             >
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Verbal Ability" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Verbal Ability" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Verbal Ability")}
                 disableRipple
@@ -102,8 +137,7 @@ function ViewSolution() {
               <Divider sx={{ my: 0.5 }} />
               <MenuItem
                 sx={{
-                  backgroundColor:
-                    selected === "Logical Reasoning" ? "#f5f5f5" : "",
+                  backgroundColor: selected === "Logical Reasoning" ? "#f5f5f5" : "",
                 }}
                 onClick={() => handleClose("Logical Reasoning")}
                 disableRipple
@@ -112,11 +146,7 @@ function ViewSolution() {
                 Logical Reasoning
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem
-                sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }}
-                onClick={() => handleClose("Quants")}
-                disableRipple
-              >
+              <MenuItem sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }} onClick={() => handleClose("Quants")} disableRipple>
                 <IoBookSharp className="me-2" />
                 Quants
               </MenuItem>
@@ -132,7 +162,7 @@ function ViewSolution() {
               rowGap: 3,
             }}
           >
-            {[...Array(24)].map((item, index) => (
+            {show?.map((item, index) => (
               <BootstrapTooltip
                 title={
                   <div className="py-2">
@@ -175,6 +205,7 @@ function ViewSolution() {
                   }}
                   alt="Remy Sharp"
                   src="/broken-image.jpg"
+                  onClick={() => setIndex(index)}
                 >
                   <Typography variant="paragraph" sx={{ color: "white" }}>
                     {" "}
@@ -188,10 +219,7 @@ function ViewSolution() {
         {/* Navigation bar end */}
 
         {/* Main center start */}
-        <Box
-          component="div"
-          sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}
-        >
+        <Box component="div" sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}>
           {/* LEFT Main start */}
           <Box
             sx={{
@@ -214,67 +242,7 @@ function ViewSolution() {
                 p: 3,
               }}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
-              doloribus pariatur quisquam, nostrum vero, eum cumque molestiae
-              debitis optio molestias ipsa repellendus. Quidem eos est
-              recusandae in eius hic explicabo quam maxime deleniti, quas illo.
-              Dolores explicabo temporibus nemo, aspernatur eum nulla adipisci!
-              Sint illo quis officiis vitae molestiae, dolor placeat aliquam
-              non, repellat repellendus quidem, neque eveniet eligendi ab!
-              Delectus, facilis atque distinctio commodi voluptatum aliquam, est
-              sapiente incidunt alias perferendis officia rem ab libero dolorum
-              nisi sunt eveniet corrupti. Distinctio ullam architecto, obcaecati
-              facilis quos veniam soluta laborum et laboriosam, nesciunt magnam
-              placeat pariatur blanditiis. Labore atque dicta, blanditiis
-              cupiditate amet odio eaque possimus rem vel beatae, laudantium
-              itaque suscipit? Excepturi ratione suscipit earum cumque molestiae
-              repudiandae, quasi iusto quod id odio officiis, quisquam deserunt
-              dicta rerum fugiat accusantium dignissimos voluptates maxime
-              itaque. Sed perspiciatis deleniti molestias porro iure veniam
-              eaque nam, magni sequi ullam tenetur sint repudiandae fugiat fugit
-              eum, repellendus similique nostrum? Eaque eum odio saepe a quos
-              consequuntur architecto repellendus, quia ad, esse possimus omnis.
-              Ullam debitis perferendis deleniti numquam obcaecati cum molestias
-              aliquid a neque voluptas, earum optio voluptatum, commodi sapiente
-              quis assumenda nobis nisi at temporibus quo ea nulla quae.
-              Voluptates ipsa eaque numquam, nulla perferendis similique tenetur
-              eum aspernatur consequatur, sequi iusto maiores aliquam soluta
-              assumenda explicabo cumque tempore est! Unde perspiciatis minus,
-              labore dicta maiores beatae maxime consequatur iure explicabo
-              numquam non pariatur alias debitis voluptatem eius nam vitae sunt,
-              tempore, voluptates eveniet. Ipsum maiores voluptatibus, neque
-              praesentium blanditiis suscipit, voluptatum quod fugiat totam
-              consequatur officia magni sit, quos libero possimus voluptas
-              sapiente harum assumenda voluptates natus. Voluptas animi nemo
-              molestiae dolore vitae! Veniam velit voluptate sed rerum
-              inventore? Repudiandae voluptatibus saepe reprehenderit, quae quod
-              distinctio ratione, omnis debitis autem vero ad error id sit
-              repellat in eveniet. Quis odit ea possimus excepturi. Optio ut
-              amet neque autem eum facilis delectus quas dolorem voluptatibus
-              dicta qui cumque incidunt beatae perspiciatis consectetur facere
-              corrupti, officiis corporis ipsum, debitis sequi ullam aperiam
-              magni veniam. Exercitationem asperiores odit veniam nisi esse
-              inventore similique aliquam, error totam tempora aspernatur
-              laborum quae quasi quia iure ex ut pariatur illum fugiat, tempore
-              quisquam id cumque. Deserunt quia quibusdam, ullam dolore quo ipsa
-              exercitationem tempore dolorem nulla adipisci a reiciendis
-              facilis? Magni possimus quas eveniet quaerat doloremque
-              necessitatibus, vel ab ipsa perferendis excepturi! Labore numquam
-              unde, hic facilis soluta molestiae suscipit ducimus quo
-              consectetur nesciunt temporibus magnam dolor repellat repudiandae
-              quia voluptatum. Doloribus, autem accusantium fuga laboriosam qui
-              veritatis voluptates nostrum. Debitis perferendis explicabo ut
-              alias eos accusamus id voluptatem ipsam, doloribus consectetur
-              omnis incidunt recusandae natus exercitationem ab amet at aliquid
-              ipsa velit. Perspiciatis, nesciunt? Assumenda quae sapiente
-              aliquid accusantium maxime deserunt porro impedit. Delectus est
-              similique doloremque, culpa quisquam enim cum. Libero iste
-              possimus cupiditate nostrum quibusdam placeat porro eum, vero qui
-              inventore quod aperiam labore impedit vel quisquam. Omnis,
-              praesentium perspiciatis! Magnam sed consequatur corrupti
-              voluptate officiis eligendi alias sit natus distinctio, nihil
-              nesciunt. Cumque quasi a impedit, blanditiis optio quia dolorum at
-              voluptatem praesentium!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit do
             </Box>
             <Box
               component="div"
@@ -286,30 +254,21 @@ function ViewSolution() {
                 p: 3,
               }}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-              autem odio sint harum corporis obcaecati amet recusandae, unde
-              repellendus laboriosam cum reiciendis fugit sunt exercitationem
-              ducimus facere. Atque similique quibusdam est pariatur velit ipsam
-              odit soluta? Nulla ipsa aut doloremque autem nam tenetur aperiam
-              expedita temporibus voluptate ut. Unde aperiam perspiciatis
-              corrupti iusto aut, ea saepe natus sit illo magnam obcaecati
-              officiis mollitia? Corrupti nemo in sed voluptas! Ex, quia?
-              Commodi id expedita quisquam ipsa laudantium ad consequatur quo
-              non magni saepe fugiat, facere nulla totam suscipit perspiciatis.
-              Alias sit officiis facilis harum. Totam, nulla eveniet molestiae
-              ex similique porro perspiciatis veritatis molestias, quas quis
-              dolore sunt quasi? Quia optio, libero est expedita sit
-              necessitatibus maiores ipsa. Suscipit doloribus minus, aliquam
-              animi consequuntur ex perspiciatis assumenda facilis iusto. Ullam
-              reprehenderit cum pariatur fugit vel odit eveniet quaerat non
-              ducimus placeat praesentium, sunt adipisci, blanditiis dolorem.
-              Mollitia reiciendis quis voluptates, repellat expedita debitis
-              eum, voluptatum nisi, saepe necessitatibus recusandae. Earum
-              obcaecati debitis cupiditate praesentium velit sunt alias quo
-              ratione deserunt quam veritatis nostrum, aspernatur quaerat sit
-              accusantium, voluptate dolorem id! Non dicta quas amet dolorem
-              porro eligendi, veniam eos corporis ad voluptatem obcaecati
-              accusantium eius molestiae sit eveniet error doloremque deserunt.
+              <Typography fontWeight={600} variant="h6">
+                QUESTION . {index + 1}
+              </Typography>
+              <div>
+                <Typography variant="paragraph">
+                  <Latex>
+                  {show[index]?.question || ""}
+                  </Latex>
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="paragraph fw-bold">
+                  <Latex>{show[index]?.correctAnswer || ""}</Latex>
+                </Typography>
+              </div>
               <Box component="div" sx={{ display: "flex" }}>
                 <MyButton
                   sx={{
@@ -318,13 +277,7 @@ function ViewSolution() {
                     "&:hover": { background: "var(--blue-new)" },
                   }}
                   height={54}
-                  startIcon={
-                    <img
-                      src="/solutionButton.png"
-                      alt=""
-                      className="img-fluid"
-                    />
-                  }
+                  startIcon={<img src="/solutionButton.png" alt="" className="img-fluid" />}
                 >
                   Solutions
                 </MyButton>
@@ -335,9 +288,7 @@ function ViewSolution() {
                     "&:hover": { background: "var(--blue-new)" },
                   }}
                   height={54}
-                  startIcon={
-                    <img src="/viewSol-icon.png" alt="" className="img-fluid" />
-                  }
+                  startIcon={<img src="/viewSol-icon.png" alt="" className="img-fluid" />}
                 >
                   View Solution
                 </MyButton>
@@ -349,9 +300,7 @@ function ViewSolution() {
                     "&:hover": { background: "#CFCFCF" },
                   }}
                   height={54}
-                  startIcon={
-                    <img src="/playButton.png" alt="" className="img-fluid" />
-                  }
+                  startIcon={<img src="/playButton.png" alt="" className="img-fluid" />}
                 >
                   Video Solution
                 </MyButton>
@@ -376,53 +325,21 @@ function ViewSolution() {
             component={Paper}
           >
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography
-                sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}
-              >
-                Why did you get it wrong?
-              </Typography>
+              <Typography sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}>Why did you get it wrong?</Typography>
               <FormControl sx={{ paddingTop: 1 }}>
                 <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="Did not understand the concept"
-                    control={<Radio size="small" />}
-                    label="Did not understand the concept"
-                  />
+                <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">
+                  <FormControlLabel value="Did not understand the concept" control={<Radio size="small" />} label="Did not understand the concept" />
                   <FormControlLabel
                     value="I understood the concept but failed to apply it correctly"
                     control={<Radio size="small" />}
                     label="I understood the concept but failed to apply it correctly"
                   />
-                  <FormControlLabel
-                    value="I misread the question"
-                    control={<Radio size="small" />}
-                    label="I misread the question"
-                  />
-                  <FormControlLabel
-                    value="I ran out of time"
-                    control={<Radio size="small" />}
-                    label="I ran out of time"
-                  />
-                  <FormControlLabel
-                    value="Made a silly mistake"
-                    control={<Radio size="small" />}
-                    label="Made a silly mistake"
-                  />
-                  <FormControlLabel
-                    value="Fell for the trap answer"
-                    control={<Radio size="small" />}
-                    label="Fell for the trap answer"
-                  />
-                  <FormControlLabel
-                    value="Guessed the answer"
-                    control={<Radio size="small" />}
-                    label="Guessed the answer"
-                  />
+                  <FormControlLabel value="I misread the question" control={<Radio size="small" />} label="I misread the question" />
+                  <FormControlLabel value="I ran out of time" control={<Radio size="small" />} label="I ran out of time" />
+                  <FormControlLabel value="Made a silly mistake" control={<Radio size="small" />} label="Made a silly mistake" />
+                  <FormControlLabel value="Fell for the trap answer" control={<Radio size="small" />} label="Fell for the trap answer" />
+                  <FormControlLabel value="Guessed the answer" control={<Radio size="small" />} label="Guessed the answer" />
                 </RadioGroup>
               </FormControl>
             </Box>
