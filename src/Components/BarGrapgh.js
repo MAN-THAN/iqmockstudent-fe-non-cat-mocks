@@ -1,4 +1,7 @@
 import React from 'react'
+import { useParams,useLocation } from 'react-router-dom';
+
+
 import {
     BarChart,
     Bar,
@@ -11,14 +14,17 @@ import {
   } from "recharts";
   import { Typography } from "@mui/material";
 
-function BarGrapgh({Data,title}) {
+function BarGrapgh({Data,title, width ,legend }) {
+  const location = useLocation();
+  const params= useParams()
 
-  console.log(title)
+
+ 
   return (
     <div
     className="shadow flex-item"
     style={{
-      width: "30vw",
+      width: width,
       height: "auto",
       borderRadius: "15px",
     }}
@@ -50,7 +56,8 @@ function BarGrapgh({Data,title}) {
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-      <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+      {legend && <Legend layout="horizontal" verticalAlign="bottom" align="center" />}
+     
       <Bar
         dataKey="total"
         fill="url(#total)"

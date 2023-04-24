@@ -62,7 +62,7 @@ console.log(state)
             {" "}
             <RingLoader color="var(--orange)" size="150px" />
             <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
-              Authenticating..... Please wait!
+              Loading..... Please wait!
             </h5>
           </>
         ) : (
