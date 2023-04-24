@@ -11,10 +11,7 @@ import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
-import Fade from "@mui/material/Fade";
-import { styled } from "@mui/material/styles";
-import { tooltipClasses } from "@mui/material/Tooltip";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import "../styleSheets/AnalysisMain.css";
@@ -22,55 +19,8 @@ import { PacmanLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
+import { TooltipCard } from "../Common-comp/Card";
 
-const DataCards = ({ tooltip, cardTitle, icon }) => {
-  // Tooltip Customisation
-
-  const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: theme.palette.common.black,
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-    },
-  }));
-
-  return (
-    <BootstrapTooltip
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 300 }}
-      title={tooltip}
-      followCursor
-    >
-      <div
-        className="card shadow flex-item"
-        style={{
-          width: "12.5em",
-          height: "4.979375em",
-          border: "1px solid white",
-        }}
-      >
-        <div className="card-body d-flex flex-row justify-content-between align-items-center">
-          <div className="flex-item ">
-            <SubHeading className="card-title" sx={{ fontSize: 15 }}>
-              {cardTitle}
-            </SubHeading>
-
-            <Typography variant="paragraph" sx={{ fontSize: "10px", mt: 0 }}>
-              Potential Mark
-            </Typography>
-          </div>
-
-          <div className="flex-item">
-            <img src={icon} alt="" className="img-fluid" width={32} />
-          </div>
-        </div>
-      </div>
-    </BootstrapTooltip>
-  );
-};
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -117,6 +67,9 @@ function AnalysisMain() {
     percentile,
     title,
   } = basicData;
+
+
+  
 
   const options = {
     margin: [0, 0, 0, 0],
@@ -404,12 +357,14 @@ function AnalysisMain() {
                 <div className="  flex-item " style={{ flexBasis: "30%" }}>
                   <div className=" d-flex  justify-content-start  flex-wrap gap-3 row-gap-2 ">
                     {CardsData.map((item, index) => (
-                      <DataCards
+                      <TooltipCard
                         key={index}
                         tooltip={item.tooltip}
                         cardTitle={item.cardTitle}
                         icon={item.icon}
                       />
+
+                  
                     ))}
                   </div>
                 </div>

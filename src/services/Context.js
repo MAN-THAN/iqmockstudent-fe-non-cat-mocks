@@ -4,6 +4,7 @@ import MuiBackdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
 
 export const Context = React.createContext();
+
 export function useAuth() {
   return useContext(Context);
 }
@@ -16,6 +17,7 @@ export const ContextProvider = ({ children }) => {
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
 
   const analysisDataApi = async (attemptId) => {
+
     const response = await fetchAnalysisData(attemptId);
     console.log(response);
     if (response?.status === 200) {
