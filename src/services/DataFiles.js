@@ -63,3 +63,47 @@ export const DrawerData = (mockId, attemptId) => {
     },
   ];
 };
+
+
+
+export const NavigationGalleryData =(mockId, attemptId)=>{
+  return [
+    {
+      heading: "View Solution",
+      image: "solutions-card.png",
+      path: `/viewsolutions/${mockId}/${attemptId}`
+    },
+    {
+      heading: "Error Tracker",
+      image: "Error-card.png",
+      path: `/errortracker/${mockId}/${attemptId}`
+    },
+    {
+      heading: "On Boarding",
+      image: "onBoarding-card.png",
+      path: `/leaderboard/${mockId}/${attemptId}`
+    },
+    {
+      heading: "Goal Tracker",
+      image: "GoalCard.png",
+      path: `/goaltracker/${mockId}/${attemptId}`,
+    },
+    {
+      heading: "Market Place",
+      image: "marketPlace-card.png",
+      path: `/marketplace/${mockId}/${attemptId}`,
+    },
+  
+    {
+      heading: "Overall across analysis",
+      image: "AnalysisAcross-card.png",
+      path: `/analysisacross/${mockId}/${attemptId}`,
+    },
+    {
+      heading: "Mock comparison",
+      image: "comparison-card.png",
+      path: `/mockcomparison/${mockId}/${attemptId}`,
+    },
+  ];
+  
+} 
