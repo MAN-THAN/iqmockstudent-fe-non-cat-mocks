@@ -32,14 +32,14 @@ export default function ViewSolution() {
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
   const [index, setIndex] = useState(0);
-  console.log(show);
+ 
 
   // function getting data on mounting
   useEffect(() => {
     getData();
   }, []);
 
-  useEffect(() => {}, []);
+  
 
   // function for fetching data
 
@@ -62,15 +62,15 @@ export default function ViewSolution() {
     setSelected(sub);
     console.log(sub);
     if (sub === "Verbal Ability") {
-      setShow(data.varc);
+      setShow(data?.varc);
     } else if (sub === "Logical Reasoning") {
-      setShow(data.lrdi);
+      setShow(data?.lrdi);
     } else {
-      setShow(data.quants);
+      setShow(data?.quants);
     }
     return setIndex(0);
   };
-
+  
   const buttonStyle = {
     background: "var(--blue-new)",
     color: "white",
@@ -169,7 +169,7 @@ export default function ViewSolution() {
               </MenuItem>
             </StyledMenu>
           </div>
-          <NavigationAvatar Data={show} setIndex/>
+          <NavigationAvatar Data={show} setInd={setIndex} selectedQuestionIndex={index}/>
        
         </Box>
         {/* Navigation bar end */}
@@ -383,7 +383,7 @@ export default function ViewSolution() {
 }
 
 
-const NavigationAvatar=({Data, setIndex})=>{
+const NavigationAvatar=({Data, setInd, selectedQuestionIndex})=>{
   return (
     <div
     style={{
@@ -394,10 +394,10 @@ const NavigationAvatar=({Data, setIndex})=>{
       rowGap: 3,
     }}
   >
-    {Data?.map((item, index) => (
+    {Data?.map((_, ind) => (
       <BootstrapTooltip
         title={
-          <div className="py-2">
+          <div className="py-2" key={ind}>
             <div
               style={{
                 color: "black",
@@ -424,7 +424,7 @@ const NavigationAvatar=({Data, setIndex})=>{
         placement="top"
         TransitionComponent={Zoom}
         arrow
-        // open={index == 3 && true}
+        open={ind == selectedQuestionIndex && true}
       >
         <Avatar
           sx={{
@@ -437,11 +437,11 @@ const NavigationAvatar=({Data, setIndex})=>{
           }}
           alt="Remy Sharp"
           src="/broken-image.jpg"
-          onClick={() => setIndex(index)}
+          onClick={() => setInd(ind)}
         >
           <Typography variant="paragraph" sx={{ color: "white" }}>
             {" "}
-            {index + 1}
+            {ind + 1}
           </Typography>
         </Avatar>
       </BootstrapTooltip>
