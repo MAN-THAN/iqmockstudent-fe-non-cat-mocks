@@ -259,9 +259,7 @@ function ViewSolution() {
               </Typography>
               <div>
                 <Typography variant="paragraph">
-                  <Latex>
-                  {show[index]?.question || ""}
-                  </Latex>
+                  <Latex>{show[index]?.question || ""}</Latex>
                 </Typography>
               </div>
               <div>
@@ -372,7 +370,13 @@ function ViewSolution() {
 
         {/* Lower cards section start */}
         <Box component="div" sx={{ height: "15%", py: "1em" }}>
-          <TempCompo />
+          <TempCompo
+            studentAttempted={show[index]?.studentsAttempted}
+            attemptedCorrect={show[index]?.attemptedCorrect}
+            duration={show.length && "duration" in show[index] ? show[index].duration : "NA"}
+            avgTimeSpent={show[index]?.averageDuration}
+            topperDuration={show[index]?.durationByTopper}
+          />
         </Box>
         {/* Lower cards section end */}
       </Box>
