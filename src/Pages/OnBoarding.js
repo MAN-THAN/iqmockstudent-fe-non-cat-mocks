@@ -12,26 +12,30 @@ function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [userData, setUserData] = useState();
   const [isUserVerified, setUserVerified] = useState(false);
-  const [a, setA] = useState(8);
-  const [b, setB] = useState(8);
-  const [c, setC] = useState(0);
+  const [a, setA] = useState("099");
   const [d, setD] = useState(0);
+  const [e, setE] = useState(0);
   const navigate = useNavigate();
   console.log(userData);
- 
+  console.log(a);
+
   useEffect(() => {
     if (userData) {
       setUserVerified(true);
     }
   }, [userData]);
   // set percentile state
-console.log(userData)
+  console.log(userData);
   useEffect(() => {
-    console.log(a, b, c, d);
-    console.log(Number(String(a) + String(b)));
-    const newPtle = Number(String(a) + String(b) + "." + String(c) + String(d));
+    console.log(a, d, e);
+    // if percentile is 100 then no decimal digits
+    if (a === "100") { 
+      setD(0);
+      setE(0);
+    }
+    const newPtle = Number(String(a) + "." + String(d) + String(e));
     setPercentile(newPtle);
-  }, [a, b, c, d]);
+  }, [a, d, e]);
 
   console.log(percentile);
   const handleSubmit = () => {
@@ -80,38 +84,16 @@ console.log(userData)
         )}
       </Box>
       <Box sx={{ position: "absolute", right: 200, top: 120, display: "flex", flexDirection: "row", gap: "10px" }}>
-        <Box sx={{ width: "9.43em", height: "4.87em", background: "white", borderRadius: "10px", paddingLeft: 2, paddingRight: 2, paddingTop: 0.4 }}>
+        <Box
+          sx={{ width: "11.199em", height: "4.87em", background: "white", borderRadius: "10px", paddingLeft: 2, paddingRight: 2, paddingTop: 0.4 }}
+        >
           <Box sx={{ display: "flex", flexDirection: "row", gap: "1px" }}>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
-              <img
-                src="/IncUp.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  if (a < 9) {
-                    setA(a + 1);
-                  }
-                }}
-              />
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
               <Box sx={{ padding: 1, background: "linear-gradient(180deg, #000000 0%, #686868 100%)", borderRadius: "2px" }}>
                 <Typography color="white" fontSize="20px">
-                  {a}
+                  {a[0]}
                 </Typography>
               </Box>
-              <img
-                onClick={() => {
-                  if (a > 0) {
-                    setA(a - 1);
-                  }
-                }}
-                src="/DecDown.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <img
@@ -121,20 +103,38 @@ console.log(userData)
                 height="12px"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  if (b < 9) {
-                    setB(b + 1);
+                  let num = Number(a);
+                  let inc;
+                  if (num < 100) {
+                    inc = String(num + 1);
+                    if (inc.length === 1) {
+                      setA("00" + inc);
+                    } else if (inc.length === 2) {
+                      setA("0" + inc);
+                    } else {
+                      setA(inc);
+                    }
                   }
                 }}
               />
               <Box sx={{ padding: 1, background: "linear-gradient(180deg, #000000 0%, #686868 100%)", borderRadius: "2px" }}>
                 <Typography color="white" fontSize="20px">
-                  {b}
+                  {a[1]}
                 </Typography>
               </Box>
               <img
                 onClick={() => {
-                  if (b > 0) {
-                    setB(b - 1);
+                  let num = Number(a);
+                  let dec;
+                  if (num > 0) {
+                    dec = String(num - 1);
+                    if (dec.length === 1) {
+                      setA("00" + dec);
+                    } else if (dec.length === 2) {
+                      setA("0" + dec);
+                    } else {
+                      setA(dec);
+                    }
                   }
                 }}
                 src="/DecDown.svg"
@@ -143,39 +143,15 @@ console.log(userData)
                 height="12px"
                 style={{ cursor: "pointer" }}
               />
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+              <Box sx={{ padding: 1, background: "linear-gradient(180deg, #000000 0%, #686868 100%)", borderRadius: "2px" }}>
+                <Typography color="white" fontSize="20px">
+                  {a[2]}
+                </Typography>
+              </Box>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px", marginLeft: "7px" }}>
-              <img
-                onClick={() => {
-                  if (c < 9) {
-                    setC(c + 1);
-                  }
-                }}
-                src="/IncUp.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-              <Box sx={{ padding: 1, background: "linear-gradient(180deg, #000000 0%, #686868 100%)", borderRadius: "2px" }}>
-                <Typography color="white" fontSize="20px">
-                  {c}
-                </Typography>
-              </Box>
-              <img
-                onClick={() => {
-                  if (c > 0) {
-                    setC(c - 1);
-                  }
-                }}
-                src="/DecDown.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
               <img
                 onClick={() => {
                   if (d < 9) {
@@ -197,6 +173,37 @@ console.log(userData)
                 onClick={() => {
                   if (d > 0) {
                     setD(d - 1);
+                  }
+                }}
+                src="/DecDown.svg"
+                alt="IncArrow"
+                width="12px"
+                height="12px"
+                style={{ cursor: "pointer" }}
+              />
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}>
+              <img
+                onClick={() => {
+                  if (e < 9) {
+                    setE(e + 1);
+                  }
+                }}
+                src="/IncUp.svg"
+                alt="IncArrow"
+                width="12px"
+                height="12px"
+                style={{ cursor: "pointer" }}
+              />
+              <Box sx={{ padding: 1, background: "linear-gradient(180deg, #000000 0%, #686868 100%)", borderRadius: "2px" }}>
+                <Typography color="white" fontSize="20px">
+                  {e}
+                </Typography>
+              </Box>
+              <img
+                onClick={() => {
+                  if (e > 0) {
+                    setE(e - 1);
                   }
                 }}
                 src="/DecDown.svg"
