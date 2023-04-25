@@ -3,7 +3,7 @@ import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
 import { typographyStyles } from "../styleSheets/StyleNew";
-import MultipleSelect from "../Components/DropdownComp";
+import MultipleSelect from "../Common-comp/SelectField";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
