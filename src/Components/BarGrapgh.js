@@ -16,10 +16,9 @@ import {
 
 function BarGrapgh({Data,title, width ,legend }) {
   const location = useLocation();
-  const params= useParams()
+  const params = useParams();
+  console.log(Data, title)
 
-
- 
   return (
     <div
     className="shadow flex-item"

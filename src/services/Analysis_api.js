@@ -40,3 +40,16 @@ export const fetchViewSolution = async (attemptId) => {
     return err;
   }
 };
+
+export const fetchErrorTracker = async (attemptId, type) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/errortracker/${attemptId}/${type}`,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};

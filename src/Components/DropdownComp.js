@@ -4,6 +4,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useEffect } from "react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 0;
@@ -24,11 +25,15 @@ function getStyles(name, Course, theme) {
   };
 }
 
-export default function MultipleSelect({ options }) {
+export default function MultipleSelect({ options, setType, type }) {
   const theme = useTheme();
   const [value, setValue] = React.useState([]);
   const [year, setYear] = React.useState([]);
   const showSecondSelect = options.some((option) => option.year !== undefined);
+  console.log(value);
+  useEffect(() => { 
+    setType(value);
+  }, [value])
   return (
     <div>
       <FormControl
@@ -64,7 +69,7 @@ export default function MultipleSelect({ options }) {
           }
           renderValue={(selected) => {
             if (selected.length === 0) {
-              return <em>Course</em>;
+              return <em>Select{ " " + type }</em>;
             }
 
             return selected;
@@ -72,9 +77,9 @@ export default function MultipleSelect({ options }) {
           MenuProps={MenuProps}
           inputProps={{ "aria-label": "Without label" }}
         >
-          <MenuItem disabled value="">
+          {/* <MenuItem disabled value="">
             <em>Select Course</em>
-          </MenuItem>
+          </MenuItem> */}
           {options && options.map((item, _) => (
             <MenuItem
               key={item.name}

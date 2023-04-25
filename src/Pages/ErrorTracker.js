@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
@@ -12,6 +12,8 @@ import Button from "@mui/material/Button";
 import BarGrapgh from "../Components/BarGrapgh";
 import { useAuth } from "../services/Context";
 import { graphinstructionPoints } from "../services/DataFiles";
+import { fetchErrorTracker } from "../services/Analysis_api";
+import { useParams } from "react-router";
 
 const disableStyle = {
   ":disabled": {
@@ -61,15 +63,31 @@ const GraphComp = () => {
 };
 
 function ErrorTracker() {
-  const Subjects = [
-    { name: "Varc" },
-    { name: "Quants" },
-    { name: "LRdi" },
-    { name: "MBA" },
-    { name: "MIA" },
-  ];
-
+  const filter1 = [{ name: "Incorrect" }, { name: "Correct" }];
+  const filter2 = [{ name: "iCat 1.0" }, { name: "iCat 2.0" }];
+  const filter3 = [{ name: "varc" }, { name: "quants" }, { name: "lrdi" }];
+  const filter4 = [{ name: "v" }, { name: "q" }, { name: "l" }];
   const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const { attemptId } = useParams();
+  const [type1, setType1] = useState("");
+  const [type2, setType2] = useState("");
+  const [type3, setType3] = useState("varc");
+  const [type4, setType4] = useState("");
+  console.log(type1, type2, type3, type4);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const res = await fetchErrorTracker(attemptId, type3);
+    if (res?.status == 200) {
+      console.log(res);
+      // setData(res.data);
+      // setShow(res.data.varc);
+    } else {
+      console.log("error", res);
+    }
+  };
 
   return (
     <>
@@ -82,7 +100,15 @@ function ErrorTracker() {
           </Box>
 
           <Box component="div" sx={{ mt: 4 }}>
-            <MultipleSelect options={Subjects} />
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "30%" }}>
+              {" "}
+              <MultipleSelect options={filter1} setType={setType1} type={"Type"} />
+              <Box sx={{ display: "flex", flexDirection: "row", flexBasis: "50%", gap: "1em" }}>
+                <MultipleSelect options={filter2} setType={setType2} type={"Mock"} />
+                <MultipleSelect options={filter3} setType={setType3} type={"Sub"} />
+                <MultipleSelect options={filter4} setType={setType4} type={"Topic"} />
+              </Box>
+            </Box>
             <Typography
               sx={{
                 ...typographyStyles.mainHeading,
@@ -94,10 +120,7 @@ function ErrorTracker() {
             </Typography>
           </Box>
 
-          <Box
-            component="main"
-            sx={{ display: "flex", width: "100%", height: "76Vh" }}
-          >
+          <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
             {menuBarOpen && (
               <Backdrop
                 sx={{
@@ -120,7 +143,7 @@ function ErrorTracker() {
               <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
                 <BarGrapgh width={"97%"} legend={false} />
               </Box>
-              <Box sx={{ mt: 2 }}>{<GraphComp/>}</Box>
+              <Box sx={{ mt: 2 }}>{<GraphComp />}</Box>
             </Box>
             {/* Graph side div end */}
 
@@ -133,9 +156,7 @@ function ErrorTracker() {
                 height: "100%",
               }}
             >
-              <Typography sx={{ ...typographyStyles.subHeading }}>
-                Question Summary
-              </Typography>
+              <Typography sx={{ ...typographyStyles.subHeading }}>Question Summary</Typography>
 
               {[...Array(10)].map((item, index) => (
                 <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
@@ -162,15 +183,11 @@ function ErrorTracker() {
                         Q{index + 1}.
                       </Typography>
                       <Typography variant="paragraph" color="text.secondary">
-                        Sohan started a business with a capital of RS. 80000.
-                        After 6 months Mohan joined as a partner by investing Rs
-                        65000. After one year they earned total profit RS.
-                        20000. What is share of shahin in the profit?
+                        Sohan started a business with a capital of RS. 80000. After 6 months Mohan joined as a partner by investing Rs 65000. After
+                        one year they earned total profit RS. 20000. What is share of shahin in the profit?
                       </Typography>
                     </CardContent>
-                    <CardActions
-                      sx={{ justifyContent: "space-between", px: 3 }}
-                    >
+                    <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
                       <Box
                         sx={{
                           display: "flex",
@@ -228,12 +245,7 @@ function ErrorTracker() {
                         </Button>
                       </Box>
                       <div>
-                        <Button
-                          size="medium"
-                          endIcon={<IoIosArrowForward />}
-                          sx={{ background: "#3A36DB", float: "end" }}
-                          variant="contained"
-                        >
+                        <Button size="medium" endIcon={<IoIosArrowForward />} sx={{ background: "#3A36DB", float: "end" }} variant="contained">
                           Solution
                         </Button>
                       </div>
