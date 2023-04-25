@@ -14,7 +14,8 @@ const InfoCard = ({ iconPath, label, value, infoIconPath, background }) => {
         justifyContent: "center",
         padding: "1.5em 0",
         borderRadius: "0.9em",
-        background
+        background,
+        color:background && "white"
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "90%", padding: 0, alignItems: "center" }}>
@@ -27,7 +28,7 @@ const InfoCard = ({ iconPath, label, value, infoIconPath, background }) => {
         </Box>
         {infoIconPath && (
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <img src={infoIconPath} className="img-fluid" />
+            <img src={infoIconPath}   className="img-fluid" />
           </Box>
         )}
       </Box>

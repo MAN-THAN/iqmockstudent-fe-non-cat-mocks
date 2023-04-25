@@ -32,14 +32,11 @@ export default function ViewSolution() {
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
   const [index, setIndex] = useState(0);
- 
 
   // function getting data on mounting
   useEffect(() => {
     getData();
   }, []);
-
-  
 
   // function for fetching data
 
@@ -70,7 +67,7 @@ export default function ViewSolution() {
     }
     return setIndex(0);
   };
-  
+
   const buttonStyle = {
     background: "var(--blue-new)",
     color: "white",
@@ -169,8 +166,11 @@ export default function ViewSolution() {
               </MenuItem>
             </StyledMenu>
           </div>
-          <NavigationAvatar Data={show} setInd={setIndex} selectedQuestionIndex={index}/>
-       
+          <NavigationAvatar
+            Data={show}
+            setInd={setIndex}
+            selectedQuestionIndex={index}
+          />
         </Box>
         {/* Navigation bar end */}
 
@@ -270,6 +270,7 @@ export default function ViewSolution() {
           {/* left Main end */}
 
           {/* Right main start */}
+
           <Box
             sx={{
               width: "25%",
@@ -278,28 +279,74 @@ export default function ViewSolution() {
               textAlign: "justify",
               height: "100%",
               overflow: "scroll",
-              p: 6,
+              p: 3,
               borderRadius: 5,
-              position: "relative",
             }}
             component={Paper}
           >
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box
+              sx={{
+                width: "100%",
+
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between ",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#3B36DB",
+                  fontSize: 19,
+                  fontFamily: "var(--font-inter)",
+                  fontWeight: "900",
+                }}
+              >
+                Error Tracker
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#3B36DB",
+                  fontSize: 19,
+                  fontFamily: "var(--font-inter)",
+                  fontWeight: "900",
+                }}
+              >
+                iQ GPT 1.0{" "}
+                <span>
+                  <img
+                    src="/viewTracker.png"
+                    className="img-fluid mb-1"
+                    alt=""
+                  />
+                </span>
+              </Typography>
+            </Box>
+            <hr />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <Typography
                 sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}
               >
                 Why did you get it wrong?
               </Typography>
-              <FormControl sx={{ paddingTop: 1 }}>
+              <FormControl sx={{ paddingTop: 1,fontFamily:"var(--font-inter)", fontWeight:800, textAlign:"start", }}>
                 <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
                   defaultValue="female"
                   name="radio-buttons-group"
+                  
+                
                 >
                   <FormControlLabel
                     value="Did not understand the concept"
-                    control={<Radio size="small" />}
+                    control={<Radio size="small"/>}
                     label="Did not understand the concept"
                   />
                   <FormControlLabel
@@ -335,28 +382,6 @@ export default function ViewSolution() {
                 </RadioGroup>
               </FormControl>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              {" "}
-              <Box
-                sx={{
-                  height: "2.5em",
-                  width: "80%",
-                  background: "#3B36DB",
-                  borderRadius: "1em",
-                  position: "absolute",
-                  top: 0,
-                  zIndex: 1000,
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                }}
-              >
-                <Typography sx={{ color: "#FFE401" }}>Error Tracker</Typography>
-                <img></img>
-                <Typography>iQ GPT 1.0</Typography>
-              </Box>
-            </Box>
           </Box>
           {/* Right main end */}
         </Box>
@@ -382,72 +407,69 @@ export default function ViewSolution() {
   );
 }
 
-
-const NavigationAvatar=({Data, setInd, selectedQuestionIndex})=>{
+const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex }) => {
   return (
     <div
-    style={{
-      flexBasis: "80%",
-      display: "flex",
-      flexWrap: "wrap",
-      columnGap: 6,
-      rowGap: 3,
-    }}
-  >
-    {Data?.map((_, ind) => (
-      <BootstrapTooltip
-        title={
-          <div className="py-2" key={ind}>
-            <div
-              style={{
-                color: "black",
-                fontSize: "13px",
-                fontFamily: "var(--inter)",
-                fontWeight: 600,
-                lineHeight: "1",
-              }}
-            >
-              Difficulty
+      style={{
+        flexBasis: "80%",
+        display: "flex",
+        flexWrap: "wrap",
+        columnGap: 6,
+        rowGap: 3,
+      }}
+    >
+      {Data?.map((_, ind) => (
+        <BootstrapTooltip
+          title={
+            <div className="py-2" key={ind}>
+              <div
+                style={{
+                  color: "black",
+                  fontSize: "13px",
+                  fontFamily: "var(--inter)",
+                  fontWeight: 600,
+                  lineHeight: "1",
+                }}
+              >
+                Difficulty
+              </div>
+              <span
+                style={{
+                  color: "var(--orange)",
+                  fontSize: "18px",
+                  fontFamily: "var(--inter)",
+                  fontWeight: 800,
+                }}
+              >
+                Moderate
+              </span>
             </div>
-            <span
-              style={{
-                color: "var(--orange)",
-                fontSize: "18px",
-                fontFamily: "var(--inter)",
-                fontWeight: 800,
-              }}
-            >
-              Moderate
-            </span>
-          </div>
-        }
-        placement="top"
-        TransitionComponent={Zoom}
-        arrow
-        open={ind == selectedQuestionIndex && true}
-      >
-        <Avatar
-          sx={{
-            bgcolor: "#2196F3",
-            cursor: "pointer",
-            width: "33.95px",
-            height: "33.95px",
-            fontSize: "15px",
-            p: 2,
-          }}
-          alt="Remy Sharp"
-          src="/broken-image.jpg"
-          onClick={() => setInd(ind)}
+          }
+          placement="top"
+          TransitionComponent={Zoom}
+          arrow
+          open={ind == selectedQuestionIndex && true}
         >
-          <Typography variant="paragraph" sx={{ color: "white" }}>
-            {" "}
-            {ind + 1}
-          </Typography>
-        </Avatar>
-      </BootstrapTooltip>
-    ))}
-  </div>
-  )
-}
-
-
+          <Avatar
+            sx={{
+              bgcolor: "#2196F3",
+              cursor: "pointer",
+              width: "33.95px",
+              height: "33.95px",
+              fontSize: "15px",
+              p: 2,
+            }}
+            alt="Remy Sharp"
+            src="/broken-image.jpg"
+            onClick={() => setInd(ind)}
+          >
+            <Typography variant="paragraph" sx={{ color: "white" }}>
+              {" "}
+              {ind + 1}
+            </Typography>
+          </Avatar>
+        </BootstrapTooltip>
+      ))}
+    </div>
+  );
+};
