@@ -1,17 +1,23 @@
 import React, { useEffect } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import Box from "@mui/material/Box";
-import MainHeader from "../Components/MainHeader";
+
 import LineChart1 from "../Components/LineGraph1";
-import LoginForm from "../Components/LoginForm";
+
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
-import Grid from "@mui/material/Grid";
+
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import { Stack } from "react-bootstrap";
+import CustomizedAccordions from "../Common-comp/Accordian";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -68,44 +74,7 @@ export default function GoalTracker() {
   };
   const [isEnlarged, setIsEnlarged] = useState(false);
 
-  function handleClick() {
-    setIsEnlarged(!isEnlarged);
-  }
   return (
-    // <Box
-    //   component="main"
-    //   sx={{
-    //     height: "100vh",
-    //     width: "100vw",
-    //     display: "grid",
-    //     gridTemplateColumns: "1fr", // Use grid layout with one column
-    //     gridTemplateRows: "auto 1fr", // Define rows for header and main section
-    //   }}
-    // >
-    //   <MenuDrawer />
-    //   {/* Header */}
-
-    //   {/* Main Section */}
-    //   <Box
-    //     sx={{
-    //       p: 2,
-    //       overflow: "hidden",
-    //       background: "url(/onboarding_image.png)",
-    //       backgroundSize: "cover",
-    //       width: "100%",
-    //       height: "100%",
-    //       backgroundRepeat: "no-repeat",
-    //       gridColumn: "1", // Span across one column
-    //       gridRow: "2", // Start from second row
-    //     }}
-    //   >
-    //       <Box component="header">
-    //     <HeaderNew />
-    //   </Box>
-    //     {/* Content of main section */}
-    //   </Box>
-    // </Box>
-
     <Box sx={{ display: "flex" }}>
       <Box container>
         <Box>
@@ -129,16 +98,101 @@ export default function GoalTracker() {
           {/* main Section start */}
           <Box
             component="main"
-            sx={{ display: "flex", flexDirection: "column" }}
+            sx={{ display: "flex", flexDirection: "column", mt: 2 }}
           >
-            <Box>
-              <div
-                className={isEnlarged ? "myDiv enlarged" : "myDiv"}
-                onClick={handleClick}
+            <Box component="div" sx={{ display: "flex", gap: 2 }}>
+              <Box
+                component="div"
+                sx={{
+                  width: 532,
+                  height: 269,
+                  zIndex: 9999,
+                  borderRadius:"25px",
+                  background: "white",
+                  p:1,
+                }}
               >
-                Click me!
-              </div>
+                <Card
+                  className={isEnlarged ? "enlarged" : ""}
+                  sx={{
+                    overflow: "scroll",
+                    
+                    width: "100%",
+                    height: "100%",
+                  //  borderRadius:"25px",
+                   boxShadow:"none",
+                  }}
+                  // onClick={() => setIsEnlarged(!isEnlarged)}
+                >
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="d-flex">
+                      <img
+                        src="/CardsIcons/idea1.png"
+                        className="img-fluid me-2"
+                        alt=""
+                        width={22}
+                      />
+                      <Typography variant="h4" color="black" fontSize={18}>
+                        Where you went wrong?
+                      </Typography>
+                    </div>
+
+                    <div>
+                      <img
+                        src="/CardsIcons/zoom.png"
+                        className="img-fluid cursor-pointer"
+                        width={22}
+                      />
+                    </div>
+                  </CardContent>
+
+                  <CardContent>
+                    <CustomizedAccordions />
+                  </CardContent>
+                </Card>
+              </Box>
+
+              <Card
+                sx={{
+                  width: 427,
+                  height: 176,
+                  borderRadius: "25px",
+                  background: "",
+                }} // className={isEnlarged ? "enlarged" : "myDiv"}
+                onClick={() => setIsEnlarged(!isEnlarged)}
+              >
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 14 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Word of the Day
+                  </Typography>
+
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    adjective
+                  </Typography>
+                  <Typography variant="body2">
+                    well meaning and kindly.
+                    <br />
+                    {'"a benevolent smile"'}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions>
+              </Card>
             </Box>
+
+            {/* Graph start */}
             <Box
               sx={{
                 width: "100%",
@@ -149,228 +203,7 @@ export default function GoalTracker() {
             >
               <LineChart1 percentile={percentile} />
             </Box>
-
-            <Box
-              sx={{
-                position: "absolute",
-                right: 200,
-                top: 120,
-                display: "flex",
-                flexDirection: "row",
-                gap: "10px",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "9.43em",
-                  height: "4.87em",
-                  background: "white",
-                  borderRadius: "10px",
-                  paddingLeft: 2,
-                  paddingRight: 2,
-                  paddingTop: 0.4,
-                }}
-              >
-                <Box sx={{ display: "flex", flexDirection: "row", gap: "1px" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "1px",
-                    }}
-                  >
-                    <img
-                      src="/IncUp.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        if (a < 9) {
-                          setA(a + 1);
-                        }
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        padding: 1,
-                        background:
-                          "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                        borderRadius: "2px",
-                      }}
-                    >
-                      <Typography color="white" fontSize="20px">
-                        {a}
-                      </Typography>
-                    </Box>
-                    <img
-                      onClick={() => {
-                        if (a > 0) {
-                          setA(a - 1);
-                        }
-                      }}
-                      src="/DecDown.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "1px",
-                    }}
-                  >
-                    <img
-                      src="/IncUp.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        if (b < 9) {
-                          setB(b + 1);
-                        }
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        padding: 1,
-                        background:
-                          "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                        borderRadius: "2px",
-                      }}
-                    >
-                      <Typography color="white" fontSize="20px">
-                        {b}
-                      </Typography>
-                    </Box>
-                    <img
-                      onClick={() => {
-                        if (b > 0) {
-                          setB(b - 1);
-                        }
-                      }}
-                      src="/DecDown.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "1px",
-                      marginLeft: "7px",
-                    }}
-                  >
-                    <img
-                      onClick={() => {
-                        if (c < 9) {
-                          setC(c + 1);
-                        }
-                      }}
-                      src="/IncUp.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                    <Box
-                      sx={{
-                        padding: 1,
-                        background:
-                          "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                        borderRadius: "2px",
-                      }}
-                    >
-                      <Typography color="white" fontSize="20px">
-                        {c}
-                      </Typography>
-                    </Box>
-                    <img
-                      onClick={() => {
-                        if (c > 0) {
-                          setC(c - 1);
-                        }
-                      }}
-                      src="/DecDown.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "1px",
-                    }}
-                  >
-                    <img
-                      onClick={() => {
-                        if (d < 9) {
-                          setD(d + 1);
-                        }
-                      }}
-                      src="/IncUp.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                    <Box
-                      sx={{
-                        padding: 1,
-                        background:
-                          "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                        borderRadius: "2px",
-                      }}
-                    >
-                      <Typography color="white" fontSize="20px">
-                        {d}
-                      </Typography>
-                    </Box>
-                    <img
-                      onClick={() => {
-                        if (d > 0) {
-                          setD(d - 1);
-                        }
-                      }}
-                      src="/DecDown.svg"
-                      alt="IncArrow"
-                      width="12px"
-                      height="12px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                {" "}
-                <Typography fontSize="16px" fontWeight={600} color="white">
-                  Set your target
-                </Typography>
-                <Typography color="#FFC700" fontSize="16px" fontWeight={600}>
-                  Percentile
-                </Typography>
-              </Box>
-            </Box>
+            {/* Graph end */}
           </Box>
           {/* main Section end */}
         </Box>
