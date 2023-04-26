@@ -7,7 +7,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import SliderSwiper from "../Components/Swiper";
-import MultipleSelect from "../Components/DropdownComp";
+import MultipleSelect from "../Common-comp/SelectField";
 import {typographyStyles} from "../styleSheets/StyleNew"
 // Inspired by blueprintjs
 const options = [
@@ -33,8 +33,17 @@ const options = [
   },
 ];
 
+
+
 function MarketPlace() {
-  const [selectedValue, setSelectedValue] = React.useState("coursesWithMocks");
+  const [radioValue, setRadioValue] = React.useState("coursesWithMocks");
+  const [selectedValue, setSelectedValue] = React.useState({});
+
+  function handleSelectChange(selectedValues) {
+    setSelectedValue(selectedValues);
+  }
+  
+      console.log(selectedValue)
 
   return (
     <>
@@ -72,8 +81,8 @@ function MarketPlace() {
                     aria-labelledby="demo-error-radios"
                     name="quiz"
                     sx={{ fontWeight: "bold", fontSize: "16.56px" }}
-                    value={selectedValue}
-                    onChange={(e) => setSelectedValue(e.target.value)}
+                    value={radioValue}
+                    onChange={(e) => setRadioValue(e.target.value)}
                   >
                     <FormControlLabel
                       value="coursesWithMocks"
@@ -102,7 +111,7 @@ function MarketPlace() {
               </div>
 
               <div className="flex-item">
-                <MultipleSelect options={options} />
+              <MultipleSelect options={options} onSelectChange={handleSelectChange} />
               </div>
             </div>
           </Box>

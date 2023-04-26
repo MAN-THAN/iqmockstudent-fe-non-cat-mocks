@@ -1,4 +1,4 @@
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -15,49 +15,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { DrawerData } from "../services/DataFiles";
-
-// const DrawerData=[
-//   {
-//     text: "Analysis",
-//     icon: "Group138.png",
-//     path: `/analysis/${params.mockId}/${params.attemptId}/overall`,
-//   },
-//   {
-//     text: "View Solution",
-//     icon: "view-sol-menu.png",
-//     path: `/viewsolutions/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Leader Board",
-//     icon: "podium1.png",
-//     path: `/leaderboard/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Goal Tracker",
-//     icon: "goal1.png",
-//     path: `/goaltracker/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Market Place",
-//     icon: "shopping-bag.png",
-//     path: `/marketplace/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Error Tracker",
-//     icon: "errorTracker.png",
-//     path: `/errortracker/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Overall across analysis",
-//     icon: "overallAcross.png",
-//     path: `/analysisacross/${params.mockId}/${params.attemptId}`,
-//   },
-//   {
-//     text: "Mock comparison",
-//     icon: "mockCompare.png",
-//     path: `/mockcomparison/${params.mockId}/${params.attemptId}`,
-//   },
-// ]
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -137,11 +94,12 @@ function MenuDrawer() {
         <Divider />
         <List>
           {drawer &&
-            drawer.map((item, _) => (
+            drawer.map((item, ind) => (
               <ListItem
                 key={item.text}
                 disablePadding
-                sx={{ display: "block" }}
+                sx={{ display: "block" , background:  location.pathname === item.path ? "#d4d5d6" : "inherit"}}
+              
               >
                 <ListItemButton
                   sx={{

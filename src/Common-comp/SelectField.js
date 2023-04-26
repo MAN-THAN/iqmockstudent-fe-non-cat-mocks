@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,12 +16,11 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, Course, theme) {
+function getStyles(theme, value, selected) {
   return {
-    fontWeight:
-      Course.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+    fontWeight: selected
+      ? theme.typography.fontWeightMedium
+      : theme.typography.fontWeightRegular,
   };
 }
 
@@ -84,25 +83,26 @@ export default function MultipleSelect({ options, setType, type }) {
             <MenuItem
               key={item.name}
               value={item.name}
-              style={getStyles(item.name, value, theme)}
+              // style={getStyles(item.name, value, theme)}
             >
               {item.name}
             </MenuItem>
           ))}
         </Select>
 
-        {/* 2nd select field only show when we have two select fields */}
-        {showSecondSelect && <Select
+        {/* 2nd select field only show when we have two select fields  */}
+        {/* <Select
           displayEmpty
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
+          value={selectedValues.secondSelectValue || ""}
+          onChange={handleSecondOptionChange}
           input={
             <OutlinedInput
               sx={{
+                width: 149,
                 boxShadow: 2,
                 borderRadius: 2,
-                width: 149,
                 height: 49,
+
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
                 "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                   {
@@ -117,7 +117,7 @@ export default function MultipleSelect({ options, setType, type }) {
           }
           renderValue={(selected) => {
             if (selected.length === 0) {
-              return <em>Year</em>;
+              return <em>Course</em>;
             }
 
             return selected;
@@ -126,18 +126,23 @@ export default function MultipleSelect({ options, setType, type }) {
           inputProps={{ "aria-label": "Without label" }}
         >
           <MenuItem disabled value="">
-            <em>Select Year</em>
+            <em>Select Course</em>
           </MenuItem>
-          {options && options.map((item, _) => (
-            <MenuItem
-              key={item.year}
-              value={item.year}
-              style={getStyles(item.year, value, theme)}
-            >
-              {item.year}
-            </MenuItem>
-          ))}
-        </Select>}
+          {options &&
+            options.map((item, _) => (
+              <MenuItem
+                key={item.name}
+                value={item.name}
+                style={getStyles(
+                  theme,
+                  item.name,
+                  selectedValues.secondSelectValue === item.name
+                )}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+        </Select> */}
       </FormControl>
     </div>
   );

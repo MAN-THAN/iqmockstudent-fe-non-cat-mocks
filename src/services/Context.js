@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 import MuiBackdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Context = React.createContext();
 
@@ -75,6 +77,13 @@ export const ContextProvider = ({ children }) => {
     color: "#fff",
   }));
 
+  const showToastMessage = () => {
+    toast.error("Some error occurred! Please reload the page.", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return setLoading(false)
+  };
+
   //Set data to variables according to category that data exports to pages accordin to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
@@ -99,6 +108,7 @@ export const ContextProvider = ({ children }) => {
           menuBarOpen,
           handlePageClick,
           Backdrop,
+          showToastMessage
         }}
       >
         {children}

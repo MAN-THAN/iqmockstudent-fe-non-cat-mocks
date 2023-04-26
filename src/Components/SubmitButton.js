@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
 import { Button } from "antd";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -42,20 +41,21 @@ export default function ButtonSubmit({ studentAnswersData }) {
   const params = useParams();
   const navigate = useNavigate();
   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
-
   const submitSectionFunc = async (subject) => {
     setState(1);
     try {
       const response = await submitSection(attemptID, subject, studentAnswersData);
       console.log(response);
       if (response?.status == 200) {
+        window.localStorage.removeItem("my-counter-sec");
+        window.localStorage.removeItem("my-counter-min");
+        window.localStorage.removeItem("questionStatus");
         setState(2);
       }
     } catch (err) {
       console.log(err);
       setState(3);
     }
-   
   };
 
   return (
@@ -183,7 +183,9 @@ export default function ButtonSubmit({ studentAnswersData }) {
                 <Button onClick={() => window.location.reload()}>Try Again</Button>
               </div>
             </>
-          ) : ("")}
+          ) : (
+            ""
+          )}
         </Box>
       </Modal>
     </span>

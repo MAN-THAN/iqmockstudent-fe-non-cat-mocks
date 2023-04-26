@@ -13,26 +13,26 @@ const UserAuth = () => {
   const { state } = useLocation();
 console.log(state)
   useEffect(() => {
-    userAuthCheck();
+    // userAuthCheck();
+    createAttemptId();
   }, []);
 
   // Function for checking authorising user
-  const userAuthCheck = () => {
-    const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
-    console.log(attemptID);
-    if (attemptID) {
-      console.log("userAttemptID", attemptID);
-      console.log("go to m0ck page");
-      // navigate(`/main/${state.mockId}/varc`);
-      navigate(`/instructions`, {
-        state: {
-        mockId : state.mockId
-      } });
-    } else {
-      console.log("you dont have an attempt id");
-      createAttemptId();
-    }
-  };
+  // const userAuthCheck = () => {
+  //   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+  //   console.log(attemptID);
+  //   if (attemptID) {
+  //     console.log("userAttemptID", attemptID);
+  //     console.log("go to m0ck page");
+  //     // navigate(`/main/${state.mockId}/varc`);
+  //     navigate(`/instructions`, {
+  //       state: {
+  //       mockId : state.mockId
+  //     } });
+  //   } else {
+  //     console.log("you dont have an attempt id");
+  //     createAttemptId();
+  //   }
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
@@ -40,7 +40,11 @@ console.log(state)
     console.log(response);
     if (response?.status === 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));
-      userAuthCheck();
+      // userAuthCheck();
+       navigate(`/instructions`, {
+        state: {
+        mockId : state.mockId
+      } });
     } else {
       showToastMessage();
       return 

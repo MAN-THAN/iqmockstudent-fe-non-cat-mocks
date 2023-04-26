@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography, Stack, Item } from "@mui/material";
 import { typographyStyles, style } from "../styleSheets/StyleNew";
-import MultipleSelect from "../Components/DropdownComp";
+import MultipleSelect from "../Common-comp/SelectField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,10 +16,10 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
+import { useParams } from "react-router-dom";
+import { fetchOverallAcross } from "../services/Analysis_api";
 const FilterList = () => {
   return (
     <FormControl>
@@ -46,6 +46,9 @@ const FilterList = () => {
 };
 
 function AnalysisAcross() {
+  const params = useParams();
+    const [a, setA] = useState("");
+
   const Subjects = [
     { name: "Varc" },
     { name: "Quants" },
@@ -53,7 +56,30 @@ function AnalysisAcross() {
     { name: "MBA" },
     { name: "MIA" },
   ];
-  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const {
+    menuBarOpen,
+    setMenuBarOpen,
+    Backdrop,
+    setLoading,
+    isLoading,
+    showToastMessage,
+  } = useAuth();
+
+  useEffect(() => {
+    const uid = JSON.parse(localStorage.getItem("userData"))?.uid;
+    const fetchData = async (mockId, uid) => {
+      console.log("creating attemptid");
+      const response = await fetchOverallAcross(mockId, uid);
+      console.log(response);
+      if (response?.status === 200) {
+      } else {
+        showToastMessage();
+        setLoading(false);
+        return;
+      }
+    };
+    fetchData(params.mockId, uid);
+  }, []);
   return (
     <>
       <Box component="main" sx={{ height: "100vh" }}>
@@ -67,7 +93,7 @@ function AnalysisAcross() {
 
           {/* Select box */}
           <Box component="div" sx={{ mt: 4 }}>
-            <MultipleSelect options={Subjects} />
+            <MultipleSelect options={Subjects} setType={setA} />
             <Typography
               sx={{
                 ...typographyStyles.mainHeading,
@@ -135,7 +161,13 @@ function AnalysisAcross() {
                   <LogoCard
                     cardTitle={item.title}
                     icon={item.icon}
-                    style={{ fontSize: 8, width: "169px", height: "52px", flexBasis:"15%", flexGrow:0}}
+                    style={{
+                      fontSize: 8,
+                      width: "169px",
+                      height: "52px",
+                      flexBasis: "15%",
+                      flexGrow: 0,
+                    }}
                   />
                 ))}
               </Box>
@@ -168,24 +200,25 @@ const DataTable = () => {
     createData("Gingerbread", 356, 16.0, 49, 3.9),
   ];
   return (
-    <TableContainer sx={{p:2, borderRadius:4, border:"none", boxShadow:2}} component={Paper}>
+    <TableContainer
+      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
+      component={Paper}
+    >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-       
         <TableBody>
           {rows.map((row) => (
             <TableRow
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell  sx={{fontWeight:"bold", width:"20%",}}>
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
                 {row.name}
               </TableCell>
-              <TableCell align="center" >{row.calories}</TableCell>
-              <TableCell align="center" >{row.fat}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-             
+              <TableCell align="center">{row.calories}</TableCell>
+              <TableCell align="center">{row.fat}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
             </TableRow>
           ))}
         </TableBody>
