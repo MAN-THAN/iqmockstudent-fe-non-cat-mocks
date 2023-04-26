@@ -98,8 +98,11 @@ function MenuDrawer() {
               <ListItem
                 key={item.text}
                 disablePadding
-                sx={{ display: "block" , background:  location.pathname === item.path ? "#d4d5d6" : "inherit"}}
-              
+                sx={{
+                  display: "block",
+                  background:
+                    location.pathname === item.path ? "#d4d5d6" : "inherit",
+                }}
               >
                 <ListItemButton
                   sx={{

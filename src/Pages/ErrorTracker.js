@@ -72,7 +72,7 @@ function ErrorTracker() {
   const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
 
   return (
-    <>
+    
       <Box component="main" sx={{ height: "100vh" }}>
         <MenuDrawer />
 
@@ -96,7 +96,7 @@ function ErrorTracker() {
 
           <Box
             component="main"
-            sx={{ display: "flex", width: "100%", height: "76Vh" }}
+            sx={{ display: "flex", width: "100%", height: "76Vh", }}
           >
             {menuBarOpen && (
               <Backdrop
@@ -246,7 +246,7 @@ function ErrorTracker() {
           </Box>
         </Box>
       </Box>
-    </>
+    
   );
 }
 
