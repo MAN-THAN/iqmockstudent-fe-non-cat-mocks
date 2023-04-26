@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography, Stack, Item } from "@mui/material";
 import { typographyStyles, style } from "../styleSheets/StyleNew";
-import MultipleSelect from "../Components/DropdownComp";
+import MultipleSelect from "../Common-comp/SelectField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,10 +16,10 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
+import { useParams } from "react-router-dom";
+import { fetchOverallAcross } from "../services/Analysis_api";
 const FilterList = () => {
   return (
     <FormControl>
@@ -46,6 +46,7 @@ const FilterList = () => {
 };
 
 function AnalysisAcross() {
+  const params = useParams();
   const Subjects = [
     { name: "Varc" },
     { name: "Quants" },
@@ -53,7 +54,29 @@ function AnalysisAcross() {
     { name: "MBA" },
     { name: "MIA" },
   ];
-  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const {
+    menuBarOpen,
+    setMenuBarOpen,
+    Backdrop,
+    setLoading,
+    isLoading,
+    showToastMessage,
+  } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async (mockId, attemptId) => {
+      console.log("creating attemptid");
+      const response = await fetchOverallAcross(mockId, attemptId);
+      console.log(response);
+      if (response?.status === 200) {
+      } else {
+        showToastMessage();
+        setLoading(false);
+        return;
+      }
+    };
+    fetchData(params.mockId, params.attemptId);
+  }, []);
   return (
     <>
       <Box component="main" sx={{ height: "100vh" }}>
@@ -87,6 +110,7 @@ function AnalysisAcross() {
               width: "calc(100vw - 108px)",
               height: "76Vh",
               mt: 3,
+              flexWrap:"wrap" 
             }}
           >
             {menuBarOpen && (
@@ -115,7 +139,7 @@ function AnalysisAcross() {
             {/*Question side box start*/}
             <Box
               sx={{
-                flexBasis: "85%",
+                flexBasis: {xs:"100%", md:"85%"},
                 height: "max-content",
                 background: "#F6F7F8",
                 p: 3,
@@ -135,7 +159,14 @@ function AnalysisAcross() {
                   <LogoCard
                     cardTitle={item.title}
                     icon={item.icon}
-                    style={{ fontSize: 8, width: "169px", height: "52px", flexBasis:"15%", flexGrow:0}}
+                    style={{
+                      fontSize: 8,
+                      width: "169px",
+                      height: "52px",
+                      flexBasis: "15%",
+                      flexGrow: 0,
+                      justifyContent:"center"
+                    }}
                   />
                 ))}
               </Box>
@@ -168,24 +199,25 @@ const DataTable = () => {
     createData("Gingerbread", 356, 16.0, 49, 3.9),
   ];
   return (
-    <TableContainer sx={{p:2, borderRadius:4, border:"none", boxShadow:2}} component={Paper}>
+    <TableContainer
+      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
+      component={Paper}
+    >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-       
         <TableBody>
           {rows.map((row) => (
             <TableRow
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell  sx={{fontWeight:"bold", width:"20%",}}>
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
                 {row.name}
               </TableCell>
-              <TableCell align="center" >{row.calories}</TableCell>
-              <TableCell align="center" >{row.fat}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-              <TableCell align="center" >{row.carbs}</TableCell>
-             
+              <TableCell align="center">{row.calories}</TableCell>
+              <TableCell align="center">{row.fat}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
             </TableRow>
           ))}
         </TableBody>

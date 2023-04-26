@@ -28,6 +28,19 @@ export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
   }
 };
 
+export const fetchOverallAcross = async (mockId ,attemptId) => {
+  try {
+    const res = request({
+      url: `api/student/v1/analyse/across/${attemptId} `,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 export const fetchViewSolution = async (attemptId) => {
   try {
     const res = request({

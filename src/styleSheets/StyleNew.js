@@ -8,7 +8,6 @@ export const typographyStyles = {
     fontFamily: "var(--inter)",
     fontSize: "25px",
     fontWeight:600,
-     letterSpacing: " 0em",
     textAlign: "left",
 
   }
