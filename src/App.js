@@ -20,11 +20,13 @@ import MarketPlace from "./Pages/MarketPlace";
 import MockComparison from "./Pages/MockComparison";
 import OnBoarding from "./Pages/OnBoarding";
 import Login from "./Pages/Login";
+import MainUserAuth from "./Pages/MainUserAuth";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
+        <Route path="/:email/:otp/:setId/:mockId" element={<MainUserAuth />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/user_authentication" element={<UserAuth />} />
@@ -45,7 +47,7 @@ function App() {
         <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker />} />
         <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace />} />
         <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison />} />
-        <Route path="/" element={<OnBoarding />} />
+        <Route path="/onboarding" element={<OnBoarding />} />
       </Routes>
     </ThemeProvider>
   );

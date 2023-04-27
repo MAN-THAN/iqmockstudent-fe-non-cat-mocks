@@ -2,16 +2,14 @@ import request from "./Request";
 
 // api for creating attempt id
 
-export const getAttemptId = async (name,email,uid,mockId) => {
+export const getAttemptId = async (name, email, uid, mockId, setId) => {
   const jsonData = {
     name,
-    email,
-    uid,
-    mockId,
+    email
   };
   try {
     const res = await request({
-      url: `/api/student/v1/mocks`,
+      url: `/api/student/v1/mocks/post/${uid}/${setId}/${mockId}`,
       type: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,3 +70,20 @@ export const getPredictCollege = async (payload) => {
     return res
 };
 
+
+ // api for verification (MBR)
+
+export const getVerified = async (email, otp) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/verify/user`,
+      type: "POST",
+      data: { email: email, otp: otp },
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};

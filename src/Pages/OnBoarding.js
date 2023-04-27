@@ -6,7 +6,7 @@ import LineChart1 from "../Components/LineGraph1";
 import LoginForm from "../Components/LoginForm";
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -16,8 +16,11 @@ function OnBoarding() {
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
   const navigate = useNavigate();
-
-
+  const { state } = useLocation();
+  const uid = JSON.parse(localStorage.getItem("userData"))?.uid;
+  const name = JSON.parse(localStorage.getItem("userData"))?.name;
+  const email = JSON.parse(localStorage.getItem("userData"))?.email;
+ console.log(state.mockId, state.setId)
   console.log(college);
   useEffect(() => {
     if (college !== null) {
@@ -39,7 +42,7 @@ function OnBoarding() {
   console.log(percentile);
   const handleSubmit = () => {
     navigate("/user_authentication", {
-      state: { name: "manthan", email: "xyz@gmail.com", uid: "323445343356", mockId: "6430e9e837185e086ad69368" },
+      state: { name: name, email: email, uid: uid, mockId: state.mockId, setId: state.setId },
     });
   };
   return (
@@ -48,7 +51,7 @@ function OnBoarding() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        paddingTop: 6,
+        paddingTop: 5,
         paddingLeft: 6,
         paddingRight: 6,
         width: "100vw",
@@ -64,7 +67,7 @@ function OnBoarding() {
       <Box sx={{ width: "100%", height: "100%" }}>
         <LineChart1 percentile={percentile} />
       </Box>
-      <Box sx={{ position: "absolute", top: "17%", zIndex: 100 }}>
+      <Box sx={{ position: "absolute", top: "15%", zIndex: 100 }}>
         <LoginForm setCollege={setCollege} percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", bottom: "10.5%", right: 50 }}>

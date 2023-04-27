@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getAttemptId } from "../services/Mock_api";
 import { RingLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +8,6 @@ import { useState } from "react";
 
 const UserAuth = () => {
   const navigate = useNavigate();
-  // const { name, email, uid , mockId } = useParams();
   const [loader, setLoader] = useState(true);
   const { state } = useLocation();
 console.log(state)
@@ -36,7 +35,7 @@ console.log(state)
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const response = await getAttemptId(state.name, state.email, state.uid, state.mockId);
+    const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
     console.log(response);
     if (response?.status === 200) {
       localStorage.setItem("userData", JSON.stringify(response.data));

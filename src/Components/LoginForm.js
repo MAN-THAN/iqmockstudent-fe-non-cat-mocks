@@ -21,18 +21,19 @@ import { LoadingButton } from "@mui/lab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const LoginForm = ({ setCollege, percentile }) => {
   const [category, setCategory] = useState("");
   const [gender, setGender] = useState("");
+  const [program, setProgram] = useState("");
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     values.category = category;
     values.gender = gender;
+    values.program = program;
     // values.dob = dob;
-  }, [category, gender]);
+  }, [category, gender, program]);
 
   useEffect(() => {
     const selectedDateString = dob?.$d ? format(dob.$d, "MM/dd/yyyy") : "";
@@ -41,12 +42,12 @@ const LoginForm = ({ setCollege, percentile }) => {
     values.dob = selectedDateString;
   }, [dob]);
 
-   const showToastMessage = () => {
-     toast.error("Some error occurred! Please try again.", {
-       position: toast.POSITION.TOP_CENTER,
-     });
-     return setLoading(false);
-   };
+  const showToastMessage = () => {
+    toast.error("Some error occurred! Please try again.", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return setLoading(false);
+  };
 
   function phoneValidationTest(message) {
     return this.test("isValidPhone", message, function (value) {
@@ -66,12 +67,11 @@ const LoginForm = ({ setCollege, percentile }) => {
   }
   Yup.addMethod(Yup.mixed, "phoneValidation", phoneValidationTest);
   const validationSchema = Yup.object({
-    name: Yup.string().matches('[A-Za-z]', "Must be text").required("Required"),
+    name: Yup.string().matches("[A-Za-z]", "Must be text").required("Required"),
     email: Yup.string(),
     phone_number: Yup.mixed().phoneValidation(""),
     gender: Yup.string(),
   });
-
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched, setFieldTouched } = useFormik({
     initialValues: {
@@ -85,7 +85,8 @@ const LoginForm = ({ setCollege, percentile }) => {
       graduation_marks: "",
       category: undefined,
       salary: "",
-      work_experience : ""
+      work_experience: "",
+      program: undefined,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -105,15 +106,14 @@ const LoginForm = ({ setCollege, percentile }) => {
       setLoading(true);
       try {
         const res = await getPredictCollege(obj);
-        console.log(res)
+        console.log(res);
         if (res?.status == 200) {
           setLoading(false);
         }
         console.log(res);
-        setCollege(res?.data[0]?.bschools)
-      }
-      catch (err) { 
-         showToastMessage();
+        setCollege(res?.data[0]?.bschools);
+      } catch (err) {
+        showToastMessage();
         console.log(err);
       }
     },
@@ -125,7 +125,7 @@ const LoginForm = ({ setCollege, percentile }) => {
       <Box sx={{ width: "32vw", height: "auto", background: "white", borderRadius: "1em", padding: "1em" }}>
         <Typography sx={{ color: "#1066DA", fontWeight: 700, fontSize: "1.5em", marginLeft: "2em" }}>Fill Details</Typography>{" "}
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: "1em", gap: "10px" }}>
+          <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: "0.6em", gap: "10px" }}>
             {" "}
             <TextField
               sx={{ width: "48%" }}
@@ -205,9 +205,9 @@ const LoginForm = ({ setCollege, percentile }) => {
                 label="Age"
                 onChange={(e) => setGender(e.target.value)}
               >
-                <MenuItem value={"male"}>Male</MenuItem>
-                <MenuItem value={"female"}>Female</MenuItem>
-                <MenuItem value={"others"}>Others</MenuItem>
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Other"}>Others</MenuItem>
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
@@ -353,8 +353,12 @@ const LoginForm = ({ setCollege, percentile }) => {
                 label="Category"
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <MenuItem value={"general"}>General</MenuItem>
-                <MenuItem value={"obc"}>OBC</MenuItem>
+                <MenuItem value={"GEN"}>General</MenuItem>
+                <MenuItem value={"OBC"}>OBC</MenuItem>
+                <MenuItem value={"EWS"}>EWS</MenuItem>
+                <MenuItem value={"SC"}>SC</MenuItem>
+                <MenuItem value={"ST"}>ST</MenuItem>
+                <MenuItem value={"PWD"}>PwD</MenuItem>
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
@@ -401,6 +405,27 @@ const LoginForm = ({ setCollege, percentile }) => {
               autoComplete="off"
               required
             />
+            <FormControl size="small" sx={{ width: "48%" }}>
+              <InputLabel id="program">Program</InputLabel>
+              <Select
+                IconComponent={() => (
+                  <div style={{ marginRight: "0.8em" }}>
+                    <img alt="no image" width="20px" height="20px" src="/application.png" />
+                  </div>
+                )}
+                labelId="Program"
+                id="program"
+                value={program}
+                label="Program"
+                onChange={(e) => setProgram(e.target.value)}
+              >
+                <MenuItem value={"obc"}>B.Tech</MenuItem>
+                <MenuItem value={"general"}>BCA</MenuItem>
+                <MenuItem value={"general"}>BBA</MenuItem>
+                <MenuItem value={"general"}>B.Com</MenuItem>
+              </Select>
+              {/* <FormHelperText>Disabled</FormHelperText> */}
+            </FormControl>
             <LoadingButton loading={loading} color="primary" variant="contained" width="5em" type="submit" endIcon={<img src="/arrowright.svg" />}>
               Next
             </LoadingButton>
