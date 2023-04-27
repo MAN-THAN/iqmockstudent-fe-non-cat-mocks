@@ -9,10 +9,9 @@ import { Typography } from "@mui/material";
 import { InfinitySpin } from "react-loader-spinner";
 import { Button } from "antd";
 
-const Timer = (props) => {
+const Timer = ({ initMinute, initSeconds, studentAnswersData }) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { initMinute, initSeconds, studentAnswersData } = props;
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -22,58 +21,49 @@ const Timer = (props) => {
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
 
-  const attemptID = JSON.parse(
-    window.localStorage.getItem("userData")
-  )?.attemptId;
+  const attemptID = JSON.parse(window.localStorage.getItem("userData"))?.attemptId;
 
   // taking the local storage value of timer
   useEffect(() => {
-    let countDownTimeSec =
-      window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
-    let countDownTimeMin =
-      window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
+    let countDownTimeSec = window.localStorage.getItem(COUNTER_KEY_SEC) || initSeconds;
+    let countDownTimeMin = window.localStorage.getItem(COUNTER_KEY_MIN) || initMinute;
     setSeconds(countDownTimeSec);
     setMinutes(countDownTimeMin);
   }, []);
-
+  // console.log(studentAnswersData);
   // memoize submitSectionFunc using useCallback hook
 
-  const submitSectionFunc = useCallback(
-    async (subject) => {
-      console.log("working")
-      try {
-        const response = await submitSection(
-          attemptID,
-          subject,
-          studentAnswersData
-        );
-        console.log(response);
-         if (response?.status == 200) {
-           window.localStorage.removeItem(COUNTER_KEY_MIN);
-           window.localStorage.removeItem(COUNTER_KEY_SEC);
-           window.localStorage.removeItem("questionStatus");
-           if (subject === "varc") {
-             console.log("varc submitted");
-             navigate(`/main/${params.mockId}/lrdi`);
-           } else if (subject === "lrdi") {
-             console.log("lrdi submitted");
-             navigate(`/main/${params.mockId}/quants`);
-           } else if (subject === "quants") {
-             console.log("Your mock is submitted!!!");
-             navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
-           }
-           return true;
-         }
+  const submitSectionFunc = async (subject) => {
+    console.log("working");
+    console.log(studentAnswersData);
+    try {
+      const response = await submitSection(attemptID, subject, studentAnswersData);
+      console.log(response);
+      if (response?.status == 200) {
+        window.localStorage.removeItem(COUNTER_KEY_MIN);
+        window.localStorage.removeItem(COUNTER_KEY_SEC);
+        window.localStorage.removeItem("questionStatus");
+        if (subject === "varc") {
+          console.log("varc submitted");
+          navigate(`/main/${params.mockId}/lrdi`);
+        } else if (subject === "lrdi") {
+          console.log("lrdi submitted");
+          navigate(`/main/${params.mockId}/quants`);
+        } else if (subject === "quants") {
+          console.log("Your mock is submitted!!!");
+          navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
+        }
+        return true;
       }
-      catch (err) { 
-        console.log(err);
-        setErr(true);
-        return false;
-      }
-    },
-    [currentSection]
-  );
-// console.log(err)
+    } catch (err) {
+      console.log(err);
+      setErr(true);
+      return false;
+    }
+  };
+  // [currentSection]
+
+  // console.log(err)
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
@@ -110,9 +100,7 @@ const Timer = (props) => {
     return () => {
       clearInterval(myInterval);
     };
-  }, [seconds, minutes, currentSection, submitSectionFunc]);
-
-
+  }, [seconds, minutes, currentSection]);
 
   const style = {
     position: "absolute",
@@ -134,27 +122,15 @@ const Timer = (props) => {
       <span>
         {isLoaded ? (
           <React.Fragment>
-            <Modal
-              open={true}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
+            <Modal open={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
                 {!err ? (
                   <>
                     {" "}
-                    <div
-                      style={{ marginTop: "3em" }}
-                      className="d-flex justify-content-center"
-                    >
-                      <SubHeading className="m-4 ps-3">
-                        Section Submitting...{" "}
-                      </SubHeading>
+                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
                     </div>
-                    <div
-                      className="d-flex justify-content-center"
-                      style={{ marginTop: "1em" }}
-                    >
+                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                       <div style={{ marginLeft: "12px" }}>
                         {" "}
                         <InfinitySpin color="blue" />
@@ -166,30 +142,19 @@ const Timer = (props) => {
                   </>
                 ) : (
                   <>
-                    <div
-                      style={{ marginTop: "3em" }}
-                      className="d-flex justify-content-center"
-                    >
-                      <SubHeading className="m-4 ps-3">
-                        Section Submitting...{" "}
-                      </SubHeading>
+                    <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
+                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
                     </div>
-                    <div
-                      className="d-flex justify-content-center"
-                      style={{ marginTop: "1em" }}
-                    >
+                    <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                       <div style={{ marginLeft: "12px" }}>
                         {" "}
-                        <SubHeading
-                          style={{ color: "red" }}
-                          className="m-4 ps-3"
-                        >
+                        <SubHeading style={{ color: "red" }} className="m-4 ps-3">
                           Some Error Occurred!!!{" "}
                         </SubHeading>
                       </div>
                     </div>
                     <div className="d-flex justify-content-center mt-4 ">
-                        <Button onClick={ () => window.location.reload()}>Try Again</Button>
+                      <Button onClick={() => window.location.reload()}>Try Again</Button>
                     </div>
                   </>
                 )}
@@ -199,8 +164,7 @@ const Timer = (props) => {
         ) : (
           <React.Fragment>
             <span className="Timer">
-              {minutes < 10 ? `0${minutes}` : minutes}:
-              {seconds < 10 ? `0${seconds}` : seconds}
+              {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
             </span>
           </React.Fragment>
         )}

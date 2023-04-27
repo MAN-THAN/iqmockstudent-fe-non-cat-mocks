@@ -84,7 +84,7 @@ const LoginForm = ({ setUserData }) => {
   });
 
   return (
-    <Box sx={{ width: "32vw", height: "54vh", background: "white", borderRadius: "1em", padding: "1em" }}>
+    <Box sx={{ width: "32vw", height: "auto", background: "white", borderRadius: "1em", padding: "1em" }}>
       <Typography sx={{ color: "#1066DA", fontWeight: 700, fontSize: "1.5em", marginLeft: "2em" }}>Fill Details</Typography>{" "}
       <form onSubmit={handleSubmit}>
         <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", padding: "1em", gap: "10px" }}>

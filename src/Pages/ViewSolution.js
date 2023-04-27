@@ -23,6 +23,7 @@ import HeaderNew from "../Components/HeaderNew";
 import { fetchViewSolution } from "../services/Analysis_api";
 import { LogoButton } from "../Common-comp/Buttons";
 import { TempCompo } from "../Components/tempCompo";
+import Modal from "@mui/material/Modal";
 
 export default function ViewSolution() {
   const { handlePageClick } = useAuth();
@@ -32,7 +33,11 @@ export default function ViewSolution() {
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
   const [index, setIndex] = useState(0);
+  const [open, setOpen] = useState(false);
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
   console.log(data);
+  console.log(open)
 
   console.log(show);
   // function getting data on mounting
@@ -56,7 +61,7 @@ export default function ViewSolution() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (sub) => {
+  const handleFilter = (sub) => {
     setAnchorEl(null);
     setSelected(sub);
     console.log(sub);
@@ -82,12 +87,23 @@ export default function ViewSolution() {
     iconSize: 13,
     p: 2,
   };
+  const style = {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 750,
+    textAlign: "",
+    height: 500,
+    bgcolor: "white",
+    borderRadius: "10px ",
+    boxShadow: 24,
+    backroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    objectfit: "cover",
+  };
 
-  const handleErrorForm = async (e) => { 
-    
-
-
-  }
+  const handleErrorForm = async (e) => {};
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
@@ -131,7 +147,7 @@ export default function ViewSolution() {
               id="basic-menu"
               anchorEl={anchorEl}
               open={openMenu}
-              onClose={handleClose}
+              onClose={handleFilter}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
               }}
@@ -141,7 +157,7 @@ export default function ViewSolution() {
                 sx={{
                   backgroundColor: selected === "Verbal Ability" ? "#f5f5f5" : "",
                 }}
-                onClick={() => handleClose("Verbal Ability")}
+                onClick={() => handleFilter("Verbal Ability")}
                 disableRipple
               >
                 <IoBookSharp className="me-2" />
@@ -152,20 +168,20 @@ export default function ViewSolution() {
                 sx={{
                   backgroundColor: selected === "Logical Reasoning" ? "#f5f5f5" : "",
                 }}
-                onClick={() => handleClose("Logical Reasoning")}
+                onClick={() => handleFilter("Logical Reasoning")}
                 disableRipple
               >
                 <IoBookSharp className="me-2" />
                 Logical Reasoning
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
-              <MenuItem sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }} onClick={() => handleClose("Quants")} disableRipple>
+              <MenuItem sx={{ backgroundColor: selected === "Quants" ? "#f5f5f5" : "" }} onClick={() => handleFilter("Quants")} disableRipple>
                 <IoBookSharp className="me-2" />
                 Quants
               </MenuItem>
             </StyledMenu>
           </div>
-          <NavigationAvatar Data={show} setInd={setIndex} selectedQuestionIndex={index} />
+          <NavigationAvatar Data={show} setInd={setIndex} selectedQuestionIndex={index} difficulty={show[index]?.difficulty} />
         </Box>
         {/* Navigation bar end */}
 
@@ -264,7 +280,7 @@ export default function ViewSolution() {
                   </Box>
                 ) : (
                   <Typography color="green" fontWeight={600}>
-                    {show[index]?.correctAnswer}
+                    Correct Answer : {show[index]?.correctAnswer}
                   </Typography>
                 )}
               </div>
@@ -296,20 +312,32 @@ export default function ViewSolution() {
                     "&:hover": { background: "var(--blue-new)" },
                   }}
                 />
-                <LogoButton
-                  name={" Video Solution"}
-                  icon={"/playButton.png"}
-                  style={{
-                    ...buttonStyle,
-                    color: "black",
-                    background: "#CFCFCF",
+                <Box onClick={handleOpenModal}>
+                  {" "}
+                  <LogoButton
+                    name={" Video Solution"}
+                    icon={"/playButton.png"}
+                    style={{
+                      ...buttonStyle,
+                      color: "black",
+                      background: "#CFCFCF",
 
-                    "&:hover": { background: "#CFCFCF" },
-                  }}
-                />
+                      "&:hover": { background: "#CFCFCF" },
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>
+          {/* MOdal for video link */}
+          <div>
+            {" "}
+            <Modal open={open} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+              <Box sx={style}>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+              </Box>
+            </Modal>
+          </div>
           {/* left Main end */}
 
           {/* Right main start */}
@@ -408,7 +436,7 @@ export default function ViewSolution() {
   );
 }
 
-const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex }) => {
+const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty }) => {
   return (
     <div
       style={{
@@ -442,7 +470,7 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex }) => {
                   fontWeight: 800,
                 }}
               >
-                Moderate
+                {difficulty}
               </span>
             </div>
           }

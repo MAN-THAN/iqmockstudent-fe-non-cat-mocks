@@ -90,7 +90,7 @@ function ErrorTracker() {
   };
 
   return (
-    <>
+    
       <Box component="main" sx={{ height: "100vh" }}>
         <MenuDrawer />
 
@@ -120,7 +120,10 @@ function ErrorTracker() {
             </Typography>
           </Box>
 
-          <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
+          <Box
+            component="main"
+            sx={{ display: "flex", width: "100%", height: "76Vh", }}
+          >
             {menuBarOpen && (
               <Backdrop
                 sx={{
@@ -258,7 +261,7 @@ function ErrorTracker() {
           </Box>
         </Box>
       </Box>
-    </>
+    
   );
 }
 
