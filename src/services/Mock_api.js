@@ -58,3 +58,17 @@ export const submitSection = async (attempt_id, subject_type, payload) => {
     return err;
   }
 }
+
+// api for college predictor
+
+export const getPredictCollege = async (payload) => {
+ 
+    const res = request({
+      url: `/api/student/v1/analyse/read/64732643222`,
+      type: "POST",
+      data: payload,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res
+};
+

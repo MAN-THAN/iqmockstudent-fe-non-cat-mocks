@@ -10,26 +10,25 @@ import { useNavigate } from "react-router-dom";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
-  const [userData, setUserData] = useState();
-  const [isUserVerified, setUserVerified] = useState(false);
+  const [college, setCollege] = useState(null);
+  const [startMock, setStartMock] = useState(false);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
   const navigate = useNavigate();
-  console.log(userData);
-  console.log(a);
 
+
+  console.log(college);
   useEffect(() => {
-    if (userData) {
-      setUserVerified(true);
+    if (college !== null) {
+      setStartMock(true);
     }
-  }, [userData]);
+  }, [college]);
   // set percentile state
-  console.log(userData);
   useEffect(() => {
     console.log(a, d, e);
     // if percentile is 100 then no decimal digits
-    if (a === "100") { 
+    if (a === "100") {
       setD(0);
       setE(0);
     }
@@ -66,19 +65,39 @@ function OnBoarding() {
         <LineChart1 percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", top: "17%", zIndex: 100 }}>
-        <LoginForm setUserData={setUserData} />
+        <LoginForm setCollege={setCollege} percentile={percentile} />
       </Box>
-      <Box sx={{ position: "absolute", bottom: "28.5%", right: 50 }}>
-        {isUserVerified ? (
-          <Button
-            startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
-            sx={{ background: "linear-gradient(to bottom, #306DF8, #661FCF)" }}
-            variant="contained"
-            style={{ borderRadius: "25px", padding: "14px" }}
-            onClick={handleSubmit}
-          >
-            Start Mock
-          </Button>
+      <Box sx={{ position: "absolute", bottom: "10.5%", right: 50 }}>
+        {startMock ? (
+          <Box>
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "right" }}>
+              {" "}
+              <Button
+                startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
+                sx={{ background: "linear-gradient(to bottom, #306DF8, #661FCF)" }}
+                variant="contained"
+                style={{ borderRadius: "25px", padding: "14px" }}
+                onClick={handleSubmit}
+              >
+                Start Mock
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                width: "34vw",
+                height: "12em",
+                background: "white",
+                borderRadius: "1em",
+                padding: "1.5em",
+                marginTop: "1em",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <img alt="no image" width="25px" height="25px" src="/school (1).png" />
+              <Typography sx={{ color: "black", fontWeight: 800, fontSize: "1em", marginLeft: "2em" }}>B-Schools you can Crack</Typography>{" "}
+            </Box>
+          </Box>
         ) : (
           <></>
         )}
