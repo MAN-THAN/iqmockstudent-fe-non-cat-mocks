@@ -36,7 +36,7 @@ const LoginForm = ({ setCollege, percentile }) => {
   }, [category, gender, program]);
 
   useEffect(() => {
-    const selectedDateString = dob?.$d ? format(dob.$d, "MM/dd/yyyy") : "";
+    const selectedDateString = dob?.$d;
     console.log(selectedDateString);
     // console.log(selectedDateString)
     values.dob = selectedDateString;
