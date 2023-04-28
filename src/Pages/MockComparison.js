@@ -247,7 +247,7 @@ const OuterCard = ({ style, miniCard, data }) => {
           <li>{data?.question - data?.attempted}</li>
         </ul>
         <ul className="list-unstyled pt-4 text-center">
-          <li>{"TBD"}</li>
+          <li>{"NA"}</li>
         </ul>
       </CardContent>
     </Card>
