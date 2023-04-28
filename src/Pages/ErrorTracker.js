@@ -9,7 +9,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { IoIosArrowForward } from "react-icons/io";
 import Button from "@mui/material/Button";
-import BarGrapgh from "../Components/BarGrapgh";
+import BarGraph from "../Components/BarGraphErrorTracker";
 import { useAuth } from "../services/Context";
 import { graphinstructionPoints } from "../services/DataFiles";
 import { fetchErrorTracker } from "../services/Analysis_api";
@@ -63,9 +63,9 @@ const GraphComp = () => {
 };
 
 function ErrorTracker() {
-  const filter1 = [{ name: "Incorrect" }, { name: "Correct" }];
-  const filter2 = [{ name: "iCat 1.0" }, { name: "iCat 2.0" }];
-  const filter3 = [{ name: "varc" }, { name: "quants" }, { name: "lrdi" }];
+  const filter1 = [{ name: "Incorrect", value : "incorrect" }, { name: "Correct", value : "correct" }];
+  // const filter2 = [{ name: "iCat 1.0" }, { name: "iCat 2.0" }];
+  const filter3 = [{ name: "VARC", value : "varc" }, { name: "LRDI" , value : "lrdi"}, { name: "Quants", value : "quants" },];
   const filter4 = [{ name: "v" }, { name: "q" }, { name: "l" }];
   const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   const { attemptId } = useParams();
@@ -73,6 +73,7 @@ function ErrorTracker() {
   const [type2, setType2] = useState("");
   const [type3, setType3] = useState("varc");
   const [type4, setType4] = useState("");
+  const [graphData, setGraphData] = useState([]);
   console.log(type1, type2, type3, type4);
   useEffect(() => {
     getData();
@@ -82,7 +83,7 @@ function ErrorTracker() {
     const res = await fetchErrorTracker(attemptId, type3);
     if (res?.status == 200) {
       console.log(res);
-      // setData(res.data);
+      setGraphData(res.data.graph);
       // setShow(res.data.varc);
     } else {
       console.log("error", res);
@@ -102,9 +103,9 @@ function ErrorTracker() {
           <Box component="div" sx={{ mt: 4 }}>
             <Box sx={{ display: "flex", flexDirection: "row", gap: "30%" }}>
               {" "}
-              <MultipleSelect options={filter1} setType={setType1} type={"Type"} />
+            <MultipleSelect options={filter1} setType={setType1} defaultValue={"Incorrect"} />
               <Box sx={{ display: "flex", flexDirection: "row", flexBasis: "50%", gap: "1em" }}>
-                <MultipleSelect options={filter2} setType={setType2} type={"Mock"} />
+                {/* <MultipleSelect options={filter2} setType={setType2} type={"Mock"} /> */}
                 <MultipleSelect options={filter3} setType={setType3} type={"Sub"} />
                 <MultipleSelect options={filter4} setType={setType4} type={"Topic"} />
               </Box>
@@ -144,7 +145,7 @@ function ErrorTracker() {
               }}
             >
               <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                <BarGrapgh width={"97%"} legend={false} />
+              <BarGraph Data={graphData} width={"97%"} legend={false} />
               </Box>
               <Box sx={{ mt: 2 }}>{<GraphComp />}</Box>
             </Box>

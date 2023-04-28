@@ -24,15 +24,16 @@ function getStyles(theme, value, selected) {
   };
 }
 
-export default function MultipleSelect({ options, setType, type }) {
+export default function MultipleSelect({ options, setType}) {
   const theme = useTheme();
-  const [value, setValue] = React.useState([]);
+  const [value, setValue] = useState(options[0]?.name || "");
   const [year, setYear] = React.useState([]);
   const showSecondSelect = options.some((option) => option.year !== undefined);
   console.log(value);
   useEffect(() => { 
     setType(value);
   }, [value])
+  console.log(options)
   return (
     <div>
       <FormControl
@@ -43,7 +44,7 @@ export default function MultipleSelect({ options, setType, type }) {
         }}
       >
         <Select
-          displayEmpty
+          // defaultValue={defaultValue}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           input={
@@ -55,39 +56,38 @@ export default function MultipleSelect({ options, setType, type }) {
                 height: 49,
 
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                  {
-                    border: 0,
-                  },
-                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    border: 0,
-                  },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+                  border: 0,
+                },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  border: 0,
+                },
               }}
             />
           }
-          renderValue={(selected) => {
-            if (selected.length === 0) {
-              return <em>Select{ " " + type }</em>;
-            }
+          // renderValue={(selected) => {
+          //   if (selected.length === 0) {
+          //     return <em>Select{ " " + type }</em>;
+          //   }
 
-            return selected;
-          }}
+          //   return selected;
+          // }}
           MenuProps={MenuProps}
-          inputProps={{ "aria-label": "Without label" }}
+          inputProps={{ "aria-label": "Select value" }}
         >
-          {/* <MenuItem disabled value="">
-            <em>Select Course</em>
-          </MenuItem> */}
-          {options && options.map((item, _) => (
-            <MenuItem
-              key={item.name}
-              value={item.name}
-              // style={getStyles(item.name, value, theme)}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
+          <MenuItem value={""} disabled>
+            <em>Select</em>
+          </MenuItem>
+          {options &&
+            options.map((item, _) => (
+              <MenuItem
+                key={item.name}
+                value={item.name}
+                // style={getStyles(item.name, value, theme)}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
         </Select>
 
         {/* 2nd select field only show when we have two select fields  */}
