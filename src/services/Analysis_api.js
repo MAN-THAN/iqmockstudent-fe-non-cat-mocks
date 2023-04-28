@@ -85,3 +85,33 @@ export const postToErrorTracker = async (attemptId, type, payload) => {
     return err;
   }
 };
+
+// api for mock comparison
+
+export const getMockComparison = async (mockId, attemptId) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/compare/${mockId}/${attemptId}`,
+      headers: { "Content-Type": "application/json" }
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for across mock analysis
+
+export const getMockAcrossAnalysis = async (uid) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/across/${uid}`,
+      headers: { "Content-Type": "application/json" }
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
