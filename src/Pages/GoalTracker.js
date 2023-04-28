@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import Box from "@mui/material/Box";
-
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import LineChart1 from "../Components/LineGraph1";
 
 import { Button, Typography } from "@mui/material";
@@ -18,6 +23,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { Stack } from "react-bootstrap";
 import CustomizedAccordions from "../Common-comp/Accordian";
+import GoalGraph from "../Common-comp/GoalGraph";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -72,11 +78,15 @@ export default function GoalTracker() {
       },
     });
   };
-  const [isEnlarged, setIsEnlarged] = useState(false);
+
+  const cellStyle = {
+    borderBottom: "none",
+    pb: 0,
+    lineHeight: "unset",
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <Box container>
+      <Box sx={{width:"100vw",height:"100vh"}}>
         <Box>
           <MenuDrawer />
         </Box>
@@ -86,8 +96,7 @@ export default function GoalTracker() {
             ml: "65px",
             background: "url(/onboarding_image.png)",
             backgroundSize: "cover",
-            width: "100vw",
-            height: "100vh",
+             height: "100vh",
             p: 2,
             backgroundRepeat: "no-repeat",
           }}
@@ -106,108 +115,145 @@ export default function GoalTracker() {
                 sx={{
                   width: 532,
                   height: 269,
-                  zIndex: 9999,
-                  borderRadius:"25px",
+                  zIndex: 999,
+                  borderRadius: "25px",
                   background: "white",
-                  p:1,
+                  p: 1,
                 }}
               >
-                <Card
-                  className={isEnlarged ? "enlarged" : ""}
-                  sx={{
-                    overflow: "scroll",
-                    
-                    width: "100%",
-                    height: "100%",
-                  //  borderRadius:"25px",
-                   boxShadow:"none",
-                  }}
-                  // onClick={() => setIsEnlarged(!isEnlarged)}
-                >
-                  <CardContent
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <img
-                        src="/CardsIcons/idea1.png"
-                        className="img-fluid me-2"
-                        alt=""
-                        width={22}
-                      />
-                      <Typography variant="h4" color="black" fontSize={18}>
-                        Where you went wrong?
-                      </Typography>
-                    </div>
-
-                    <div>
-                      <img
-                        src="/CardsIcons/zoom.png"
-                        className="img-fluid cursor-pointer"
-                        width={22}
-                      />
-                    </div>
-                  </CardContent>
-
-                  <CardContent>
-                    <CustomizedAccordions />
-                  </CardContent>
-                </Card>
+                <DetailCards
+                  cardContent={<CustomizedAccordions />}
+                  heading={"Where you went wrong?"}
+                />
               </Box>
 
-              <Card
+              <Box
+                component="div"
                 sx={{
                   width: 427,
                   height: 176,
                   borderRadius: "25px",
-                  background: "",
-                }} // className={isEnlarged ? "enlarged" : "myDiv"}
-                onClick={() => setIsEnlarged(!isEnlarged)}
+                  background: "white",
+                  zIndex: 999,
+                  p: 1,
+                }}
               >
-                <CardContent>
-                  <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    Word of the Day
-                  </Typography>
-
-                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    adjective
-                  </Typography>
-                  <Typography variant="body2">
-                    well meaning and kindly.
-                    <br />
-                    {'"a benevolent smile"'}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Learn More</Button>
-                </CardActions>
-              </Card>
+                <DetailCards
+                  cardContent={
+                    <TableContainer>
+                      <Table
+                        sx={{ border: "none", borderCollapse: "collapse" }}
+                        aria-label="simple table"
+                      >
+                        <TableHead>
+                          <TableRow
+                            sx={{ fontWeight: "bold", lineHeight: "unset" }}
+                          >
+                            <TableCell sx={cellStyle} align="left">
+                              1
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Indore
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Rokiee
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              FMS
+                            </TableCell>
+                          </TableRow>
+                          <TableRow
+                            sx={{ fontWeight: "bold", lineHeight: "unset" }}
+                          >
+                            <TableCell sx={cellStyle} align="left">
+                              1
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Indore
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Rokiee
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              FMS
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
+                  }
+                  heading={"Where you went wrong?"}
+                />
+              </Box>
             </Box>
 
             {/* Graph start */}
             <Box
               sx={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                bottom: 0,
+              width:"95%",
+              height:"30em",
+              position: "absolute",
+               bottom:0,
+            
+             
               }}
             >
-              <LineChart1 percentile={percentile} />
+              <GoalGraph />
             </Box>
             {/* Graph end */}
           </Box>
           {/* main Section end */}
         </Box>
       </Box>
-    </Box>
+  
   );
 }
+
+const DetailCards = ({ heading, cardContent }) => {
+  const [isEnlarged, setIsEnlarged] = useState(false);
+  return (
+    <Card
+      className={isEnlarged ? "enlarged" : ""}
+      sx={{
+        overflow: "scroll",
+        width: "100%",
+        height: "100%",
+        borderRadius: "25px",
+        boxShadow: "none",
+      }}
+      // onClick={() => setIsEnlarged(!isEnlarged)}
+    >
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+         alignItems:"center",
+         fontFamily:"var(--font-inter)"
+        }}
+      >
+        <div className="d-flex">
+          <img
+            src="/CardsIcons/idea1.png"
+            className="img-fluid me-2"
+            alt=""
+            width={22}
+          />
+          <Typography variant="h4" color="black" fontSize={18}>
+            {heading}
+          </Typography>
+        </div>
+
+        <div>
+          <img
+            src="/CardsIcons/zoom.png"
+            className="img-fluid cursor-pointer"
+            width={22}
+          />
+        </div>
+      </CardContent>
+
+      <CardContent sx={{pt:0}}>{cardContent}</CardContent>
+    </Card>
+  );
+};

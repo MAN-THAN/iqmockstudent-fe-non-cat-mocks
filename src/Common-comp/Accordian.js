@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-//   border: `1px solid ${theme.palette.divider}`,
+  //   border: `1px solid ${theme.palette.divider}`,
   "&:not(:last-child)": {
     border: 0,
   },
@@ -24,23 +24,34 @@ const AccordionSummary = styled((props) => (
     {...props}
   />
 ))(({ theme }) => ({
-//   backgroundColor:
-//     theme.palette.mode === "dark"
-//       ? "rgba(255, 255, 255, .05)"
-//       : "rgba(0, 0, 0, .03)",
+  //   backgroundColor:
+  //     theme.palette.mode === "dark"
+  //       ? "rgba(255, 255, 255, .05)"
+  //       : "rgba(0, 0, 0, .03)",
   flexDirection: "row",
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
   },
   "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
+    fontSize: 16,
+    fontFamily: "var(--font-inter)",
+    fontWeight: 600,
   },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: "1px solid rgba(0, 0, 0, .125)",
+  fontFamily: "var(--font-inter)",
+  fontWeight: "bold",
 }));
+
+const Title = styled(Typography)({
+  fontSize: "16px",
+  fontFamily: "var(--font-inter)",
+  fontWeight: 600,
+  color: "#333",
+});
 
 export default function CustomizedAccordions() {
   const [expanded, setExpanded] = React.useState("");
@@ -56,7 +67,7 @@ export default function CustomizedAccordions() {
         onChange={handleChange("panel1")}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>1.Collapsible Group Item #1</Typography>
+          <Title>1.Collapsible Group Item #1</Title>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -68,27 +79,11 @@ export default function CustomizedAccordions() {
         </AccordionDetails>
       </Accordion>
       <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
       >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Collapsible Group Item #2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel3"}
-        onChange={handleChange("panel3")}
-      >
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Collapsible Group Item #3</Typography>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Title>1.Collapsible Group Item #1</Title>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
