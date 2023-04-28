@@ -57,7 +57,6 @@ function MockComparison() {
     height: "auto",
     justifyContent: "center",
     iconSize: 25,
- 
   };
 
   const [MockName, setMockName] = React.useState([]);
@@ -75,7 +74,7 @@ function MockComparison() {
   const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   return (
     <>
-      <Box component="main" >
+      <Box component="main">
         <MenuDrawer />
 
         <Box
@@ -128,7 +127,6 @@ function MockComparison() {
                   lineHeight: "4.3em",
                   ...typographyStyles.subHeading,
                   fontSize: "15px",
-                 
                 }}
               >
                 <li>Score</li>
@@ -142,7 +140,7 @@ function MockComparison() {
 
             <Box className="Cards d-flex gap-5 align-items-center mt-4 ">
               <OuterCard
-                               data={{ list: [...Array(6)] }}
+                data={{ list: [...Array(6)] }}
                 miniCard={
                   <LogoCard
                     icon={"/click 1.svg"}
@@ -209,7 +207,6 @@ function MockComparison() {
                           variant="h4"
                           sx={{ fontSize: 17 }}
                           color={"black"}
-
                         >
                           82.8 <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
@@ -221,7 +218,6 @@ function MockComparison() {
                     style={{ ...innerCardStyle, background: "#FFECB9" }}
                     icon={"/top-rated.png"}
                     infoIcon={"/info1.svg"}
-                  
                   />
                 }
                 style={{ ...OuterCardStyle, background: "#FFC107" }}
@@ -236,12 +232,11 @@ function MockComparison() {
 
 const OuterCard = ({ style, miniCard, data }) => {
   return (
-    <Card sx={{ ...style ,}}>
+    <Card sx={{ ...style }}>
+      <Box component="div" sx={{ height: "20%" }}>
+        {miniCard}
+      </Box>
 
-     <Box component="div" sx={{height:"20%"}}>
-     {miniCard}
-     </Box>
-   
       <CardContent>
         {data &&
           data.list.map((item, index) => {
@@ -260,14 +255,14 @@ const SelectBox = ({ onSelect, mockName, options }) => {
   const theme = useTheme();
   return (
     <div>
-      <FormControl sx={{ m: 1,mt:0, width: "94%" }}>
+      <FormControl sx={{ m: 1, mt: 0, width: "94%" }}>
         {/* <InputLabel id="demo-multiple-name-label" sx={{ fontSize: "15px" }}>
          Mock
         </InputLabel> */}
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-            value={mockName}
+          value={mockName}
           onChange={onSelect}
           sx={{ height: "30px" }}
           // input={<OutlinedInput label="Name" />}
