@@ -74,18 +74,20 @@ function MockComparison() {
   const [result, setResult] = useState();
   const [prevMocks, setPrevMocks] = useState();
   const [topper, setTopper] = useState();
+  const [compMock, setCompMock] = useState();
   const getData = async () => {
     const res = await getMockComparison(mockId, attemptId);
     if (res?.status == 200) {
       console.log(res.data);
       setResult(res?.data?.result[0]?.data[1]?.overAllAnalysis[1]);
       setTopper(res?.data?.topperResult[0]?.data[1]?.overAllAnalysis[1]);
-      setPrevMocks(res?.data?.prevMocks);
+      setPrevMocks(res?.data?.previousMocks);
+      setCompMock(res?.data?.previousMocks[0]?.data[1]?.overAllAnalysis[1]);
     } else {
       console.log("error", res);
     }
   };
-  console.log(topper)
+  console.log(prevMocks)
 
   return (
     <>
@@ -174,7 +176,7 @@ function MockComparison() {
                 style={OuterCardStyle}
               />
               <OuterCard
-                data={prevMocks}
+                data={compMock}
                 icon={"/click 1.svg"}
                 miniCard={
                   <LogoCard
@@ -190,7 +192,7 @@ function MockComparison() {
                     style={innerCardStyle}
                     icon={"/click 1.svg"}
                     infoIcon={"/info1.svg"}
-                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={["hnm", "gvhbjn", "ghj"]} />}
+                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={ setCompMock } />}
                   />
                 }
                 style={OuterCardStyle}
@@ -228,7 +230,6 @@ const OuterCard = ({ style, miniCard, data }) => {
       <Box component="div" sx={{ height: "20%" }}>
         {miniCard}
       </Box>
-
       <CardContent>
         <ul className="list-unstyled pt-4 text-center">
           <li>{data?.score}</li>
@@ -253,7 +254,7 @@ const OuterCard = ({ style, miniCard, data }) => {
   );
 };
 
-const SelectBox = ({ onSelect, mockName, options }) => {
+const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
   const theme = useTheme();
   return (
     <div>
@@ -274,9 +275,14 @@ const SelectBox = ({ onSelect, mockName, options }) => {
           <MenuItem value="" disabled>
             MOCK
           </MenuItem>
-          {options.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, mockName, theme)}>
-              {name}
+          {options?.map((item, index) => (
+            <MenuItem
+              onClick={() => setCompMock(options[index]?.data[1]?.overAllAnalysis[1])}
+              key={index}
+              value={item._id}
+              style={getStyles(item._id, mockName, theme)}
+            >
+              {item._id}
             </MenuItem>
           ))}
         </Select>
