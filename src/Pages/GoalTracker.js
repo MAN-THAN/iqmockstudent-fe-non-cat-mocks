@@ -8,32 +8,29 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import LineChart1 from "../Components/LineGraph1";
-
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
-
 import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-
+import Paper, { paperClasses } from "@mui/material/Paper";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
+
 import CardContent from "@mui/material/CardContent";
-import { Stack } from "react-bootstrap";
+
 import CustomizedAccordions from "../Common-comp/Accordian";
 import GoalGraph from "../Common-comp/GoalGraph";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 export default function GoalTracker() {
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
   const {
     menuBarOpen,
     setMenuBarOpen,
@@ -59,7 +56,7 @@ export default function GoalTracker() {
     }
   }, [userData]);
   // set percentile state
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     console.log(a, b, c, d);
     console.log(Number(String(a) + String(b)));
@@ -67,7 +64,7 @@ export default function GoalTracker() {
     setPercentile(newPtle);
   }, [a, b, c, d]);
 
-  console.log(percentile);
+  // console.log(percentile);
   const handleSubmit = () => {
     navigate("/user_authentication", {
       state: {
@@ -85,131 +82,182 @@ export default function GoalTracker() {
     lineHeight: "unset",
   };
 
+  const infoStyle = {
+    textstyle: {
+      fontSize: "10px",
+      fontFamily: "var(--font-inter)",
+      fontWeight: "bold",
+    },
+    divStyle: {
+      width: "46px",
+      height: "11px",
+      background: "linear-gradient(180deg, #21D3E7 0%, #0099F4 100%)",
+      borderRadius: "20px",
+    },
+  };
+
   return (
-      <Box sx={{width:"100vw",height:"100vh"}}>
-        <Box>
-          <MenuDrawer />
-        </Box>
+    <Box sx={{ width: "100vw", height: "100vh" }}>
+      <Box>
+        <MenuDrawer />
+      </Box>
 
+      <Box
+        sx={{
+          ml: "65px",
+          background: "url(/onboarding_image.png)",
+          backgroundSize: "cover",
+          height: "100vh",
+          p: 2,
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Header start  */}
+        <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
+
+        {/* Header end  */}
+        {/* main Section start */}
         <Box
-          sx={{
-            ml: "65px",
-            background: "url(/onboarding_image.png)",
-            backgroundSize: "cover",
-             height: "100vh",
-            p: 2,
-            backgroundRepeat: "no-repeat",
-          }}
+          component="main"
+          sx={{ display: "flex", flexDirection: "column", mt: 2 }}
         >
-          {/* Header start  */}
-          <HeaderNew />
-          {/* Header end  */}
-          {/* main Section start */}
-          <Box
-            component="main"
-            sx={{ display: "flex", flexDirection: "column", mt: 2 }}
-          >
-            <Box component="div" sx={{ display: "flex", gap: 2 }}>
-              <Box
-                component="div"
-                sx={{
-                  width: 532,
-                  height: 269,
-                  zIndex: 999,
-                  borderRadius: "25px",
-                  background: "white",
-                  p: 1,
-                }}
-              >
-                <DetailCards
-                  cardContent={<CustomizedAccordions />}
-                  heading={"Where you went wrong?"}
-                />
-              </Box>
-
-              <Box
-                component="div"
-                sx={{
-                  width: 427,
-                  height: 176,
-                  borderRadius: "25px",
-                  background: "white",
-                  zIndex: 999,
-                  p: 1,
-                }}
-              >
-                <DetailCards
-                  cardContent={
-                    <TableContainer>
-                      <Table
-                        sx={{ border: "none", borderCollapse: "collapse" }}
-                        aria-label="simple table"
-                      >
-                        <TableHead>
-                          <TableRow
-                            sx={{ fontWeight: "bold", lineHeight: "unset" }}
-                          >
-                            <TableCell sx={cellStyle} align="left">
-                              1
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Indore
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Rokiee
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              FMS
-                            </TableCell>
-                          </TableRow>
-                          <TableRow
-                            sx={{ fontWeight: "bold", lineHeight: "unset" }}
-                          >
-                            <TableCell sx={cellStyle} align="left">
-                              1
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Indore
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Rokiee
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              FMS
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                      </Table>
-                    </TableContainer>
-                  }
-                  heading={"Where you went wrong?"}
-                />
-              </Box>
-            </Box>
-
-            {/* Graph start */}
+          {/* Two div */}
+          <Box component="div" sx={{ display: "flex", gap: 2 }}>
             <Box
+              component="div"
               sx={{
-              width:"95%",
-              height:"30em",
-              position: "absolute",
-               bottom:0,
-            
-             
+                width: 532,
+                height: 269,
+                zIndex: 999,
+                borderRadius: "25px",
+                background: "white",
+                p: 1,
               }}
             >
-              <GoalGraph />
+              {menuBarOpen && (
+                <Backdrop
+                  open={menuBarOpen}
+                  onClick={() => setMenuBarOpen(false)}
+                ></Backdrop>
+              )}
+              <DetailCards
+                cardContent={<CustomizedAccordions />}
+                heading={"Where you went wrong?"}
+                logoPath={"/CardsIcons/idea1.png"}
+              />
             </Box>
-            {/* Graph end */}
+
+            <Box
+              component="div"
+              sx={{
+                width: 427,
+                height: 176,
+                borderRadius: "25px",
+                background: "white",
+                zIndex: 99,
+                p: 1,
+              }}
+            >
+              <DetailCards
+               logoPath={"/goalSchool.png"}
+                cardContent={
+                  <TableContainer>
+                    <Table
+                      sx={{ border: "none", borderCollapse: "collapse" }}
+                      aria-label="simple table"
+                    >
+                      <TableHead>
+                        <TableRow
+                          sx={{ fontWeight: "bold", lineHeight: "unset" }}
+                        >
+                          <TableCell sx={cellStyle} align="left">
+                            1
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            IIM Indore
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            IIM Rokiee
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            FMS
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{ fontWeight: "bold", lineHeight: "unset" }}
+                        >
+                          <TableCell sx={cellStyle} align="left">
+                            1
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            IIM Indore
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            IIM Rokiee
+                          </TableCell>
+                          <TableCell sx={cellStyle} align="left">
+                            FMS
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                    </Table>
+                  </TableContainer>
+                }
+                heading={"Where you went wrong?"}
+              />
+            </Box>
           </Box>
-          {/* main Section end */}
+
+          {/* Graph start */}
+          <Box
+            sx={{
+              width: "95%",
+              height: "30em",
+              position: "absolute",
+              bottom: 0,
+            }}
+          >
+            <GoalGraph />
+          </Box>
+
+          {/* Graph end */}
+          {/* bottom instuction Card */}
+          {/* Add the select field */}
+
+          <Box
+            component={Paper}
+            sx={{
+              width: 265,
+              height: 41,
+              position: "absolute",
+              bottom: 20,
+              right: 100,
+              borderRadius: "15px ",
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              p: 1,
+            }}
+          >
+            <div style={infoStyle.divStyle}></div>
+            <Typography sx={infoStyle.textstyle}>Goal</Typography>
+            <div
+              style={{
+                ...infoStyle.divStyle,
+                background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+              }}
+            ></div>
+            <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
+          </Box>
         </Box>
+
+        {/* main Section end */}
       </Box>
-  
+    </Box>
   );
 }
 
-const DetailCards = ({ heading, cardContent }) => {
+const DetailCards = ({ heading, cardContent,logoPath }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
   return (
     <Card
@@ -228,13 +276,13 @@ const DetailCards = ({ heading, cardContent }) => {
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-         alignItems:"center",
-         fontFamily:"var(--font-inter)"
+          alignItems: "center",
+          fontFamily: "var(--font-inter)",
         }}
       >
         <div className="d-flex">
           <img
-            src="/CardsIcons/idea1.png"
+            src={logoPath}
             className="img-fluid me-2"
             alt=""
             width={22}
@@ -253,7 +301,7 @@ const DetailCards = ({ heading, cardContent }) => {
         </div>
       </CardContent>
 
-      <CardContent sx={{pt:0}}>{cardContent}</CardContent>
+      <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
     </Card>
   );
 };
