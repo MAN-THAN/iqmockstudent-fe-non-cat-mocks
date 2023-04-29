@@ -56,10 +56,9 @@ function AnalysisAcross() {
   }, [index]);
 
   useEffect(() => {
-    const uid = JSON.parse(localStorage.getItem("userData"))?.uid;
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
-      console.log("creating attemptid");
-      const response = await fetchOverallAcross(mockId, "83745892374");
+      const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
         setMocksList(response.data?.topicWise);

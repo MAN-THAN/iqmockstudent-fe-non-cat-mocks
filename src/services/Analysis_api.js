@@ -115,3 +115,18 @@ export const getMockAcrossAnalysis = async (uid) => {
     return err;
   }
 };
+
+// api for goal tracker
+
+export const getGoalTrackerData = async (attemptId) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/goaltracker/${attemptId}`,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};

@@ -24,9 +24,9 @@ function getStyles(theme, value, selected) {
   };
 }
 
-export default function MultipleSelect({ options, setType}) {
+export default function MultipleSelect({ options, setType }) {
   const theme = useTheme();
-  const [value, setValue] = useState(options[0]?.name || "");
+  const [value, setValue] = useState(options[0]?.value || "");
   const [year, setYear] = React.useState([]);
   const showSecondSelect = options.some((option) => option.year !== undefined);
   console.log(value);
@@ -44,7 +44,7 @@ export default function MultipleSelect({ options, setType}) {
         }}
       >
         <Select
-          // defaultValue={defaultValue}
+          defaultValue={value}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           input={
@@ -82,7 +82,7 @@ export default function MultipleSelect({ options, setType}) {
             options.map((item, _) => (
               <MenuItem
                 key={item.name}
-                value={item.name}
+                value={item.value}
                 // style={getStyles(item.name, value, theme)}
               >
                 {item.name}

@@ -17,7 +17,8 @@ function OnBoarding() {
   const [e, setE] = useState(0);
   const navigate = useNavigate();
   const { state } = useLocation();
-  const uid = JSON.parse(localStorage.getItem("userData"))?.uid;
+  const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+  const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
  console.log(state.mockId, state.setId)
@@ -85,20 +86,36 @@ function OnBoarding() {
                 Start Mock
               </Button>
             </Box>
-            <Box
-              sx={{
-                width: "34vw",
-                height: "12em",
-                background: "white",
-                borderRadius: "1em",
-                padding: "1.5em",
-                marginTop: "1em",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <img alt="no image" width="25px" height="25px" src="/school (1).png" />
-              <Typography sx={{ color: "black", fontWeight: 800, fontSize: "1em", marginLeft: "2em" }}>B-Schools you can Crack</Typography>{" "}
+            <Box>
+              <Box
+                sx={{
+                  width: "34vw",
+                  height: "12em",
+                  background: "white",
+                  borderRadius: "1em",
+                  padding: "1.5em",
+                  marginTop: "1em",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Box sx={{display : "flex", flexDirection : "row"}}>
+                  {" "}
+                  <img alt="no image" width="25px" height="25px" src="/school (1).png" />
+                  <Typography sx={{ color: "black", fontWeight: 800, fontSize: "1em", marginLeft: "2em" }}>B-Schools you can Crack</Typography>{" "}
+                </Box>
+                <Box>
+                  {college?.length &&
+                    college.map((e, i) => {
+                      console.log(e);
+                      return (
+                        <>
+                          <Typography sx={{ color: "green", fontWeight: 600, fontSize: "1em", marginTop : 2}}>{e}</Typography>
+                        </>
+                      );
+                    })}
+                </Box>
+              </Box>
             </Box>
           </Box>
         ) : (

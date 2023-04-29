@@ -127,12 +127,14 @@ export default function ViewSolution() {
       duration:selectedObj.duration,
       averageDuration:selectedObj.averageDuration ,
       explanations: selectedObj.explanations,
-      isCorrect : selectedObj.correctAnswer === selectedObj.studentAnswer ? true : false
+      isCorrect : selectedObj.correctAnswer === selectedObj.studentAnswer ? 'correct' : 'incorrect'
     };
  console.log(show[index])
     const res = await postToErrorTracker(attemptId, type, payload);
     console.log(res);
   };
+
+  
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
