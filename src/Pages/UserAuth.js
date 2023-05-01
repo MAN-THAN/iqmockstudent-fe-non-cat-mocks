@@ -38,7 +38,7 @@ console.log(state)
     const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
     console.log(response);
     if (response?.status === 200) {
-      localStorage.setItem("userData", JSON.stringify(response.data));
+      localStorage.setItem("attemptId", JSON.stringify(response.data.attemptId));
       // userAuthCheck();
        navigate(`/instructions`, {
         state: {

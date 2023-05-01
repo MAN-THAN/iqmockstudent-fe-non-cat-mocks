@@ -105,6 +105,7 @@ const LoginForm = ({ setCollege, percentile }) => {
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,
+        salary: values.salary
       };
       setLoading(true);
       try {
