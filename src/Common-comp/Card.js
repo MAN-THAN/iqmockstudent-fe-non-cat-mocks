@@ -4,7 +4,10 @@ import { styled } from "@mui/material/styles";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { Typography } from "@mui/material";
 import { SubHeading } from "../styleSheets/Style";
+import {Card, CardContent} from "@mui/material";
 
+
+import { useState } from "react";
 export const TooltipCard = ({ tooltip, cardTitle, icon }) => {
   // Tooltip Customisation
   const BootstrapTooltip = styled(({ className, ...props }) => (
@@ -85,3 +88,54 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
     </div>
   );
 };
+
+
+export const DetailCards = ({ heading, cardContent,logoPath }) => {
+  const [isEnlarged, setIsEnlarged] = useState(false);
+  return (
+    <Card
+      className={isEnlarged ? "enlarged" : ""}
+      sx={{
+        overflow: "scroll",
+        width: "100%",
+        height: "100%",
+        borderRadius: "25px",
+        boxShadow: "none",
+      }}
+      // onClick={() => setIsEnlarged(!isEnlarged)}
+    >
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          alignItems: "center",
+          fontFamily: "var(--font-inter)",
+        }}
+      >
+        <div className="d-flex">
+          <img
+            src={logoPath}
+            className="img-fluid me-2"
+            alt=""
+            width={22}
+          />
+          <Typography variant="h4" color="black" fontSize={18}>
+            {heading}
+          </Typography>
+        </div>
+
+        <div>
+          <img
+            src="/CardsIcons/zoom.png"
+            className="img-fluid cursor-pointer"
+            width={22}
+          />
+        </div>
+      </CardContent>
+
+      <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
+    </Card>
+  );
+};
+
