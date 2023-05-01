@@ -158,13 +158,13 @@ function OnBoarding() {
                                       {i + 1}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      IIM Indore
+                                    {item.bschool}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      IIM Rokiee
+                                     { item.averagePackage || "tbd"}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      FMS
+                                      {item.currentPackage || "tbd"}
                                     </TableCell>
                                   </TableRow>
                                 );
