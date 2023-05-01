@@ -26,8 +26,8 @@ import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 
+
 export default function ViewSolution() {
-  const { handlePageClick } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState("Verbal Ability");
   const { attemptId } = useParams();
@@ -38,6 +38,8 @@ export default function ViewSolution() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const [viewSol, setViewSoln] = useState(false);
+
+  const { menuBarOpen, setMenuBarOpen, Backdrop} = useAuth();
   console.log(data);
   console.log(open);
 
@@ -136,9 +138,9 @@ export default function ViewSolution() {
 
   
   return (
-    <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
+    <Box sx={{ width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
-      <Box component="main" sx={{ flexGrow: 1, p: 2, width: "calc(100% - 240px)", height: "100%" }}>
+      <Box component="main" sx={{ ml:"64px", p: 2, height: "100%" }}>
         <Box component="div" sx={{ height: "10%" }}>
           <HeaderNew />
         </Box>
@@ -148,13 +150,24 @@ export default function ViewSolution() {
           sx={{
             display: "flex",
             gap: 2,
-            height: "10%",
+                  
+              height: "10%",
             paddingTop: "1em",
             justifyContent: "space-between",
             alignItems: "center",
             flexWrap: "wrap",
           }}
         >
+        {menuBarOpen && (
+              <Backdrop
+                sx={{
+                  zIndex: (theme) => theme.zIndex.drawer - 1,
+                  color: "#fff",
+                }}
+                open={menuBarOpen}
+                onClick={() => setMenuBarOpen(false)}
+              />
+            )}
           <div style={{ flexBasis: "10%" }}>
             <BootstrapButton
               id="demo-customized-button"
@@ -223,7 +236,7 @@ export default function ViewSolution() {
         {/* Navigation bar end */}
 
         {/* Main center start */}
-        <Box component="div" sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}>
+        <Box component="div" sx={{ display: "flex", gap: 3, height: "61%", mt: "2em" }}>
           {/* LEFT Main start */}
           <Box
             sx={{
@@ -506,6 +519,7 @@ export default function ViewSolution() {
               height: "100%",
               overflow: "scroll",
               p: 3,
+             
               borderRadius: 5,
             }}
             component={Paper}
@@ -596,16 +610,16 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
     <div
       style={{
         flexBasis: "80%",
-        display: "flex",
+       display: "flex",
         flexWrap: "wrap",
         columnGap: 6,
-        rowGap: 3,
+        rowGap: 4,
       }}
     >
       {Data?.map((_, ind) => (
         <BootstrapTooltip
           title={
-            <div className="py-2" key={ind}>
+            <div className="py-2"  key={ind}>
               <div
                 style={{
                   color: "black",
@@ -638,9 +652,9 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
             sx={{
               bgcolor: "#2196F3",
               cursor: "pointer",
-              width: "33.95px",
-              height: "33.95px",
-              fontSize: "15px",
+              width: {sm:"30px",md:"33.95px"},
+              height: {sm:"30px",md:"33.95px"},
+              fontSize: {sm:"13px",md:"15px"},
               p: 2,
             }}
             alt="Remy Sharp"

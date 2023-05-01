@@ -8,7 +8,8 @@ function NavigationGallery() {
   const params = useParams();
 
 
-  const CardDetails=NavigationGalleryData(params.mockId, params.attempId)
+  const CardDetails= NavigationGalleryData(params.mockId, params.attemptId)
+  console.log(CardDetails)
   return (
     <div className="row row-cols-3 row-gap-5">
       {CardDetails.map((item, _) => {

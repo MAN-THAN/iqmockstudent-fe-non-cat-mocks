@@ -17,7 +17,7 @@ import { DetailCards } from "../Common-comp/Card";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(true);
+  const [startMock, setStartMock] = useState(false);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -132,7 +132,6 @@ function OnBoarding() {
                   padding: "1em",
                   marginTop: "1em",
                   display: "flex",
-
                   flexDirection: "column",
                 }}
               >
@@ -153,16 +152,25 @@ function OnBoarding() {
                               }}
                             >
                               <TableCell
-                                sx={{fontWeight:"bold", fontSize:15}}
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
                                 align="left"
                               ></TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left" >
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Name
                               </TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Average Package
                               </TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Current Package
                               </TableCell>
                             </TableRow>
