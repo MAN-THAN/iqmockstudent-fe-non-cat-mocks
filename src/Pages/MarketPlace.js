@@ -111,11 +111,7 @@ function MarketPlace() {
               </div>
 
               <div className="flex-item">
-<<<<<<< HEAD
-              {/* <MultipleSelect options={options} onSelectChange={handleSelectChange} /> */}
-=======
                 <MultipleSelect options={options} onSelectChange={handleSelectChange} setType={() => { }} />
->>>>>>> 526d8f7d1e06f4cf62a27aba42e0758f636f85a3
               </div>
             </div>
           </Box>

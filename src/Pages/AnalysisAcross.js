@@ -44,12 +44,9 @@ const FilterList = ({ mocksList, setIndex }) => {
 function AnalysisAcross() {
   const params = useParams();
   const [a, setA] = useState("");
-<<<<<<< HEAD
-=======
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
->>>>>>> 526d8f7d1e06f4cf62a27aba42e0758f636f85a3
 
   const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }];
   const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading, showToastMessage } = useAuth();

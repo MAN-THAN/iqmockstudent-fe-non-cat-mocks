@@ -4,8 +4,8 @@ import Typography from "antd/es/typography/Typography";
 
 function HeaderNew({ style, logoPath }) {
 
-  const storedObject = JSON.parse(localStorage.getItem('userData'));
-  const {uid,fullName} = storedObject;
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const {uid,name} = userData;
 
 
   
@@ -33,7 +33,7 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-             {fullName}
+             {name}
             </Typography>
             <Typography
               style={{

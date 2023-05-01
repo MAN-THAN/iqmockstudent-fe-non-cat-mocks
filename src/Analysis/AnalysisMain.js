@@ -11,7 +11,6 @@ import html2pdf from "html2pdf.js";
 import { StyledMenu } from "../styleSheets/Style";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IoBookSharp } from "react-icons/io5";
 import "../styleSheets/AnalysisMain.css";
@@ -26,10 +25,23 @@ function AnalysisMain() {
   const params = useParams();
   const location = useLocation();
   const { mockId, attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis, isErr, handlePageClick, menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const {
+    analysisDataApi,
+    isLoading,
+    basicAnalysis,
+    isErr,
+    handlePageClick,
+    menuBarOpen,
+    setMenuBarOpen,
+    Backdrop,
+  } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
+
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  
+
 
   useEffect(() => {
     setPDfStyle(false);
@@ -48,7 +60,17 @@ function AnalysisMain() {
     }
   }, [basicAnalysis]);
 
-  const { uid, name, negativeMarks, overallPercentage, overallScore, potentialScore, accuracy, percentile, title } = basicData;
+  const {
+    uid,
+    name,
+    negativeMarks,
+    overallPercentage,
+    overallScore,
+    potentialScore,
+    accuracy,
+    percentile,
+    title,
+  } = basicData;
 
   const options = {
     margin: [0, 0, 0, 0],
@@ -131,7 +153,10 @@ function AnalysisMain() {
           }}
         >
           <PacmanLoader color="var(--orange)" size="100" />
-          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
+          <h5
+            className="loader_title"
+            style={{ textAlign: "center", marginTop: "1em" }}
+          >
             Preparing Analysis!
           </h5>
         </div>
@@ -173,12 +198,18 @@ function AnalysisMain() {
                 }
               >
                 <div className="flex-item " style={{ flexBasis: "40%" }}>
-                  <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "40px" }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
+                  >
                     Hey {name},
                     <br />
                   </Typography>
-                  <Typography sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}>
-                    This is your mock analysis for <br /> {title ? title : "iCAT 1.0"}.
+                  <Typography
+                    sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}
+                  >
+                    This is your mock analysis for <br />{" "}
+                    {title ? title : "iCAT 1.0"}.
                   </Typography>
                   <br />
                   {/* <div className="d-flex gap-3 m-3 ms-0 ">
@@ -327,7 +358,12 @@ function AnalysisMain() {
                 <div className="  flex-item " style={{ flexBasis: "30%" }}>
                   <div className=" d-flex  justify-content-start  flex-wrap gap-3 row-gap-2 ">
                     {CardsData.map((item, index) => (
-                      <TooltipCard key={index} tooltip={item.tooltip} cardTitle={item.cardTitle} icon={item.icon} />
+                      <TooltipCard
+                        key={index}
+                        tooltip={item.tooltip}
+                        cardTitle={item.cardTitle}
+                        icon={item.icon}
+                      />
                     ))}
                   </div>
                 </div>
@@ -335,8 +371,15 @@ function AnalysisMain() {
 
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
-                <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeClassName="active " className="link flex-item">
+                <div
+                  style={{ flexBasis: "70%" }}
+                  className=" d-flex gap-3 ps-2"
+                >
+                  <NavLink
+                    to="overall"
+                    activeClassName="active "
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
@@ -345,8 +388,15 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
-                        color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
+                        background:
+                          location.pathname ===
+                          `/analysis/${attemptId}/sectionwise/${subject}`
+                            ? "#0057CB"
+                            : "",
+                        color:
+                          location.pathname ===
+                            `/analysis/${attemptId}/sectionwise/${subject}` &&
+                          "white",
                       }}
                       id="demo-customized-button"
                       aria-controls={open ? "demo-customized-menu" : undefined}
@@ -403,13 +453,21 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="topicwise" activeClassName="active " className="link flex-item">
+                  <NavLink
+                    to="topicwise"
+                    activeClassName="active "
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Topic-wise
                     </ModifyButton>
                   </NavLink>
 
-                  <NavLink to="difficulty" activeClassName="active" className="link flex-item">
+                  <NavLink
+                    to="difficulty"
+                    activeClassName="active"
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Difficulty-wise
                     </ModifyButton>
@@ -418,7 +476,12 @@ function AnalysisMain() {
 
                 <div
                   style={{ flexBasis: "30%" }}
-                  className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item " : "d-none"}
+                  className={
+                    location.pathname ===
+                    `/analysis/${mockId}/${attemptId}/overall`
+                      ? "flex-item "
+                      : "d-none"
+                  }
                 >
                   <Box
                     component="span"
@@ -440,7 +503,12 @@ function AnalysisMain() {
                     Time spent on questions(sec):
                   </Box>
                   <span>
-                    <img src="/Group17.svg" className="ms-2" width={20} alt="" />
+                    <img
+                      src="/Group17.svg"
+                      className="ms-2"
+                      width={20}
+                      alt=""
+                    />
                   </span>
                 </div>
               </div>

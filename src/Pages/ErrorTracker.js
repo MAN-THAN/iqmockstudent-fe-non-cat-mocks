@@ -134,18 +134,11 @@ function ErrorTracker() {
     <Box component="main" sx={{ height: "100vh" }}>
       <MenuDrawer />
 
-<<<<<<< HEAD
         <Box sx={{ p: 2, position: "absolute", left: "70px" }}>
         {/* Header */}
           <Box component="header">
             <HeaderNew />
           </Box>
-=======
-      <Box sx={{ p: 2, position: "absolute", left: "70px" }}>
-        <Box component="header">
-          <HeaderNew />
-        </Box>
->>>>>>> 526d8f7d1e06f4cf62a27aba42e0758f636f85a3
 
         <Box component="div" sx={{ mt: 4 }}>
           <Box sx={{ display: "flex", flexDirection: "row", gap: "30%" }}>
