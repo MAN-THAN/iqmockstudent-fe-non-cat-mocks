@@ -5,7 +5,7 @@ import Typography from "antd/es/typography/Typography";
 function HeaderNew({ style, logoPath }) {
 
   const userData = JSON.parse(localStorage.getItem('userData'));
-  const {uid,name} = userData;
+  const {_id,name} = userData;
 
 
   
@@ -43,7 +43,7 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-              User id :{uid}
+              User id :{_id}
             </Typography>
           </div>
 
