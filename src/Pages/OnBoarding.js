@@ -146,7 +146,9 @@ function OnBoarding() {
                           <TableHead>
                             {college?.length &&
                               college.map((item, i) => {
-                                {/* console.log("yhjk", item); */}
+                                {
+                                  /* console.log("yhjk", item); */
+                                }
                                 return (
                                   <TableRow
                                     sx={{
@@ -158,10 +160,10 @@ function OnBoarding() {
                                       {i + 1}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                    {item.bschool}
+                                      {item.bschool}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                     { item.averagePackage || "tbd"}
+                                      {item.averagePackage || "tbd"}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
                                       {item.currentPackage || "tbd"}
