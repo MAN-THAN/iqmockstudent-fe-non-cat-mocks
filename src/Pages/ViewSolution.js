@@ -162,7 +162,7 @@ export default function ViewSolution() {
               aria-haspopup="true"
               aria-expanded={openMenu ? "true" : undefined}
               variant="contained"
-              disableElevation
+              // disableElevation
               onClick={handleClick}
               endIcon={<KeyboardArrowDownIcon />}
               height={47}
