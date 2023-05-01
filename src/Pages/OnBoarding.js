@@ -27,6 +27,7 @@ function OnBoarding() {
   const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
+<<<<<<< HEAD
   console.log(state.mockId, state.setId);
 
   const cellStyle = {
@@ -36,6 +37,12 @@ function OnBoarding() {
   };
 
   // console.log(college);
+=======
+ console.log(state.mockId, state.setId)
+  console.log(college);
+
+ 
+>>>>>>> e5b7f5e35f75529f85b14b7e59b7ae0d0b447aac
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);

@@ -9,7 +9,7 @@ function Protected(props) {
   const { Comp } = props;
 
   useEffect(() => {
-    const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+    const attemptID = JSON.parse(localStorage.getItem("attemptId"));
     if (!attemptID  || attemptID === null) {
       navigate("/");
     }

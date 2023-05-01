@@ -40,7 +40,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
   const [state, setState] = useState(0);
   const params = useParams();
   const navigate = useNavigate();
-  const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
+  const attemptID = JSON.parse(localStorage.getItem("attemptId"));
   const submitSectionFunc = async (subject) => {
     setState(1);
     try {
