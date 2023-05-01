@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Typography from "antd/es/typography/Typography";
 
 function HeaderNew({ style, logoPath }) {
+
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const {uid,name} = userData;
+
+
+  
+  
   return (
     <header className="w-100">
       <div className="d-flex flex-row align-items-center justify-content-between">
@@ -26,7 +33,7 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-              Gaurav
+             {name}
             </Typography>
             <Typography
               style={{
@@ -36,7 +43,7 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-              User id :{675788716}
+              User id :{uid}
             </Typography>
           </div>
 

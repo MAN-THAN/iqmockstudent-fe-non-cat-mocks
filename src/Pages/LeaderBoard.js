@@ -20,6 +20,10 @@ function LeaderBoard() {
   const [studentData, setStudentData] = useState([]);
   const [studentRank, setStudentRank] = useState(null);
 
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const {uid,name} = userData;
+
+
   const date = new Date();
 
   // eslint-disable-next-line arrow-body-style
@@ -49,6 +53,8 @@ function LeaderBoard() {
     // Set the start and end dates in state
     setDateRange({ startDate: formattedStartDate, endDate: formattedEndDate });
   };
+
+
 
   useEffect(() => {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
@@ -126,7 +132,7 @@ function LeaderBoard() {
                   fontWeight: 600,
                 }}
               >
-                {"Manthan"}
+                {name}
               </Typography>
               <Typography
                 sx={{
@@ -135,7 +141,7 @@ function LeaderBoard() {
                   fontWeight: 400,
                 }}
               >
-                User id :{"574932594574334"}
+                User id :{uid}
               </Typography>
             </div>
             <div className="d-flex">
@@ -163,7 +169,7 @@ function LeaderBoard() {
             fontFamily: "Inter",
           }}
         >
-          Mr. Manthan
+          {name}
         </Typography>
         <Typography
           sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}
