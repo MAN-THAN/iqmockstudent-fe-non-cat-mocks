@@ -20,26 +20,22 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useParams } from "react-router-dom";
 import { fetchOverallAcross } from "../services/Analysis_api";
-const FilterList = () => {
+import { setIn } from "formik";
+
+
+const FilterList = ({ mocksList, setIndex }) => {
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">
         {" "}
-        <Typography
-          variant="paragrapgh"
-          sx={{ ...style.subHeading, fontSize: "21.96px", color: "black" }}
-        >
+        <Typography variant="paragrapgh" sx={{ ...style.subHeading, fontSize: "21.96px", color: "black" }}>
           Filter
         </Typography>
       </FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-      >
-        <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
-        <FormControlLabel value="other" control={<Radio />} label="Other" />
+      <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+        {mocksList?.map((item, index) => {
+          return <FormControlLabel onClick={() => setIndex(index)} value={item.title} control={<Radio />} label={ item.title } />;
+        })}
       </RadioGroup>
     </FormControl>
   );
@@ -48,30 +44,28 @@ const FilterList = () => {
 function AnalysisAcross() {
   const params = useParams();
   const [a, setA] = useState("");
+<<<<<<< HEAD
+=======
+  const [mocksList, setMocksList] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [show, setShow] = useState([]);
+>>>>>>> 526d8f7d1e06f4cf62a27aba42e0758f636f85a3
 
-  const Subjects = [
-    { name: "Varc" },
-    { name: "Quants" },
-    { name: "LRdi" },
-    { name: "MBA" },
-    { name: "MIA" },
-  ];
-  const {
-    menuBarOpen,
-    setMenuBarOpen,
-    Backdrop,
-    setLoading,
-    isLoading,
-    showToastMessage,
-  } = useAuth();
+  const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }];
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading, showToastMessage } = useAuth();
 
   useEffect(() => {
-    const uid = JSON.parse(localStorage.getItem("userData"))?.uid;
+    setShow(mocksList[index]);
+  }, [index]);
+
+  useEffect(() => {
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
-      console.log("creating attemptid");
       const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
+        setMocksList(response.data?.topicWise);
+        setShow(response.data?.topicWise[index]);
       } else {
         showToastMessage();
         setLoading(false);
@@ -80,6 +74,8 @@ function AnalysisAcross() {
     };
     fetchData(params.mockId, uid);
   }, []);
+  console.log(index);
+  console.log(show);
   return (
     <>
       <Box component="main" sx={{ height: "100vh" }}>
@@ -134,7 +130,7 @@ function AnalysisAcross() {
               }}
             >
               <Stack spacing={2} direction="column" useFlexGap flexWrap="wrap">
-                <FilterList />
+                <FilterList mocksList={mocksList} setIndex={ setIndex } />
               </Stack>
             </Box>
             {/* Filter div end */}
@@ -176,7 +172,7 @@ function AnalysisAcross() {
 
               {/* Table */}
               <Box component="div" mt={4}>
-                <DataTable />
+                <DataTable data={ show?.data } />
               </Box>
             </Box>
             {/*Question side box end*/}
@@ -187,7 +183,7 @@ function AnalysisAcross() {
   );
 }
 
-const DataTable = () => {
+const DataTable = ({ data }) => {
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
@@ -202,25 +198,17 @@ const DataTable = () => {
     createData("Gingerbread", 356, 16.0, 49, 3.9),
   ];
   return (
-    <TableContainer
-      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
-      component={Paper}
-    >
+    <TableContainer sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.calories}</TableCell>
-              <TableCell align="center">{row.fat}</TableCell>
-              <TableCell align="center">{row.carbs}</TableCell>
-              <TableCell align="center">{row.carbs}</TableCell>
-              <TableCell align="center">{row.carbs}</TableCell>
+          {data?.slice(1).map((row) => (
+            <TableRow key={row.topic} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>{row.topic}</TableCell>
+              <TableCell align="center">{row.numberOfQuestions}</TableCell>
+              <TableCell align="center">{row.numberOfAttemptedQuestions}</TableCell>
+              <TableCell align="center">{row.numberOfCorrectAttempt}</TableCell>
+              <TableCell align="center">{row.numberOfIncorrectAttempt}</TableCell>
+              <TableCell align="center">{row.numberOfQuestions - row.numberOfAttemptedQuestions}</TableCell>
             </TableRow>
           ))}
         </TableBody>

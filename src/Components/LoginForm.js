@@ -94,6 +94,9 @@ const LoginForm = ({ setCollege, percentile }) => {
       // setUserData(values)
       // api call(If any)
       const obj = {
+        name: values.name,
+        email: values.email,
+        phone : values.phone_number,
         min10th: values.class_10th_result,
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
@@ -105,7 +108,8 @@ const LoginForm = ({ setCollege, percentile }) => {
       };
       setLoading(true);
       try {
-        const res = await getPredictCollege(obj);
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+        const res = await getPredictCollege(uid, obj);
         console.log(res);
         if (res?.status == 200) {
           setLoading(false);

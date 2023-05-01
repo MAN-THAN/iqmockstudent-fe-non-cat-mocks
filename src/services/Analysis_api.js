@@ -54,10 +54,74 @@ export const fetchViewSolution = async (attemptId) => {
   }
 };
 
+//GET ERROR TRACKER
 export const fetchErrorTracker = async (attemptId, type) => {
   try {
     const res = request({
+      url: `/api/student/v1/errortracker/${attemptId}`,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+
+// POST ERROR TRACKER
+
+export const postToErrorTracker = async (attemptId, type, payload) => {
+  try {
+    const res = request({
       url: `/api/student/v1/errortracker/${attemptId}/${type}`,
+      type: "POST",
+      data: payload,
+      headers: { "Content-Type": "application/json" }
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for mock comparison
+
+export const getMockComparison = async (mockId, attemptId) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/compare/${mockId}/${attemptId}`,
+      headers: { "Content-Type": "application/json" }
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for across mock analysis
+
+export const getMockAcrossAnalysis = async (uid) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/across/${uid}`,
+      headers: { "Content-Type": "application/json" }
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for goal tracker
+
+export const getGoalTrackerData = async (attemptId) => {
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/goaltracker/${attemptId}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;

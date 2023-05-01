@@ -24,6 +24,7 @@ import { fetchViewSolution } from "../services/Analysis_api";
 import { LogoButton } from "../Common-comp/Buttons";
 import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
+import { postToErrorTracker } from "../services/Analysis_api";
 
 export default function ViewSolution() {
   const { handlePageClick } = useAuth();
@@ -36,8 +37,9 @@ export default function ViewSolution() {
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
+  const [viewSol, setViewSoln] = useState(false);
   console.log(data);
-  console.log(open)
+  console.log(open);
 
   console.log(show);
   // function getting data on mounting
@@ -103,7 +105,36 @@ export default function ViewSolution() {
     objectfit: "cover",
   };
 
-  const handleErrorForm = async (e) => {};
+  const handleErrorForm = async (e) => {
+    console.log(e.target.value);
+    let type;
+    if (selected === "Verbal Ability") {
+      type = 'varc'
+    }
+    else if (selected === "Logical Reasoning") {
+      type = "lrdi"
+    }
+    else if (selected === 'Quants') { 
+      type = 'quants'
+    };
+    const selectedObj = show[index];
+    const payload = {
+      question_id: selectedObj.question_id ,
+      question: selectedObj.question,
+      difficulty: selectedObj.difficulty,
+      topic: selectedObj.topic,
+      error: e.target.value,
+      duration:selectedObj.duration,
+      averageDuration:selectedObj.averageDuration ,
+      explanations: selectedObj.explanations,
+      isCorrect : selectedObj.correctAnswer === selectedObj.studentAnswer ? 'correct' : 'incorrect'
+    };
+ console.log(show[index])
+    const res = await postToErrorTracker(attemptId, type, payload);
+    console.log(res);
+  };
+
+  
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
@@ -181,7 +212,13 @@ export default function ViewSolution() {
               </MenuItem>
             </StyledMenu>
           </div>
-          <NavigationAvatar Data={show} setInd={setIndex} selectedQuestionIndex={index} difficulty={show[index]?.difficulty} />
+          <NavigationAvatar
+            Data={show}
+            setInd={setIndex}
+            selectedQuestionIndex={index}
+            difficulty={show[index]?.difficulty}
+            setViewSoln={setViewSoln}
+          />
         </Box>
         {/* Navigation bar end */}
 
@@ -238,50 +275,156 @@ export default function ViewSolution() {
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     {" "}
                     <FormControlLabel
-                      checked={show[index]?.options[0] === show[index]?.correctAnswer ? true : false}
+                      checked={
+                        show[index]?.options[0] === show[index]?.correctAnswer
+                          ? true
+                          : show[index]?.options[0] === show[index]?.studentAnswer
+                          ? true
+                          : false
+                      }
                       value={0}
-                      control={<Radio color={show[index]?.options[0] === show[index]?.correctAnswer ? "success" : "default"} />}
+                      control={
+                        <Radio
+                          color={
+                            show[index]?.options[0] === show[index]?.correctAnswer
+                              ? "success"
+                              : show[index]?.options[0] === show[index]?.studentAnswer
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                      }
                       label={
-                        <Typography color={show[index]?.options[0] === show[index]?.correctAnswer ? "green" : "black"} marginTop={2}>
+                        <Typography
+                          color={
+                            show[index]?.options[0] === show[index]?.correctAnswer
+                              ? "green"
+                              : show[index]?.options[0] === show[index]?.studentAnswer
+                              ? "red"
+                              : "black"
+                          }
+                          marginTop={2}
+                        >
                           <Latex>{show[index]?.options[0] || ""}</Latex>
                         </Typography>
                       }
                     />
                     <FormControlLabel
-                      checked={show[index]?.options[1] === show[index]?.correctAnswer ? true : false}
-                      value={0}
-                      control={<Radio color={show[index]?.options[1] === show[index]?.correctAnswer ? "success" : "default"} />}
+                      checked={
+                        show[index]?.options[1] === show[index]?.correctAnswer
+                          ? true
+                          : show[index]?.options[1] === show[index]?.studentAnswer
+                          ? true
+                          : false
+                      }
+                      value={1}
+                      control={
+                        <Radio
+                          color={
+                            show[index]?.options[1] === show[index]?.correctAnswer
+                              ? "success"
+                              : show[index]?.options[1] === show[index]?.studentAnswer
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                      }
                       label={
-                        <Typography color={show[index]?.options[1] === show[index]?.correctAnswer ? "green" : "black"} marginTop={2}>
+                        <Typography
+                          color={
+                            show[index]?.options[1] === show[index]?.correctAnswer
+                              ? "green"
+                              : show[index]?.options[1] === show[index]?.studentAnswer
+                              ? "red"
+                              : "black"
+                          }
+                          marginTop={2}
+                        >
                           <Latex>{show[index]?.options[1] || ""}</Latex>
                         </Typography>
                       }
                     />
                     <FormControlLabel
-                      checked={show[index]?.options[2] === show[index]?.correctAnswer ? true : false}
+                      checked={
+                        show[index]?.options[2] === show[index]?.correctAnswer
+                          ? true
+                          : show[index]?.options[2] === show[index]?.studentAnswer
+                          ? true
+                          : false
+                      }
                       value={0}
-                      control={<Radio color={show[index]?.options[2] === show[index]?.correctAnswer ? "success" : "default"} />}
+                      control={
+                        <Radio
+                          color={
+                            show[index]?.options[2] === show[index]?.correctAnswer
+                              ? "success"
+                              : show[index]?.options[2] === show[index]?.studentAnswer
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                      }
                       label={
-                        <Typography color={show[index]?.options[2] === show[index]?.correctAnswer ? "green" : "black"} marginTop={2}>
+                        <Typography
+                          color={
+                            show[index]?.options[2] === show[index]?.correctAnswer
+                              ? "green"
+                              : show[index]?.options[2] === show[index]?.studentAnswer
+                              ? "red"
+                              : "black"
+                          }
+                          marginTop={2}
+                        >
                           <Latex>{show[index]?.options[2] || ""}</Latex>
                         </Typography>
                       }
                     />
                     <FormControlLabel
-                      checked={show[index]?.options[3] === show[index]?.correctAnswer ? true : false}
+                      checked={
+                        show[index]?.options[3] === show[index]?.correctAnswer
+                          ? true
+                          : show[index]?.options[3] === show[index]?.studentAnswer
+                          ? true
+                          : false
+                      }
                       value={0}
-                      control={<Radio color={show[index]?.options[3] === show[index]?.correctAnswer ? "success" : "default"} />}
+                      control={
+                        <Radio
+                          color={
+                            show[index]?.options[3] === show[index]?.correctAnswer
+                              ? "success"
+                              : show[index]?.options[3] === show[index]?.studentAnswer
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                      }
                       label={
-                        <Typography color={show[index]?.options[3] === show[index]?.correctAnswer ? "green" : "black"} marginTop={2}>
+                        <Typography
+                          color={
+                            show[index]?.options[3] === show[index]?.correctAnswer
+                              ? "green"
+                              : show[index]?.options[3] === show[index]?.studentAnswer
+                              ? "red"
+                              : "black"
+                          }
+                          marginTop={2}
+                        >
                           <Latex>{show[index]?.options[3] || ""}</Latex>
                         </Typography>
                       }
                     />
                   </Box>
                 ) : (
-                  <Typography color="green" fontWeight={600}>
-                    Correct Answer : {show[index]?.correctAnswer}
-                  </Typography>
+                  <>
+                    {" "}
+                    <Typography color="black" fontWeight={600}>
+                      Your Answer : {show[index]?.studentAnswer == null || undefined ? "NA" : show[index]?.studentAnswer}
+                    </Typography>
+                    <Typography marginTop={2} color="green" fontWeight={600}>
+                      Correct Answer : {show[index]?.correctAnswer}
+                    </Typography>
+                  </>
                 )}
               </div>
               <Box
@@ -304,14 +447,17 @@ export default function ViewSolution() {
                     "& $icon": { fontSize: 2 },
                   }}
                 /> */}
-                <LogoButton
-                  name={"  View Solution"}
-                  icon={"/viewSol-icon.png"}
-                  style={{
-                    ...buttonStyle,
-                    "&:hover": { background: "var(--blue-new)" },
-                  }}
-                />
+                <Box onClick={() => setViewSoln(true)}>
+                  {" "}
+                  <LogoButton
+                    name={"  View Solution"}
+                    icon={"/viewSol-icon.png"}
+                    style={{
+                      ...buttonStyle,
+                      "&:hover": { background: "var(--blue-new)" },
+                    }}
+                  />
+                </Box>
                 <Box onClick={handleOpenModal}>
                   {" "}
                   <LogoButton
@@ -327,6 +473,15 @@ export default function ViewSolution() {
                   />
                 </Box>
               </Box>
+              {viewSol ? (
+                <Box marginTop="2em">
+                  <Typography fontWeight={700}>
+                    <Latex>{show[index]?.explanations || ""}</Latex>
+                  </Typography>
+                </Box>
+              ) : (
+                <></>
+              )}
             </Box>
           </Box>
           {/* MOdal for video link */}
@@ -436,7 +591,7 @@ export default function ViewSolution() {
   );
 }
 
-const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty }) => {
+const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, setViewSoln}) => {
   return (
     <div
       style={{
@@ -490,7 +645,10 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty }) =
             }}
             alt="Remy Sharp"
             src="/broken-image.jpg"
-            onClick={() => setInd(ind)}
+            onClick={() => {
+              setInd(ind);
+              setViewSoln(false);
+            }}
           >
             <Typography variant="paragraph" sx={{ color: "white" }}>
               {" "}

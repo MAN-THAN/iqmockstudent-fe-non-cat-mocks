@@ -10,17 +10,16 @@ import TableRow from "@mui/material/TableRow";
 import LineChart1 from "../Components/LineGraph1";
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
 import { styled } from "@mui/material/styles";
 import Paper, { paperClasses } from "@mui/material/Paper";
 import Card from "@mui/material/Card";
-
 import CardContent from "@mui/material/CardContent";
-
 import CustomizedAccordions from "../Common-comp/Accordian";
 import GoalGraph from "../Common-comp/GoalGraph";
+import { getGoalTrackerData } from "../services/Analysis_api";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -96,6 +95,23 @@ export default function GoalTracker() {
     },
   };
 
+  // api call
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // function for fetching data
+  const { attemptId } = useParams();
+  const [data, setData] = useState([]);
+  const getData = async () => {
+    const res = await getGoalTrackerData(attemptId);
+    console.log(res)
+    if (res?.status == 200) {
+     
+    } else {
+      console.log("error", res);
+    }
+  };
   return (
     <Box sx={{ width: "100vw", height: "100vh" }}>
       <Box>
@@ -217,7 +233,7 @@ export default function GoalTracker() {
               bottom: 0,
             }}
           >
-            <GoalGraph />
+            <GoalGraph data={ data } />
           </Box>
 
           {/* Graph end */}

@@ -59,17 +59,16 @@ export const submitSection = async (attempt_id, subject_type, payload) => {
 
 // api for college predictor
 
-export const getPredictCollege = async (payload) => {
+export const getPredictCollege = async (uid, payload) => {
  
     const res = request({
-      url: `/api/student/v1/analyse/read/64732643222`,
+      url: `/api/student/v1/analyse/read/${uid}`,
       type: "POST",
       data: payload,
       headers: { "Content-Type": "application/json" },
     });
     return res
 };
-
 
  // api for verification (MBR)
 
