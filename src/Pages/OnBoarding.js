@@ -7,6 +7,7 @@ import LoginForm from "../Components/LoginForm";
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import HeaderNew from "../Components/HeaderNew";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -62,7 +63,7 @@ function OnBoarding() {
       }}
     >
       <Box>
-        <MainHeader />
+      <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
       </Box>
       <Box sx={{ width: "100%", height: "100%" }}>
         <LineChart1 percentile={percentile} />

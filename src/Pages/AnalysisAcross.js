@@ -47,7 +47,7 @@ const FilterList = () => {
 
 function AnalysisAcross() {
   const params = useParams();
-    const [a, setA] = useState("");
+  const [a, setA] = useState("");
 
   const Subjects = [
     { name: "Varc" },
@@ -113,7 +113,7 @@ function AnalysisAcross() {
               width: "calc(100vw - 108px)",
               height: "76Vh",
               mt: 3,
-              flexWrap:"wrap" 
+              flexWrap: "wrap",
             }}
           >
             {menuBarOpen && (
@@ -142,7 +142,7 @@ function AnalysisAcross() {
             {/*Question side box start*/}
             <Box
               sx={{
-                flexBasis: {xs:"100%", md:"85%"},
+                flexBasis: { xs: "100%", md: "85%" },
                 height: "max-content",
                 background: "#F6F7F8",
                 p: 3,
@@ -168,7 +168,7 @@ function AnalysisAcross() {
                       height: "52px",
                       flexBasis: "15%",
                       flexGrow: 0,
-                      justifyContent:"center"
+                      justifyContent: "center",
                     }}
                   />
                 ))}

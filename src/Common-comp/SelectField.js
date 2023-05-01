@@ -27,8 +27,7 @@ function getStyles(theme, value, selected) {
 export default function MultipleSelect({ options, setType, type }) {
   const theme = useTheme();
   const [value, setValue] = React.useState([]);
-  const [year, setYear] = React.useState([]);
-  const showSecondSelect = options.some((option) => option.year !== undefined);
+
   console.log(value);
   useEffect(() => { 
     setType(value);
