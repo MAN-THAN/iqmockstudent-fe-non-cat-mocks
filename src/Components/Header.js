@@ -7,7 +7,7 @@ import "../styleSheets/header.css"
 
 function Header() {
     const userName = JSON.parse(localStorage.getItem("userData"))?.name;
-    const userID = JSON.parse(localStorage.getItem("userData"))?.uid;
+    const userID = JSON.parse(localStorage.getItem("userData"))?._id;
     // const img_url = JSON.parse(localStorage.getItem("userData"))?.;
    
     return (
