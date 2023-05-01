@@ -21,6 +21,7 @@ function DifficultyAnalysis() {
     setActiveButton(button);
     setShow(data[button.toLowerCase()]);
   };
+  console.log(show)
 
   return (
     <div
