@@ -28,6 +28,29 @@ const LoginForm = ({ setCollege, percentile }) => {
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Filling details if present
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    const { name, email, phone, gender, dob,  gh , category} = userData;
+    console.log(name, gh);
+    if (name !== undefined) {
+      values.name = name;
+    }
+     if (email !== undefined) {
+       values.email = email;
+    }
+    if (phone !== undefined) {
+      values.phone_number = phone;
+    }
+    if (gender !== undefined) {
+      setGender(gender);
+    }
+    if (category !== undefined) {
+      setCategory(category);
+    }
+     
+  }, []);
+
   useEffect(() => {
     values.category = category;
     values.gender = gender;
@@ -96,7 +119,7 @@ const LoginForm = ({ setCollege, percentile }) => {
       const obj = {
         name: values.name,
         email: values.email,
-        phone : values.phone_number,
+        phone: values.phone_number,
         min10th: values.class_10th_result,
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
@@ -105,7 +128,7 @@ const LoginForm = ({ setCollege, percentile }) => {
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,
-        salary: values.salary
+        currentSalary: values.salary,
       };
       setLoading(true);
       try {
@@ -373,7 +396,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               id="salary"
               name="salary"
               label="Salary(LPA)"
-              type="tel"
+              type="number"
               value={values.salary}
               onChange={handleChange}
               error={touched.salary && Boolean(errors.salary)}

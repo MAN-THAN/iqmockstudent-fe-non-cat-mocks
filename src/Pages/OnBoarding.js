@@ -24,6 +24,8 @@ function OnBoarding() {
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
  console.log(state.mockId, state.setId)
   console.log(college);
+
+ 
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);
