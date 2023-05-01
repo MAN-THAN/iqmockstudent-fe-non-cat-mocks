@@ -17,7 +17,7 @@ import { DetailCards } from "../Common-comp/Card";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(true);
+  const [startMock, setStartMock] = useState(false);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -32,6 +32,7 @@ function OnBoarding() {
     borderBottom: "none",
     pb: 0,
     lineHeight: "unset",
+    fontWeight : "bold"
   };
   console.log(state.mockId, state.setId);
   console.log(college);
