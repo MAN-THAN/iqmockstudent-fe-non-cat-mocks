@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import LineChart1 from "../Components/LineGraph1";
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,8 +13,7 @@ import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
 import { styled } from "@mui/material/styles";
 import Paper, { paperClasses } from "@mui/material/Paper";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { DetailCards } from "../Common-comp/Card";
 import CustomizedAccordions from "../Common-comp/Accordian";
 import GoalGraph from "../Common-comp/GoalGraph";
 import { getGoalTrackerData } from "../services/Analysis_api";
@@ -278,51 +275,51 @@ export default function GoalTracker() {
   );
 }
 
-const DetailCards = ({ heading, cardContent,logoPath }) => {
-  const [isEnlarged, setIsEnlarged] = useState(false);
-  return (
-    <Card
-      className={isEnlarged ? "enlarged" : ""}
-      sx={{
-        overflow: "scroll",
-        width: "100%",
-        height: "100%",
-        borderRadius: "25px",
-        boxShadow: "none",
-      }}
-      // onClick={() => setIsEnlarged(!isEnlarged)}
-    >
-      <CardContent
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          alignItems: "center",
-          fontFamily: "var(--font-inter)",
-        }}
-      >
-        <div className="d-flex">
-          <img
-            src={logoPath}
-            className="img-fluid me-2"
-            alt=""
-            width={22}
-          />
-          <Typography variant="h4" color="black" fontSize={18}>
-            {heading}
-          </Typography>
-        </div>
+// const DetailCards = ({ heading, cardContent,logoPath }) => {
+//   const [isEnlarged, setIsEnlarged] = useState(false);
+//   return (
+//     <Card
+//       className={isEnlarged ? "enlarged" : ""}
+//       sx={{
+//         overflow: "scroll",
+//         width: "100%",
+//         height: "100%",
+//         borderRadius: "25px",
+//         boxShadow: "none",
+//       }}
+//       // onClick={() => setIsEnlarged(!isEnlarged)}
+//     >
+//       <CardContent
+//         sx={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           width: "100%",
+//           alignItems: "center",
+//           fontFamily: "var(--font-inter)",
+//         }}
+//       >
+//         <div className="d-flex">
+//           <img
+//             src={logoPath}
+//             className="img-fluid me-2"
+//             alt=""
+//             width={22}
+//           />
+//           <Typography variant="h4" color="black" fontSize={18}>
+//             {heading}
+//           </Typography>
+//         </div>
 
-        <div>
-          <img
-            src="/CardsIcons/zoom.png"
-            className="img-fluid cursor-pointer"
-            width={22}
-          />
-        </div>
-      </CardContent>
+//         <div>
+//           <img
+//             src="/CardsIcons/zoom.png"
+//             className="img-fluid cursor-pointer"
+//             width={22}
+//           />
+//         </div>
+//       </CardContent>
 
-      <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
-    </Card>
-  );
-};
+//       <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
+//     </Card>
+//   );
+// };
