@@ -166,7 +166,7 @@ const LoginForm = ({ setCollege, percentile }) => {
           setLoading(false);
         }
         console.log(res);
-        setCollege(res?.data[0]?.bschools);
+        setCollege(res?.data);
       } catch (err) {
         showToastMessage();
         console.log(err);

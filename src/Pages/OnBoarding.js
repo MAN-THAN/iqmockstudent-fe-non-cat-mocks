@@ -17,7 +17,7 @@ import { DetailCards } from "../Common-comp/Card";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(false);
+  const [startMock, setStartMock] = useState(true);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -27,22 +27,15 @@ function OnBoarding() {
   const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
-<<<<<<< HEAD
-  console.log(state.mockId, state.setId);
 
   const cellStyle = {
     borderBottom: "none",
     pb: 0,
     lineHeight: "unset",
   };
-
-  // console.log(college);
-=======
- console.log(state.mockId, state.setId)
+  console.log(state.mockId, state.setId);
   console.log(college);
 
- 
->>>>>>> e5b7f5e35f75529f85b14b7e59b7ae0d0b447aac
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);
@@ -72,6 +65,8 @@ function OnBoarding() {
       },
     });
   };
+
+  // console.log("coolr", college.bschools);
   return (
     <Box
       component="main"
@@ -134,14 +129,14 @@ function OnBoarding() {
                   height: "12em",
                   background: "white",
                   borderRadius: "1em",
-                  padding: "1.5em",
+                  padding: "1em",
                   marginTop: "1em",
                   display: "flex",
+
                   flexDirection: "column",
                 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "row" }}>
-                  {" "}
+                <Box sx={{ overflow: "scroll" }}>
                   <DetailCards
                     logoPath={"/goalSchool.png"}
                     cardContent={
@@ -151,29 +146,46 @@ function OnBoarding() {
                           aria-label="simple table"
                         >
                           <TableHead>
-                            {college?.length &&
-                              college.map((item, i) => {
-                                {
-                                  /* console.log("yhjk", item); */
-                                }
+                            <TableRow
+                              sx={{
+                                fontWeight: 900,
+                                lineHeight: "unset",
+                              }}
+                            >
+                              <TableCell
+                                sx={{fontWeight:"bold", fontSize:15}}
+                                align="left"
+                              ></TableCell>
+                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left" >
+                                Name
+                              </TableCell>
+                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                                Average Package
+                              </TableCell>
+                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                                Current Package
+                              </TableCell>
+                            </TableRow>
+
+                            {college &&
+                              college.bschools.map((item, ind) => {
                                 return (
                                   <TableRow
                                     sx={{
-                                      fontWeight: "bold",
                                       lineHeight: "unset",
                                     }}
                                   >
                                     <TableCell sx={cellStyle} align="left">
-                                      {i + 1}
+                                      {ind + 1}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      {item.bschool}
+                                      {item.college}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      {item.averagePackage || "tbd"}
+                                      {item.avgSalary || "tbd"}
                                     </TableCell>
                                     <TableCell sx={cellStyle} align="left">
-                                      {item.currentPackage || "tbd"}
+                                      {item.currentSalary || "tbd"}
                                     </TableCell>
                                   </TableRow>
                                 );
