@@ -133,7 +133,6 @@ function OnBoarding() {
                   padding: "1em",
                   marginTop: "1em",
                   display: "flex",
-
                   flexDirection: "column",
                 }}
               >
@@ -154,16 +153,25 @@ function OnBoarding() {
                               }}
                             >
                               <TableCell
-                                sx={{fontWeight:"bold", fontSize:15}}
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
                                 align="left"
                               ></TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left" >
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Name
                               </TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Average Package
                               </TableCell>
-                              <TableCell sx={{fontWeight:"bold", fontSize:15}} align="left">
+                              <TableCell
+                                sx={{ fontWeight: "bold", fontSize: 15 }}
+                                align="left"
+                              >
                                 Current Package
                               </TableCell>
                             </TableRow>

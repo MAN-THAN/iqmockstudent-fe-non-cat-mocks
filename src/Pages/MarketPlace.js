@@ -9,6 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import SliderSwiper from "../Components/Swiper";
 import MultipleSelect from "../Common-comp/SelectField";
 import {typographyStyles} from "../styleSheets/StyleNew"
+import { useAuth } from "../services/Context";
 // Inspired by blueprintjs
 const options = [
   {
@@ -36,6 +37,7 @@ const options = [
 
 
 function MarketPlace() {
+  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   const [radioValue, setRadioValue] = React.useState("coursesWithMocks");
   const [selectedValue, setSelectedValue] = React.useState({});
 
@@ -47,11 +49,11 @@ function MarketPlace() {
 
   return (
     <>
-      <Box component="main" sx={{ display: "flex" }}>
+      <Box component="main" >
         <MenuDrawer />
         <Box
           component="div"
-          sx={{ flexGrow: 1, p: 2, width: "calc(100% - 240px)" }}
+          sx={{  p: 2, ml:"65px" }}
         >
           {/* Header start */}
           <Box component="header">
@@ -60,6 +62,17 @@ function MarketPlace() {
           {/* Header end */}
 
           <Box component="div" >
+          {menuBarOpen && (
+              <Backdrop
+                sx={{
+                  zIndex: (theme) => theme.zIndex.drawer - 1,
+                  color: "#fff",
+                }}
+                open={menuBarOpen}
+                onClick={() => setMenuBarOpen(false)}
+              />
+            )}
+
             <Typography
               sx={{
                ...typographyStyles.mainHeading,

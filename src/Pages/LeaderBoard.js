@@ -8,12 +8,13 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api";
 import MenuDrawer from "../Components/MenuDrawer";
+
 import { useAuth } from "../services/Context";
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
 function LeaderBoard() {
-  const { menuBarOpen } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop} = useAuth();
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -91,11 +92,11 @@ function LeaderBoard() {
   }, [dateRange]);
 
   return (
-    <div className="d-flex" style={{ width: "100vw", background: "#EEEDF5" }}>
+    <div  style={{ width: "100vw", background: "#EEEDF5" }}>
       <MenuDrawer open={menuBarOpen} />
       <Box
         sx={{
-          width: "100%",
+         
           height: "15em",
           display: "flex",
           flexDirection: "column",
@@ -103,6 +104,7 @@ function LeaderBoard() {
           padding: "1.6em 3em",
           gap: "2em",
           position: "relative",
+          ml:'65px'
         }}
       >
         <Box
@@ -112,6 +114,16 @@ function LeaderBoard() {
             justifyContent: "space-between",
           }}
         >
+           {menuBarOpen && (
+              <Backdrop
+                sx={{
+                  zIndex: (theme) => theme.zIndex.drawer - 1,
+                  color: "#fff",
+                }}
+                open={menuBarOpen}
+                onClick={() => setMenuBarOpen(false)}
+              />
+            )}
           <Typography
             sx={{
               fontSize: "30px",
