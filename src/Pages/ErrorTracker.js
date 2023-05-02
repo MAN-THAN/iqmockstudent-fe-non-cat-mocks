@@ -418,7 +418,7 @@ const MyStyledSelect = styled(Select)(({ theme, icon }) => ({
     right: 0,
     top: "50%",
     transform: "translateY(-50%)",
-    color: theme.palette.grey[500],
+    color: "black"
   },
 }));
 

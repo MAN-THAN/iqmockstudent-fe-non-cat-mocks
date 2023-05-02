@@ -12,8 +12,6 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-   
-
     },
   },
 };
@@ -55,9 +53,9 @@ export default function MultipleSelect({ options, setType }) {
                 width: 127,
                 borderRadius: 2,
                 height: 32,
-                fontSize:"12px",
-                fontWeight:700,
-                fontFamily:"var(--font-inter)",
+                fontSize: "12px",
+                fontWeight: 700,
+                fontFamily: "var(--font-inter)",
 
                 ".MuiOutlinedInput-notchedOutline": {
                   border: 1,
@@ -84,7 +82,7 @@ export default function MultipleSelect({ options, setType }) {
           //   return selected;
           // }}
           MenuProps={MenuProps}
-          inputProps={{ "aria-label": "Select value",  }}
+          inputProps={{ "aria-label": "Select value" }}
         >
           <MenuItem value={""} disabled>
             <em>Select</em>
@@ -94,8 +92,11 @@ export default function MultipleSelect({ options, setType }) {
               <MenuItem
                 key={item.name}
                 value={item.value}
-                sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }}
-            
+                sx={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                }}
               >
                 {item.name}
               </MenuItem>
