@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, InputAdornment, Box } from "@mui/material";
+import {
+  Button,
+  Typography,
+  InputAdornment,
+  Box,
+  Paper,
+  Card,
+  CardMedia,
+} from "@mui/material";
 import { ModifyButton, SubHeading } from "../styleSheets/Style";
 import { useNavigate, Outlet, NavLink, useLoaderData } from "react-router-dom";
-import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
@@ -39,9 +46,7 @@ function AnalysisMain() {
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
 
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   useEffect(() => {
     setPDfStyle(false);
@@ -118,21 +123,25 @@ function AnalysisMain() {
       tooltip: "Potential",
       cardTitle: potentialScore,
       icon: "/PM.png",
+      title: "Potential Marks",
     },
     {
       tooltip: "Negative Mark",
       cardTitle: negativeMarks,
       icon: "/NM.png",
+      title: "Negative Marks",
     },
     {
       tooltip: "Your Accuracy boy!!!",
       cardTitle: accuracy,
       icon: "/Acc.png",
+      title: "Your Accuracy",
     },
     {
       tooltip: "Overall Percentage boy!!!",
       cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
       icon: "/PS.png",
+      title: "Overall Precentage",
     },
   ];
 
@@ -193,25 +202,27 @@ function AnalysisMain() {
               <div
                 className={
                   pdfStyle
-                    ? " d-flex  flex-wrap  justify-content-center align-items-center "
-                    : " d-flex  flex-sm-wrap flex-md-wrap flex-lg-nowrap flex-row  justify-content-center align-items-center py-3 px-2"
+                    ? " d-flex  flex-wrap  justify-content-center align-items-center"
+                    : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap justify-content-center align-items-center py-3 px-2 gap-4"
                 }
               >
-                <div className="flex-item " style={{ flexBasis: "40%" }}>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: "var(--dark-blue)", fontSize: "40px" }}
-                  >
-                    Hey {name},
-                    <br />
-                  </Typography>
-                  <Typography
-                    sx={{ fontSize: "30px", color: "black", fontWeight: 600 }}
-                  >
-                    This is your mock analysis for <br />{" "}
-                    {title ? title : "iCAT 1.0"}.
-                  </Typography>
-                  <br />
+                <div className="flex-item flex-fill">
+                  <div style={{ minWidth: "15em" }}>
+                    <Typography
+                      variant="h4"
+                      sx={{ color: "var(--dark-blue)", fontSize: "35px" }}
+                    >
+                      Hey {name},
+                      <br />
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}
+                    >
+                      This is your mock Analysis for
+                      {title ? title : "iCAT 1.0"}.
+                    </Typography>
+                  </div>
+
                   {/* <div className="d-flex gap-3 m-3 ms-0 ">
                     <ModifyButton
                       variant="filled"
@@ -256,12 +267,35 @@ function AnalysisMain() {
                   </div> */}
                 </div>
 
-                <div className="flex-item" style={{ flexBasis: "30%" }}>
+                <Box
+                  component="div"
+                  sx={{
+                    borderRadius: "15px",
+                  }}
+                >
+                  <Card
+                    sx={{
+                      width: 292,
+                      height: 177,
+                      borderRadius: 5,
+                      boxShadow: "none",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      // height="177"
+                      // width="292"
+                      image="/scorevsPrecentile.png"
+                      alt="Paella dish"
+                    />
+                  </Card>
+                </Box>
+
+                <div className="flex-item flex-fill ">
                   <div
                     className="mx-auto"
                     style={{
                       borderRadius: "15px",
-                      width: "auto",
                       background: "#FFC412",
                       width: "18.875em",
                       height: "11em",
@@ -355,14 +389,15 @@ function AnalysisMain() {
 
                 {/* Cards sections */}
 
-                <div className="  flex-item " style={{ flexBasis: "30%" }}>
-                  <div className=" d-flex  justify-content-start  flex-wrap gap-3 row-gap-2 ">
+                <div className="flex-item flex-fill ">
+                  <div className=" d-flex flex-row  justify-content-center  flex-wrap gap-3 row-gap-2 ">
                     {CardsData.map((item, index) => (
                       <TooltipCard
                         key={index}
                         tooltip={item.tooltip}
-                        cardTitle={item.cardTitle}
+                        values={item.cardTitle}
                         icon={item.icon}
+                        title={item.title}
                       />
                     ))}
                   </div>
