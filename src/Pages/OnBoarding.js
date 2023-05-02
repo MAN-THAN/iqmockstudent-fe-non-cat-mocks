@@ -32,6 +32,7 @@ function OnBoarding() {
     borderBottom: "none",
     pb: 0,
     lineHeight: "unset",
+    fontWeight : "bold"
   };
   console.log(state.mockId, state.setId);
   console.log(college);

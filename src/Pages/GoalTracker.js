@@ -17,6 +17,7 @@ import { DetailCards } from "../Common-comp/Card";
 import CustomizedAccordions from "../Common-comp/Accordian";
 import GoalGraph from "../Common-comp/GoalGraph";
 import { getGoalTrackerData } from "../services/Analysis_api";
+import YourGraph from "../Common-comp/YourGraph";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -99,11 +100,14 @@ export default function GoalTracker() {
 
   // function for fetching data
   const { attemptId } = useParams();
-  const [data, setData] = useState([]);
+  const [goalData, setGoalData] = useState([]);
+  const [result, setResult] = useState([]);
   const getData = async () => {
     const res = await getGoalTrackerData(attemptId);
     console.log(res)
     if (res?.status == 200) {
+      setResult(res.data.goalData);
+      setGoalData(res.data.yourData);
      
     } else {
       console.log("error", res);
@@ -230,7 +234,8 @@ export default function GoalTracker() {
               bottom: 0,
             }}
           >
-            <GoalGraph data={ data } />
+            {/* <YourGraph goalData={goalData} /> */}
+            <GoalGraph result={result}  />
           </Box>
 
           {/* Graph end */}
