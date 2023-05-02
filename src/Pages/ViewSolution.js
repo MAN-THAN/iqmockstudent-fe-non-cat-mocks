@@ -38,8 +38,13 @@ export default function ViewSolution() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const [viewSol, setViewSoln] = useState(false);
+  const [errTrackerVA, setTrackerVA] = useState([]);
+  const [errTrackerLR, setTrackerLR] = useState([]);
+  const [errTrackerQU, setTrackerQU] = useState([]);
+  const [errValue, setErrValue] = useState("");
   console.log(data);
   console.log(open);
+  console.log(index);
 
   console.log(show);
   // function getting data on mounting
@@ -54,6 +59,7 @@ export default function ViewSolution() {
     if (res?.status == 200) {
       setData(res.data);
       setShow(res.data.varc);
+      setTrackerVA(res.data.varc);
     } else {
       console.log("error", res);
     }
@@ -69,11 +75,15 @@ export default function ViewSolution() {
     console.log(sub);
     if (sub === "Verbal Ability") {
       setShow(data?.varc);
+      setTrackerVA(data?.varc);
     } else if (sub === "Logical Reasoning") {
       setShow(data?.lrdi);
+      setTrackerLR(data?.lrdi);
     } else if (sub === "Quants") {
       setShow(data?.quants);
+      setTrackerQU(data?.quants);
     }
+    setErrValue("");
     return setIndex(0);
   };
 
@@ -107,34 +117,84 @@ export default function ViewSolution() {
 
   const handleErrorForm = async (e) => {
     console.log(e.target.value);
+    setErrValue(e.target.value);
     let type;
     if (selected === "Verbal Ability") {
-      type = 'varc'
+      type = "varc";
+    } else if (selected === "Logical Reasoning") {
+      type = "lrdi";
+    } else if (selected === "Quants") {
+      type = "quants";
     }
-    else if (selected === "Logical Reasoning") {
-      type = "lrdi"
-    }
-    else if (selected === 'Quants') { 
-      type = 'quants'
-    };
     const selectedObj = show[index];
+    console.log(selectedObj);
     const payload = {
-      question_id: selectedObj.question_id ,
+      question_id: selectedObj.question_id,
       question: selectedObj.question,
       difficulty: selectedObj.difficulty,
       topic: selectedObj.topic,
       error: e.target.value,
-      duration:selectedObj.duration,
-      averageDuration:selectedObj.averageDuration ,
+      duration: selectedObj.duration,
+      averageDuration: selectedObj.averageDuration,
       explanations: selectedObj.explanations,
-      isCorrect : selectedObj.correctAnswer === selectedObj.studentAnswer ? 'correct' : 'incorrect'
+      isCorrect: selectedObj.correctAnswer === selectedObj.studentAnswer ? "correct" : "incorrect",
     };
- console.log(show[index])
+    console.log(show[index]);
     const res = await postToErrorTracker(attemptId, type, payload);
     console.log(res);
+    if (res?.status == 200) {
+      if (type == "varc") {
+        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        let arr = [...errTrackerVA];
+        arr.splice(index, 1, tempObj);
+        setTrackerVA(arr);
+      }
+      if (type == "lrdi") {
+        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        let arr = [...errTrackerLR];
+        arr.splice(index, 1, tempObj);
+        setTrackerLR(arr);
+      }
+      if (type == "quants") {
+        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        let arr = [...errTrackerQU];
+        arr.splice(index, 1, tempObj);
+        setTrackerQU(arr);
+      }
+    }
   };
 
-  
+  // making state empty after question change
+  useEffect(() => {
+    if (selected === "Verbal Ability") {
+      const tempObj = errTrackerVA[index];
+      console.log(tempObj);
+      if (tempObj?.error !== undefined) {
+        setErrValue(tempObj.error);
+      } else {
+        setErrValue("");
+      }
+    } else if (selected === "Logical Reasoning") {
+      const tempObj = errTrackerLR[index];
+      console.log(tempObj);
+      if (tempObj?.error !== undefined) {
+        setErrValue(tempObj.error);
+      } else {
+        setErrValue("");
+      }
+    } else if (selected === "Quants") {
+      const tempObj = errTrackerQU[index];
+      console.log(tempObj);
+      if (tempObj?.error !== undefined) {
+        setErrValue(tempObj.error);
+      } else {
+        setErrValue("");
+      }
+    }
+  }, [index]);
+  console.log(errTrackerVA);
+  console.log(errValue);
+
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
       <MenuDrawer />
@@ -555,7 +615,7 @@ export default function ViewSolution() {
               <Typography sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}>Why did you get it wrong?</Typography>
               <FormControl sx={{ paddingTop: 1, fontFamily: "var(--font-inter)", fontWeight: 800, textAlign: "start" }}>
                 <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
-                <RadioGroup onChange={handleErrorForm} aria-labelledby="demo-radio-buttons-group-label" defaultValue="" name="radio-buttons-group">
+                <RadioGroup onChange={handleErrorForm} value={errValue} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
                   <FormControlLabel value="Did not understand the concept" control={<Radio size="small" />} label="Did not understand the concept" />
                   <FormControlLabel
                     value="I understood the concept but failed to apply it correctly"
@@ -591,7 +651,7 @@ export default function ViewSolution() {
   );
 }
 
-const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, setViewSoln}) => {
+const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, setViewSoln }) => {
   return (
     <div
       style={{
