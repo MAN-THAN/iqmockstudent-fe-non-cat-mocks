@@ -445,7 +445,7 @@ function MySelectField({ label, value, onChange, options }) {
         onChange={onChange}
         icon={<BsSortDown />}
         sx={{
-                width: 127,
+                width: "127",
                 borderRadius: 2,
                 height: 32,
                 fontSize:"12px",
@@ -468,8 +468,8 @@ function MySelectField({ label, value, onChange, options }) {
                   },
               }}
       >
-        <MenuItem value="low-to-high" sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }}>Low to High</MenuItem>
-        <MenuItem value="high-to-low"    sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }} >High to Low</MenuItem>
+        <MenuItem value="low-to-high" sx={{ fontFamily: 'var(--font-inter)', fontSize: '11px', fontWeight: '600' }}>Low to High</MenuItem>
+        <MenuItem value="high-to-low"    sx={{ fontFamily: 'var(--font-inter)', fontSize: '11px', fontWeight: '600' }} >High to Low</MenuItem>
       </MyStyledSelect>
     </FormControl>
   );

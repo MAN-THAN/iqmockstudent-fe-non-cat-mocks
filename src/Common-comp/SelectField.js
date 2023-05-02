@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import { useEffect } from "react";
 
 const ITEM_HEIGHT = "48";
-const ITEM_PADDING_TOP = 2;
+const ITEM_PADDING_TOP = 3;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -94,8 +94,8 @@ export default function MultipleSelect({ options, setType }) {
                 value={item.value}
                 sx={{
                   fontFamily: "var(--font-inter)",
-                  fontSize: "14px",
-                  fontWeight: "500",
+                  fontSize: "11px",
+                  fontWeight: "600",
                 }}
               >
                 {item.name}
