@@ -123,21 +123,25 @@ function AnalysisMain() {
       tooltip: "Potential",
       cardTitle: potentialScore,
       icon: "/PM.png",
+      title: "Potential Marks",
     },
     {
       tooltip: "Negative Mark",
       cardTitle: negativeMarks,
       icon: "/NM.png",
+      title: "Negative Marks",
     },
     {
       tooltip: "Your Accuracy boy!!!",
       cardTitle: accuracy,
       icon: "/Acc.png",
+      title: "Your Accuracy",
     },
     {
       tooltip: "Overall Percentage boy!!!",
       cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
       icon: "/PS.png",
+      title: "Overall Precentage",
     },
   ];
 
@@ -391,8 +395,9 @@ function AnalysisMain() {
                       <TooltipCard
                         key={index}
                         tooltip={item.tooltip}
-                        cardTitle={item.cardTitle}
+                        values={item.cardTitle}
                         icon={item.icon}
+                        title={item.title}
                       />
                     ))}
                   </div>

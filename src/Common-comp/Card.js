@@ -8,7 +8,7 @@ import {Card, CardContent} from "@mui/material";
 
 
 import { useState } from "react";
-export const TooltipCard = ({ tooltip, cardTitle, icon }) => {
+export const TooltipCard = ({ tooltip, title,values, icon }) => {
   // Tooltip Customisation
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -41,11 +41,11 @@ export const TooltipCard = ({ tooltip, cardTitle, icon }) => {
         <div className="card-body d-flex flex-row justify-content-between align-items-center ">
           <div className="flex-item pt-3">
             <SubHeading className="card-title" sx={{ fontSize: 15 , lineHeight:0 ,my:"auto"}}>
-              {cardTitle}
+              {values}
             </SubHeading>
             
               <Typography variant="paragraph" sx={{ fontSize: "10px",}}>
-              Potential Mark
+              {title}
             </Typography>
 
       
