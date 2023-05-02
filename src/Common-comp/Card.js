@@ -31,7 +31,9 @@ export const TooltipCard = ({ tooltip, cardTitle, icon }) => {
       <div
         className="card shadow flex-item flex-fill "
         style={{
-          minWidth: "45%",
+          // minWidth: "45%",
+          maxWidth:"12em",
+          minWidth:"10em",
           height: "4.979375em",
           border: "1px solid white",
         }}

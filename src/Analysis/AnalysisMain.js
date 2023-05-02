@@ -198,11 +198,11 @@ function AnalysisMain() {
               <div
                 className={
                   pdfStyle
-                    ? " d-flex  flex-wrap  justify-content-center align-items-center "
+                    ? " d-flex  flex-wrap  justify-content-center align-items-center"
                     : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap justify-content-center align-items-center py-3 px-2 gap-4"
                 }
               >
-                <div className="flex-item"  style={{flexBasis:"20%"}}>
+                <div className="flex-item flex-fill">
                   <div style={{ minWidth: "15em" }}>
                     <Typography
                       variant="h4"
@@ -267,7 +267,6 @@ function AnalysisMain() {
                   component="div"
                   sx={{
                     borderRadius: "15px",
-                    flexBasis: "20%",
                   }}
                 >
                   <Card
@@ -288,12 +287,12 @@ function AnalysisMain() {
                   </Card>
                 </Box>
 
-                <div className="flex-item " style={{flexBasis:"20%"}}>
+                <div className="flex-item flex-fill ">
                   <div
                     className="mx-auto"
                     style={{
                       borderRadius: "15px",
-                     background: "#FFC412",
+                      background: "#FFC412",
                       width: "18.875em",
                       height: "11em",
                     }}
@@ -386,8 +385,8 @@ function AnalysisMain() {
 
                 {/* Cards sections */}
 
-                <div className="flex-item " style={{flexBasis:"40%"}}>
-                  <div className=" d-flex flex-row  justify-content-start  flex-wrap gap-3 row-gap-2 ">
+                <div className="flex-item flex-fill ">
+                  <div className=" d-flex flex-row  justify-content-center  flex-wrap gap-3 row-gap-2 ">
                     {CardsData.map((item, index) => (
                       <TooltipCard
                         key={index}
