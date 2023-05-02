@@ -16,7 +16,14 @@ import { fetchErrorTracker } from "../services/Analysis_api";
 import { useParams } from "react-router";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { BsSortDown } from "react-icons/bs";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+const options = [
+  { value: "option-1", label: "Option 1" },
+  { value: "option-2", label: "Option 2" },
+  { value: "option-3", label: "Option 3" },
+];
 
 const disableStyle = {
   ":disabled": {
@@ -133,7 +140,14 @@ function ErrorTracker() {
     // console.log(result);
     return setShow(result);
   }
-  console.log(show);
+
+  // high low
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   return (
     <Box component="main" sx={{ height: "100vh" }}>
@@ -145,38 +159,46 @@ function ErrorTracker() {
           <HeaderNew />
         </Box>
 
-      
-          <Box component="div" sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}>
-            {" "}
-            <MultipleSelect options={filter1} setType={setType1} />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                flexBasis: "100%",
-               justifyContent:"space-between"
-              }}
-            >
-              {/* <MultipleSelect options={filter2} setType={setType2} type={"Mock"} /> */}
-             <div className="d-flex gap-3">
-             <MultipleSelect options={filter3} setType={setType3} />
-              <MultipleSelect options={filter4} setType={setType4} />
-              <MultipleSelect options={filter4} setType={setType4} />
-             </div>
-              <MySelectField icon={"./sortDown.png"}/>
-            </Box>
-          </Box>
-
-          <Typography
+        <Box
+          component="div"
+          sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}
+        >
+          {" "}
+          <MultipleSelect options={filter1} setType={setType1} />
+          <Box
             sx={{
-              ...typographyStyles.mainHeading,
-              pt: 2,
+              display: "flex",
+              flexDirection: "row",
+              flexBasis: "100%",
+              justifyContent: "space-between",
             }}
           >
-            {" "}
-            Error Tracker
-          </Typography>
-      
+            {/* <MultipleSelect options={filter2} setType={setType2} type={"Mock"} /> */}
+            <div className="d-flex gap-3">
+              <MultipleSelect options={filter3} setType={setType3} />
+              <MultipleSelect options={filter4} setType={setType4} />
+              <MultipleSelect options={filter4} setType={setType4} />
+            </div>
+            <div>
+              <MySelectField
+                label="Select an option"
+                value={selectedOption}
+                onChange={handleOptionChange}
+                options={options}
+              />
+            </div>
+          </Box>
+        </Box>
+
+        <Typography
+          sx={{
+            ...typographyStyles.mainHeading,
+            pt: 2,
+          }}
+        >
+          {" "}
+          Error Tracker
+        </Typography>
 
         <Box
           component="main"
@@ -218,27 +240,53 @@ function ErrorTracker() {
               height: "100%",
             }}
           >
+            {/* Color selection div */}
             <div className="d-flex justify-content-between align-items-center">
-              <Typography sx={{ ...typographyStyles.subHeading ,alignSelf:"flex-end", fontWeight:"600" }}>
+              <Typography
+                sx={{
+                  ...typographyStyles.subHeading,
+                  alignSelf: "flex-end",
+                  fontWeight: "600",
+                }}
+              >
                 Question Summary
               </Typography>
-              <div >
-              <Typography sx={{lineHeight:3,fontSize:11,fontWeight:400, fontFamily:"var(--font-inter)"}}>Question Selector</Typography>
+              <div>
+                <Typography
+                  sx={{
+                    lineHeight: 3,
+                    fontSize: 11,
+                    fontWeight: 400,
+                    fontFamily: "var(--font-inter)",
+                  }}
+                >
+                  Question Selector
+                </Typography>
 
-               <div className="d-flex gap-3 ">
-               {[
-                  { color: "#48E5DD", value: "" },
-                  { color: "#FF6CB6", value: "" },
-                  { color: "#FFBC5E", value: "" },
-                  { color: "#4732CC", value: "" },
-                  { color: "#1D9374", value: "" },
-                  { color: "#FF6238", value: "" },
-                  { color: "#1D5C81", value: "" },
-                  { color: "#ADADAD", value: "" },
-                ].map((item,_) => {
-                  return <div style={{ backgroundColor: item.color, width:26, height:26, borderRadius:"50%", cursor:"pointer" }}/>;
-                })}
-               </div>
+                <div className="d-flex gap-3 ">
+                  {[
+                    { color: "#48E5DD", value: "" },
+                    { color: "#FF6CB6", value: "" },
+                    { color: "#FFBC5E", value: "" },
+                    { color: "#4732CC", value: "" },
+                    { color: "#1D9374", value: "" },
+                    { color: "#FF6238", value: "" },
+                    { color: "#1D5C81", value: "" },
+                    { color: "#ADADAD", value: "" },
+                  ].map((item, _) => {
+                    return (
+                      <div
+                        style={{
+                          backgroundColor: item.color,
+                          width: 26,
+                          height: 26,
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -352,31 +400,78 @@ function ErrorTracker() {
   );
 }
 
-
-const MyStyledSelect = styled(Select)({ 
+const MyStyledSelect = styled(Select)(({ theme, icon }) => ({
   select: {
-    paddingRight: (theme) => theme.spacing(4), 
+    paddingRight: theme.spacing(4),
+    "& .MuiSelect-icon": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      right: 0,
+      top: "50%",
+      transform: "translateY(-50%)",
+    },
   },
-});
+  icon: {
+    position: "absolute",
+    pointerEvents: "none",
+    right: 0,
+    top: "50%",
+    transform: "translateY(-50%)",
+    color: "black"
+  },
+}));
 
-function MySelectField({ label, value, onChange, options,icon }) {
+function MySelectField({ label, value, onChange, options }) {
+  const handleSortChange = (event) => {
+    const sortOption = event.target.value;
+    if (sortOption === "low-to-high") {
+      // Sort low to high
+      console.log("Low to high selected");
+    } else if (sortOption === "high-to-low") {
+      // Sort high to low
+      console.log("High to low selected");
+    } else {
+      // No sort selected
+      console.log("No sort selected");
+    }
+  };
+
   return (
     <FormControl variant="outlined">
-      <InputLabel>{label}</InputLabel>
+   
       <MyStyledSelect
-        value={value}
+        value="high-to-low"
         onChange={onChange}
-        // IconComponent={<img src={icon}/>} 
+        icon={<BsSortDown />}
+        sx={{
+                width: 127,
+                borderRadius: 2,
+                height: 32,
+                fontSize:"12px",
+                fontWeight:700,
+                fontFamily:"var(--font-inter)",
+
+                ".MuiOutlinedInput-notchedOutline": {
+                  border: 1,
+                  borderColor: "#809EB9",
+                },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 1,
+                    borderColor: "#809EB9",
+                  },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 2,
+                    borderColor: "#809EB9",
+                  },
+              }}
       >
-        {[11,2,2,11,22,2].map((option) => (
-          <MenuItem key={option} value={option}>
-            {option.label}
-          </MenuItem>
-        ))}
+        <MenuItem value="low-to-high" sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }}>Low to High</MenuItem>
+        <MenuItem value="high-to-low"    sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }} >High to Low</MenuItem>
       </MyStyledSelect>
     </FormControl>
   );
 }
-
-
 export default ErrorTracker;
