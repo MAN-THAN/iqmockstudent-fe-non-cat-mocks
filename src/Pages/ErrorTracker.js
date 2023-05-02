@@ -445,22 +445,31 @@ function MySelectField({ label, value, onChange, options }) {
         onChange={onChange}
         icon={<BsSortDown />}
         sx={{
-                width: 179,
-                boxShadow: 2,
+                width: 127,
                 borderRadius: 2,
-                height: 49,
+                height: 32,
+                fontSize:"12px",
+                fontWeight:700,
+                fontFamily:"var(--font-inter)",
 
-                ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-                  border: 0,
+                ".MuiOutlinedInput-notchedOutline": {
+                  border: 1,
+                  borderColor: "#809EB9",
                 },
-                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: 0,
-                },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 1,
+                    borderColor: "#809EB9",
+                  },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 2,
+                    borderColor: "#809EB9",
+                  },
               }}
       >
-        <MenuItem value="low-to-high">Low to High</MenuItem>
-        <MenuItem value="high-to-low">High to Low</MenuItem>
+        <MenuItem value="low-to-high" sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }}>Low to High</MenuItem>
+        <MenuItem value="high-to-low"    sx={{ fontFamily: 'var(--font-inter)', fontSize: '14px', fontWeight: '500' }} >High to Low</MenuItem>
       </MyStyledSelect>
     </FormControl>
   );
