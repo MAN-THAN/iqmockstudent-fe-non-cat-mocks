@@ -77,13 +77,10 @@ export default function ViewSolution() {
     console.log(sub);
     if (sub === "Verbal Ability") {
       setShow(data?.varc);
-      // setTrackerVA(data?.varc);
     } else if (sub === "Logical Reasoning") {
       setShow(data?.lrdi);
-      // setTrackerLR(data?.lrdi);
     } else if (sub === "Quants") {
       setShow(data?.quants);
-      // setTrackerQU(data?.quants);
     }
     return setIndex(0);
   };
