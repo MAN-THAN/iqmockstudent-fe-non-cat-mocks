@@ -60,6 +60,8 @@ export default function ViewSolution() {
       setData(res.data);
       setShow(res.data.varc);
       setTrackerVA(res.data.varc);
+      setTrackerLR(res.data.lrdi);
+      setTrackerQU(res.data.quants);
     } else {
       console.log("error", res);
     }
@@ -75,15 +77,14 @@ export default function ViewSolution() {
     console.log(sub);
     if (sub === "Verbal Ability") {
       setShow(data?.varc);
-      setTrackerVA(data?.varc);
+      // setTrackerVA(data?.varc);
     } else if (sub === "Logical Reasoning") {
       setShow(data?.lrdi);
-      setTrackerLR(data?.lrdi);
+      // setTrackerLR(data?.lrdi);
     } else if (sub === "Quants") {
       setShow(data?.quants);
-      setTrackerQU(data?.quants);
+      // setTrackerQU(data?.quants);
     }
-    setErrValue("");
     return setIndex(0);
   };
 
@@ -192,7 +193,7 @@ export default function ViewSolution() {
       }
     }
   }, [index]);
-  console.log(errTrackerVA);
+  console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
 
   return (
