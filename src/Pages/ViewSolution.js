@@ -192,6 +192,7 @@ export default function ViewSolution() {
   }, [index]);
   console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
+  console.log(show)
 
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
@@ -477,10 +478,10 @@ export default function ViewSolution() {
                   <>
                     {" "}
                     <Typography color="black" fontWeight={600}>
-                      Your Answer : {show[index]?.studentAnswer == null || undefined ? "NA" : show[index]?.studentAnswer}
+                      Your Answer : {show[index]?.studentAnswer == (null || undefined || "") ? "NA" : <Latex>{show[index]?.studentAnswer || ""}</Latex>}
                     </Typography>
                     <Typography marginTop={2} color="green" fontWeight={600}>
-                      Correct Answer : {show[index]?.correctAnswer}
+                      Correct Answer : {<Latex>{show[index]?.correctAnswer || ""}</Latex>}
                     </Typography>
                   </>
                 )}
@@ -547,7 +548,7 @@ export default function ViewSolution() {
             {" "}
             <Modal open={open} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
               <Box sx={style}>
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+                <iframe width="100%" height="100%" src={show[index]?.videoLink}></iframe>
               </Box>
             </Modal>
           </div>

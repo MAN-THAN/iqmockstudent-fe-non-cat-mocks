@@ -7,23 +7,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { MyButton } from "../styleSheets/Style";
 import {style} from "../styleSheets/StyleNew"
-export default function ImgMediaCard() {
+export default function ImgMediaCard({ cardData }) {
  
-
+console.log(cardData)
   return (
     <Card sx={{ maxWidth: 259, boxShadow: "none" }}>
-      <CardMedia
-        component="img"
-        alt="Market card"
-        height="350"
-        sx={{ borderRadius: 10 }}
-        image="/marketCard.png"
-      />
+      <CardMedia component="img" alt="Market card" height="350" sx={{ borderRadius: 10 }} image={cardData.image} />
       <CardContent>
         <div className="d-flex justify-content-between">
           <span>
-            <Typography style={style.HeadingStyle}>CAT</Typography>
-            <Typography style={style.subHeading}>Full Course</Typography>
+            <Typography style={style.HeadingStyle}>{cardData.title}</Typography>
+            <Typography style={style.subHeading}>{cardData.subtitle}</Typography>
           </span>
           <span>
             <Typography
@@ -33,21 +27,19 @@ export default function ImgMediaCard() {
                 fontSize: "13px",
               }}
             >
-              49999
+              {cardData.crossPrice}
             </Typography>
-            <Typography style={style.HeadingStyle}>26,999</Typography>
+            <Typography style={style.HeadingStyle}>{cardData.price}</Typography>
           </span>
         </div>
       </CardContent>
-      <CardActions sx={{pt:0}}>
+      <CardActions sx={{ pt: 0 }}>
         <MyButton sx={{ width: "46px", borderRadius: "10px" }}>
           {" "}
           <img src="/marketLink.png" />
         </MyButton>
-        <MyButton
-          sx={{ width: "164px", borderRadius: "10px", ...style.subHeading }}
-        >
-          Buy Now
+        <MyButton sx={{ width: "164px", borderRadius: "10px", ...style.subHeading }}>
+          <a style={{textDecoration : "none", color : "white"}} href={cardData.buyNowLink} target='_blank' >Buy Now</a>
         </MyButton>
       </CardActions>
     </Card>
