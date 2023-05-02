@@ -122,7 +122,7 @@ export default function GoalTracker() {
       <Box
         sx={{
           ml: "65px",
-          background: "url(/onboarding_image.png)",
+          background: "url(/GoalTrackerBackground.jpg)",
           backgroundSize: "cover",
           height: "100vh",
           p: 2,
