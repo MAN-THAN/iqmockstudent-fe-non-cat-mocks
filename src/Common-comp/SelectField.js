@@ -6,8 +6,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useEffect } from "react";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 0;
+const ITEM_HEIGHT = "48";
+const ITEM_PADDING_TOP = 3;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -16,13 +16,13 @@ const MenuProps = {
   },
 };
 
-function getStyles(theme, value, selected) {
-  return {
-    fontWeight: selected
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
+// function getStyles(theme, value, selected) {
+//   return {
+//     fontWeight: selected
+//       ? theme.typography.fontWeightMedium
+//       : theme.typography.fontWeightRegular,
+//   };
+// }
 
 export default function MultipleSelect({ options, setType }) {
   const theme = useTheme();
@@ -30,10 +30,10 @@ export default function MultipleSelect({ options, setType }) {
   const [year, setYear] = React.useState([]);
   const showSecondSelect = options.some((option) => option.year !== undefined);
   console.log(value);
-  useEffect(() => { 
+  useEffect(() => {
     setType(value);
-  }, [value])
-  console.log(options)
+  }, [value]);
+  console.log(options);
   return (
     <div>
       <FormControl
@@ -50,18 +50,27 @@ export default function MultipleSelect({ options, setType }) {
           input={
             <OutlinedInput
               sx={{
-                width: 149,
-                boxShadow: 2,
+                width: 127,
                 borderRadius: 2,
-                height: 49,
+                height: 32,
+                fontSize: "12px",
+                fontWeight: 700,
+                fontFamily: "var(--font-inter)",
 
-                ".MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-                  border: 0,
+                ".MuiOutlinedInput-notchedOutline": {
+                  border: 1,
+                  borderColor: "#809EB9",
                 },
-                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: 0,
-                },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 1,
+                    borderColor: "#809EB9",
+                  },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 2,
+                    borderColor: "#809EB9",
+                  },
               }}
             />
           }
@@ -83,7 +92,11 @@ export default function MultipleSelect({ options, setType }) {
               <MenuItem
                 key={item.name}
                 value={item.value}
-                // style={getStyles(item.name, value, theme)}
+                sx={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "11px",
+                  fontWeight: "600",
+                }}
               >
                 {item.name}
               </MenuItem>
