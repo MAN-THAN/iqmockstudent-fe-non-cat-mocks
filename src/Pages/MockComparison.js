@@ -141,9 +141,10 @@ function MockComparison() {
               <ul
                 className="list-unstyled "
                 style={{
-                  lineHeight: "4.3em",
+                  lineHeight: "4.4em",
                   ...typographyStyles.subHeading,
                   fontSize: "15px",
+                  marginTop:"5px"
                 }}
               >
                 <li>Score</li>
