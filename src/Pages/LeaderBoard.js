@@ -14,16 +14,15 @@ dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 
 function LeaderBoard() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop} = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   const { attemptId, mockId } = useParams();
   const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState([]);
   const [studentRank, setStudentRank] = useState(null);
 
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  const {uid,name} = userData;
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const { _id, name ,photoURL} = userData;
 
   const date = new Date();
 
@@ -54,8 +53,6 @@ function LeaderBoard() {
     // Set the start and end dates in state
     setDateRange({ startDate: formattedStartDate, endDate: formattedEndDate });
   };
-
-
 
   useEffect(() => {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
@@ -92,11 +89,10 @@ function LeaderBoard() {
   }, [dateRange]);
 
   return (
-    <div  style={{ width: "100vw", background: "#EEEDF5" }}>
+    <div style={{ width: "100vw", background: "#EEEDF5" }}>
       <MenuDrawer open={menuBarOpen} />
       <Box
         sx={{
-         
           height: "15em",
           display: "flex",
           flexDirection: "column",
@@ -104,7 +100,7 @@ function LeaderBoard() {
           padding: "1.6em 3em",
           gap: "2em",
           position: "relative",
-          ml:'65px'
+          ml: "65px",
         }}
       >
         <Box
@@ -114,16 +110,14 @@ function LeaderBoard() {
             justifyContent: "space-between",
           }}
         >
-           {menuBarOpen && (
-              <Backdrop
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer - 1,
-                  color: "#fff",
-                }}
-                open={menuBarOpen}
-                onClick={() => setMenuBarOpen(false)}
-              />
-            )}
+          <Backdrop
+            sx={{
+              zIndex: (theme) => theme.zIndex.drawer - 1,
+              color: "#fff",
+            }}
+            open={menuBarOpen}
+            onClick={() => setMenuBarOpen(false)}
+          />
           <Typography
             sx={{
               fontSize: "30px",
@@ -153,7 +147,7 @@ function LeaderBoard() {
                   fontWeight: 400,
                 }}
               >
-                User id :{uid}
+                User id :{_id}
               </Typography>
             </div>
             <div className="d-flex">
@@ -163,7 +157,7 @@ function LeaderBoard() {
                 aria-expanded="false"
               >
                 <img
-                  src="https://github.com/mdo.png"
+                  src={photoURL}
                   alt="mdo"
                   width="50"
                   height="50"
