@@ -28,8 +28,7 @@ import { postToErrorTracker } from "../services/Analysis_api";
 import MultipleSelect from "../Common-comp/SelectField";
 
 export default function ViewSolution() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
-    useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState("varc");
   const { attemptId } = useParams();
@@ -86,17 +85,28 @@ export default function ViewSolution() {
     if (res?.status == 200) {
       setData(res.data);
       setShow(res.data[selected]);
-     
+      // setTrackerVA(res.data.varc);
       setTrackerLR(res.data.lrdi);
       setTrackerQU(res.data.quants);
-      const errTrackerV = JSON.parse(localStorage.getItem("errTrackerVA"));
-      const errTrackerL = JSON.parse(localStorage.getItem("errTrackerLR"));
-      const errTrackerQ = JSON.parse(localStorage.getItem("errTrackerQU"));
-      if (errTrackerV.length) {
+      const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
+      const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
+      const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
+      // getting data from local storage(error form)
+      if (errTrackerV?.length > 0) {
         setTrackerVA(errTrackerV);
-      } else { 
-         setTrackerVA(res.data.varc);
+      } else {
+        setTrackerVA(res.data.varc);
       }
+       if (errTrackerL?.length > 0) {
+         setTrackerLR(errTrackerL);
+       } else {
+         setTrackerLR(res.data.lrdi);
+      }
+       if (errTrackerQ?.length > 0) {
+         setTrackerQU(errTrackerQ);
+       } else {
+         setTrackerQU(res.data.quants);
+       }
       setLoading(false);
     } else {
       setLoading(false);
@@ -192,10 +202,7 @@ export default function ViewSolution() {
       duration: selectedObj.duration,
       averageDuration: selectedObj.averageDuration,
       explanations: selectedObj.explanations,
-      isCorrect:
-        selectedObj.correctAnswer === selectedObj.studentAnswer
-          ? "correct"
-          : "incorrect",
+      isCorrect: selectedObj.correctAnswer === selectedObj.studentAnswer ? "correct" : "incorrect",
     };
     console.log(show[index]);
     const res = await postToErrorTracker(attemptId, type, payload);
@@ -210,6 +217,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerVA];
         arr.splice(index, 1, tempObj);
         setTrackerVA(arr);
+        sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
       }
       if (type == "lrdi") {
         const tempObj = {
@@ -220,6 +228,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerLR];
         arr.splice(index, 1, tempObj);
         setTrackerLR(arr);
+        sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
       }
       if (type == "quants") {
         const tempObj = {
@@ -230,6 +239,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerQU];
         arr.splice(index, 1, tempObj);
         setTrackerQU(arr);
+        sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
       }
     }
   };
@@ -261,24 +271,22 @@ export default function ViewSolution() {
         setErrValue("");
       }
     }
-  }, [index]);
+  }, [index, errTrackerVA, errTrackerLR, errTrackerQU]);
 
   // setting into local
 
-  useEffect(() => {
-    if (errTrackerVA) {
-      localStorage.setItem("errTrackerVA", JSON.stringify(errTrackerVA));
-      console.log("fewfewfw");
-    }
-    localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
-    localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
-  }, [index, errValue]);
+  // useEffect(() => {
+  //   if (JSON.parse(localStorage.getItem("errTrackerVA")).length > 0) {
+  //     localStorage.setItem("errTrackerVA", JSON.stringify(errTrackerVA));
+  //     console.log("fewfewfw");
+  //   }
+  //   localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
+  //   localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
+  // }, [index]);
   console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
   console.log(show);
-
   console.log(selected);
-
 
   return (
     <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
@@ -818,13 +826,7 @@ export default function ViewSolution() {
   );
 }
 
-const NavigationAvatar = ({
-  Data,
-  setInd,
-  selectedQuestionIndex,
-  difficulty,
-  setViewSoln,
-}) => {
+const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, setViewSoln }) => {
   return (
     <div
       style={{

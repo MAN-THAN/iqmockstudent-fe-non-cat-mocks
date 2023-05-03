@@ -21,7 +21,7 @@ function DifficultyAnalysis() {
 
   const handleClick = (button) => {
     setActiveButton(button);
-    setShow(data[button.toLowerCase()]);
+    setShow(data?.[button.toLowerCase()]);
     setPieData(data[button.toLowerCase() + "Graph"]);
   };
   console.log(show);
