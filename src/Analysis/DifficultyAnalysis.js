@@ -10,18 +10,23 @@ function DifficultyAnalysis() {
   const [data, setData] = useState({});
   const [activeButton, setActiveButton] = useState("Overall");
   const [show, setShow] = useState([]);
+  const [pieData, setPieData] = useState([]);
 
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
     console.log("data", data);
     setShow(difficulty?.difficultyWiseAnalysis?.overall);
+    setPieData(difficulty?.difficultyWiseAnalysis?.overallGraph);
   }, []);
 
   const handleClick = (button) => {
     setActiveButton(button);
     setShow(data[button.toLowerCase()]);
+    setPieData(data[button.toLowerCase() + "Graph"]);
   };
-  console.log(show)
+  console.log(show);
+  console.log(pieData);
+  console.log(activeButton);
 
   return (
     <div
@@ -123,7 +128,7 @@ function DifficultyAnalysis() {
           }}
         />
         <div className="flex-item">
-          <PieChart Data={show} />
+          <PieChart data={pieData} type={ activeButton } />
         </div>
       </div>
       <hr
