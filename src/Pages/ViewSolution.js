@@ -90,14 +90,17 @@ export default function ViewSolution() {
   // Changing sectionwise data
   
   useEffect(() => {
-    if (selected === "varc") { 
-      setShow(data?.varc)
-    }
-    if (selected === "lrdi") { 
-      setShow(data?.lrdi)
-    }
-    if (selected === "quants") {
-      setShow(data?.quants);
+    console.log(data);
+    if (data !== undefined) { 
+      if (selected === "varc") {
+        setShow(data?.varc);
+      }
+      if (selected === "lrdi") {
+        setShow(data?.lrdi);
+      }
+      if (selected === "quants") {
+        setShow(data?.quants);
+      }
     }
     console.log(selected);
     // console.log(data[selected]);
@@ -295,7 +298,7 @@ export default function ViewSolution() {
             Data={show}
             setInd={setIndex}
             selectedQuestionIndex={index}
-            difficulty={show[index]?.difficulty}
+            difficulty={show.length && show[index]?.difficulty}
             setViewSoln={setViewSoln}
           />
         </Box>
