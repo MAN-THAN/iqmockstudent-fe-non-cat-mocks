@@ -10,6 +10,8 @@ import SliderSwiper from "../Components/Swiper";
 import MultipleSelect from "../Common-comp/SelectField";
 import {typographyStyles} from "../styleSheets/StyleNew"
 import { useAuth } from "../services/Context";
+import { getMarketPlace } from "../services/Analysis_api";
+import { useEffect } from "react";
 // Inspired by blueprintjs
 const options = [
   {
@@ -40,29 +42,45 @@ function MarketPlace() {
   const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   const [radioValue, setRadioValue] = React.useState("coursesWithMocks");
   const [selectedValue, setSelectedValue] = React.useState({});
+  const [data, setData] = React.useState([]);
 
   function handleSelectChange(selectedValues) {
     setSelectedValue(selectedValues);
   }
-  
-      console.log(selectedValue)
+
+  console.log(selectedValue);
+
+  // function getting data on mounting
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // function for fetching data
+
+  const getData = async () => {
+    const res = await getMarketPlace();
+    if (res?.status == 200) {
+      console.log(res)
+      setData(res.data.item);
+    
+    } else {
+      console.log("error", res);
+    }
+  };
 
   return (
     <>
-      <Box component="main" >
+      <Box component="main">
         <MenuDrawer />
-        <Box
-          component="div"
-          sx={{  p: 2, ml:"65px" }}
-        >
+        <Box component="div" sx={{ p: 2, ml: "65px" }}>
           {/* Header start */}
           <Box component="header">
             <HeaderNew />
           </Box>
           {/* Header end */}
 
-          <Box component="div" >
-          {menuBarOpen && (
+          <Box component="div">
+            {menuBarOpen && (
               <Backdrop
                 sx={{
                   zIndex: (theme) => theme.zIndex.drawer - 1,
@@ -75,18 +93,15 @@ function MarketPlace() {
 
             <Typography
               sx={{
-               ...typographyStyles.mainHeading,
-                mt:2
+                ...typographyStyles.mainHeading,
+                mt: 2,
               }}
             >
               {" "}
               Market place{" "}
             </Typography>
 
-            <div
-              className="d-flex justify-content-between align-items-center align-content-center"
-              style={{ width: "calc(100% - 50px)" }}
-            >
+            <div className="d-flex justify-content-between align-items-center align-content-center" style={{ width: "calc(100% - 50px)" }}>
               <div className="flex-item">
                 <FormControl>
                   <RadioGroup
@@ -100,37 +115,25 @@ function MarketPlace() {
                     <FormControlLabel
                       value="coursesWithMocks"
                       control={<Radio />}
-                      label={
-                        <Typography
-                          style={{ fontWeight: 800, fontSize: "17px" }}
-                        >
-                          Courses (Includes Mocks)
-                        </Typography>
-                      }
+                      label={<Typography style={{ fontWeight: 800, fontSize: "17px" }}>Courses (Includes Mocks)</Typography>}
                     />
                     <FormControlLabel
                       value="mocks"
                       control={<Radio />}
-                      label={
-                        <Typography
-                          style={{ fontWeight: 800, fontSize: "17px" }}
-                        >
-                          Mocks
-                        </Typography>
-                      }
+                      label={<Typography style={{ fontWeight: 800, fontSize: "17px" }}>Mocks</Typography>}
                     />
                   </RadioGroup>
                 </FormControl>
               </div>
 
               <div className="flex-item">
-                <MultipleSelect options={options} onSelectChange={handleSelectChange} setType={() => { }} />
+                <MultipleSelect options={options} onSelectChange={handleSelectChange} setType={() => {}} />
               </div>
             </div>
           </Box>
 
           <Box component="div" sx={{ py: 4, overflow: "hidden" }}>
-            <SliderSwiper />
+            <SliderSwiper data={ data } />
           </Box>
         </Box>
       </Box>

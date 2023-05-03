@@ -8,7 +8,7 @@ import "../styleSheets/header.css"
 function Header() {
     const userName = JSON.parse(localStorage.getItem("userData"))?.name;
     const userID = JSON.parse(localStorage.getItem("userData"))?._id;
-    // const img_url = JSON.parse(localStorage.getItem("userData"))?.;
+    const img_url = JSON.parse(localStorage.getItem("userData"))?.photoURL;
    
     return (
         <header className="p-0 m-0 text-bg-dark">
@@ -29,7 +29,7 @@ function Header() {
                         </div>
                         <div className=''>
                             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" className="rounded" />
+                                <img src={img_url} alt="mdo" width="50" height="50" className="rounded" />
                             </a>
                         </div>
                     </div>

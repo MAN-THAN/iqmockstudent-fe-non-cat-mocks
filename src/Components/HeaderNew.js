@@ -5,7 +5,7 @@ import Typography from "antd/es/typography/Typography";
 function HeaderNew({ style, logoPath }) {
 
   const userData = JSON.parse(localStorage.getItem('userData'));
-  const {_id,name} = userData;
+  const {_id,name, photoURL} = userData;
 
 
   
@@ -54,7 +54,7 @@ function HeaderNew({ style, logoPath }) {
               aria-expanded="false"
             >
               <img
-                src="https://github.com/mdo.png"
+                src={photoURL}
                 alt="mdo"
                 width="50"
                 height="50"

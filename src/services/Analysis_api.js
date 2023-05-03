@@ -130,3 +130,18 @@ export const getGoalTrackerData = async (attemptId) => {
     return err;
   }
 };
+
+// api for goal tracker
+
+export const getMarketPlace = async () => {
+  try {
+    const res = request({
+      url: `/api/student/v1/marketplace`,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};

@@ -12,7 +12,7 @@
   import { FreeMode, Pagination,Mousewheel } from "swiper";
   import ImgMediaCard from "./MarketPlaceCard";
 
-  export default function SliderSwiper() {
+export default function SliderSwiper({ data }) {
     return (
       <>
         <Swiper
@@ -26,9 +26,9 @@
           modules={[FreeMode, Pagination,Mousewheel]}
           className="mySwiper"
         >
-          {[...Array(10)].map(() => (
+          {data.map((item, index) => (
             <SwiperSlide >
-              <ImgMediaCard />
+              <ImgMediaCard cardData={ item } />
             </SwiperSlide>
           ))}
         </Swiper>
