@@ -28,7 +28,7 @@ const LoginForm = ({ setCollege, percentile }) => {
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { name : name_ , email : email_ , phone : phone_ , gender : gender_, category : category_ } = userData;
+  const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
 
   // Filling details if present
   useEffect(() => {
@@ -214,7 +214,7 @@ const LoginForm = ({ setCollege, percentile }) => {
                 ),
               }}
               autoComplete="off"
-              disabled={ name_ === undefined ? false : true}
+              disabled={name_ === undefined ? false : true}
               required
             />
             <TextField
@@ -237,6 +237,7 @@ const LoginForm = ({ setCollege, percentile }) => {
                 ),
               }}
               autoComplete="off"
+              disabled={email_ === undefined ? false : true}
               required
             />
             <TextField
@@ -258,9 +259,10 @@ const LoginForm = ({ setCollege, percentile }) => {
                 ),
               }}
               autoComplete="off"
+              disabled={phone_ === undefined ? false : true}
               required
             />
-            <FormControl size="small" sx={{ width: "48%" }} required>
+            <FormControl disabled={gender_ === undefined ? false : true} size="small" sx={{ width: "48%" }} required>
               <InputLabel id="gender">Gender</InputLabel>
               <Select
                 IconComponent={() => (
@@ -408,7 +410,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               </MenuItem>
             ))}
           </TextField> */}
-            <FormControl size="small" sx={{ width: "48%" }} required>
+            <FormControl size="small" sx={{ width: "48%" }} disabled={category_ === undefined ? false : true} required>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 IconComponent={() => (

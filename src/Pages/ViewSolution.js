@@ -396,7 +396,7 @@ export default function ViewSolution() {
                 Data={show}
                 setInd={setIndex}
                 selectedQuestionIndex={index}
-                difficulty={show[index]?.difficulty}
+                difficulty={show && show[index]?.difficulty}
                 setViewSoln={setViewSoln}
               />
             </Box>
@@ -418,7 +418,7 @@ export default function ViewSolution() {
               >
                 <Box
                   component="div"
-                  display={show[index]?.isPara === "Yes" ? "block" : "none"}
+                  display={show && show[index]?.isPara === "Yes" ? "block" : "none"}
                   sx={{
                     flexBasis: "60%",
                     textAlign: "justify",
@@ -427,12 +427,12 @@ export default function ViewSolution() {
                     p: 3,
                   }}
                 >
-                  <Latex>{show[index]?.paragraph || ""}</Latex>
+                  <Latex>{show && show[index]?.paragraph || ""}</Latex>
                 </Box>
                 <Box
                   component="div"
                   sx={{
-                    flexBasis: show[index]?.isPara === "Yes" ? "40%" : "100%",
+                    flexBasis: show && show[index]?.isPara === "Yes" ? "40%" : "100%",
                     textAlign: "justify",
                     height: "100%",
                     overflow: "scroll",
@@ -444,7 +444,7 @@ export default function ViewSolution() {
                   </Typography>
                   <div>
                     <Typography variant="paragraph">
-                      <Latex>{show[index]?.question || ""}</Latex>
+                      <Latex>{show && show[index]?.question || ""}</Latex>
                     </Typography>
                   </div>
                   <div>
@@ -456,7 +456,7 @@ export default function ViewSolution() {
                         {" "}
                         <FormControlLabel
                           checked={
-                            show[index]?.options[0] === show[index]?.correctAnswer
+                            show && show[index]?.options[0] === show[index]?.correctAnswer
                               ? true
                               : show[index]?.options[0] === show[index]?.studentAnswer
                               ? true
@@ -466,7 +466,7 @@ export default function ViewSolution() {
                           control={
                             <Radio
                               color={
-                                show[index]?.options[0] === show[index]?.correctAnswer
+                                show && show[index]?.options[0] === show[index]?.correctAnswer
                                   ? "success"
                                   : show[index]?.options[0] === show[index]?.studentAnswer
                                   ? "error"
@@ -477,7 +477,7 @@ export default function ViewSolution() {
                           label={
                             <Typography
                               color={
-                                show[index]?.options[0] === show[index]?.correctAnswer
+                                show && show[index]?.options[0] === show[index]?.correctAnswer
                                   ? "green"
                                   : show[index]?.options[0] === show[index]?.studentAnswer
                                   ? "red"
@@ -485,13 +485,13 @@ export default function ViewSolution() {
                               }
                               marginTop={2}
                             >
-                              <Latex>{show[index]?.options[0] || ""}</Latex>
+                              <Latex>{(show && show[index]?.options[0]) || ""}</Latex>
                             </Typography>
                           }
                         />
                         <FormControlLabel
                           checked={
-                            show[index]?.options[1] === show[index]?.correctAnswer
+                            show && show[index]?.options[1] === show[index]?.correctAnswer
                               ? true
                               : show[index]?.options[1] === show[index]?.studentAnswer
                               ? true
@@ -501,7 +501,7 @@ export default function ViewSolution() {
                           control={
                             <Radio
                               color={
-                                show[index]?.options[1] === show[index]?.correctAnswer
+                                show && show[index]?.options[1] === show[index]?.correctAnswer
                                   ? "success"
                                   : show[index]?.options[1] === show[index]?.studentAnswer
                                   ? "error"
@@ -512,7 +512,7 @@ export default function ViewSolution() {
                           label={
                             <Typography
                               color={
-                                show[index]?.options[1] === show[index]?.correctAnswer
+                                show && show[index]?.options[1] === show[index]?.correctAnswer
                                   ? "green"
                                   : show[index]?.options[1] === show[index]?.studentAnswer
                                   ? "red"
@@ -520,13 +520,13 @@ export default function ViewSolution() {
                               }
                               marginTop={2}
                             >
-                              <Latex>{show[index]?.options[1] || ""}</Latex>
+                              <Latex>{(show && show[index]?.options[1]) || ""}</Latex>
                             </Typography>
                           }
                         />
                         <FormControlLabel
                           checked={
-                            show[index]?.options[2] === show[index]?.correctAnswer
+                            show && show[index]?.options[2] === show[index]?.correctAnswer
                               ? true
                               : show[index]?.options[2] === show[index]?.studentAnswer
                               ? true
@@ -536,7 +536,7 @@ export default function ViewSolution() {
                           control={
                             <Radio
                               color={
-                                show[index]?.options[2] === show[index]?.correctAnswer
+                                show && show[index]?.options[2] === show[index]?.correctAnswer
                                   ? "success"
                                   : show[index]?.options[2] === show[index]?.studentAnswer
                                   ? "error"
@@ -547,7 +547,7 @@ export default function ViewSolution() {
                           label={
                             <Typography
                               color={
-                                show[index]?.options[2] === show[index]?.correctAnswer
+                                show && show[index]?.options[2] === show[index]?.correctAnswer
                                   ? "green"
                                   : show[index]?.options[2] === show[index]?.studentAnswer
                                   ? "red"
@@ -555,13 +555,13 @@ export default function ViewSolution() {
                               }
                               marginTop={2}
                             >
-                              <Latex>{show[index]?.options[2] || ""}</Latex>
+                              <Latex>{(show && show[index]?.options[2]) || ""}</Latex>
                             </Typography>
                           }
                         />
                         <FormControlLabel
                           checked={
-                            show[index]?.options[3] === show[index]?.correctAnswer
+                            show && show[index]?.options[3] === show[index]?.correctAnswer
                               ? true
                               : show[index]?.options[3] === show[index]?.studentAnswer
                               ? true
@@ -571,7 +571,7 @@ export default function ViewSolution() {
                           control={
                             <Radio
                               color={
-                                show[index]?.options[3] === show[index]?.correctAnswer
+                                show && show[index]?.options[3] === show[index]?.correctAnswer
                                   ? "success"
                                   : show[index]?.options[3] === show[index]?.studentAnswer
                                   ? "error"
@@ -582,7 +582,7 @@ export default function ViewSolution() {
                           label={
                             <Typography
                               color={
-                                show[index]?.options[3] === show[index]?.correctAnswer
+                                show && show[index]?.options[3] === show[index]?.correctAnswer
                                   ? "green"
                                   : show[index]?.options[3] === show[index]?.studentAnswer
                                   ? "red"
@@ -590,7 +590,7 @@ export default function ViewSolution() {
                               }
                               marginTop={2}
                             >
-                              <Latex>{show[index]?.options[3] || ""}</Latex>
+                              <Latex>{(show && show[index]?.options[3]) || ""}</Latex>
                             </Typography>
                           }
                         />
@@ -600,10 +600,10 @@ export default function ViewSolution() {
                         {" "}
                         <Typography color="black" fontWeight={600}>
                           Your Answer :{" "}
-                          {show[index]?.studentAnswer == (null || undefined || "") ? "NA" : <Latex>{show[index]?.studentAnswer || ""}</Latex>}
+                          {show && show[index]?.studentAnswer == (null || undefined || "") ? "NA" : <Latex>{show[index]?.studentAnswer || ""}</Latex>}
                         </Typography>
                         <Typography marginTop={2} color="green" fontWeight={600}>
-                          Correct Answer : {<Latex>{show[index]?.correctAnswer || ""}</Latex>}
+                          Correct Answer : {<Latex>{(show && show[index]?.correctAnswer) || ""}</Latex>}
                         </Typography>
                       </>
                     )}
@@ -685,7 +685,7 @@ export default function ViewSolution() {
                   {viewSol ? (
                     <Box marginTop="2em">
                       <Typography fontWeight={700}>
-                        <Latex>{show[index]?.explanations || ""}</Latex>
+                        <Latex>{(show && show[index]?.explanations) || ""}</Latex>
                       </Typography>
                     </Box>
                   ) : (
@@ -698,7 +698,7 @@ export default function ViewSolution() {
                 {" "}
                 <Modal open={open} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                   <Box sx={style}>
-                    <iframe width="100%" height="100%" src={show[index]?.videoLink}></iframe>
+                    <iframe width="100%" height="100%" src={show && show[index]?.videoLink}></iframe>
                   </Box>
                 </Modal>
               </div>
@@ -811,11 +811,11 @@ export default function ViewSolution() {
             {/* Lower cards section start */}
             <Box component="div" sx={{ height: "15%", py: "1em" }}>
               <TempCompo
-                studentAttempted={show[index]?.studentsAttempted}
-                attemptedCorrect={show[index]?.attemptedCorrect}
-                duration={show.length && "duration" in show[index] ? show[index].duration : "NA"}
-                avgTimeSpent={show[index]?.averageDuration}
-                topperDuration={show[index]?.durationByTopper}
+                studentAttempted={show && show[index]?.studentsAttempted}
+                attemptedCorrect={show && show[index]?.attemptedCorrect}
+                duration={show && show.length && "duration" in show[index] ? show[index].duration : "NA"}
+                avgTimeSpent={show && show[index]?.averageDuration}
+                topperDuration={show && show[index]?.durationByTopper}
               />
             </Box>
             {/* Lower cards section end */}
