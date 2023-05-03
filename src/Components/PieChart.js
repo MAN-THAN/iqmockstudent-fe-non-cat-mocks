@@ -8,7 +8,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function MyPieChart({Data}) {
+function MyPieChart({ data, type }) {
+  console.log(data)
   const data01 = [
     { name: "Group A", value: 60 },
     { name: "Group B", value: 10 },
@@ -83,12 +84,12 @@ function MyPieChart({Data}) {
             fontWeight={500}
             fontSize={22}
           >
-            Overall
+            { type }
           </text>
           <Pie
             dataKey="value"
             isAnimationActive={true}
-            data={data01}
+            data={data}
             cx={200}
             cornerRadius={8}
             cy={200}
@@ -100,7 +101,7 @@ function MyPieChart({Data}) {
             outerRadius={150}
             filter="url(#shadow)"
           >
-            {data01.map((entry, index) => (
+            {data?.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}
@@ -108,7 +109,7 @@ function MyPieChart({Data}) {
             ))}
           </Pie>
           <Legend layout="vertical" verticalAlign="middle" align="right" />
-          <Tooltip />
+          {/* <Tooltip /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>

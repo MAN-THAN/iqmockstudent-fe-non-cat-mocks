@@ -25,11 +25,12 @@ import { LogoButton } from "../Common-comp/Buttons";
 import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
+import MultipleSelect from "../Common-comp/SelectField";
 
 export default function ViewSolution() {
   const { handlePageClick } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selected, setSelected] = useState("Verbal Ability");
+  const [selected, setSelected] = useState("varc");
   const { attemptId } = useParams();
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
@@ -42,6 +43,7 @@ export default function ViewSolution() {
   const [errTrackerLR, setTrackerLR] = useState([]);
   const [errTrackerQU, setTrackerQU] = useState([]);
   const [errValue, setErrValue] = useState("");
+  const Subjects = [{ name: "VARC", value : "varc" }, { name: "LRDI", value : "lrdi" }, { name: "Quants", value : "quants" }, ];
   console.log(data);
   console.log(open);
   console.log(index);
@@ -58,7 +60,7 @@ export default function ViewSolution() {
     const res = await fetchViewSolution(attemptId);
     if (res?.status == 200) {
       setData(res.data);
-      setShow(res.data.varc);
+      setShow(res.data[selected]);
       setTrackerVA(res.data.varc);
       setTrackerLR(res.data.lrdi);
       setTrackerQU(res.data.quants);
@@ -67,23 +69,39 @@ export default function ViewSolution() {
     }
   };
 
-  const openMenu = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleFilter = (sub) => {
-    setAnchorEl(null);
-    setSelected(sub);
-    console.log(sub);
-    if (sub === "Verbal Ability") {
-      setShow(data?.varc);
-    } else if (sub === "Logical Reasoning") {
-      setShow(data?.lrdi);
-    } else if (sub === "Quants") {
+  // const openMenu = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleFilter = (sub) => {
+  //   setAnchorEl(null);
+  //   setSelected(sub);
+  //   console.log(sub);
+  //   if (sub === "Verbal Ability") {
+  //     setShow(data?.varc);
+  //   } else if (sub === "Logical Reasoning") {
+  //     setShow(data?.lrdi);
+  //   } else if (sub === "Quants") {
+  //     setShow(data?.quants);
+  //   }
+  //   return setIndex(0);
+  // };
+
+  // Changing sectionwise data
+  
+  useEffect(() => {
+    if (selected === "varc") { 
+      setShow(data?.varc)
+    }
+    if (selected === "lrdi") { 
+      setShow(data?.lrdi)
+    }
+    if (selected === "quants") {
       setShow(data?.quants);
     }
-    return setIndex(0);
-  };
+    console.log(selected);
+    // console.log(data[selected]);
+  }, [selected]);
 
   const buttonStyle = {
     background: "var(--blue-new)",
@@ -192,7 +210,8 @@ export default function ViewSolution() {
   }, [index]);
   console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
-  console.log(show)
+  console.log(show);
+  console.log(selected);
 
   return (
     <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
@@ -215,7 +234,7 @@ export default function ViewSolution() {
           }}
         >
           <div style={{ flexBasis: "10%" }}>
-            <BootstrapButton
+            {/* <BootstrapButton
               id="demo-customized-button"
               aria-controls={openMenu ? "demo-customized-menu" : undefined}
               aria-haspopup="true"
@@ -269,7 +288,8 @@ export default function ViewSolution() {
                 <IoBookSharp className="me-2" />
                 Quants
               </MenuItem>
-            </StyledMenu>
+            </StyledMenu> */}
+            <MultipleSelect options={Subjects} setType={setSelected} />
           </div>
           <NavigationAvatar
             Data={show}
@@ -478,7 +498,8 @@ export default function ViewSolution() {
                   <>
                     {" "}
                     <Typography color="black" fontWeight={600}>
-                      Your Answer : {show[index]?.studentAnswer == (null || undefined || "") ? "NA" : <Latex>{show[index]?.studentAnswer || ""}</Latex>}
+                      Your Answer :{" "}
+                      {show[index]?.studentAnswer == (null || undefined || "") ? "NA" : <Latex>{show[index]?.studentAnswer || ""}</Latex>}
                     </Typography>
                     <Typography marginTop={2} color="green" fontWeight={600}>
                       Correct Answer : {<Latex>{show[index]?.correctAnswer || ""}</Latex>}
