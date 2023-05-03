@@ -103,14 +103,16 @@ export default function GoalTracker() {
   const [goalData, setGoalData] = useState([]);
   const [result, setResult] = useState([]);
   const getData = async () => {
+    setLoading(true)
     const res = await getGoalTrackerData(attemptId);
-    console.log(res)
+    console.log(res);
     if (res?.status == 200) {
       setResult(res.data.goalData);
       setGoalData(res.data.yourData);
-     
+      setLoading(false)
     } else {
       console.log("error", res);
+      setLoading(false)
     }
   };
   return (
@@ -133,8 +135,16 @@ export default function GoalTracker() {
         <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
 
         {/* Header end  */}
-        {/* main Section start */}
-        <Box
+         {/* main Section start */}
+        {isLoading? 
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
+            <div class="loading-container">
+              <div class="loading"></div>
+              <div id="loading-text">Loading...</div>
+            </div>
+           </div>:
+        
+         <Box
           component="main"
           sx={{ display: "flex", flexDirection: "column", mt: 2 }}
         >
@@ -151,12 +161,14 @@ export default function GoalTracker() {
                 p: 1,
               }}
             >
-              {menuBarOpen && (
-                <Backdrop
-                  open={menuBarOpen}
-                  onClick={() => setMenuBarOpen(false)}
-                ></Backdrop>
-              )}
+              <Backdrop
+                sx={{
+                  zIndex: (theme) => theme.zIndex.drawer - 1,
+                  color: "#fff",
+                }}
+                open={menuBarOpen}
+                onClick={() => setMenuBarOpen(false)}
+              />
               <DetailCards
                 cardContent={<CustomizedAccordions />}
                 heading={"Where you went wrong?"}
@@ -176,7 +188,7 @@ export default function GoalTracker() {
               }}
             >
               <DetailCards
-               logoPath={"/goalSchool.png"}
+                logoPath={"/goalSchool.png"}
                 cardContent={
                   <TableContainer>
                     <Table
@@ -235,7 +247,7 @@ export default function GoalTracker() {
             }}
           >
             {/* <YourGraph goalData={goalData} /> */}
-            <GoalGraph result={result}  />
+            <GoalGraph result={result} />
           </Box>
 
           {/* Graph end */}
@@ -267,7 +279,7 @@ export default function GoalTracker() {
             ></div>
             <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
           </Box>
-        </Box>
+        </Box>}
 
         {/* main Section end */}
       </Box>

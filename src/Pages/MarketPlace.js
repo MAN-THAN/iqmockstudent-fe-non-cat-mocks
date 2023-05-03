@@ -8,7 +8,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import SliderSwiper from "../Components/Swiper";
 import MultipleSelect from "../Common-comp/SelectField";
-import {typographyStyles} from "../styleSheets/StyleNew"
+import { typographyStyles } from "../styleSheets/StyleNew";
 import { useAuth } from "../services/Context";
 import { getMarketPlace } from "../services/Analysis_api";
 import { useEffect } from "react";
@@ -36,10 +36,9 @@ const options = [
   },
 ];
 
-
-
 function MarketPlace() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
+    useAuth();
   const [radioValue, setRadioValue] = React.useState("coursesWithMocks");
   const [selectedValue, setSelectedValue] = React.useState({});
   const [data, setData] = React.useState([]);
@@ -58,13 +57,15 @@ function MarketPlace() {
   // function for fetching data
 
   const getData = async () => {
+    setLoading(true);
     const res = await getMarketPlace();
     if (res?.status == 200) {
-      console.log(res)
+      console.log(res);
       setData(res.data.item);
-    
+      setLoading(false);
     } else {
       console.log("error", res);
+      setLoading(false);
     }
   };
 
@@ -72,69 +73,102 @@ function MarketPlace() {
     <>
       <Box component="main">
         <MenuDrawer />
-        <Box component="div" sx={{ p: 2, ml: "65px" }}>
+        <Box component="div" sx={{ 
+           position: "absolute",
+          left: "65px",
+          height: "100vh",
+          width: "calc(100% - 65px)",
+          p: 2, }}>
           {/* Header start */}
           <Box component="header">
             <HeaderNew />
           </Box>
           {/* Header end */}
-
-          <Box component="div">
-            {menuBarOpen && (
-              <Backdrop
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer - 1,
-                  color: "#fff",
-                }}
-                open={menuBarOpen}
-                onClick={() => setMenuBarOpen(false)}
-              />
-            )}
-
-            <Typography
-              sx={{
-                ...typographyStyles.mainHeading,
-                mt: 2,
-              }}
-            >
-              {" "}
-              Market place{" "}
-            </Typography>
-
-            <div className="d-flex justify-content-between align-items-center align-content-center" style={{ width: "calc(100% - 50px)" }}>
-              <div className="flex-item">
-                <FormControl>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-error-radios"
-                    name="quiz"
-                    sx={{ fontWeight: "bold", fontSize: "16.56px" }}
-                    value={radioValue}
-                    onChange={(e) => setRadioValue(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value="coursesWithMocks"
-                      control={<Radio />}
-                      label={<Typography style={{ fontWeight: 800, fontSize: "17px" }}>Courses (Includes Mocks)</Typography>}
-                    />
-                    <FormControlLabel
-                      value="mocks"
-                      control={<Radio />}
-                      label={<Typography style={{ fontWeight: 800, fontSize: "17px" }}>Mocks</Typography>}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </div>
-
-              <div className="flex-item">
-                <MultipleSelect options={options} onSelectChange={handleSelectChange} setType={() => {}} />
-              </div>
+          {isLoading ? (
+            
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
+            <div class="loading-container">
+              <div class="loading"></div>
+              <div id="loading-text">Loading...</div>
             </div>
-          </Box>
+           </div>
+          ) : (
+            <>
+              <Box component="div">
+                <Backdrop
+                  sx={{
+                    zIndex: (theme) => theme.zIndex.drawer - 1,
+                    color: "#fff",
+                  }}
+                  open={menuBarOpen}
+                  onClick={() => setMenuBarOpen(false)}
+                />
 
-          <Box component="div" sx={{ py: 4, overflow: "hidden" }}>
-            <SliderSwiper data={ data } />
-          </Box>
+                <Typography
+                  sx={{
+                    ...typographyStyles.mainHeading,
+                    mt: 2,
+                  }}
+                >
+                  {" "}
+                  Market place{" "}
+                </Typography>
+
+                <div
+                  className="d-flex justify-content-between align-items-center align-content-center"
+                  style={{ width: "calc(100% - 50px)" }}
+                >
+                  <div className="flex-item">
+                    <FormControl>
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-error-radios"
+                        name="quiz"
+                        sx={{ fontWeight: "bold", fontSize: "16.56px" }}
+                        value={radioValue}
+                        onChange={(e) => setRadioValue(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value="coursesWithMocks"
+                          control={<Radio />}
+                          label={
+                            <Typography
+                              style={{ fontWeight: 800, fontSize: "17px" }}
+                            >
+                              Courses (Includes Mocks)
+                            </Typography>
+                          }
+                        />
+                        <FormControlLabel
+                          value="mocks"
+                          control={<Radio />}
+                          label={
+                            <Typography
+                              style={{ fontWeight: 800, fontSize: "17px" }}
+                            >
+                              Mocks
+                            </Typography>
+                          }
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </div>
+
+                  <div className="flex-item">
+                    <MultipleSelect
+                      options={options}
+                      onSelectChange={handleSelectChange}
+                      setType={() => {}}
+                    />
+                  </div>
+                </div>
+              </Box>
+
+              <Box component="div" sx={{ py: 4, overflow: "hidden" }}>
+                <SliderSwiper data={data} />
+              </Box>
+            </>
+          )}
         </Box>
       </Box>
     </>

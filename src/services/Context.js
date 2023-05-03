@@ -109,7 +109,8 @@ export const ContextProvider = ({ children }) => {
           menuBarOpen,
           handlePageClick,
           Backdrop,
-          showToastMessage
+          showToastMessage,
+          setLoading
         }}
       >
         {children}

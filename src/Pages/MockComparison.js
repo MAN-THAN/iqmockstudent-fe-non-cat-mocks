@@ -4,8 +4,6 @@ import HeaderNew from "../Components/HeaderNew";
 import { useAuth } from "../services/Context";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import { useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -14,6 +12,7 @@ import { LogoCard } from "../Common-comp/Card";
 import { getMockComparison } from "../services/Analysis_api";
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import { PuffLoader } from "react-spinners";
 
 const ITEM_HEIGHT = 28;
 const ITEM_PADDING_TOP = 3;
@@ -28,12 +27,21 @@ const MenuProps = {
 
 function getStyles(name, MockName, theme) {
   return {
-    fontWeight: MockName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+    fontWeight:
+      MockName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
   };
 }
 
 function MockComparison() {
-  const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }, { name: "MBA" }, { name: "MIA" }];
+  const Subjects = [
+    { name: "Varc" },
+    { name: "Quants" },
+    { name: "LRdi" },
+    { name: "MBA" },
+    { name: "MIA" },
+  ];
 
   const OuterCardStyle = {
     width: 246,
@@ -65,7 +73,8 @@ function MockComparison() {
     );
   };
 
-  const { menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
+    useAuth();
 
   useEffect(() => {
     getData();
@@ -75,7 +84,9 @@ function MockComparison() {
   const [prevMocks, setPrevMocks] = useState();
   const [topper, setTopper] = useState();
   const [compMock, setCompMock] = useState();
+
   const getData = async () => {
+    setLoading(true);
     const res = await getMockComparison(mockId, attemptId);
     if (res?.status == 200) {
       console.log(res.data);
@@ -83,30 +94,42 @@ function MockComparison() {
       setTopper(res?.data?.topperResult[0]?.data[1]?.overAllAnalysis[1]);
       setPrevMocks(res?.data?.previousMocks);
       setCompMock(res?.data?.previousMocks[0]?.data[1]?.overAllAnalysis[1]);
+      setLoading(false);
     } else {
+      setLoading(false);
       console.log("error", res);
     }
   };
-  console.log(prevMocks)
+  console.log(prevMocks);
 
   return (
-    <>
-      <Box component="main">
-        <MenuDrawer />
+    <Box component="main">
+      <MenuDrawer />
 
-        <Box
-          sx={{
-            position: "absolute",
-            left: "65px",
-            height: "100vh",
-            width: "calc(100% - 65px)",
-            p: 2,
-          }}
-        >
-          <Box component="header">
-            <HeaderNew />
-          </Box>
+      <Box
+        sx={{
+          position: "absolute",
+          left: "65px",
+          height: "100vh",
+          width: "calc(100% - 65px)",
+          p: 2,
+        }}
+      >
+        <Box component="header">
+          <HeaderNew />
+        </Box>
 
+        {isLoading ? (
+        
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
+            <div class="loading-container">
+              <div class="loading"></div>
+              <div id="loading-text">Loading...</div>
+            </div>
+           </div>
+
+        
+        ) : (
           <Box
             component="section"
             sx={{
@@ -116,16 +139,14 @@ function MockComparison() {
               mt: 3,
             }}
           >
-            {menuBarOpen && (
-              <Backdrop
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer - 1,
-                  color: "#fff",
-                }}
-                open={menuBarOpen}
-                onClick={() => setMenuBarOpen(false)}
-              />
-            )}
+            <Backdrop
+              sx={{
+                zIndex: (theme) => theme.zIndex.drawer - 1,
+                color: "#fff",
+              }}
+              open={menuBarOpen}
+              onClick={() => setMenuBarOpen(false)}
+            />
 
             <Box className="comparison-Section p-2">
               <Typography
@@ -144,7 +165,7 @@ function MockComparison() {
                   lineHeight: "4.4em",
                   ...typographyStyles.subHeading,
                   fontSize: "15px",
-                  marginTop:"5px"
+                  marginTop: "5px",
                 }}
               >
                 <li>Score</li>
@@ -165,10 +186,17 @@ function MockComparison() {
                     infoIcon={"/info1.svg"}
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
-                          {result?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
+                          {result?.percentile}{" "}
+                          <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>My iCAT 1.0 Analysis</Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
+                          My iCAT 1.0 Analysis
+                        </Typography>
                       </>
                     }
                     style={innerCardStyle}
@@ -183,17 +211,30 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
                           {result?.percentile}
                           <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>My iCAT 1.0 Analysis</Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
+                          My iCAT 1.0 Analysis
+                        </Typography>
                       </>
                     }
                     style={innerCardStyle}
                     icon={"/click 1.svg"}
                     infoIcon={"/info1.svg"}
-                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={ setCompMock } />}
+                    select={
+                      <SelectBox
+                        onSelect={handleChange}
+                        mockName={MockName}
+                        options={prevMocks}
+                        setCompMock={setCompMock}
+                      />
+                    }
                   />
                 }
                 style={OuterCardStyle}
@@ -204,10 +245,17 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
-                          {result?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
+                          {result?.percentile}{" "}
+                          <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "", fontSize: 15 }}>My iCAT 1.0 Analysis</Typography>
+                        <Typography sx={{ color: "", fontSize: 15 }}>
+                          My iCAT 1.0 Analysis
+                        </Typography>
                       </>
                     }
                     style={{ ...innerCardStyle, background: "#FFECB9" }}
@@ -219,9 +267,9 @@ function MockComparison() {
               />
             </Box>
           </Box>
-        </Box>
+        )}
       </Box>
-    </>
+    </Box>
   );
 }
 
@@ -278,7 +326,9 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           </MenuItem>
           {options?.map((item, index) => (
             <MenuItem
-              onClick={() => setCompMock(options[index]?.data[1]?.overAllAnalysis[1])}
+              onClick={() =>
+                setCompMock(options[index]?.data[1]?.overAllAnalysis[1])
+              }
               key={index}
               value={item._id}
               style={getStyles(item._id, mockName, theme)}
