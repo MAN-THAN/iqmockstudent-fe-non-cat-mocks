@@ -80,6 +80,7 @@ function CenterMain() {
     setLoading(true);
     setSelectedQuestionIndex(0);
     const mockId = params.mockId;
+    // console.log(mockId)
     const subject_type = params.type;
     const fetchDataFromApi = async () => {
       const response = await fetchQuestions(mockId, subject_type);

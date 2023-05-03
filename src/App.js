@@ -40,7 +40,7 @@ function App() {
         </Route>
         <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
         <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
-        <Route path="/main/:mockid/:type" element={<Protected Comp={Main} />} />
+        <Route path="/main/:mockId/:type" element={<Protected Comp={Main} />} />
 
         <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross />} />
         <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker />} />
