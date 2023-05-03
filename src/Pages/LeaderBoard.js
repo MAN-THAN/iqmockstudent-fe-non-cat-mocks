@@ -22,7 +22,7 @@ function LeaderBoard() {
   const [studentRank, setStudentRank] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { uid, name } = userData;
+  const { _id, name ,photoURL} = userData;
 
   const date = new Date();
 
@@ -147,7 +147,7 @@ function LeaderBoard() {
                   fontWeight: 400,
                 }}
               >
-                User id :{uid}
+                User id :{_id}
               </Typography>
             </div>
             <div className="d-flex">
@@ -157,7 +157,7 @@ function LeaderBoard() {
                 aria-expanded="false"
               >
                 <img
-                  src="https://github.com/mdo.png"
+                  src={photoURL}
                   alt="mdo"
                   width="50"
                   height="50"

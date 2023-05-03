@@ -120,25 +120,29 @@ function AnalysisMain() {
 
   const CardsData = [
     {
-      tooltip: "Potential",
+      tooltip: `
+      Guess what? If you have kept 100% accuracy you would have scored this much. 
+      Work on your accuracy, You have good Potential.
+      `,
       cardTitle: potentialScore,
       icon: "/PM.png",
       title: "Potential Marks",
     },
     {
-      tooltip: "Negative Mark",
+      tooltip: `This is sad! Try to minimise your negative mark. You will see marginal improvement then.`,
       cardTitle: negativeMarks,
       icon: "/NM.png",
       title: "Negative Marks",
     },
     {
-      tooltip: "Your Accuracy boy!!!",
+      tooltip: `This shows percentage of questions you have answered correctly out of your total attempt. Stay Focused!!`,
       cardTitle: accuracy,
       icon: "/Acc.png",
       title: "Your Accuracy",
     },
     {
-      tooltip: "Overall Percentage boy!!!",
+      tooltip:
+        "Simple percentage formula it  is :p (your score/Total score)*100 ",
       cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
       icon: "/PS.png",
       title: "Overall Precentage",

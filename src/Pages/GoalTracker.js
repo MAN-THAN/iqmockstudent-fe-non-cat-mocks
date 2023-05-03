@@ -124,7 +124,7 @@ export default function GoalTracker() {
       <Box
         sx={{
           ml: "65px",
-          background: "url(/GoalTrackerBackground.jpg)",
+           background: isLoading ?"":"url(/GoalTrackerBackground.jpg)",
           backgroundSize: "cover",
           height: "100vh",
           p: 2,
