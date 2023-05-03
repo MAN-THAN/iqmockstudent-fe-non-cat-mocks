@@ -47,9 +47,8 @@ function AnalysisAcross() {
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
-
   const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }];
-  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading, showToastMessage } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading, showToastMessage  } = useAuth();
 
   useEffect(() => {
     setShow(mocksList[index]);
@@ -58,11 +57,13 @@ function AnalysisAcross() {
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
+      setLoading(true)
       const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
         setMocksList(response.data?.topicWise);
         setShow(response.data?.topicWise[index]);
+        setLoading(false);
       } else {
         showToastMessage();
         setLoading(false);
@@ -109,7 +110,7 @@ function AnalysisAcross() {
               flexWrap: "wrap",
             }}
           >
-            {menuBarOpen && (
+            {menuBarOpen || isLoading && (
               <Backdrop
                 sx={{
                   zIndex: (theme) => theme.zIndex.drawer - 1,
@@ -154,6 +155,7 @@ function AnalysisAcross() {
                 {AnalysisAcrossCard.map((item, _) => (
                   <LogoCard
                     cardTitle={item.title}
+                    key={item.id}
                     icon={item.icon}
                     style={{
                       fontSize: 8,

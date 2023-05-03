@@ -30,7 +30,7 @@ function App() {
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/user_authentication" element={<UserAuth />} />
-        <Route path="/main/:mockId/:type" element={<Protected Comp={Main} />} />
+   
 
         <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
           <Route path="topicwise" element={<TopicAnalysis />} />
