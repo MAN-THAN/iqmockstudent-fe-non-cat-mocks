@@ -28,7 +28,8 @@ import { postToErrorTracker } from "../services/Analysis_api";
 import MultipleSelect from "../Common-comp/SelectField";
 
 export default function ViewSolution() {
-  const { handlePageClick } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
+    useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState("varc");
   const { attemptId } = useParams();
@@ -57,6 +58,7 @@ export default function ViewSolution() {
   // function for fetching data
 
   const getData = async () => {
+    setLoading(true);
     const res = await fetchViewSolution(attemptId);
     if (res?.status == 200) {
       setData(res.data);
@@ -64,7 +66,9 @@ export default function ViewSolution() {
       setTrackerVA(res.data.varc);
       setTrackerLR(res.data.lrdi);
       setTrackerQU(res.data.quants);
+      setLoading(false);
     } else {
+      setLoading(false);
       console.log("error", res);
     }
   };
@@ -156,26 +160,41 @@ export default function ViewSolution() {
       duration: selectedObj.duration,
       averageDuration: selectedObj.averageDuration,
       explanations: selectedObj.explanations,
-      isCorrect: selectedObj.correctAnswer === selectedObj.studentAnswer ? "correct" : "incorrect",
+      isCorrect:
+        selectedObj.correctAnswer === selectedObj.studentAnswer
+          ? "correct"
+          : "incorrect",
     };
     console.log(show[index]);
     const res = await postToErrorTracker(attemptId, type, payload);
     console.log(res);
     if (res?.status == 200) {
       if (type == "varc") {
-        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        const tempObj = {
+          question_id: selectedObj.question_id,
+          question: selectedObj.question,
+          error: e.target.value,
+        };
         let arr = [...errTrackerVA];
         arr.splice(index, 1, tempObj);
         setTrackerVA(arr);
       }
       if (type == "lrdi") {
-        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        const tempObj = {
+          question_id: selectedObj.question_id,
+          question: selectedObj.question,
+          error: e.target.value,
+        };
         let arr = [...errTrackerLR];
         arr.splice(index, 1, tempObj);
         setTrackerLR(arr);
       }
       if (type == "quants") {
-        const tempObj = { question_id: selectedObj.question_id, question: selectedObj.question, error: e.target.value };
+        const tempObj = {
+          question_id: selectedObj.question_id,
+          question: selectedObj.question,
+          error: e.target.value,
+        };
         let arr = [...errTrackerQU];
         arr.splice(index, 1, tempObj);
         setTrackerQU(arr);
@@ -214,27 +233,24 @@ export default function ViewSolution() {
   console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
   console.log(show);
+
   console.log(selected);
 
+
   return (
-    <Box sx={{ display: "flex", width: "100vw", height: "100Vh" }}>
+    <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
       <MenuDrawer />
-      <Box component="main" sx={{ flexGrow: 1, p: 2, width: "calc(100% - 240px)", height: "100%" }}>
+      <Box component="main" sx={{ ml: "65px", height: "100%" }}>
+        <Backdrop
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer - 1,
+            color: "#fff",
+          }}
+          open={menuBarOpen}
+          onClick={() => setMenuBarOpen(false)}
+        />
         <Box component="div" sx={{ height: "10%" }}>
           <HeaderNew />
-        </Box>
-        {/* Navigation bar  */}
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            gap: 2,
-            height: "10%",
-            paddingTop: "1em",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
         >
           <div style={{ flexBasis: "10%" }}>
             {/* <BootstrapButton
@@ -301,199 +317,366 @@ export default function ViewSolution() {
             difficulty={show.length && show[index]?.difficulty}
             setViewSoln={setViewSoln}
           />
+
         </Box>
-        {/* Navigation bar end */}
-
-        {/* Main center start */}
-        <Box component="div" sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}>
-          {/* LEFT Main start */}
-          <Box
-            sx={{
-              width: "80%",
-
-              display: "flex",
-              boxShadow: 3,
-              boder: "none",
-              borderRadius: 5,
-            }}
-            component={Paper}
+        {isLoading ? (
+          <div
+            className="d-flex align-items-center flex-column gap-2 justify-content-center"
+            style={{ width: "100%", height: "80%" }}
           >
-            <Box
-              component="div"
-              display={show[index]?.isPara === "Yes" ? "block" : "none"}
-              sx={{
-                flexBasis: "60%",
-                textAlign: "justify",
-                height: "100%",
-                overflow: "scroll",
-                p: 3,
-              }}
-            >
-              <Latex>{show[index]?.paragraph || ""}</Latex>
-            </Box>
+            <div class="loading-container">
+              <div class="loading"></div>
+              <div id="loading-text">Loading...</div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Navigation bar  */}
             <Box
               component="div"
               sx={{
-                flexBasis: show[index]?.isPara === "Yes" ? "40%" : "100%",
-                textAlign: "justify",
-                height: "100%",
-                overflow: "scroll",
-                p: 3,
+                display: "flex",
+                gap: 2,
+                height: "10%",
+                paddingTop: "1em",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
               }}
             >
-              <Typography fontWeight={600} variant="h6">
-                QUESTION . {index + 1}
-              </Typography>
-              <div>
-                <Typography variant="paragraph">
-                  <Latex>{show[index]?.question || ""}</Latex>
-                </Typography>
+              <div style={{ flexBasis: "10%" }}>
+                <BootstrapButton
+                  id="demo-customized-button"
+                  aria-controls={openMenu ? "demo-customized-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openMenu ? "true" : undefined}
+                  variant="contained"
+                  // disableElevation
+                  onClick={handleClick}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  height={47}
+                  sx={{
+                    background: "#F1F4F9",
+                    "&:hover ,&:focus": {
+                      background: "#F1F4F9",
+                      color: "black",
+                    },
+                  }}
+                >
+                  {selected}
+                </BootstrapButton>
+
+                <StyledMenu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={openMenu}
+                  onClose={handleFilter}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                  sx={{ ml: 4 }}
+                >
+                  <MenuItem
+                    sx={{
+                      backgroundColor:
+                        selected === "Verbal Ability" ? "#f5f5f5" : "",
+                    }}
+                    onClick={() => handleFilter("Verbal Ability")}
+                    disableRipple
+                  >
+                    <IoBookSharp className="me-2" />
+                    Verbal Ability
+                  </MenuItem>
+                  <Divider sx={{ my: 0.5 }} />
+                  <MenuItem
+                    sx={{
+                      backgroundColor:
+                        selected === "Logical Reasoning" ? "#f5f5f5" : "",
+                    }}
+                    onClick={() => handleFilter("Logical Reasoning")}
+                    disableRipple
+                  >
+                    <IoBookSharp className="me-2" />
+                    Logical Reasoning
+                  </MenuItem>
+                  <Divider sx={{ my: 0.5 }} />
+                  <MenuItem
+                    sx={{
+                      backgroundColor: selected === "Quants" ? "#f5f5f5" : "",
+                    }}
+                    onClick={() => handleFilter("Quants")}
+                    disableRipple
+                  >
+                    <IoBookSharp className="me-2" />
+                    Quants
+                  </MenuItem>
+                </StyledMenu>
               </div>
-              <div>
-                {/* <Typography variant="paragraph fw-bold">
+              <NavigationAvatar
+                Data={show}
+                setInd={setIndex}
+                selectedQuestionIndex={index}
+                difficulty={show[index]?.difficulty}
+                setViewSoln={setViewSoln}
+              />
+            </Box>
+            {/* Navigation bar end */}
+
+            {/* Main center start */}
+            <Box
+              component="div"
+              sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}
+            >
+              {/* LEFT Main start */}
+              <Box
+                sx={{
+                  width: "80%",
+
+                  display: "flex",
+                  boxShadow: 3,
+                  boder: "none",
+                  borderRadius: 5,
+                }}
+                component={Paper}
+              >
+                <Box
+                  component="div"
+                  display={show[index]?.isPara === "Yes" ? "block" : "none"}
+                  sx={{
+                    flexBasis: "60%",
+                    textAlign: "justify",
+                    height: "100%",
+                    overflow: "scroll",
+                    p: 3,
+                  }}
+                >
+                  <Latex>{show[index]?.paragraph || ""}</Latex>
+                </Box>
+                <Box
+                  component="div"
+                  sx={{
+                    flexBasis: show[index]?.isPara === "Yes" ? "40%" : "100%",
+                    textAlign: "justify",
+                    height: "100%",
+                    overflow: "scroll",
+                    p: 3,
+                  }}
+                >
+                  <Typography fontWeight={600} variant="h6">
+                    QUESTION . {index + 1}
+                  </Typography>
+                  <div>
+                    <Typography variant="paragraph">
+                      <Latex>{show[index]?.question || ""}</Latex>
+                    </Typography>
+                  </div>
+                  <div>
+                    {/* <Typography variant="paragraph fw-bold">
                   <Latex>{show[index]?.correctAnswer || ""}</Latex>
                 </Typography> */}
-                {show[index]?.type === 1 ? (
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    {" "}
-                    <FormControlLabel
-                      checked={
-                        show[index]?.options[0] === show[index]?.correctAnswer
-                          ? true
-                          : show[index]?.options[0] === show[index]?.studentAnswer
-                          ? true
-                          : false
-                      }
-                      value={0}
-                      control={
-                        <Radio
-                          color={
-                            show[index]?.options[0] === show[index]?.correctAnswer
-                              ? "success"
-                              : show[index]?.options[0] === show[index]?.studentAnswer
-                              ? "error"
-                              : "default"
+                    {show[index]?.type === 1 ? (
+                      <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        {" "}
+                        <FormControlLabel
+                          checked={
+                            show[index]?.options[0] ===
+                            show[index]?.correctAnswer
+                              ? true
+                              : show[index]?.options[0] ===
+                                show[index]?.studentAnswer
+                              ? true
+                              : false
+                          }
+                          value={0}
+                          control={
+                            <Radio
+                              color={
+                                show[index]?.options[0] ===
+                                show[index]?.correctAnswer
+                                  ? "success"
+                                  : show[index]?.options[0] ===
+                                    show[index]?.studentAnswer
+                                  ? "error"
+                                  : "default"
+                              }
+                            />
+                          }
+                          label={
+                            <Typography
+                              color={
+                                show[index]?.options[0] ===
+                                show[index]?.correctAnswer
+                                  ? "green"
+                                  : show[index]?.options[0] ===
+                                    show[index]?.studentAnswer
+                                  ? "red"
+                                  : "black"
+                              }
+                              marginTop={2}
+                            >
+                              <Latex>{show[index]?.options[0] || ""}</Latex>
+                            </Typography>
                           }
                         />
-                      }
-                      label={
-                        <Typography
-                          color={
-                            show[index]?.options[0] === show[index]?.correctAnswer
-                              ? "green"
-                              : show[index]?.options[0] === show[index]?.studentAnswer
-                              ? "red"
-                              : "black"
+                        <FormControlLabel
+                          checked={
+                            show[index]?.options[1] ===
+                            show[index]?.correctAnswer
+                              ? true
+                              : show[index]?.options[1] ===
+                                show[index]?.studentAnswer
+                              ? true
+                              : false
                           }
-                          marginTop={2}
-                        >
-                          <Latex>{show[index]?.options[0] || ""}</Latex>
-                        </Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      checked={
-                        show[index]?.options[1] === show[index]?.correctAnswer
-                          ? true
-                          : show[index]?.options[1] === show[index]?.studentAnswer
-                          ? true
-                          : false
-                      }
-                      value={1}
-                      control={
-                        <Radio
-                          color={
-                            show[index]?.options[1] === show[index]?.correctAnswer
-                              ? "success"
-                              : show[index]?.options[1] === show[index]?.studentAnswer
-                              ? "error"
-                              : "default"
+                          value={1}
+                          control={
+                            <Radio
+                              color={
+                                show[index]?.options[1] ===
+                                show[index]?.correctAnswer
+                                  ? "success"
+                                  : show[index]?.options[1] ===
+                                    show[index]?.studentAnswer
+                                  ? "error"
+                                  : "default"
+                              }
+                            />
                           }
-                        />
-                      }
-                      label={
-                        <Typography
-                          color={
-                            show[index]?.options[1] === show[index]?.correctAnswer
-                              ? "green"
-                              : show[index]?.options[1] === show[index]?.studentAnswer
-                              ? "red"
-                              : "black"
-                          }
-                          marginTop={2}
-                        >
-                          <Latex>{show[index]?.options[1] || ""}</Latex>
-                        </Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      checked={
-                        show[index]?.options[2] === show[index]?.correctAnswer
-                          ? true
-                          : show[index]?.options[2] === show[index]?.studentAnswer
-                          ? true
-                          : false
-                      }
-                      value={0}
-                      control={
-                        <Radio
-                          color={
-                            show[index]?.options[2] === show[index]?.correctAnswer
-                              ? "success"
-                              : show[index]?.options[2] === show[index]?.studentAnswer
-                              ? "error"
-                              : "default"
+                          label={
+                            <Typography
+                              color={
+                                show[index]?.options[1] ===
+                                show[index]?.correctAnswer
+                                  ? "green"
+                                  : show[index]?.options[1] ===
+                                    show[index]?.studentAnswer
+                                  ? "red"
+                                  : "black"
+                              }
+                              marginTop={2}
+                            >
+                              <Latex>{show[index]?.options[1] || ""}</Latex>
+                            </Typography>
                           }
                         />
-                      }
-                      label={
-                        <Typography
-                          color={
-                            show[index]?.options[2] === show[index]?.correctAnswer
-                              ? "green"
-                              : show[index]?.options[2] === show[index]?.studentAnswer
-                              ? "red"
-                              : "black"
+                        <FormControlLabel
+                          checked={
+                            show[index]?.options[2] ===
+                            show[index]?.correctAnswer
+                              ? true
+                              : show[index]?.options[2] ===
+                                show[index]?.studentAnswer
+                              ? true
+                              : false
                           }
-                          marginTop={2}
-                        >
-                          <Latex>{show[index]?.options[2] || ""}</Latex>
-                        </Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      checked={
-                        show[index]?.options[3] === show[index]?.correctAnswer
-                          ? true
-                          : show[index]?.options[3] === show[index]?.studentAnswer
-                          ? true
-                          : false
-                      }
-                      value={0}
-                      control={
-                        <Radio
-                          color={
-                            show[index]?.options[3] === show[index]?.correctAnswer
-                              ? "success"
-                              : show[index]?.options[3] === show[index]?.studentAnswer
-                              ? "error"
-                              : "default"
+                          value={0}
+                          control={
+                            <Radio
+                              color={
+                                show[index]?.options[2] ===
+                                show[index]?.correctAnswer
+                                  ? "success"
+                                  : show[index]?.options[2] ===
+                                    show[index]?.studentAnswer
+                                  ? "error"
+                                  : "default"
+                              }
+                            />
+                          }
+                          label={
+                            <Typography
+                              color={
+                                show[index]?.options[2] ===
+                                show[index]?.correctAnswer
+                                  ? "green"
+                                  : show[index]?.options[2] ===
+                                    show[index]?.studentAnswer
+                                  ? "red"
+                                  : "black"
+                              }
+                              marginTop={2}
+                            >
+                              <Latex>{show[index]?.options[2] || ""}</Latex>
+                            </Typography>
                           }
                         />
-                      }
-                      label={
-                        <Typography
-                          color={
-                            show[index]?.options[3] === show[index]?.correctAnswer
-                              ? "green"
-                              : show[index]?.options[3] === show[index]?.studentAnswer
-                              ? "red"
-                              : "black"
+                        <FormControlLabel
+                          checked={
+                            show[index]?.options[3] ===
+                            show[index]?.correctAnswer
+                              ? true
+                              : show[index]?.options[3] ===
+                                show[index]?.studentAnswer
+                              ? true
+                              : false
                           }
-                          marginTop={2}
-                        >
-                          <Latex>{show[index]?.options[3] || ""}</Latex>
+                          value={0}
+                          control={
+                            <Radio
+                              color={
+                                show[index]?.options[3] ===
+                                show[index]?.correctAnswer
+                                  ? "success"
+                                  : show[index]?.options[3] ===
+                                    show[index]?.studentAnswer
+                                  ? "error"
+                                  : "default"
+                              }
+                            />
+                          }
+                          label={
+                            <Typography
+                              color={
+                                show[index]?.options[3] ===
+                                show[index]?.correctAnswer
+                                  ? "green"
+                                  : show[index]?.options[3] ===
+                                    show[index]?.studentAnswer
+                                  ? "red"
+                                  : "black"
+                              }
+                              marginTop={2}
+                            >
+                              <Latex>{show[index]?.options[3] || ""}</Latex>
+                            </Typography>
+                          }
+                        />
+                      </Box>
+                    ) : (
+                      <>
+                        {" "}
+                        <Typography color="black" fontWeight={600}>
+                          Your Answer :{" "}
+                          {show[index]?.studentAnswer ==
+                          (null || undefined || "") ? (
+                            "NA"
+                          ) : (
+                            <Latex>{show[index]?.studentAnswer || ""}</Latex>
+                          )}
                         </Typography>
+                        <Typography
+                          marginTop={2}
+                          color="green"
+                          fontWeight={600}
+                        >
+                          Correct Answer :{" "}
+                          {<Latex>{show[index]?.correctAnswer || ""}</Latex>}
+                        </Typography>
+                      </>
+                    )}
+                  </div>
+                  <Box
+                    component="div"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                      flexWrap: "wrap",
+                      width: "25em",
+                      rowGap: 2,
+                      marginTop: 2,
+                    }}
+                  >
+                    {/* <LogoButton
                       }
                     />
                   </Box>
@@ -530,151 +713,222 @@ export default function ViewSolution() {
                     "& $icon": { fontSize: 2 },
                   }}
                 /> */}
-                <Box onClick={() => setViewSoln(true)}>
-                  {" "}
-                  <LogoButton
-                    name={"  View Solution"}
-                    icon={"/viewSol-icon.png"}
-                    style={{
-                      ...buttonStyle,
-                      "&:hover": { background: "var(--blue-new)" },
-                    }}
-                  />
-                </Box>
-                <Box onClick={handleOpenModal}>
-                  {" "}
-                  <LogoButton
-                    name={" Video Solution"}
-                    icon={"/playButton.png"}
-                    style={{
-                      ...buttonStyle,
-                      color: "black",
-                      background: "#CFCFCF",
+                    <Box onClick={() => setViewSoln(true)}>
+                      {" "}
+                      <LogoButton
+                        name={"  View Solution"}
+                        icon={"/viewSol-icon.png"}
+                        style={{
+                          ...buttonStyle,
+                          "&:hover": { background: "var(--blue-new)" },
+                        }}
+                      />
+                    </Box>
+                    <Box onClick={handleOpenModal}>
+                      {" "}
+                      <LogoButton
+                        name={" Video Solution"}
+                        icon={"/playButton.png"}
+                        style={{
+                          ...buttonStyle,
+                          color: "black",
+                          background: "#CFCFCF",
 
-                      "&:hover": { background: "#CFCFCF" },
-                    }}
-                  />
+                          "&:hover": { background: "#CFCFCF" },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                  {viewSol ? (
+                    <Box marginTop="2em">
+                      <Typography fontWeight={700}>
+                        <Latex>{show[index]?.explanations || ""}</Latex>
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
               </Box>
-              {viewSol ? (
-                <Box marginTop="2em">
-                  <Typography fontWeight={700}>
-                    <Latex>{show[index]?.explanations || ""}</Latex>
+              {/* MOdal for video link */}
+              <div>
+                {" "}
+                <Modal
+                  open={open}
+                  onClose={handleCloseModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={show[index]?.videoLink}
+                    ></iframe>
+                  </Box>
+                </Modal>
+              </div>
+              {/* left Main end */}
+
+              {/* Right main start */}
+
+              <Box
+                sx={{
+                  width: "25%",
+                  background: "#F1F4F9",
+                  boxShadow: 3,
+                  textAlign: "justify",
+                  height: "100%",
+                  overflow: "scroll",
+                  p: 3,
+                  borderRadius: 5,
+                }}
+                component={Paper}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between ",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#3B36DB",
+                      fontSize: 19,
+                      fontFamily: "var(--font-inter)",
+                      fontWeight: "900",
+                    }}
+                  >
+                    Error Tracker
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#3B36DB",
+                      fontSize: 19,
+                      fontFamily: "var(--font-inter)",
+                      fontWeight: "900",
+                    }}
+                  >
+                    iQ GPT 1.0{" "}
+                    <span>
+                      <img
+                        src="/viewTracker.png"
+                        className="img-fluid mb-1"
+                        alt=""
+                      />
+                    </span>
                   </Typography>
                 </Box>
-              ) : (
-                <></>
-              )}
-            </Box>
-          </Box>
-          {/* MOdal for video link */}
-          <div>
-            {" "}
-            <Modal open={open} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-              <Box sx={style}>
-                <iframe width="100%" height="100%" src={show[index]?.videoLink}></iframe>
+                <hr />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      textAlign: "left",
+                      fontSize: "19.8px",
+                      fontWeight: 750,
+                    }}
+                  >
+                    Why did you get it wrong?
+                  </Typography>
+                  <FormControl
+                    sx={{
+                      paddingTop: 1,
+                      fontFamily: "var(--font-inter)",
+                      fontWeight: 800,
+                      textAlign: "start",
+                    }}
+                  >
+                    <FormLabel id="demo-radio-buttons-group-label">
+                      {""}
+                    </FormLabel>
+                    <RadioGroup
+                      onChange={handleErrorForm}
+                      value={errValue}
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      name="radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="Did not understand the concept"
+                        control={<Radio size="small" />}
+                        label="Did not understand the concept"
+                      />
+                      <FormControlLabel
+                        value="I understood the concept but failed to apply it correctly"
+                        control={<Radio size="small" />}
+                        label="I understood the concept but failed to apply it correctly"
+                      />
+                      <FormControlLabel
+                        value="I misread the question"
+                        control={<Radio size="small" />}
+                        label="I misread the question"
+                      />
+                      <FormControlLabel
+                        value="I ran out of time"
+                        control={<Radio size="small" />}
+                        label="I ran out of time"
+                      />
+                      <FormControlLabel
+                        value="Made a silly mistake"
+                        control={<Radio size="small" />}
+                        label="Made a silly mistake"
+                      />
+                      <FormControlLabel
+                        value="Fell for the trap answer"
+                        control={<Radio size="small" />}
+                        label="Fell for the trap answer"
+                      />
+                      <FormControlLabel
+                        value="Guessed the answer"
+                        control={<Radio size="small" />}
+                        label="Guessed the answer"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
               </Box>
-            </Modal>
-          </div>
-          {/* left Main end */}
-
-          {/* Right main start */}
-
-          <Box
-            sx={{
-              width: "25%",
-              background: "#F1F4F9",
-              boxShadow: 3,
-              textAlign: "justify",
-              height: "100%",
-              overflow: "scroll",
-              p: 3,
-              borderRadius: 5,
-            }}
-            component={Paper}
-          >
-            <Box
-              sx={{
-                width: "100%",
-
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between ",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#3B36DB",
-                  fontSize: 19,
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "900",
-                }}
-              >
-                Error Tracker
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#3B36DB",
-                  fontSize: 19,
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "900",
-                }}
-              >
-                iQ GPT 1.0{" "}
-                <span>
-                  <img src="/viewTracker.png" className="img-fluid mb-1" alt="" />
-                </span>
-              </Typography>
+              {/* Right main end */}
             </Box>
-            <hr />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              <Typography sx={{ textAlign: "left", fontSize: "19.8px", fontWeight: 750 }}>Why did you get it wrong?</Typography>
-              <FormControl sx={{ paddingTop: 1, fontFamily: "var(--font-inter)", fontWeight: 800, textAlign: "start" }}>
-                <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
-                <RadioGroup onChange={handleErrorForm} value={errValue} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                  <FormControlLabel value="Did not understand the concept" control={<Radio size="small" />} label="Did not understand the concept" />
-                  <FormControlLabel
-                    value="I understood the concept but failed to apply it correctly"
-                    control={<Radio size="small" />}
-                    label="I understood the concept but failed to apply it correctly"
-                  />
-                  <FormControlLabel value="I misread the question" control={<Radio size="small" />} label="I misread the question" />
-                  <FormControlLabel value="I ran out of time" control={<Radio size="small" />} label="I ran out of time" />
-                  <FormControlLabel value="Made a silly mistake" control={<Radio size="small" />} label="Made a silly mistake" />
-                  <FormControlLabel value="Fell for the trap answer" control={<Radio size="small" />} label="Fell for the trap answer" />
-                  <FormControlLabel value="Guessed the answer" control={<Radio size="small" />} label="Guessed the answer" />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-          </Box>
-          {/* Right main end */}
-        </Box>
-        {/* Main center end */}
+            {/* Main center end */}
 
-        {/* Lower cards section start */}
-        <Box component="div" sx={{ height: "15%", py: "1em" }}>
-          <TempCompo
-            studentAttempted={show[index]?.studentsAttempted}
-            attemptedCorrect={show[index]?.attemptedCorrect}
-            duration={show.length && "duration" in show[index] ? show[index].duration : "NA"}
-            avgTimeSpent={show[index]?.averageDuration}
-            topperDuration={show[index]?.durationByTopper}
-          />
-        </Box>
-        {/* Lower cards section end */}
+            {/* Lower cards section start */}
+            <Box component="div" sx={{ height: "15%", py: "1em" }}>
+              <TempCompo
+                studentAttempted={show[index]?.studentsAttempted}
+                attemptedCorrect={show[index]?.attemptedCorrect}
+                duration={
+                  show.length && "duration" in show[index]
+                    ? show[index].duration
+                    : "NA"
+                }
+                avgTimeSpent={show[index]?.averageDuration}
+                topperDuration={show[index]?.durationByTopper}
+              />
+            </Box>
+            {/* Lower cards section end */}
+          </>
+        )}
       </Box>
     </Box>
   );
 }
 
-const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, setViewSoln }) => {
+const NavigationAvatar = ({
+  Data,
+  setInd,
+  selectedQuestionIndex,
+  difficulty,
+  setViewSoln,
+}) => {
   return (
     <div
       style={{

@@ -13,9 +13,8 @@ export function useAuth() {
 
 export const ContextProvider = ({ children }) => {
   const [analysisData, setAnalysisData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [isErr, setErr] = useState(false);
-
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
 
   const analysisDataApi = async (attemptId) => {
@@ -84,6 +83,8 @@ export const ContextProvider = ({ children }) => {
     return setLoading(false)
   };
 
+
+  console.log("isloading", isLoading)
   //Set data to variables according to category that data exports to pages accordin to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
@@ -108,7 +109,8 @@ export const ContextProvider = ({ children }) => {
           menuBarOpen,
           handlePageClick,
           Backdrop,
-          showToastMessage
+          showToastMessage,
+          setLoading
         }}
       >
         {children}
