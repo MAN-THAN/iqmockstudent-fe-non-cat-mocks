@@ -43,12 +43,35 @@ export default function ViewSolution() {
   const [errTrackerLR, setTrackerLR] = useState([]);
   const [errTrackerQU, setTrackerQU] = useState([]);
   const [errValue, setErrValue] = useState("");
-  const Subjects = [{ name: "VARC", value : "varc" }, { name: "LRDI", value : "lrdi" }, { name: "Quants", value : "quants" }, ];
+  const Subjects = [
+    { name: "VARC", value: "varc" },
+    { name: "LRDI", value: "lrdi" },
+    { name: "Quants", value: "quants" },
+  ];
   console.log(data);
   console.log(open);
   console.log(index);
 
   console.log(show);
+
+  // getting data from local
+
+  // useEffect(() => {
+  //   const errTrackerV = JSON.parse(localStorage.getItem("errTrackerVA"));
+  //   const errTrackerL = JSON.parse(localStorage.getItem("errTrackerLR"));
+  //   const errTrackerQ = JSON.parse(localStorage.getItem("errTrackerQU"));
+  //   if (errTrackerV.length) {
+  //     console.log("dewwfewfw");
+  //     setTrackerVA(errTrackerV);
+  //   }
+  //   if (errTrackerL.length) {
+  //     setTrackerLR(errTrackerL);
+  //   }
+  //   if (errTrackerQ.length) {
+  //     setTrackerQU(errTrackerQ);
+  //   }
+  //   console.log(errTrackerL, errTrackerQ, errTrackerV);
+  // }, []);
   // function getting data on mounting
   useEffect(() => {
     getData();
@@ -61,9 +84,17 @@ export default function ViewSolution() {
     if (res?.status == 200) {
       setData(res.data);
       setShow(res.data[selected]);
-      setTrackerVA(res.data.varc);
+     
       setTrackerLR(res.data.lrdi);
       setTrackerQU(res.data.quants);
+      const errTrackerV = JSON.parse(localStorage.getItem("errTrackerVA"));
+      const errTrackerL = JSON.parse(localStorage.getItem("errTrackerLR"));
+      const errTrackerQ = JSON.parse(localStorage.getItem("errTrackerQU"));
+      if (errTrackerV.length) {
+        setTrackerVA(errTrackerV);
+      } else { 
+         setTrackerVA(res.data.varc);
+      }
     } else {
       console.log("error", res);
     }
@@ -88,10 +119,10 @@ export default function ViewSolution() {
   // };
 
   // Changing sectionwise data
-  
+
   useEffect(() => {
     console.log(data);
-    if (data !== undefined) { 
+    if (data !== undefined) {
       if (selected === "varc") {
         setShow(data?.varc);
       }
@@ -103,6 +134,7 @@ export default function ViewSolution() {
       }
     }
     console.log(selected);
+    return setIndex(0);
     // console.log(data[selected]);
   }, [selected]);
 
@@ -138,11 +170,11 @@ export default function ViewSolution() {
     console.log(e.target.value);
     setErrValue(e.target.value);
     let type;
-    if (selected === "Verbal Ability") {
+    if (selected === "varc") {
       type = "varc";
-    } else if (selected === "Logical Reasoning") {
+    } else if (selected === "lrdi") {
       type = "lrdi";
-    } else if (selected === "Quants") {
+    } else if (selected === "quants") {
       type = "quants";
     }
     const selectedObj = show[index];
@@ -185,7 +217,7 @@ export default function ViewSolution() {
 
   // making state empty after question change
   useEffect(() => {
-    if (selected === "Verbal Ability") {
+    if (selected === "varc") {
       const tempObj = errTrackerVA[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
@@ -193,7 +225,7 @@ export default function ViewSolution() {
       } else {
         setErrValue("");
       }
-    } else if (selected === "Logical Reasoning") {
+    } else if (selected === "lrdi") {
       const tempObj = errTrackerLR[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
@@ -201,7 +233,7 @@ export default function ViewSolution() {
       } else {
         setErrValue("");
       }
-    } else if (selected === "Quants") {
+    } else if (selected === "quants") {
       const tempObj = errTrackerQU[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
@@ -211,6 +243,17 @@ export default function ViewSolution() {
       }
     }
   }, [index]);
+
+  // setting into local
+
+  useEffect(() => {
+    if (errTrackerVA) {
+      localStorage.setItem("errTrackerVA", JSON.stringify(errTrackerVA));
+      console.log("fewfewfw");
+    }
+    localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
+    localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
+  }, [index, errValue]);
   console.log(errTrackerVA, errTrackerLR, errTrackerQU);
   console.log(errValue);
   console.log(show);
