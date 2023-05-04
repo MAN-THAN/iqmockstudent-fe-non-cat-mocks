@@ -837,7 +837,7 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
         rowGap: 3,
       }}
     >
-      {Data?.map((_, ind) => (
+      {Data?.map((item, ind) => (
         <BootstrapTooltip
           title={
             <div className="py-2" key={ind}>
@@ -871,7 +871,7 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
         >
           <Avatar
             sx={{
-              bgcolor: "#2196F3",
+              bgcolor: item.studentAnswer === undefined ? "#2196F3" : item.studentAnswer === item.correctAnswer ? "green" : "red",
               cursor: "pointer",
               width: "33.95px",
               height: "33.95px",
