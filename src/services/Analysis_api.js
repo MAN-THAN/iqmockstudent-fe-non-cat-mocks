@@ -55,7 +55,7 @@ export const fetchViewSolution = async (attemptId) => {
 };
 
 //GET ERROR TRACKER
-export const fetchErrorTracker = async (attemptId, type) => {
+export const fetchErrorTracker = async (attemptId) => {
   try {
     const res = request({
       url: `/api/student/v1/errortracker/${attemptId}`,
