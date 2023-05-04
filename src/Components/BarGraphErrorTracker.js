@@ -46,7 +46,7 @@ function BarGraph({ Data, title, width, legend }) {
           <YAxis />
 
           {legend && <Legend layout="horizontal" verticalAlign="bottom" align="center" />}
-{/* <Tooltip/> */}
+<Tooltip/>
           <Bar dataKey="count" fill="url(#total)" radius={[10, 10, 0, 0]} barSize={50} />
           {/* <Bar barSize={50} dataKey="count" fill="url(#incorrect)" radius={[10, 10, 0, 0]} />
           <Bar barSize={50} dataKey="count" fill="url(#correct)" radius={[10, 10, 0, 0]} />
