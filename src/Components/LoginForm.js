@@ -27,28 +27,27 @@ const LoginForm = ({ setCollege, percentile }) => {
   const [program, setProgram] = useState("");
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
 
   // Filling details if present
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    const { name, email, phone, gender, dob,  gh , category} = userData;
-    console.log(name, gh);
-    if (name !== undefined) {
-      values.name = name;
+    // console.log(name, gh);
+    if (name_ !== undefined) {
+      values.name = name_;
     }
-     if (email !== undefined) {
-       values.email = email;
+    if (email_ !== undefined) {
+      values.email = email_;
     }
-    if (phone !== undefined) {
-      values.phone_number = phone;
+    if (phone_ !== undefined) {
+      values.phone_number = phone_;
     }
-    if (gender !== undefined) {
-      setGender(gender);
+    if (gender_ !== undefined) {
+      setGender(gender_);
     }
-    if (category !== undefined) {
-      setCategory(category);
+    if (category_ !== undefined) {
+      setCategory(category_);
     }
-     
   }, []);
 
   useEffect(() => {
@@ -58,10 +57,8 @@ const LoginForm = ({ setCollege, percentile }) => {
     // values.dob = dob;
   }, [category, gender, program]);
 
-
   const storedValues = JSON.parse(localStorage.getItem("userData"));
   const { name, email, phone } = storedValues || {};
-  
 
   useEffect(() => {
     const selectedDateString = dob?.$d;
@@ -109,8 +106,6 @@ const LoginForm = ({ setCollege, percentile }) => {
     program: undefined,
   };
 
-  
-  
   const initialValues = {
     ...initialValue,
     name: name || initialValue.name,
@@ -128,15 +123,7 @@ const LoginForm = ({ setCollege, percentile }) => {
     gender: Yup.string(),
   });
 
-  const {
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    values,
-    errors,
-    touched,
-    setFieldTouched,
-  } = useFormik({
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched, setFieldTouched } = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -222,16 +209,12 @@ const LoginForm = ({ setCollege, percentile }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/user.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/user.png" />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
+              disabled={name_ === undefined ? false : true}
               required
             />
             <TextField
@@ -249,16 +232,12 @@ const LoginForm = ({ setCollege, percentile }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/email.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/email.png" />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
+              disabled={email_ === undefined ? false : true}
               required
             />
             <TextField
@@ -275,29 +254,20 @@ const LoginForm = ({ setCollege, percentile }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/telephone.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/telephone.png" />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
+              disabled={phone_ === undefined ? false : true}
               required
             />
-            <FormControl size="small" sx={{ width: "48%" }} required>
+            <FormControl disabled={gender_ === undefined ? false : true} size="small" sx={{ width: "48%" }} required>
               <InputLabel id="gender">Gender</InputLabel>
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/gender-symbols.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/gender-symbols.png" />
                   </div>
                 )}
                 labelId="gender"
@@ -354,20 +324,13 @@ const LoginForm = ({ setCollege, percentile }) => {
               type="number"
               value={values.class_10th_result}
               onChange={handleChange}
-              error={
-                touched.class_10th_result && Boolean(errors.class_10th_result)
-              }
+              error={touched.class_10th_result && Boolean(errors.class_10th_result)}
               // helperText={touched.class_10th_result && errors.class_10th_result}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/school (2).png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/school (2).png" />
                   </InputAdornment>
                 ),
               }}
@@ -383,20 +346,13 @@ const LoginForm = ({ setCollege, percentile }) => {
               type="number"
               value={values.class_12th_result}
               onChange={handleChange}
-              error={
-                touched.class_12th_result && Boolean(errors.class_12th_result)
-              }
+              error={touched.class_12th_result && Boolean(errors.class_12th_result)}
               // helperText={touched.class_12th_result && errors.class_12th_result}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/school (2).png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/school (2).png" />
                   </InputAdornment>
                 ),
               }}
@@ -412,20 +368,13 @@ const LoginForm = ({ setCollege, percentile }) => {
               type="number"
               value={values.graduation_marks}
               onChange={handleChange}
-              error={
-                touched.graduation_marks && Boolean(errors.graduation_marks)
-              }
+              error={touched.graduation_marks && Boolean(errors.graduation_marks)}
               // helperText={touched.graduation_marks && errors.graduation_marks}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/school (1).png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/school (1).png" />
                   </InputAdornment>
                 ),
               }}
@@ -461,17 +410,12 @@ const LoginForm = ({ setCollege, percentile }) => {
               </MenuItem>
             ))}
           </TextField> */}
-            <FormControl size="small" sx={{ width: "48%" }} required>
+            <FormControl size="small" sx={{ width: "48%" }} disabled={category_ === undefined ? false : true} required>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/application.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </div>
                 )}
                 labelId="Category"
@@ -504,12 +448,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/salary.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/salary.png" />
                   </InputAdornment>
                 ),
               }}
@@ -530,12 +469,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/application.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </InputAdornment>
                 ),
               }}
@@ -547,12 +481,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img
-                      alt="no image"
-                      width="20px"
-                      height="20px"
-                      src="/application.png"
-                    />
+                    <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </div>
                 )}
                 labelId="Program"
@@ -568,14 +497,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
-            <LoadingButton
-              loading={loading}
-              color="primary"
-              variant="contained"
-              width="5em"
-              type="submit"
-              endIcon={<img src="/arrowright.svg" />}
-            >
+            <LoadingButton loading={loading} color="primary" variant="contained" width="5em" type="submit" endIcon={<img src="/arrowright.svg" />}>
               Next
             </LoadingButton>
           </Box>
