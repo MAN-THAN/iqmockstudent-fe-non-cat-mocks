@@ -9,12 +9,14 @@ import {
   StyledTableRow,
 } from "../styleSheets/Style";
 import { useAuth } from "../services/Context";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 function SectionAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
   const { sectionWiseAnalysis } = useAuth();
+  const navigate = useNavigate();
 
 
   function getStyles(MockId, mockid, theme) {
@@ -86,23 +88,22 @@ function SectionAnalysis() {
                     background: "white",
                     border: "none",
                     color: "black",
+                    cursor: "pointer",
                   }}
+                  onClick={() => navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
+                    state: {
+                      question_id : item.question_id
+                  } })}
                 >
                   <StyledTableCell align="center">{index + 1}</StyledTableCell>
                   <StyledTableCell align="center">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="center"  style={{fontSize:"15px"}}>
+                  <StyledTableCell align="center" style={{ fontSize: "15px" }}>
                     {item.subtopic}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {item.studentAnswer !== undefined
-                      ? item.studentAnswer === item.correctAnswer
-                        ? "Yes"
-                        : "No"
-                      : "Not attempted"}
+                    {item.studentAnswer !== undefined ? (item.studentAnswer === item.correctAnswer ? "Yes" : "No") : "Not attempted"}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.difficulty}
-                  </StyledTableCell>
+                  <StyledTableCell align="center">{item.difficulty}</StyledTableCell>
                   <StyledTableCell align="center">{item.score}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
                     {item.duration}

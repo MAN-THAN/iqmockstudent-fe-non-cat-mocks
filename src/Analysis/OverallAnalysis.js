@@ -16,7 +16,7 @@ function OverallAnalysis() {
   const { overallAnalysis } = useAuth();
   const [data, setData] = useState([]);
   console.log("overall", data);
-  useEffect(() => setData(overallAnalysis?.overAllAnalysis), []);
+  useEffect(() => setData(overallAnalysis?.overAllAnalysis), [overallAnalysis]);
 
   const headings = [
     "Name",
