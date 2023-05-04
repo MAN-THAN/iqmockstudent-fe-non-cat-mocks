@@ -19,15 +19,15 @@ const MenuProps = {
 
 
 export default function MultipleSelect({ options, setType }) {
-  const theme = useTheme();
+
   const [value, setValue] = useState(options[0]?.value || "");
-  const [year, setYear] = React.useState([]);
-  const showSecondSelect = options.some((option) => option.year !== undefined);
-  // console.log(value);
+  console.log(options)
+
+
   useEffect(() => {
     setType(value);
   }, [value]);
-  // console.log(options);
+ 
   return (
     <div>
       <FormControl

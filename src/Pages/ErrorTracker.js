@@ -20,12 +20,6 @@ import { BsSortDown } from "react-icons/bs";
 import Latex from "react-latex-next";
 import { Filter } from "@mui/icons-material";
 
-const options = [
-  { value: "option-1", label: "Option 1" },
-  { value: "option-2", label: "Option 2" },
-  { value: "option-3", label: "Option 3" },
-];
-
 const disableStyle = {
   ":disabled": {
     backgroundColor: "#E5E5E9",
@@ -76,7 +70,7 @@ const GraphComp = () => {
 const ColorDetailing = [
   {
     id: 0,
-    color:" linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
+    color: " linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
     value: "all",
   },
   {
@@ -102,103 +96,173 @@ const ColorDetailing = [
 ];
 
 const filter1 = [
+  { name: "All Questions", value: "all" },
   { name: "Incorrect", value: "incorrect" },
   { name: "Correct", value: "correct" },
 ];
 
-const filter3 = [
+const filter2 = [
   { name: "VARC", value: "varc" },
   { name: "LRDI", value: "lrdi" },
   { name: "Quants", value: "quants" },
 ];
-const filter4 = [
-  { name: "Reading Comprehension", value: "Reading comprehension" },
-  { name: "qde" },
-  { name: "dewd" },
-];
+
+
+const priorities=[
+
+  {name:"Low to High" , value:"lowtohigh"},
+  {name:"High to Low" , value:"hightolow"},
+]
+
 function ErrorTracker() {
   const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
     useAuth();
   const { attemptId } = useParams();
   const [graphData, setGraphData] = useState([]);
   const [colorDetail, setColorDetail] = useState(null);
+   const[priorty,setPriorty]=useState(null)
+  const [data, setData] = useState([]); //Main Data store
 
-  const [data, setData] = useState([]);
+  const [correction, setCorrection] = useState(); // correct or Inncorect
+  const [section, setSection] = useState(); // Section wise filter
+  const [topic, setTopic] = useState({}); // topic wise
 
-  const [type1, setType1] = useState();
-  const [type3, setType3] = useState();
-  const [type4, setType4] = useState();
+  const [arr, setArr] = useState([]); //main Data
 
-  const [arr, setArr] = useState([]);
-  const [show, setShow] = useState([]);
+  const [show, setShow] = useState([]); // changeable state come from filter`
 
-  // console.log(type1, type3, type4);
-  console.log("dataa", arr);
-  console.warn("showDtatata", show);
+  const [topicList, setTopicList] = useState([
+    { name: "All Topics", value: "all topics" },
+  ]);
+
+  // setting topic list
+  useEffect(() => {
+    console.log(data);
+    const arr = data?.[section + "Topic"];
+    console.log(arr);
+    const newArr = [{ name: "All Topics", value: "all topics" }];
+    arr?.map((item, index) => {
+      newArr.push({ name: item, value: item });
+    });
+    console.log(newArr);
+    return setTopicList(newArr);
+  }, [section, data]);
+
+  console.log("Topic", topic);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await fetchErrorTracker(attemptId);
+      setLoading(true);
+      if (res?.status === 200) {
+        setData(res.data);
+        setLoading(false);
+      } else {
+        console.log("Error fetching data: ", res);
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (data.graph) {
+      setGraphData(data.graph);
+    }
+    if (data[section] && data[section].length > 0) {
+      setArr(data[section]);
+    }
+  }, [data, section]);
+
+  // update the "show" state whenever the filters change
+
+
+useEffect(() => {
+  let filteredData = arr;
+
+  if (correction && correction !== "all") {
+    filteredData = filteredData.filter(item => item.isCorrect === correction);
+  }
+
+  if (section) {
+    filteredData = filteredData.map(item => item);
+  }
+
+  if (topic && topic !== "all topics") {
+    filteredData = filteredData.filter(item => item.topic === topic);
+  }
+
+  console.log("first", filteredData)
+
+  switch (priorty) {
+    case "hightolow":
+      filteredData.sort((a, b) => {
+        if (a.difficulty === b.difficulty) {
+          return 0;
+        }
+        if (a.difficulty === "Easy") {
+          return 1;
+        }
+        if (a.difficulty === "Moderate") {
+          if (b.difficulty === "Easy") {
+            return -1;
+          }
+          return 1;
+        }
+        if (a.difficulty === "Hard") {
+          return -1;
+        }
+      });
+      break;
+
+    case "lowtohigh":
+      filteredData.sort((a, b) => {
+        if (a.difficulty === b.difficulty) {
+          return 0;
+        }
+        if (a.difficulty === "Easy") {
+          return -1;
+        }
+        if (a.difficulty === "Moderate") {
+          if (b.difficulty === "Easy") {
+            return 1;
+          }
+          return -1;
+        }
+        if (a.difficulty === "Hard") {
+          return 1;
+        }
+      });
+      break;
+
+    default:
+      break;
+  }
+
+  setShow(filteredData);
+}, [correction, section, topic, arr, priorty]);
+
+  
+  
 
   const handleColorDetail = (val) => {
     setColorDetail(val);
-   if(val == "all"){
-     setShow(arr)
-   }else{
-     const FilterData = arr.filter((item) => item.error == val);
-     console.log("newData", FilterData);
-     setShow(FilterData);
-
-   }
-  };
-
-  useEffect(() => {
-    getData();
-    filterData(type1, type3, type4);
-  }, [type1, type3, type4]);
-
-  const getData = async () => {
-    const res = await fetchErrorTracker(attemptId, type3);
-    setLoading(true);
-    if (res?.status == 200) {
-      console.log(res);
-      setData(res.data);
-      setGraphData(res.data.graph);
-      setArr(res.data[type3]);
-      setShow(res.data.varc);
-      setLoading(false);
+    if (val === "all") {
+      setShow(arr);
     } else {
-      console.log("error", res);
-      setLoading(false);
+      const filterData = arr.filter((item) => item.error === val);
+      setShow(filterData);
     }
   };
-  function filterData(type1, type3, type4) {
-    let result = [];
-    arr.map(function (e, i) {
-      if (type3 == "quants") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
-        }
-      }
-      if (type3 == "varc") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
-        }
-      }
-      if (type3 == "lrdi") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
-        }
-      }
-    });
-    // console.log(result);
-    return setShow(result);
-  }
 
-  // high low
+ 
 
-  const [selectedOption, setSelectedOption] = useState("");
+  console.log("arr", arr);
+  console.log("data", data);
+  console.log("show", show);
+  console.log(topic);
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
+  
   return (
     <Box component="main" sx={{ height: "100vh" }}>
       <MenuDrawer />
@@ -226,7 +290,7 @@ function ErrorTracker() {
               sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}
             >
               {" "}
-              <MultipleSelect options={filter1} setType={setType1} />
+              <MultipleSelect options={filter1} setType={setCorrection} />
               <Box
                 sx={{
                   display: "flex",
@@ -236,16 +300,11 @@ function ErrorTracker() {
                 }}
               >
                 <div className="d-flex gap-3">
-                  <MultipleSelect options={filter3} setType={setType3} />
-                  <MultipleSelect options={filter4} setType={setType4} />
+                  <MultipleSelect options={filter2} setType={setSection} />
+                  <MultipleSelect options={topicList} setType={setTopic} />
                 </div>
                 <div>
-                  <MySelectField
-                    label="Select an option"
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                    options={options}
-                  />
+                <MultipleSelect options={priorities} setType={setPriorty} />
                 </div>
               </Box>
             </Box>
@@ -281,7 +340,13 @@ function ErrorTracker() {
                   justifyContent: " ",
                 }}
               >
-                <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    width: "35rem",
+                  }}
+                >
                   <BarGraph Data={graphData} width={"97%"} legend={false} />
                 </Box>
                 <Box sx={{ mt: 2 }}>{<GraphComp />}</Box>
@@ -326,7 +391,7 @@ function ErrorTracker() {
                           <div
                             key={ind}
                             onClick={() => {
-                              setArr(data[type3]);
+                              setArr(data[section]);
                               handleColorDetail(item.value);
                             }}
                             style={{
