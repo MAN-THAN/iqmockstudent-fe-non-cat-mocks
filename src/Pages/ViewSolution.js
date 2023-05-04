@@ -177,24 +177,6 @@ export default function ViewSolution() {
     }
   };
 
-  // const openMenu = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleFilter = (sub) => {
-  //   setAnchorEl(null);
-  //   setSelected(sub);
-  //   console.log(sub);
-  //   if (sub === "Verbal Ability") {
-  //     setShow(data?.varc);
-  //   } else if (sub === "Logical Reasoning") {
-  //     setShow(data?.lrdi);
-  //   } else if (sub === "Quants") {
-  //     setShow(data?.quants);
-  //   }
-  //   return setIndex(0);
-  // };
-
   // Changing sectionwise data
 
   useEffect(() => {
