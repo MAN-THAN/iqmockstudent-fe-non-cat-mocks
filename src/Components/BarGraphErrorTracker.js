@@ -8,6 +8,7 @@ function BarGraph({ Data, title, width, legend }) {
   const location = useLocation();
   const params = useParams();
   console.log(Data, title);
+ 
 
   return (
     <div
@@ -32,9 +33,9 @@ function BarGraph({ Data, title, width, legend }) {
       </Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
-          width='100%'
+          width="100%"
           height={200}
-          data={Data}
+          data={[Data]}
           margin={{
             top: 5,
             right: 30,
@@ -46,14 +47,19 @@ function BarGraph({ Data, title, width, legend }) {
           <YAxis />
 
           {legend && <Legend layout="horizontal" verticalAlign="bottom" align="center" />}
-<Tooltip/>
-          <Bar dataKey="count" fill="url(#total)" radius={[10, 10, 0, 0]} barSize={50} />
-          {/* <Bar barSize={50} dataKey="count" fill="url(#incorrect)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#correct)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} /> */}
+          <Tooltip />
+          <Bar dataKey="I did not understand the concept" fill="url(#total)" radius={[10, 10, 0, 0]} barSize={50} />
+          <Bar barSize={50} dataKey="I fell for the trap answer" fill="url(#incorrect)" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I guessed the answer" fill="url(#correct)" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I made a silly mistake" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I misread the question" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I ran out of time" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
+          <Bar
+            barSize={50}
+            dataKey="I understood the concept but failed to apply it correctly"
+            fill="url(#skipped)"
+            radius={[10, 10, 0, 0]}
+          />
 
           <defs>
             <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">

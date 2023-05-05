@@ -167,7 +167,7 @@ function ErrorTracker() {
 
   useEffect(() => {
     if (data.graph) {
-      setGraphData(data.graph);
+      setGraphData(data.changedGraph[0]);
     }
     if (data[section] && data[section].length > 0) {
       setArr(data[section]);
