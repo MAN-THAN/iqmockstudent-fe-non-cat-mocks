@@ -48,18 +48,13 @@ function BarGraph({ Data, title, width, legend }) {
 
           {legend && <Legend layout="horizontal" verticalAlign="bottom" align="center" />}
           <Tooltip />
-          <Bar dataKey="I did not understand the concept" fill="url(#total)" radius={[10, 10, 0, 0]} barSize={50} />
-          <Bar barSize={50} dataKey="I fell for the trap answer" fill="url(#incorrect)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="I guessed the answer" fill="url(#correct)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="I made a silly mistake" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="I misread the question" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="I ran out of time" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar
-            barSize={50}
-            dataKey="I understood the concept but failed to apply it correctly"
-            fill="url(#skipped)"
-            radius={[10, 10, 0, 0]}
-          />
+          <Bar dataKey="I did not understand the concept" fill="#48E5DD" radius={[10, 10, 0, 0]} barSize={50} />
+          <Bar barSize={50} dataKey="I fell for the trap answer" fill="#FF6238" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I guessed the answer" fill="#1D5C81" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I made a silly mistake" fill="#1D9374" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I misread the question" fill="#FFBC5E" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I ran out of time" fill="#4732CC" radius={[10, 10, 0, 0]} />
+          <Bar barSize={50} dataKey="I understood the concept but failed to apply it correctly" fill="#FF6CB6" radius={[10, 10, 0, 0]} />
 
           <defs>
             <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
