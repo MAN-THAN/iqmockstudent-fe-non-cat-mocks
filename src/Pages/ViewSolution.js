@@ -26,6 +26,8 @@ import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 import MultipleSelect from "../Common-comp/SelectField";
+import { ColorDetailingAll } from "../services/DataFiles";
+
 
 export default function ViewSolution() {
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
@@ -722,7 +724,6 @@ export default function ViewSolution() {
                 <Box
                   sx={{
                     width: "100%",
-
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between ",
@@ -785,21 +786,17 @@ export default function ViewSolution() {
                       aria-labelledby="demo-radio-buttons-group-label"
                       name="radio-buttons-group"
                     >
-                      <FormControlLabel
-                        value="Did not understand the concept"
+                     { ColorDetailingAll && ColorDetailingAll.slice(1).map((item,_)=>{
+                      return(
+                        <FormControlLabel
+                        key={item.id}
+                        value={item.value}
                         control={<Radio size="small" />}
-                        label="Did not understand the concept"
+                        label={item.value}
                       />
-                      <FormControlLabel
-                        value="I understood the concept but failed to apply it correctly"
-                        control={<Radio size="small" />}
-                        label="I understood the concept but failed to apply it correctly"
-                      />
-                      <FormControlLabel value="I misread the question" control={<Radio size="small" />} label="I misread the question" />
-                      <FormControlLabel value="I ran out of time" control={<Radio size="small" />} label="I ran out of time" />
-                      <FormControlLabel value="Made a silly mistake" control={<Radio size="small" />} label="Made a silly mistake" />
-                      <FormControlLabel value="Fell for the trap answer" control={<Radio size="small" />} label="Fell for the trap answer" />
-                      <FormControlLabel value="Guessed the answer" control={<Radio size="small" />} label="Guessed the answer" />
+                      )
+                     })}
+                    
                     </RadioGroup>
                   </FormControl>
                 </Box>
