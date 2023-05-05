@@ -35,12 +35,9 @@ export default function QuestionPaper({ question_paper }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
-  function onResultChange(result) {
-    console.log(result);
-  }
 
+  console.log("Question paper", question_paper)
   return (
     <span>
       <MyButton
@@ -72,7 +69,8 @@ export default function QuestionPaper({ question_paper }) {
             </div>
             <br />
             {question_paper?.map((e, index) => {
-              return (
+
+                      return (
                 <div className="container p-2 ">
                   <Typography variant="paragraph fw-bold">
                     Question : {index + 1}
