@@ -6,18 +6,7 @@ export const AnalysisAcrossCard = [
   { icon: "/CardsIcons/nextIcon.png", title: "Skipped Questions" },
 ];
 
-export const graphinstructionPoints = [
-  { description: "I did not understand the concept", color: "#48E5DD" },
-  {
-    description: "I understood the concept but failed to apply it correctly",
-    color: "#FF6CB6",
-  },
-  { description: "I misread the question", color: "#FFBC5E" },
-  { description: "I ran out of time", color: "#4732CC" },
-  { description: "I made a silly mistake", color: "#1D9274" },
-  { description: "I fell for the trap answer", color: "#FF6238" },
-  { description: "I guessed the answer", color: "#1D5C80" },
-];
+
 
 export const DrawerData = (mockId, attemptId) => {
   return [
@@ -64,24 +53,22 @@ export const DrawerData = (mockId, attemptId) => {
   ];
 };
 
-
-
-export const NavigationGalleryData =(mockId, attemptId)=>{
+export const NavigationGalleryData = (mockId, attemptId) => {
   return [
     {
       heading: "View Solution",
       image: "solutions-card.png",
-      path: `/viewsolutions/${mockId}/${attemptId}`
+      path: `/viewsolutions/${mockId}/${attemptId}`,
     },
     {
       heading: "Error Tracker",
       image: "Error-card.png",
-      path: `/errortracker/${mockId}/${attemptId}`
+      path: `/errortracker/${mockId}/${attemptId}`,
     },
     {
       heading: "On Boarding",
       image: "onBoarding-card.png",
-      path: `/leaderboard/${mockId}/${attemptId}`
+      path: `/leaderboard/${mockId}/${attemptId}`,
     },
     {
       heading: "Goal Tracker",
@@ -93,7 +80,7 @@ export const NavigationGalleryData =(mockId, attemptId)=>{
       image: "marketPlace-card.png",
       path: `/marketplace/${mockId}/${attemptId}`,
     },
-  
+
     {
       heading: "Overall across analysis",
       image: "AnalysisAcross-card.png",
@@ -105,5 +92,34 @@ export const NavigationGalleryData =(mockId, attemptId)=>{
       path: `/mockcomparison/${mockId}/${attemptId}`,
     },
   ];
-  
-} 
+};
+
+
+// Please be noticed values must be same from backend and frontend
+export const ColorDetailingAll = [
+  {
+    id: 0,
+    color: " linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
+    value: "all",
+  },
+  {
+    id: 1,
+    color: "#48E5DD",
+    value: "Did not understand the concept",
+  },
+  {
+    id: 2,
+    color: "#FF6CB6",
+    value: "I understood the concept but failed to apply it correctly",
+  },
+
+  { id: 3, color: "#FFBC5E", value: "I misread the question" },
+  { id: 4, color: "#4732CC", value: "I ran out of time" },
+  { id: 5, color: "#1D9374", value: "I made a silly mistake" },
+  {
+    id: 6,
+    color: "#FF6238",
+    value: "I fell for the trap answer",
+  },
+  { id: 7, color: "#1D5C81", value: "I guessed the answer" },
+];
