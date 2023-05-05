@@ -23,6 +23,7 @@ import { fetchOverallAcross } from "../services/Analysis_api";
 import { setIn } from "formik";
 
 const FilterList = ({ mocksList, setIndex }) => {
+  const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">
@@ -37,6 +38,7 @@ const FilterList = ({ mocksList, setIndex }) => {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
+        defaultValue={defaultVal}
       >
         {mocksList?.map((item, index) => {
           return (
@@ -55,11 +57,11 @@ const FilterList = ({ mocksList, setIndex }) => {
 
 function AnalysisAcross() {
   const params = useParams();
-  const [a, setA] = useState("");
+  const [type, setType] = useState();
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
-  const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }];
+  const Subjects = [{ name: "VARC", value : "varc" }, { name: "LRDI", value : "lrdi" }, { name: "Quants", value : "quants" }];
   const {
     menuBarOpen,
     setMenuBarOpen,
@@ -70,9 +72,20 @@ function AnalysisAcross() {
   } = useAuth();
 
   useEffect(() => {
-    setShow(mocksList[index]);
+    setShow(mocksList[index]?.data?.[type]);
   }, [index]);
-
+  useEffect(() => { 
+    if (type === "varc") { 
+        setShow(mocksList[index]?.data?.varc);
+    }
+     if (type === "lrdi") {
+       setShow(mocksList[index]?.data?.lrdi);
+    }
+     if (type === "quants") {
+       setShow(mocksList[index]?.data?.quants);
+     }
+  }, [type])
+  console.log(show)
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
@@ -81,7 +94,7 @@ function AnalysisAcross() {
       console.log(response);
       if (response?.status === 200) {
         setMocksList(response.data?.topicWise);
-        setShow(response.data?.topicWise[index]);
+        setShow(response.data?.topicWise[index].data.varc);
         setLoading(false);
       } else {
         showToastMessage();
@@ -93,6 +106,7 @@ function AnalysisAcross() {
   }, []);
   console.log(index);
   console.log(show);
+  console.log(type);
   return (
     <>
       <Box component="main">
@@ -126,7 +140,7 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect options={Subjects} setType={setA} />
+                <MultipleSelect options={Subjects} setType={setType} />
                 <Typography
                   sx={{
                     ...typographyStyles.mainHeading,
@@ -213,7 +227,7 @@ function AnalysisAcross() {
 
                   {/* Table */}
                   <Box component="div" mt={4}>
-                    <DataTable data={show?.data} />
+                    <DataTable data={show} />
                   </Box>
                 </Box>
                 {/*Question side box end*/}
@@ -241,31 +255,17 @@ const DataTable = ({ data }) => {
     createData("Gingerbread", 356, 16.0, 49, 3.9),
   ];
   return (
-    <TableContainer
-      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
-      component={Paper}
-    >
+    <TableContainer sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableBody>
-          {data?.slice(1).map((row) => (
-            <TableRow
-              key={row.topic}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.topic}
-              </TableCell>
-              <TableCell align="center">{row.numberOfQuestions}</TableCell>
-              <TableCell align="center">
-                {row.numberOfAttemptedQuestions}
-              </TableCell>
-              <TableCell align="center">{row.numberOfCorrectAttempt}</TableCell>
-              <TableCell align="center">
-                {row.numberOfIncorrectAttempt}
-              </TableCell>
-              <TableCell align="center">
-                {row.numberOfQuestions - row.numberOfAttemptedQuestions}
-              </TableCell>
+          {data?.map((row) => (
+            <TableRow key={row.topic} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>{row.topic}</TableCell>
+              <TableCell align="center">{row.noOfQuestion}</TableCell>
+              <TableCell align="center">{row.attempted}</TableCell>
+              <TableCell align="center">{row.correct}</TableCell>
+              <TableCell align="center">{row.incorrect}</TableCell>
+              <TableCell align="center">{row.skipped}</TableCell>
             </TableRow>
           ))}
         </TableBody>
