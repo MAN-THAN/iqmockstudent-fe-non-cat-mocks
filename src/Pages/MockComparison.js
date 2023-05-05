@@ -90,17 +90,18 @@ function MockComparison() {
     const res = await getMockComparison(mockId, attemptId);
     if (res?.status == 200) {
       console.log(res.data);
-      setResult(res?.data?.result[0]?.data[1]?.overAllAnalysis[1]);
-      setTopper(res?.data?.topperResult[0]?.data[1]?.overAllAnalysis[1]);
-      setPrevMocks(res?.data?.previousMocks);
-      setCompMock(res?.data?.previousMocks[0]?.data[1]?.overAllAnalysis[1]);
+      setResult(res.data?.result);
+      setTopper(res.data?.topperResult);
+      setPrevMocks(res.data?.previousMocks);
+      setCompMock(res.data?.previousMocks[0]);
       setLoading(false);
     } else {
       setLoading(false);
       console.log("error", res);
     }
   };
-  console.log(prevMocks);
+  console.log(result, topper, prevMocks);
+  console.log(compMock)
 
   return (
     <Box component="main">
@@ -120,15 +121,12 @@ function MockComparison() {
         </Box>
 
         {isLoading ? (
-        
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
+          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
-           </div>
-
-        
+          </div>
         ) : (
           <Box
             component="section"
@@ -186,17 +184,10 @@ function MockComparison() {
                     infoIcon={"/info1.svg"}
                     cardTitle={
                       <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {result?.percentile}{" "}
-                          <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                          {result?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
-                          My iCAT 1.0 Analysis
-                        </Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{result?.title}</Typography>
                       </>
                     }
                     style={innerCardStyle}
@@ -211,30 +202,17 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {result?.percentile}
+                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                          {compMock?.percentile}
                           <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
-                          My iCAT 1.0 Analysis
-                        </Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
                       </>
                     }
                     style={innerCardStyle}
                     icon={"/click 1.svg"}
                     infoIcon={"/info1.svg"}
-                    select={
-                      <SelectBox
-                        onSelect={handleChange}
-                        mockName={MockName}
-                        options={prevMocks}
-                        setCompMock={setCompMock}
-                      />
-                    }
+                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
                   />
                 }
                 style={OuterCardStyle}
@@ -245,17 +223,10 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {result?.percentile}{" "}
-                          <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                          {topper?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "", fontSize: 15 }}>
-                          My iCAT 1.0 Analysis
-                        </Typography>
+                        <Typography sx={{ color: "", fontSize: 15 }}> {topper?.title}</Typography>
                       </>
                     }
                     style={{ ...innerCardStyle, background: "#FFECB9" }}
@@ -287,16 +258,16 @@ const OuterCard = ({ style, miniCard, data }) => {
           <li>{data?.attempted}</li>
         </ul>
         <ul className="list-unstyled pt-4 text-center">
-          <li>{data?.correct}</li>
+          <li>{data?.attemptedCorrect}</li>
         </ul>
         <ul className="list-unstyled pt-4 text-center">
-          <li>{data?.incorrect}</li>
+          <li>{data?.attempted - data?.attemptedCorrect}</li>
         </ul>
         <ul className="list-unstyled pt-4 text-center">
-          <li>{data?.question - data?.attempted}</li>
+          <li>{data?.skipped}</li>
         </ul>
         <ul className="list-unstyled pt-4 text-center">
-          <li>{"NA"}</li>
+          <li>{data?.avgTime}</li>
         </ul>
       </CardContent>
     </Card>
@@ -322,18 +293,18 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           displayEmpty={true}
         >
           <MenuItem value="" disabled>
-            MOCK
+            Select Mock
           </MenuItem>
           {options?.map((item, index) => (
             <MenuItem
               onClick={() =>
-                setCompMock(options[index]?.data[1]?.overAllAnalysis[1])
+                setCompMock(options[index])
               }
               key={index}
               value={item._id}
               style={getStyles(item._id, mockName, theme)}
             >
-              {item._id}
+              {item.title}
             </MenuItem>
           ))}
         </Select>
