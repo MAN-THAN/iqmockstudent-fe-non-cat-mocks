@@ -36,8 +36,6 @@ export default function QuestionPaper({ question_paper }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-  console.log("Question paper", question_paper)
   return (
     <span>
       <MyButton
@@ -69,12 +67,15 @@ export default function QuestionPaper({ question_paper }) {
             </div>
             <br />
             {question_paper?.map((e, index) => {
-
-                      return (
+              return (
                 <div className="container p-2 ">
                   <Typography variant="paragraph fw-bold">
                     Question : {index + 1}
                   </Typography>
+                  <br />
+
+                  <Latex>{e.paragraph || ""}</Latex>
+
                   <br />
                   <Typography variant="paragraph fw-bold">
                     {Boolean(e.question) === true && (
