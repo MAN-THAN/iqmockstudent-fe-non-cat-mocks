@@ -388,7 +388,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={31} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>

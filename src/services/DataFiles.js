@@ -6,8 +6,6 @@ export const AnalysisAcrossCard = [
   { icon: "/CardsIcons/nextIcon.png", title: "Skipped Questions" },
 ];
 
-
-
 export const DrawerData = (mockId, attemptId) => {
   return [
     {
@@ -95,8 +93,10 @@ export const NavigationGalleryData = (mockId, attemptId) => {
 };
 
 
+
+
 // Please be noticed values must be same from backend and frontend
-export const ColorDetailingAll = [
+export const IncorrectDetailing = [
   {
     id: 0,
     color: " linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
@@ -123,3 +123,48 @@ export const ColorDetailingAll = [
   },
   { id: 7, color: "#1D5C81", value: "I guessed the answer" },
 ];
+
+
+export const CorrectDetailing = [
+  {
+    id: 0,
+    color: " linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
+    value: "all",
+  },
+  {
+    id: 1,
+    color: "#48E5DD",
+    value: "I did it all perfect",
+  },
+  {
+    id: 2,
+    color: "#FF6CB6",
+    value: " I took more than usual time",
+  },
+
+  { id: 3, color: "#FFBC5E", value: " I guessed the answer" },
+];
+
+
+export const SkippedDetailing = [
+  {
+    id: 0,
+    color: "linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
+    value: "all",
+  },
+  {
+    id: 1,
+    color: "#48E5DD",
+    value: "Din't know the concept",
+  },
+  {
+    id: 2,
+    color: "#FF6CB6",
+    value: "I ran out of time",
+  },
+
+  { id: 3, color: "#FFBC5E", value: "I didn't read the question  properly" },
+  { id: 4, color: "#4732CC", value: "Question was lengthy" },
+];
+
+
