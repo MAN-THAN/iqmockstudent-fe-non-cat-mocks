@@ -283,6 +283,13 @@ function AnalysisMain() {
                       height: 177,
                       borderRadius: 5,
                       boxShadow: "none",
+                      cursor: "pointer",
+                      transition: "transform 0.5s ease-out",
+                      ":hover": {
+                        boxShadow: 5,
+                        transform: "scale(1.1)",
+                        transition: "transform 0.5s ease-out", // set a longer duration for the hover transformation
+                      },
                     }}
                   >
                     <CardMedia

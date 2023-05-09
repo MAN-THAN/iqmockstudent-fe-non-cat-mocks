@@ -35,11 +35,6 @@ export default function QuestionPaper({ question_paper }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
-
-  function onResultChange(result) {
-    console.log(result);
-  }
 
   return (
     <span>
@@ -77,6 +72,10 @@ export default function QuestionPaper({ question_paper }) {
                   <Typography variant="paragraph fw-bold">
                     Question : {index + 1}
                   </Typography>
+                  <br />
+
+                  <Latex>{e.paragraph || ""}</Latex>
+
                   <br />
                   <Typography variant="paragraph fw-bold">
                     {Boolean(e.question) === true && (

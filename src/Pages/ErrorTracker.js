@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
@@ -15,10 +15,14 @@ import { graphinstructionPoints } from "../services/DataFiles";
 import { fetchErrorTracker } from "../services/Analysis_api";
 import { useParams } from "react-router";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
 import Latex from "react-latex-next";
-import { ColorDetailingAll } from "../services/DataFiles";
+import {
+  IncorrectDetailing,
+  CorrectDetailing,
+  SkippedDetailing,
+} from "../services/DataFiles";
 
 const disableStyle = {
   ":disabled": {
@@ -36,9 +40,9 @@ const disableStyle = {
 };
 
 const filter1 = [
-  { name: "All Questions", value: "all" },
   { name: "Incorrect", value: "incorrect" },
   { name: "Correct", value: "correct" },
+  { name: "Skipped", value: "skipped" },
 ];
 
 const filter2 = [
@@ -48,8 +52,10 @@ const filter2 = [
 ];
 
 const priorities = [
-  { name: "Low to High", value: "lowtohigh" },
-  { name: "High to Low", value: "hightolow" },
+  { name: "All Questions", value: "All Questions" },
+  { name: "Easy", value: "Easy" },
+  { name: "Moderate", value: "Moderate" },
+  { name: "Difficult", value: "Difficult" },
 ];
 
 function ErrorTracker() {
@@ -61,7 +67,7 @@ function ErrorTracker() {
   const [priorty, setPriorty] = useState(null);
   const [data, setData] = useState([]); //Main Data store
 
-  const [correction, setCorrection] = useState(); // correct or Inncorect
+  const [correction, setCorrection] = useState(); // correct or Inncorect or skipped
   const [section, setSection] = useState(); // Section wise filter
   const [topic, setTopic] = useState({}); // topic wise
 
@@ -69,9 +75,24 @@ function ErrorTracker() {
 
   const [show, setShow] = useState([]); // changeable state come from filter`
 
+
   const [topicList, setTopicList] = useState([
     { name: "All Topics", value: "all topics" },
   ]);
+
+  const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
+
+  useEffect(() => {
+    if (correction === "correct") {
+      setColorDetailing(CorrectDetailing);
+    } else if (correction === "incorrect") {
+      setColorDetailing(IncorrectDetailing);
+    } else if (correction === "skipped") {
+      setColorDetailing(SkippedDetailing);
+    }
+  }, [correction, show, section]);
+
+  console.log("color detail", colorDetailing, correction);
 
   // setting topic list
   useEffect(() => {
@@ -85,8 +106,6 @@ function ErrorTracker() {
     console.log(newArr);
     return setTopicList(newArr);
   }, [section, data]);
-
-  console.log("Topic", topic);
 
   useEffect(() => {
     const getData = async () => {
@@ -114,93 +133,75 @@ function ErrorTracker() {
 
   // update the "show" state whenever the filters change
 
-  useEffect(() => {
+  function filterData() {
     let filteredData = arr;
-
+  
     if (correction && correction !== "all") {
       filteredData = filteredData.filter(
         (item) => item.isCorrect === correction
       );
     }
-
+  
     if (section) {
       filteredData = filteredData.map((item) => item);
     }
-
+  
     if (topic && topic !== "all topics") {
       filteredData = filteredData.filter((item) => item.topic === topic);
     }
-
+  
     console.log("first");
-
+  
     switch (priorty) {
-      case "hightolow":
-        filteredData.sort((a, b) => {
-          if (a.difficulty === b.difficulty) {
-            return 0;
-          }
-          if (a.difficulty === "Easy") {
-            return 1;
-          }
-          if (a.difficulty === "Moderate") {
-            if (b.difficulty === "Easy") {
-              return -1;
-            }
-            return 1;
-          }
-          if (a.difficulty === "Hard") {
-            return -1;
-          }
-        });
+      case "All Questions":
+        filteredData = filteredData.filter((item) => item);
         break;
-
-      case "lowtohigh":
-        filteredData.sort((a, b) => {
-          if (a.difficulty === b.difficulty) {
-            return 0;
-          }
-          if (a.difficulty === "Easy") {
-            return -1;
-          }
-          if (a.difficulty === "Moderate") {
-            if (b.difficulty === "Easy") {
-              return 1;
-            }
-            return -1;
-          }
-          if (a.difficulty === "Hard") {
-            return 1;
-          }
-        });
+      case "Easy":
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
-
+  
+      case "Moderate":
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        break;
+  
+      case "Difficult":
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        break;
+  
       default:
         break;
     }
-
+  
     setShow(filteredData);
-  }, [correction, section, topic, arr, priorty]);
-
+  }
+  
+  useEffect(filterData, [correction, section, topic, arr, priorty]);
+  
   const handleColorDetail = (val) => {
     setColorDetail(val);
-    if (val === "all") {
-      setShow(arr);
-    } else {
+    if (val !== "all") {
       const filterData = arr.filter((item) => item.error === val);
       setShow(filterData);
     }
   };
 
-  console.log("arr", arr);
-  console.log("data", data);
+  // console.log("arr", arr);
+  console.log("data  mmmmm", data);
   console.log("show", show);
-  console.log(topic);
+  // console.log(topic);
 
   return (
     <Box component="main" sx={{ height: "100vh" }}>
       <MenuDrawer />
 
-      <Box sx={{ p: 2, position: "absolute", left: "70px" }}>
+      <Box
+        sx={{
+          p: 2,
+          position: "absolute",
+          left: "70px",
+          width: "calc(100% - 70px)",
+        }}
+      >
         {/* Header */}
         <Box component="header">
           <HeaderNew />
@@ -282,7 +283,9 @@ function ErrorTracker() {
                 >
                   <BarGraph Data={graphData} width={"97%"} legend={false} />
                 </Box>
-                <Box sx={{ mt: 2 }}>{<GraphComp />}</Box>
+                <Box sx={{ mt: 2 }}>
+                  {<GraphComp colorDetailing={colorDetailing} />}
+                </Box>
               </Box>
               {/* Graph side div end */}
 
@@ -293,6 +296,8 @@ function ErrorTracker() {
                   px: 3,
                   overflow: "scroll",
                   height: "100%",
+                
+              
                 }}
               >
                 {/* Color selection div */}
@@ -319,39 +324,42 @@ function ErrorTracker() {
                     </Typography>
 
                     <div className="d-flex gap-3">
-                      {ColorDetailingAll.map((item, ind) => {
-                        return (
-                          <div
-                            key={ind}
-                            onClick={() => {
-                              setArr(data[section]);
-                              handleColorDetail(item.value);
-                            }}
-                            style={{
-                              background: item.color,
-                              width: colorDetail === item.value ? 29 : 26,
-                              height: colorDetail === item.value ? 29 : 26,
-                              borderRadius: "50%",
-                              cursor: "pointer",
-                              transition: "all 0.2s ease-in-out",
-                              boxShadow:
-                                colorDetail === item.value
-                                  ? "0 0 10px rgba(0, 0, 0, 0.5)"
-                                  : "none",
-                              border:
-                                colorDetail === item.value
-                                  ? "0px solid #333"
-                                  : "none",
-                            }}
-                          />
-                        );
-                      })}
+                      {colorDetailing &&
+                        colorDetailing.map((item, ind) => {
+                          return (
+                            <Tooltip title={item.value} placement="top" arrow>
+                              <div
+                                key={ind}
+                                onClick={() => {
+                                  setArr(data[section]);
+                                  handleColorDetail(item.value);
+                                }}
+                                style={{
+                                  background: item.color,
+                                  width: colorDetail === item.value ? 29 : 26,
+                                  height: colorDetail === item.value ? 29 : 26,
+                                  borderRadius: "50%",
+                                  cursor: "pointer",
+                                  transition: "all 0.2s ease-in-out",
+                                  boxShadow:
+                                    colorDetail === item.value
+                                      ? "0 0 10px rgba(0, 0, 0, 0.5)"
+                                      : "none",
+                                  border:
+                                    colorDetail === item.value
+                                      ? "0px solid #333"
+                                      : "none",
+                                }}
+                              />
+                            </Tooltip>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
                 {show
                   ? show.map((item, index) => {
-                      const colorObj = ColorDetailingAll.find(
+                      const colorObj = colorDetailing.find(
                         (detail) => item.error === detail.value
                       );
 
@@ -364,7 +372,7 @@ function ErrorTracker() {
                           <Card
                             sx={{
                               maxWidth: " 100% ",
-                              background: "#F6F7F8",
+                              background: "#eaeaea",
                               p: 2,
                               boxShadow: "none",
                               color: "black",
@@ -480,11 +488,11 @@ function ErrorTracker() {
   );
 }
 
-const GraphComp = () => {
+const GraphComp = ({ colorDetailing }) => {
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
-      {ColorDetailingAll &&
-        ColorDetailingAll.slice(1).map((item, _) => {
+      {colorDetailing &&
+        colorDetailing.slice(1).map((item, _) => {
           return (
             <Box
               component="item"
