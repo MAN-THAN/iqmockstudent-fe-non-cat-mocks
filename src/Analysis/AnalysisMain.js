@@ -223,7 +223,7 @@ function AnalysisMain() {
                       sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}
                     >
                       This is your mock Analysis for
-                      {title ? title : "iCAT 1.0"}.
+                      {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
                   </div>
 
