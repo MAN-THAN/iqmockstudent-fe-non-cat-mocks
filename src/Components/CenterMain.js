@@ -29,7 +29,7 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
-  // console.log(questionStatus)
+  console.log("Question status",questionStatus)
  
   // syncing question status with local
   useEffect(() => {
