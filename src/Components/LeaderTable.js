@@ -75,7 +75,7 @@ export default function LeaderTable({ data, isLoading, studentData, studentRank}
                   <StyledTableRow
                     key={index}
                     sx={{
-                      background: "white",
+                      background: index == 0 ? "#FF7A00" : index == 1 ? "#0057FF" : index == 2 ? "#9E00FF" : "white",
                       color: "black",
                     }}
                   >

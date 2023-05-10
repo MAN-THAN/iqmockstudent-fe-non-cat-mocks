@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api";
 import MenuDrawer from "../Components/MenuDrawer";
+import HeaderNew from "../Components/HeaderNew";
+import MultipleSelect from "../Common-comp/SelectField";
 
 import { useAuth } from "../services/Context";
 dayjs.extend(customParseFormat);
@@ -20,9 +22,10 @@ function LeaderBoard() {
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState([]);
   const [studentRank, setStudentRank] = useState(null);
+  const [mock, setMock] = useState([]);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { _id, name ,photoURL} = userData;
+  const { _id, name, photoURL } = userData;
 
   const date = new Date();
 
@@ -58,12 +61,7 @@ function LeaderBoard() {
     async function fetchLeaderBoard(startDate, endDate, mockId) {
       try {
         setLoading(true);
-        const response = await getLeaderBoardData(
-          startDate,
-          endDate,
-          mockId,
-          attemptId
-        );
+        const response = await getLeaderBoardData(startDate, endDate, mockId, attemptId);
         console.log(response);
         if (response?.status === 200) {
           const data = response;
@@ -79,30 +77,28 @@ function LeaderBoard() {
     }
 
     if (dateRange.startDate && dateRange.endDate) {
-      fetchLeaderBoard(
-        dateRange.startDate,
-        dateRange.endDate,
-        mockId,
-        attemptId
-      ); // call the API only if both startDate and endDate are not null
+      fetchLeaderBoard(dateRange.startDate, dateRange.endDate, mockId, attemptId); // call the API only if both startDate and endDate are not null
     }
   }, [dateRange]);
 
   return (
-    <div style={{ width: "100vw", background: "#EEEDF5" }}>
+    <div style={{ width: "100vw" }}>
       <MenuDrawer open={menuBarOpen} />
+
       <Box
         sx={{
-          height: "15em",
+          height: "auto",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(45deg, #6E75F6 30%, #DDDCF8 90%)",
           padding: "1.6em 3em",
           gap: "2em",
           position: "relative",
           ml: "65px",
         }}
       >
+        <Box component="div" sx={{ height: "10%" }}>
+          <HeaderNew />
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -118,71 +114,36 @@ function LeaderBoard() {
             open={menuBarOpen}
             onClick={() => setMenuBarOpen(false)}
           />
-          <Typography
-            sx={{
-              fontSize: "30px",
-              fontWeight: 800,
-              color: "white",
-              fontFamily: "Inter",
-            }}
-          >
-            Leader Board
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "1em" }}>
+          <Box sx={{ display: "flex", flexDirection: 'row', justifyContent : "space-between"}}>
             {" "}
-            <div className="text-end">
+            <Box sx={{display : 'flex', flexDirection : "row", width : "15em"}}>
               <Typography
                 sx={{
-                  fontFamily: "var(--font-inter)",
-                  fontSize: "19px",
-                  fontWeight: 600,
+                  fontSize: "30px",
+                  fontWeight: 800,
+                  color: "black",
+                  fontFamily: "Inter",
                 }}
               >
-                {name}
+                Leader Board : 
               </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "var(--font-inter)",
-                  fontSize: "13px",
-                  fontWeight: 400,
-                }}
-              >
-                User id :{_id}
-              </Typography>
-            </div>
-            <div className="d-flex">
-              <a
-                href="#"
-                className="d-block link-dark text-decoration-none "
-                aria-expanded="false"
-              >
-                <img
-                  src={photoURL}
-                  alt="mdo"
-                  width="50"
-                  height="50"
-                  className="rounded"
-                />
-              </a>
-            </div>
+            </Box>
+            <Typography
+              sx={{
+                fontSize: "24px",
+                fontWeight: 600,
+                color: "#0057C8",
+                fontFamily: "Inter",
+                marginTop : '6px'
+              }}
+            >
+              {name}
+            </Typography>
           </Box>
+          <MultipleSelect options={[{name : "few"}]} setType={() => { }} />
         </Box>
-        <Typography
-          sx={{
-            fontSize: "40px",
-            fontWeight: 600,
-            color: "white",
-            fontFamily: "Inter",
-          }}
-        >
-          {name}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "16px", color: "white", fontFamily: "Inter" }}
-        >
-          Mock Result :
-        </Typography>
-        <Box sx={{ position: "absolute", right: 15, top: "50%" }}>
+        {/* <Typography sx={{ fontSize: "16px", color: "black", fontFamily: "Inter" }}>Mock Result :</Typography> */}
+        {/* <Box sx={{ position: "absolute", right: 15, top: "50%" }}>
           <img
             src="/Bigmamahere.svg"
             alt="mdo"
@@ -208,25 +169,20 @@ function LeaderBoard() {
             height="20px"
             className="rounded"
           />
-        </Box>
+        </Box> */}
 
         {/* Table start */}
-        <div className="my-3 ">
-          <Typography variant="h4" className="text-muted py-5">
+        <div>
+          {/* <Typography variant="h4" className="text-muted py-5">
             Ranking Overall In India
-          </Typography>
+          </Typography> */}
 
-          <RangePicker
+          {/* <RangePicker
             onChange={handleDateRangeChange}
             disabledDate={disabledDate}
-          />
+          /> */}
           {/* <LeaderTable data={leaderData} isLoading={loading} /> */}
-          <LeaderTable
-            data={leaderData}
-            studentData={studentData}
-            studentRank={studentRank}
-            isLoading={loading}
-          />
+          <LeaderTable data={leaderData} studentData={studentData} studentRank={studentRank} isLoading={loading} />
         </div>
         {/* Table end */}
       </Box>
