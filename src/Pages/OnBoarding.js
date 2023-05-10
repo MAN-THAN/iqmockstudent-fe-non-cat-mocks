@@ -31,6 +31,7 @@ function OnBoarding() {
   const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
+  const [expand, setExpand] = useState(true);
 
   const cellStyle = {
     borderBottom: "none",
@@ -44,6 +45,7 @@ function OnBoarding() {
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);
+      setExpand(false);
     }
   }, [college]);
   // set percentile state
@@ -95,8 +97,8 @@ function OnBoarding() {
         <LineChart1 percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", top: "15%", zIndex: 100 }}>
-        <Accordion defaultExpanded={true} expanded={startMock ? false : true}>
-          <AccordionSummary sx={{ margin : 0}} aria-controls="panel1a-content" id="panel1a-header" expandIcon={<ExpandMoreIcon />}>
+        <Accordion defaultExpanded={true} expanded={expand}>
+          <AccordionSummary onClick={ () => setExpand(!expand)} sx={{ margin : 0}} aria-controls="panel1a-content" id="panel1a-header" expandIcon={<ExpandMoreIcon />}>
             <Typography
               sx={{
                 color: "#1066DA",
