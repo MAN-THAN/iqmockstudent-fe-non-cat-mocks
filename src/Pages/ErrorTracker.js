@@ -46,6 +46,7 @@ const filter1 = [
 ];
 
 const filter2 = [
+  { name: "All Sections", value: "allsections" },
   { name: "VARC", value: "varc" },
   { name: "LRDI", value: "lrdi" },
   { name: "Quants", value: "quants" },
@@ -55,7 +56,7 @@ const priorities = [
   { name: "All Questions", value: "All Questions" },
   { name: "Easy", value: "Easy" },
   { name: "Moderate", value: "Moderate" },
-  { name: "Difficult", value: "Difficult" },
+  { name: "Hard", value: "Hard" },
 ];
 
 function ErrorTracker() {
@@ -67,14 +68,13 @@ function ErrorTracker() {
   const [priorty, setPriorty] = useState(null);
   const [data, setData] = useState([]); //Main Data store
 
-  const [correction, setCorrection] = useState(); // correct or Inncorect or skipped
-  const [section, setSection] = useState(); // Section wise filter
+  const [correction, setCorrection] = useState(); // correct or Inncorect or skipped state
+  const [section, setSection] = useState("allsections"); // Section wise filter
   const [topic, setTopic] = useState({}); // topic wise
 
   const [arr, setArr] = useState([]); //main Data
 
   const [show, setShow] = useState([]); // changeable state come from filter`
-
 
   const [topicList, setTopicList] = useState([
     { name: "All Topics", value: "all topics" },
@@ -82,31 +82,7 @@ function ErrorTracker() {
 
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
 
-  useEffect(() => {
-    if (correction === "correct") {
-      setColorDetailing(CorrectDetailing);
-    } else if (correction === "incorrect") {
-      setColorDetailing(IncorrectDetailing);
-    } else if (correction === "skipped") {
-      setColorDetailing(SkippedDetailing);
-    }
-  }, [correction, show, section]);
-
-  console.log("color detail", colorDetailing, correction);
-
-  // setting topic list
-  useEffect(() => {
-    console.log(data);
-    const arr = data?.[section + "Topic"];
-    console.log(arr);
-    const newArr = [{ name: "All Topics", value: "all topics" }];
-    arr?.map((item, index) => {
-      newArr.push({ name: item, value: item });
-    });
-    console.log(newArr);
-    return setTopicList(newArr);
-  }, [section, data]);
-
+  //  calling api
   useEffect(() => {
     const getData = async () => {
       const res = await fetchErrorTracker(attemptId);
@@ -122,73 +98,154 @@ function ErrorTracker() {
     getData();
   }, []);
 
+  // set correction
   useEffect(() => {
-    if (data.graph) {
-      setGraphData(data.changedGraph[0]);
+    let graphData;
+    if (correction === "correct") {
+      setColorDetailing(CorrectDetailing);
+      graphData = data.correctGraph;
+    } else if (correction === "incorrect") {
+      setColorDetailing(IncorrectDetailing);
+      graphData = data.incorrectGraph;
+    } else if (correction === "skipped") {
+      setColorDetailing(SkippedDetailing);
+      graphData = data.skippedGraph;
     }
-    if (data[section] && data[section].length > 0) {
-      setArr(data[section]);
+    if (section !== "allsections") {
+      graphData = data[section + correction + "Graph"];
     }
-  }, [data, section]);
+    setGraphData(graphData);
+  }, [correction, show, section, data]);
+
+  // setting topic list
+  // useEffect(() => {
+  //   console.log(data);
+  //   const arr = data?.[section + "Topic"];
+  //   console.log(arr);
+  //   const newArr = [{ name: "All Topics", value: "all topics" }];
+  //   arr?.map((item, index) => {
+  //     newArr.push({ name: item, value: item });
+  //   });
+  //   // console.log(newArr);
+  //   return setTopicList(newArr);
+  // }, [section, data]);
+
+  useEffect(() => {
+    const topicArr = [];
+
+    if (section === "allsections") {
+      filter2.forEach((sec) => {
+        const arr = data?.[sec.value + "Topic"]; //varctopic,lrdiTopic,quantsTopic
+        arr?.forEach((item) => {
+          if (!topicArr.includes(item)) {
+            topicArr.push(item);
+          }
+        });
+      });
+    } else {
+      const arr = data?.[section + "Topic"];
+      arr?.forEach((item) => {
+        if (!topicArr.includes(item)) {
+          topicArr.push(item);
+        }
+      });
+    }
+
+    const newArr = [{ name: "All Topics", value: "all topics" }];
+    topicArr.forEach((item) => {
+      newArr.push({ name: item, value: item });
+    });
+
+    console.log(newArr);
+    setTopicList(newArr);
+  }, [section, data]);
+
+  // Set the sections
+  useEffect(() => {
+    if (data || data.length > 0) {
+      //set the all sections array
+      if (section === "allsections") {
+        const mergedArr = [
+          ...(Array.isArray(data.lrdi) ? data.lrdi : []),
+          ...(Array.isArray(data.varc) ? data.varc : []),
+          ...(Array.isArray(data.quants) ? data.quants : []),
+        ];
+        setArr(mergedArr);
+      } else {
+        setArr(data[section]);
+      }
+    }
+  }, [data, section, correction]);
 
   // update the "show" state whenever the filters change
 
   function filterData() {
     let filteredData = arr;
-  
+
     if (correction && correction !== "all") {
       filteredData = filteredData.filter(
         (item) => item.isCorrect === correction
       );
     }
-  
+
     if (section) {
       filteredData = filteredData.map((item) => item);
     }
-  
+
     if (topic && topic !== "all topics") {
       filteredData = filteredData.filter((item) => item.topic === topic);
     }
-  
-    console.log("first");
-  
+
     switch (priorty) {
       case "All Questions":
         filteredData = filteredData.filter((item) => item);
         break;
       case "Easy":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
-  
+
       case "Moderate":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
-  
-      case "Difficult":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+
+      case "Hard":
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
-  
+
       default:
         break;
     }
-  
+
+    handleColorDetail("all");
     setShow(filteredData);
   }
-  
+
   useEffect(filterData, [correction, section, topic, arr, priorty]);
-  
+
   const handleColorDetail = (val) => {
     setColorDetail(val);
-    if (val !== "all") {
-      const filterData = arr.filter((item) => item.error === val);
-      setShow(filterData);
+    if (arr.length > 0) {
+      if (val === "all") {
+        filterData = arr.filter((item) => item.isCorrect === correction);
+        setShow(filterData);
+      } else {
+        const filterData = arr.filter((item) => item.error === val);
+        setShow(filterData);
+      }
     }
   };
 
-  // console.log("arr", arr);
+  console.log("arr", arr);
   console.log("data  mmmmm", data);
   console.log("show", show);
-  // console.log(topic);
+  console.log("Sections", section);
+  console.log(graphData, "graohData");
 
   return (
     <Box component="main" sx={{ height: "100vh" }}>
@@ -281,7 +338,11 @@ function ErrorTracker() {
                     width: "35rem",
                   }}
                 >
-                  <BarGraph Data={graphData} width={"97%"} legend={false} />
+                  <BarGraph
+                    Data={graphData && graphData[0]}
+                    width={"97%"}
+                    legend={false}
+                  />
                 </Box>
                 <Box sx={{ mt: 2 }}>
                   {<GraphComp colorDetailing={colorDetailing} />}
@@ -296,8 +357,6 @@ function ErrorTracker() {
                   px: 3,
                   overflow: "scroll",
                   height: "100%",
-                
-              
                 }}
               >
                 {/* Color selection div */}
@@ -331,7 +390,7 @@ function ErrorTracker() {
                               <div
                                 key={ind}
                                 onClick={() => {
-                                  setArr(data[section]);
+                                  // section !== "allsections" && setArr(data[section]);
                                   handleColorDetail(item.value);
                                 }}
                                 style={{

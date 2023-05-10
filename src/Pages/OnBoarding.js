@@ -17,7 +17,7 @@ import { DetailCards } from "../Common-comp/Card";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(false);
+  const [startMock, setStartMock] = useState(true);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -28,6 +28,7 @@ function OnBoarding() {
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
 
+
   const cellStyle = {
     borderBottom: "none",
     pb: 0,
@@ -35,7 +36,7 @@ function OnBoarding() {
     fontWeight : "bold"
   };
   console.log(state.mockId, state.setId);
-  console.log(college);
+  console.log("CKG",college);
 
   useEffect(() => {
     if (college !== null) {
@@ -94,7 +95,7 @@ function OnBoarding() {
         <LoginForm setCollege={setCollege} percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", bottom: "10.5%", right: 50 }}>
-        {startMock ? (
+        {startMock && 
           <Box>
             <Box
               sx={{
@@ -220,9 +221,7 @@ function OnBoarding() {
               </Box>
             </Box>
           </Box>
-        ) : (
-          <></>
-        )}
+      }
       </Box>
       <Box
         sx={{
