@@ -546,7 +546,7 @@ function AnalysisMain() {
                       fontFamily: "var(--font-inter)",
                     }}
                   >
-                    Time spent on questions(sec):
+                    Time spent on questions:
                   </Box>
                   <span>
                     <img
