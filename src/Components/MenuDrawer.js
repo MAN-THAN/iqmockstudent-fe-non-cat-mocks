@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { DrawerData } from "../services/DataFiles";
+import { Tooltip } from "@mui/material";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -95,7 +96,8 @@ function MenuDrawer() {
         <List>
           {drawer &&
             drawer.map((item, ind) => (
-              <ListItem
+            <Tooltip title={item.text} key={ind} placement="right" arrow> 
+            <ListItem
                 key={item.text}
                 disablePadding
                 sx={{
@@ -132,6 +134,7 @@ function MenuDrawer() {
                   </ListItemText>
                 </ListItemButton>
               </ListItem>
+            </Tooltip>
             ))}
         </List>
         <Divider />

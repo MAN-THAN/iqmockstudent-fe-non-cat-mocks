@@ -45,6 +45,7 @@ export default function LeaderTable({ data, isLoading, studentData, studentRank}
               height: "20px",
               backgroundColor: "#E1E2FE",
               "&:hover": { background: "#E1E2FE!important" },
+              boxShadow: 10
             }}
           >
             {isLoading ? (
@@ -75,7 +76,7 @@ export default function LeaderTable({ data, isLoading, studentData, studentRank}
                   <StyledTableRow
                     key={index}
                     sx={{
-                      background: "white",
+                      background: index == 0 ? "#FF7A00" : index == 1 ? "#4B87FC" : index == 2 ? "#B53FFD" : "white",
                       color: "black",
                     }}
                   >

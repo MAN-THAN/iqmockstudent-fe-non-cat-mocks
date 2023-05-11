@@ -20,7 +20,7 @@ function TopicAnalysis() {
   
   useEffect(() => {
     setData(topicWiseAnalysis.topicWiseAnalysis);
-  }, []);
+  }, [topicWiseAnalysis]);
 
   const headings = [
     "Number",
