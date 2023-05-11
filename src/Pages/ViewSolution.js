@@ -31,6 +31,12 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 // import MenuItem from "@mui/material/MenuItem";
 // import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import {
+  IncorrectDetailing,
+  CorrectDetailing,
+  SkippedDetailing,
+} from "../services/DataFiles";
+import { useMemo } from "react";
 
 export default function ViewSolution() {
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
