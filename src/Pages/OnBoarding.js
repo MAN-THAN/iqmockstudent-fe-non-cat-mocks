@@ -13,6 +13,10 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HeaderNew from "../Components/HeaderNew";
 import { DetailCards } from "../Common-comp/Card";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -27,13 +31,14 @@ function OnBoarding() {
   const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
+  const [expand, setExpand] = useState(true);
 
 
   const cellStyle = {
     borderBottom: "none",
     pb: 0,
     lineHeight: "unset",
-    fontWeight : "bold"
+    fontWeight: "bold",
   };
   console.log(state.mockId, state.setId);
   console.log("CKG",college);
@@ -41,6 +46,7 @@ function OnBoarding() {
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);
+      setExpand(false);
     }
   }, [college]);
   // set percentile state
@@ -88,14 +94,30 @@ function OnBoarding() {
       <Box>
         <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
       </Box>
-      <Box sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ width: "100%", height: "100%", marginTop : "8em" }}>
         <LineChart1 percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", top: "15%", zIndex: 100 }}>
-        <LoginForm setCollege={setCollege} percentile={percentile} />
+        <Accordion defaultExpanded={true} expanded={expand}>
+          <AccordionSummary onClick={ () => setExpand(!expand)} sx={{ margin : 0}} aria-controls="panel1a-content" id="panel1a-header" expandIcon={<ExpandMoreIcon />}>
+            <Typography
+              sx={{
+                color: "#1066DA",
+                fontWeight: 700,
+                fontSize: "1.5em",
+                marginLeft: "2em",
+              }}
+            >
+              Fill Details
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <LoginForm setCollege={setCollege} percentile={percentile} />
+          </AccordionDetails>
+        </Accordion>
       </Box>
-      <Box sx={{ position: "absolute", bottom: "10.5%", right: 50 }}>
-        {startMock && 
+      <Box sx={{ position: "absolute", bottom: "5.5%", right: 50 }}>
+        {startMock ? (
           <Box>
             <Box
               sx={{
@@ -106,14 +128,7 @@ function OnBoarding() {
             >
               {" "}
               <Button
-                startIcon={
-                  <img
-                    alt="rocket"
-                    width="20px"
-                    height="20px"
-                    src="/rocket.png"
-                  />
-                }
+                startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
                 sx={{
                   background: "linear-gradient(to bottom, #306DF8, #661FCF)",
                 }}
@@ -127,7 +142,7 @@ function OnBoarding() {
             <Box>
               <Box
                 sx={{
-                  width: "34vw",
+                  width: "30vw",
                   height: "12em",
                   background: "white",
                   borderRadius: "1em",
@@ -142,10 +157,7 @@ function OnBoarding() {
                     logoPath={"/goalSchool.png"}
                     cardContent={
                       <TableContainer>
-                        <Table
-                          sx={{ border: "none", borderCollapse: "collapse" }}
-                          aria-label="simple table"
-                        >
+                        <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
                           <TableHead>
                             <TableRow
                               sx={{
@@ -153,26 +165,14 @@ function OnBoarding() {
                                 lineHeight: "unset",
                               }}
                             >
-                              <TableCell
-                                sx={{ fontWeight: "bold", fontSize: 15 }}
-                                align="left"
-                              ></TableCell>
-                              <TableCell
-                                sx={{ fontWeight: "bold", fontSize: 15 }}
-                                align="left"
-                              >
+                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left"></TableCell>
+                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                 Name
                               </TableCell>
-                              <TableCell
-                                sx={{ fontWeight: "bold", fontSize: 15 }}
-                                align="left"
-                              >
+                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                 Average Package
                               </TableCell>
-                              <TableCell
-                                sx={{ fontWeight: "bold", fontSize: 15 }}
-                                align="left"
-                              >
+                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                 Current Package
                               </TableCell>
                             </TableRow>
@@ -256,8 +256,7 @@ function OnBoarding() {
               <Box
                 sx={{
                   padding: 1,
-                  background:
-                    "linear-gradient(180deg, #000000 0%, #686868 100%)",
+                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
                   borderRadius: "2px",
                 }}
               >
@@ -298,8 +297,7 @@ function OnBoarding() {
               <Box
                 sx={{
                   padding: 1,
-                  background:
-                    "linear-gradient(180deg, #000000 0%, #686868 100%)",
+                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
                   borderRadius: "2px",
                 }}
               >
@@ -340,8 +338,7 @@ function OnBoarding() {
               <Box
                 sx={{
                   padding: 1,
-                  background:
-                    "linear-gradient(180deg, #000000 0%, #686868 100%)",
+                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
                   borderRadius: "2px",
                 }}
               >
@@ -374,8 +371,7 @@ function OnBoarding() {
               <Box
                 sx={{
                   padding: 1,
-                  background:
-                    "linear-gradient(180deg, #000000 0%, #686868 100%)",
+                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
                   borderRadius: "2px",
                 }}
               >
@@ -419,8 +415,7 @@ function OnBoarding() {
               <Box
                 sx={{
                   padding: 1,
-                  background:
-                    "linear-gradient(180deg, #000000 0%, #686868 100%)",
+                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
                   borderRadius: "2px",
                 }}
               >

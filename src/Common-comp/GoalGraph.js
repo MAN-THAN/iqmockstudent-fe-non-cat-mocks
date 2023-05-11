@@ -1,14 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const data = [
   {
@@ -55,14 +46,7 @@ function CustomDot(props) {
 
   return (
     <g>
-      <circle
-        cx={cx}
-        cy={cy}
-        r={18}
-        fill={stroke}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-      />
+      <circle cx={cx} cy={cy} r={18} fill={stroke} stroke={stroke} strokeWidth={strokeWidth} />
       <text x={cx} y={cy} dy={5} dx={1} textAnchor="middle" fill="#fff">
         {value}
       </text>
@@ -71,12 +55,21 @@ function CustomDot(props) {
 }
 
 function GoalGraph({ result }) {
+  const tempArr = [
+  {name : "fewf", yourGoal : 0},
+    {name : "fewf", yourGoal : 100},
+    { name: "overall", percentile: 30 },
+    { name: "varc", percentile: 46 },
+    { name: "quants", percentile: 32 },
+    { name: "lrdi", percentile: 50 },
+    
+  ];
   return (
     <ResponsiveContainer width="90%" height="100%">
       <LineChart
         width={500}
         height={300}
-        data={result}
+        data={tempArr}
         margin={{
           top: 30,
           right: 100,
@@ -84,19 +77,15 @@ function GoalGraph({ result }) {
           bottom: 25,
         }}
       >
-        
         {/* <Line
           dataKey="percentile"
           stroke="url(#gradient1)"
           strokeWidth={8}
         /> */}
         <Tooltip />
-        <Line
-          strokeWidth={8}
-          dataKey="percentile"
-          stroke="url(#gradient2)"
-          dot={<CustomDot />}
-        />
+        <Line strokeWidth={8} dataKey="yourGoal" stroke="url(#gradient1)" dot={<CustomDot />} />
+        <Line strokeWidth={8} dataKey="percentile" stroke="url(#gradient2)" dot={<CustomDot />} />
+
         <svg>
           <defs>
             <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">

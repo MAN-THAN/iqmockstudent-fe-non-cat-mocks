@@ -11,6 +11,7 @@ import {
 } from "../styleSheets/Style";
 import moment from "moment/moment";
 import NavigationGallery from "../Components/NavigationGallery";
+import { Typography } from "@mui/material";
 
 function OverallAnalysis() {
   const { overallAnalysis } = useAuth();
@@ -29,6 +30,16 @@ function OverallAnalysis() {
     "% Score",
     "Percentile",
   ];
+   const convertStoMs = (seconds) => {
+     let minutes = Math.floor(seconds / 60);
+     let extraSeconds = seconds % 60;
+     minutes = minutes < 10 ? + minutes : minutes;
+     extraSeconds = extraSeconds < 10 ?  + extraSeconds : extraSeconds;
+     console.log(minutes, extraSeconds);
+     return ( `${minutes + "min" + " " + extraSeconds + "sec"}`)
+  }
+  convertStoMs(70)
+  console.log(data)
   return (
     <>
       <TableContainer
@@ -133,13 +144,15 @@ function OverallAnalysis() {
                     }}
                   >
                     <StyledTableCell align="left">
-                      {item.timeCorrect}
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeCorrect)}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.timeInCorrect}
+                      {" "}
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeInCorrect)}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.timeSkipped}
+                      {" "}
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeSkipped)}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 );
