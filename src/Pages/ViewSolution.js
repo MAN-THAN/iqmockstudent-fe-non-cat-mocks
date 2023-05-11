@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { IoBookSharp } from "react-icons/io5";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+
 import { BootstrapButton, BootstrapTooltip } from "../styleSheets/Style";
 import { NavLink, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";

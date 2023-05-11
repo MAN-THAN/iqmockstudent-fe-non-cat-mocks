@@ -21,7 +21,7 @@ const MenuProps = {
 export default function MultipleSelect({ options, setType }) {
 
   const [value, setValue] = useState(options[0]?.value || "");
-  console.log(options)
+  
 
 
   useEffect(() => {

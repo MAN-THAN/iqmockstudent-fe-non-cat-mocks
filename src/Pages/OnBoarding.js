@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(false);
+  const [startMock, setStartMock] = useState(true);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -33,6 +33,7 @@ function OnBoarding() {
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
   const [expand, setExpand] = useState(true);
 
+
   const cellStyle = {
     borderBottom: "none",
     pb: 0,
@@ -40,7 +41,7 @@ function OnBoarding() {
     fontWeight: "bold",
   };
   console.log(state.mockId, state.setId);
-  console.log(college);
+  console.log("CKG",college);
 
   useEffect(() => {
     if (college !== null) {
@@ -220,9 +221,7 @@ function OnBoarding() {
               </Box>
             </Box>
           </Box>
-        ) : (
-          <></>
-        )}
+      }
       </Box>
       <Box
         sx={{
