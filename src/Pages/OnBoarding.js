@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(true);
+  const [startMock, setStartMock] = useState(false);
   const [a, setA] = useState("099");
   const [d, setD] = useState(0);
   const [e, setE] = useState(0);
@@ -221,7 +221,7 @@ function OnBoarding() {
               </Box>
             </Box>
           </Box>
-      }
+      ):(<></>)}
       </Box>
       <Box
         sx={{
