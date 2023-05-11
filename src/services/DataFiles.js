@@ -92,10 +92,7 @@ export const NavigationGalleryData = (mockId, attemptId) => {
   ];
 };
 
-
-
-
-// Please be noticed values must be same from backend and frontend
+// Please be noticed values must be same from backend and frontend and  must be focus any section values dont be same
 export const IncorrectDetailing = [
   {
     id: 0,
@@ -124,11 +121,10 @@ export const IncorrectDetailing = [
   { id: 7, color: "#1D5C81", value: "I guessed the answer" },
 ];
 
-
 export const CorrectDetailing = [
   {
     id: 0,
-    color: " linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
+    color: "linear-gradient(180deg, #48E5DD 0%, #484EE5 100%)",
     value: "all",
   },
   {
@@ -139,12 +135,11 @@ export const CorrectDetailing = [
   {
     id: 2,
     color: "#FF6CB6",
-    value: " I took more than usual time",
+    value: "I took more than usual time",
   },
 
-  { id: 3, color: "#FFBC5E", value: " I guessed the answer" },
+  { id: 3, color: "#FFBC5E", value: "I bluff the answer" },
 ];
-
 
 export const SkippedDetailing = [
   {
@@ -155,16 +150,14 @@ export const SkippedDetailing = [
   {
     id: 1,
     color: "#48E5DD",
-    value: "Din't know the concept",
+    value: "Didn't know the concept",
   },
   {
     id: 2,
     color: "#FF6CB6",
-    value: "I ran out of time",
+    value: "I ran out of the time",
   },
 
-  { id: 3, color: "#FFBC5E", value: "I didn't read the question  properly" },
+  { id: 3, color: "#FFBC5E", value: "I didn't read the question properly" },
   { id: 4, color: "#4732CC", value: "Question was lengthy" },
 ];
-
-
