@@ -1,13 +1,26 @@
 import React from "react";
-import { useParams, useLocation } from "react-router-dom";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { Toolbar, Typography } from "@mui/material";
-
+import {
+  BarChart,
+  Bar,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { Typography } from "@mui/material";
+import {
+  CorrectDetailing,
+  IncorrectDetailing,
+  SkippedDetailing,
+} from "../services/DataFiles";
 function BarGraph({ Data, title, width, legend }) {
-  const location = useLocation();
-  const params = useParams();
-  console.log(Data, title);
+  const AllDetails = [
+    ...CorrectDetailing,
+    ...IncorrectDetailing,
+    ...SkippedDetailing,
+  ];
 
   return (
     <div
@@ -32,9 +45,9 @@ function BarGraph({ Data, title, width, legend }) {
       </Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
-          width='100%'
+          width="100%"
           height={200}
-          data={Data}
+          data={[Data]}
           margin={{
             top: 5,
             right: 30,
@@ -45,34 +58,24 @@ function BarGraph({ Data, title, width, legend }) {
           {/* <XAxis dataKey="error" /> */}
           <YAxis />
 
-          {legend && <Legend layout="horizontal" verticalAlign="bottom" align="center" />}
-{/* <Tooltip/> */}
-          <Bar dataKey="count" fill="url(#total)" radius={[10, 10, 0, 0]} barSize={50} />
-          {/* <Bar barSize={50} dataKey="count" fill="url(#incorrect)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#correct)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} />
-          <Bar barSize={50} dataKey="count" fill="url(#skipped)" radius={[10, 10, 0, 0]} /> */}
+          {legend && (
+            <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+          )}
+          <Tooltip />
 
-          <defs>
-            <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#8B30FF" />
-              <stop offset="100%" stopColor="#B072FF" />
-            </linearGradient>
-            <linearGradient id="correct" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#685BFB" />
-              <stop offset="100%" stopColor="#8C82FF" />
-            </linearGradient>
-            <linearGradient id="incorrect" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00C2FF" />
-              <stop offset="100%" stopColor="#BAE6FF" />
-            </linearGradient>
-            <linearGradient id="skipped" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#FF519A" />
-              <stop offset="100%" stopColor="#FFAED0" />
-            </linearGradient>
-          </defs>
+          {Data &&
+            Object.keys(Data).map((e, ind) => {
+              const resObject = AllDetails.find((item) => item.value === e);
+              return (
+                <Bar
+                  key={ind}
+                  barSize={50}
+                  dataKey={e}
+                  fill={resObject && resObject.color}
+                  radius={[10, 10, 0, 0]}
+                />
+              );
+            })}
         </BarChart>
       </ResponsiveContainer>
     </div>

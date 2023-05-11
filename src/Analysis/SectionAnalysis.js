@@ -36,8 +36,10 @@ function SectionAnalysis() {
     } else if (params.subject === "quants") {
       setData(sectionWiseAnalysis.sectionWiseAnalysis?.quants);
     }
-  }, [params]);
+  }, [params, sectionWiseAnalysis]);
   console.log("section", data);
+
+  console.log("manthan tyagi")
 
   const headings = [
     "Serial no.",

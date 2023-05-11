@@ -20,9 +20,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useParams } from "react-router-dom";
 import { fetchOverallAcross } from "../services/Analysis_api";
-import { setIn } from "formik";
+import PieGraphNew from "../Common-comp/PieGraphNew";
+import ExampleAlignmentButtons from "../Common-comp/RadioView";
+
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const FilterList = ({ mocksList, setIndex }) => {
+  const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">
@@ -37,6 +41,7 @@ const FilterList = ({ mocksList, setIndex }) => {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
+        defaultValue={defaultVal}
       >
         {mocksList?.map((item, index) => {
           return (
@@ -53,13 +58,25 @@ const FilterList = ({ mocksList, setIndex }) => {
   );
 };
 
+const GraphLegend = [
+  { shade: "#4CAF50", Value: "Correct" },
+  { shade: "#2196F3", Value: "Incorrect" },
+  { shade: "#FFC107", Value: "Skipped" },
+];
+
 function AnalysisAcross() {
   const params = useParams();
-  const [a, setA] = useState("");
+  const [type, setType] = useState();
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
-  const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }];
+  const [view, setView] = useState("Table");
+
+  const Subjects = [
+    { name: "VARC", value: "varc" },
+    { name: "LRDI", value: "lrdi" },
+    { name: "Quants", value: "quants" },
+  ];
   const {
     menuBarOpen,
     setMenuBarOpen,
@@ -70,8 +87,20 @@ function AnalysisAcross() {
   } = useAuth();
 
   useEffect(() => {
-    setShow(mocksList[index]);
+    setShow(mocksList[index]?.data?.[type]);
   }, [index]);
+  useEffect(() => {
+    if (type === "varc") {
+      setShow(mocksList[index]?.data?.varc);
+    }
+    if (type === "lrdi") {
+      setShow(mocksList[index]?.data?.lrdi);
+    }
+    if (type === "quants") {
+      setShow(mocksList[index]?.data?.quants);
+    }
+  }, [type]);
+  console.log(show);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -81,7 +110,7 @@ function AnalysisAcross() {
       console.log(response);
       if (response?.status === 200) {
         setMocksList(response.data?.topicWise);
-        setShow(response.data?.topicWise[index]);
+        setShow(response.data?.topicWise[index].data.varc);
         setLoading(false);
       } else {
         showToastMessage();
@@ -91,8 +120,11 @@ function AnalysisAcross() {
     };
     fetchData(params.mockId, uid);
   }, []);
-  console.log(index);
+
+  console.log("MOCK", show);
   console.log(show);
+  console.log(type);
+
   return (
     <>
       <Box component="main">
@@ -126,16 +158,32 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect options={Subjects} setType={setA} />
-                <Typography
-                  sx={{
-                    ...typographyStyles.mainHeading,
-                    pt: 2,
-                  }}
-                >
-                  {" "}
-                  Analysis Across All Mocks
-                </Typography>
+                <MultipleSelect options={Subjects} setType={setType} />
+                <div className="d-flex justify-content-between align-items-center">
+                  <Typography
+                    sx={{
+                      ...typographyStyles.mainHeading,
+                      pt: 2,
+                    }}
+                  >
+                    {" "}
+                    Analysis Across All Mocks
+                  </Typography>
+
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    alignItems={"center"}
+                    sx={{
+                      fontFamily: "var(--font-inter)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                    }}
+                  >
+                    <span>Change View</span>{" "}
+                    <ExampleAlignmentButtons setValue={setView} value={view} />
+                  </Stack>
+                </div>
               </Box>
 
               {/* Main Section */}
@@ -177,47 +225,119 @@ function AnalysisAcross() {
 
                 {/*Question side box start*/}
                 <Box
+                  className={
+                    view === "Table" ? "table-section" : "graph-section"
+                  }
                   sx={{
                     flexBasis: { xs: "100%", md: "85%" },
                     height: "max-content",
                     background: "#F6F7F8",
+
                     p: 3,
                     borderRadius: "15px",
                   }}
                 >
-                  {/* Cards */}
-                  <Box
-                    component="div"
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    {AnalysisAcrossCard.map((item, _) => (
-                      <LogoCard
-                        cardTitle={item.title}
-                        key={item.id}
-                        icon={item.icon}
-                        style={{
-                          fontSize: 8,
-                          width: "169px",
-                          height: "52px",
-                          flexBasis: "15%",
-                          flexGrow: 0,
-                          justifyContent: "center",
-                        }}
-                      />
-                    ))}
-                  </Box>
+                  {/* Switching sections */}
 
-                  {/* Table */}
-                  <Box component="div" mt={4}>
-                    <DataTable data={show?.data} />
-                  </Box>
+                  {view === "Table" ? (
+                    <>
+                      {/* Cards */}
+                      <Box
+                        component="div"
+                        sx={{
+                          display: "flex",
+                          gap: 2,
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        {AnalysisAcrossCard.map((item, _) => (
+                          <LogoCard
+                            cardTitle={item.title}
+                            key={item.id}
+                            icon={item.icon}
+                            style={{
+                              fontSize: 8,
+                              width: "169px",
+                              height: "52px",
+                              flexBasis: "15%",
+                              flexGrow: 0,
+                              justifyContent: "center",
+                            }}
+                          />
+                        ))}
+                      </Box>
+
+                      {/* Table */}
+                      <Box component="div" mt={4}>
+                        <DataTable data={show} />
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      {/* Graphs view */}
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 1,
+                          rowGap: 5,
+                          justifyContent: "space-around",
+                        }}
+                      >
+                        {show &&
+                          show.map((item, ind) => {
+                            console.log(show);
+                            return (
+                              <Box>
+                                <Typography
+                                  lineHeight={0}
+                                  sx={{
+                                    ...typographyStyles.subHeading,
+                                    textAlign: "center",
+                                  }}
+                                  color="black"
+                                >
+                                  {item.topic}
+                                </Typography>
+                                <Box sx={{ width: "14em", height: "15em" }}>
+                                  <PieGraphNew
+                                    data={{
+                                      topic: item.topic,
+                                      correct: item.correct,
+                                      incorrect: item.incorrect,
+                                      skipped: item.skipped,
+                                    }}
+                                    color={GraphLegend.map((e) => e.shade)}
+                                  />
+                                </Box>
+                              </Box>
+                            );
+                          })}
+                      </Box>
+
+                        <Stack direction="row" spacing={2} justifyContent={"center"} mt={2} >
+                          {GraphLegend.map((e, ind) => {
+                            return (
+                              <div className="d-flex gap-1 align-items-center" key={ind}>
+                                <div
+                                  style={{
+                                    borderRadius: "40%",
+                                    height: "24px",
+                                    width: "24px",
+                                    background: e.shade,
+                                  }}
+                                ></div>
+                                <span style={{fontSize:13, fontFamily:"var(--font-inter)", fontWeight:600}}>{e.Value}</span>
+                              </div>
+                            );
+                          })}
+                        </Stack>
+                    </>
+                  )}
                 </Box>
-                {/*Question side box end*/}
               </Box>
+              {/*Question side box end*/}
             </>
           )}
         </Box>
@@ -247,7 +367,7 @@ const DataTable = ({ data }) => {
     >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableBody>
-          {data?.slice(1).map((row) => (
+          {data?.map((row) => (
             <TableRow
               key={row.topic}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -255,17 +375,11 @@ const DataTable = ({ data }) => {
               <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
                 {row.topic}
               </TableCell>
-              <TableCell align="center">{row.numberOfQuestions}</TableCell>
-              <TableCell align="center">
-                {row.numberOfAttemptedQuestions}
-              </TableCell>
-              <TableCell align="center">{row.numberOfCorrectAttempt}</TableCell>
-              <TableCell align="center">
-                {row.numberOfIncorrectAttempt}
-              </TableCell>
-              <TableCell align="center">
-                {row.numberOfQuestions - row.numberOfAttemptedQuestions}
-              </TableCell>
+              <TableCell align="center">{row.noOfQuestion}</TableCell>
+              <TableCell align="center">{row.attempted}</TableCell>
+              <TableCell align="center">{row.correct}</TableCell>
+              <TableCell align="center">{row.incorrect}</TableCell>
+              <TableCell align="center">{row.skipped}</TableCell>
             </TableRow>
           ))}
         </TableBody>

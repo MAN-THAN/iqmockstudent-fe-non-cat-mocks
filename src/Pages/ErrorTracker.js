@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
@@ -15,15 +15,14 @@ import { graphinstructionPoints } from "../services/DataFiles";
 import { fetchErrorTracker } from "../services/Analysis_api";
 import { useParams } from "react-router";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
-const options = [
-  { value: "option-1", label: "Option 1" },
-  { value: "option-2", label: "Option 2" },
-  { value: "option-3", label: "Option 3" },
-];
+import Latex from "react-latex-next";
+import {
+  IncorrectDetailing,
+  CorrectDetailing,
+  SkippedDetailing,
+} from "../services/DataFiles";
 
 const disableStyle = {
   ":disabled": {
@@ -40,124 +39,226 @@ const disableStyle = {
   },
 };
 
-const GraphComp = () => {
-  return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
-      {graphinstructionPoints.map((item, _) => {
-        return (
-          <Box
-            component="item"
-            sx={{
-              display: "flex",
+const filter1 = [
+  { name: "Incorrect", value: "incorrect" },
+  { name: "Correct", value: "correct" },
+  { name: "Skipped", value: "skipped" },
+];
 
-              p: 1,
-              flexBasis: "50%",
-              textAlign: "left",
-            }}
-          >
-            <Box
-              sx={{
-                bgcolor: item.color,
-                borderRadius: "50%",
-                marginRight: "5px",
-                width: "21px",
-                height: "21px",
-              }}
-            ></Box>
-            <Typography variant="paragraph">{item.description}</Typography>
-          </Box>
-        );
-      })}
-    </Box>
-  );
-};
+const filter2 = [
+  { name: "All Sections", value: "allsections" },
+  { name: "VARC", value: "varc" },
+  { name: "LRDI", value: "lrdi" },
+  { name: "Quants", value: "quants" },
+];
+
+const priorities = [
+  { name: "All Questions", value: "All Questions" },
+  { name: "Easy", value: "Easy" },
+  { name: "Moderate", value: "Moderate" },
+  { name: "Hard", value: "Hard" },
+];
 
 function ErrorTracker() {
-  const filter1 = [
-    { name: "Incorrect", value: "incorrect" },
-    { name: "Correct", value: "correct" },
-  ];
-  // const filter2 = [{ name: "iCat 1.0" }, { name: "iCat 2.0" }];
-  const filter3 = [
-    { name: "VARC", value: "varc" },
-    { name: "LRDI", value: "lrdi" },
-    { name: "Quants", value: "quants" },
-  ];
-  const filter4 = [
-    { name: "Reading Comprehension", value: "Reading comprehension" },
-    { name: "qde" },
-    { name: "dewd" },
-  ];
   const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
     useAuth();
   const { attemptId } = useParams();
-  const [data, setData] = useState([]);
-  const [type1, setType1] = useState();
-  const [type2, setType2] = useState();
-  const [type3, setType3] = useState();
-  const [type4, setType4] = useState();
   const [graphData, setGraphData] = useState([]);
-  const [arr, setArr] = useState([]);
-  const [show, setShow] = useState();
-  console.log(type1, type2, type3, type4);
-  console.log(data);
-  console.log(arr);
-  useEffect(() => {
-    getData();
-    filterData(type1, type3, type2, type4);
-  }, [type1, type2, type3, type4]);
+  const [colorDetail, setColorDetail] = useState(null);
+  const [priorty, setPriorty] = useState(null);
+  const [data, setData] = useState([]); //Main Data store
 
-  const getData = async () => {
-    const res = await fetchErrorTracker(attemptId, type3);
-    setLoading(true);
-    if (res?.status == 200) {
-      console.log(res);
-      setData(res.data);
-      setGraphData(res.data.graph);
-      setArr(res.data[type3]);
-      // setShow(res.data.varc);
-      setLoading(false);
-    } else {
-      console.log("error", res);
-      setLoading(false);
+  const [correction, setCorrection] = useState(); // correct or Inncorect or skipped state
+  const [section, setSection] = useState("allsections"); // Section wise filter
+  const [topic, setTopic] = useState({}); // topic wise
+
+  const [arr, setArr] = useState([]); //main Data
+
+  const [show, setShow] = useState([]); // changeable state come from filter`
+
+  const [topicList, setTopicList] = useState([
+    { name: "All Topics", value: "all topics" },
+  ]);
+
+  const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
+
+  //  calling api
+  useEffect(() => {
+    const getData = async () => {
+      const res = await fetchErrorTracker(attemptId);
+      setLoading(true);
+      if (res?.status === 200) {
+        setData(res.data);
+        setLoading(false);
+      } else {
+        console.log("Error fetching data: ", res);
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
+  // set correction
+  useEffect(() => {
+    let graphData;
+    if (correction === "correct") {
+      setColorDetailing(CorrectDetailing);
+      graphData = data.correctGraph;
+    } else if (correction === "incorrect") {
+      setColorDetailing(IncorrectDetailing);
+      graphData = data.incorrectGraph;
+    } else if (correction === "skipped") {
+      setColorDetailing(SkippedDetailing);
+      graphData = data.skippedGraph;
     }
-  };
-  function filterData(type1, type3, type2, type4) {
-    let result = [];
-    arr.map(function (e, i) {
-      if (type3 == "quants") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
+    if (section !== "allsections") {
+      graphData = data[section + correction + "Graph"];
+    }
+    setGraphData(graphData);
+  }, [correction, show, section, data]);
+
+  // setting topic list
+  // useEffect(() => {
+  //   console.log(data);
+  //   const arr = data?.[section + "Topic"];
+  //   console.log(arr);
+  //   const newArr = [{ name: "All Topics", value: "all topics" }];
+  //   arr?.map((item, index) => {
+  //     newArr.push({ name: item, value: item });
+  //   });
+  //   // console.log(newArr);
+  //   return setTopicList(newArr);
+  // }, [section, data]);
+
+  useEffect(() => {
+    const topicArr = [];
+
+    if (section === "allsections") {
+      filter2.forEach((sec) => {
+        const arr = data?.[sec.value + "Topic"]; //varctopic,lrdiTopic,quantsTopic
+        arr?.forEach((item) => {
+          if (!topicArr.includes(item)) {
+            topicArr.push(item);
+          }
+        });
+      });
+    } else {
+      const arr = data?.[section + "Topic"];
+      arr?.forEach((item) => {
+        if (!topicArr.includes(item)) {
+          topicArr.push(item);
         }
-      }
-      if (type3 == "varc") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
-        }
-      }
-      if (type3 == "lrdi") {
-        if (e.isCorrect == type1 && e.topic == type4) {
-          result.push(e);
-        }
-      }
+      });
+    }
+
+    const newArr = [{ name: "All Topics", value: "all topics" }];
+    topicArr.forEach((item) => {
+      newArr.push({ name: item, value: item });
     });
-    // console.log(result);
-    return setShow(result);
+
+    console.log(newArr);
+    setTopicList(newArr);
+  }, [section, data]);
+
+  // Set the sections
+  useEffect(() => {
+    if (data || data.length > 0) {
+      //set the all sections array
+      if (section === "allsections") {
+        const mergedArr = [
+          ...(Array.isArray(data.lrdi) ? data.lrdi : []),
+          ...(Array.isArray(data.varc) ? data.varc : []),
+          ...(Array.isArray(data.quants) ? data.quants : []),
+        ];
+        setArr(mergedArr);
+      } else {
+        setArr(data[section]);
+      }
+    }
+  }, [data, section, correction]);
+
+  // update the "show" state whenever the filters change
+
+  function filterData() {
+    let filteredData = arr;
+
+    if (correction && correction !== "all") {
+      filteredData = filteredData.filter(
+        (item) => item.isCorrect === correction
+      );
+    }
+
+    if (section) {
+      filteredData = filteredData.map((item) => item);
+    }
+
+    if (topic && topic !== "all topics") {
+      filteredData = filteredData.filter((item) => item.topic === topic);
+    }
+
+    switch (priorty) {
+      case "All Questions":
+        filteredData = filteredData.filter((item) => item);
+        break;
+      case "Easy":
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
+        break;
+
+      case "Moderate":
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
+        break;
+
+      case "Hard":
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
+        break;
+
+      default:
+        break;
+    }
+
+    handleColorDetail("all");
+    setShow(filteredData);
   }
 
-  // high low
+  useEffect(filterData, [correction, section, topic, arr, priorty]);
 
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleColorDetail = (val) => {
+    setColorDetail(val);
+    if (arr.length > 0) {
+      if (val === "all") {
+        filterData = arr.filter((item) => item.isCorrect === correction);
+        setShow(filterData);
+      } else {
+        const filterData = arr.filter((item) => item.error === val);
+        setShow(filterData);
+      }
+    }
   };
+
+  console.log("arr", arr);
+  console.log("data  mmmmm", data);
+  console.log("show", show);
+  console.log("Sections", section);
+  console.log(graphData, "graohData");
 
   return (
     <Box component="main" sx={{ height: "100vh" }}>
       <MenuDrawer />
 
-      <Box sx={{ p: 2, position: "absolute", left: "70px" }}>
+      <Box
+        sx={{
+          p: 2,
+          position: "absolute",
+          left: "70px",
+          width: "calc(100% - 70px)",
+        }}
+      >
         {/* Header */}
         <Box component="header">
           <HeaderNew />
@@ -180,7 +281,7 @@ function ErrorTracker() {
               sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}
             >
               {" "}
-              <MultipleSelect options={filter1} setType={setType1} />
+              <MultipleSelect options={filter1} setType={setCorrection} />
               <Box
                 sx={{
                   display: "flex",
@@ -189,19 +290,12 @@ function ErrorTracker() {
                   justifyContent: "space-between",
                 }}
               >
-                {/* <MultipleSelect options={filter2} setType={setType2} type={"Mock"} /> */}
                 <div className="d-flex gap-3">
-                  <MultipleSelect options={filter3} setType={setType3} />
-                  <MultipleSelect options={filter4} setType={setType4} />
-                  <MultipleSelect options={filter4} setType={setType4} />
+                  <MultipleSelect options={filter2} setType={setSection} />
+                  <MultipleSelect options={topicList} setType={setTopic} />
                 </div>
                 <div>
-                  <MySelectField
-                    label="Select an option"
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                    options={options}
-                  />
+                  <MultipleSelect options={priorities} setType={setPriorty} />
                 </div>
               </Box>
             </Box>
@@ -237,10 +331,22 @@ function ErrorTracker() {
                   justifyContent: " ",
                 }}
               >
-                <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                  <BarGraph Data={graphData} width={"97%"} legend={false} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    width: "35rem",
+                  }}
+                >
+                  <BarGraph
+                    Data={graphData && graphData[0]}
+                    width={"97%"}
+                    legend={false}
+                  />
                 </Box>
-                <Box sx={{ mt: 2 }}>{<GraphComp />}</Box>
+                <Box sx={{ mt: 2 }}>
+                  {<GraphComp colorDetailing={colorDetailing} />}
+                </Box>
               </Box>
               {/* Graph side div end */}
 
@@ -276,137 +382,161 @@ function ErrorTracker() {
                       Question Selector
                     </Typography>
 
-                    <div className="d-flex gap-3 ">
-                      {[
-                        { color: "#48E5DD", value: "" },
-                        { color: "#FF6CB6", value: "" },
-                        { color: "#FFBC5E", value: "" },
-                        { color: "#4732CC", value: "" },
-                        { color: "#1D9374", value: "" },
-                        { color: "#FF6238", value: "" },
-                        { color: "#1D5C81", value: "" },
-                        { color: "#ADADAD", value: "" },
-                      ].map((item, _) => {
-                        return (
-                          <div
-                            style={{
-                              backgroundColor: item.color,
-                              width: 26,
-                              height: 26,
-                              borderRadius: "50%",
-                              cursor: "pointer",
-                            }}
-                          />
-                        );
-                      })}
+                    <div className="d-flex gap-3">
+                      {colorDetailing &&
+                        colorDetailing.map((item, ind) => {
+                          return (
+                            <Tooltip title={item.value} placement="top" arrow>
+                              <div
+                                key={ind}
+                                onClick={() => {
+                                  // section !== "allsections" && setArr(data[section]);
+                                  handleColorDetail(item.value);
+                                }}
+                                style={{
+                                  background: item.color,
+                                  width: colorDetail === item.value ? 29 : 26,
+                                  height: colorDetail === item.value ? 29 : 26,
+                                  borderRadius: "50%",
+                                  cursor: "pointer",
+                                  transition: "all 0.2s ease-in-out",
+                                  boxShadow:
+                                    colorDetail === item.value
+                                      ? "0 0 10px rgba(0, 0, 0, 0.5)"
+                                      : "none",
+                                  border:
+                                    colorDetail === item.value
+                                      ? "0px solid #333"
+                                      : "none",
+                                }}
+                              />
+                            </Tooltip>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
+                {show
+                  ? show.map((item, index) => {
+                      const colorObj = colorDetailing.find(
+                        (detail) => item.error === detail.value
+                      );
 
-                {[...Array(10)].map((item, index) => (
-                  <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
-                    <Card
-                      sx={{
-                        maxWidth: " 100% ",
-                        background: "#F6F7F8",
-                        p: 2,
-                        boxShadow: "none",
-                        borderLeft: "8px solid #FFBD5E",
-                        borderRadius: "5px 10px 10px 5px",
-                      }}
-                    >
-                      <CardContent sx={{ display: "flex", gap: 2 }}>
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--inter)",
-                            fontSize: "19px",
-                            fontWeight: 800,
-                            lineHeight: "29px",
-                            textAlign: "left",
-                          }}
-                        >
-                          Q{index + 1}.
-                        </Typography>
-                        <Typography variant="paragraph" color="text.secondary">
-                          Sohan started a business with a capital of RS. 80000.
-                          After 6 months Mohan joined as a partner by investing
-                          Rs 65000. After one year they earned total profit RS.
-                          20000. What is share of shahin in the profit?
-                        </Typography>
-                      </CardContent>
-                      <CardActions
-                        sx={{ justifyContent: "space-between", px: 3 }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            columnGap: 2,
-                            flexWrap: "wrap",
-                            rowGap: 2,
-                          }}
-                        >
-                          <Button
-                            size="medium"
-                            disabled={true}
-                            variant="contained"
+                      const borderColor = colorObj
+                        ? colorObj.color
+                        : "transparent";
+
+                      return (
+                        <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
+                          <Card
                             sx={{
-                              ...disableStyle,
-                              ":disabled": {
-                                color: "#000000",
-                              },
-                              "& > span": {
-                                color: "#00C838 !important",
-                              },
+                              maxWidth: " 100% ",
+                              background: "#eaeaea",
+                              p: 2,
+                              boxShadow: "none",
+                              color: "black",
+                              borderLeft: "8px solid",
+                              borderRadius: "5px 10px 10px 5px",
+                              borderColor: borderColor,
+                              width: "100%",
                             }}
                           >
-                            Difficulty:<span>Easy</span>
-                          </Button>
-                          <Button
-                            size="medium"
-                            disabled={true}
-                            variant="contained"
-                            sx={{
-                              ...disableStyle,
-                              ":disabled": {
-                                color: "#636363",
-                              },
-                              "& > span": {
-                                color: "#000000 !important",
-                              },
-                            }}
-                          >
-                            Time :<span>00:02:23</span>
-                          </Button>
-                          <Button
-                            disabled={true}
-                            sx={{
-                              ...disableStyle,
-                              ":disabled": {
-                                color: "#636363",
-                              },
-                              "& > span": {
-                                color: "black !important",
-                              },
-                            }}
-                            variant="contained"
-                          >
-                            Avg Time : <span>00:01:39</span>
-                          </Button>
+                            <CardContent sx={{ display: "flex", gap: 2 }}>
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--inter)",
+                                  fontSize: "19px",
+                                  fontWeight: 800,
+                                  lineHeight: "29px",
+                                  textAlign: "left",
+                                }}
+                              >
+                                Q{index + 1}.
+                              </Typography>
+                              <div>
+                                <Latex>{item.question}</Latex>
+                              </div>
+                            </CardContent>
+                            <CardActions
+                              sx={{ justifyContent: "space-between", px: 3 }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  columnGap: 2,
+                                  flexWrap: "wrap",
+                                  rowGap: 2,
+                                }}
+                              >
+                                <Button
+                                  size="medium"
+                                  disabled={true}
+                                  variant="contained"
+                                  sx={{
+                                    ...disableStyle,
+                                    ":disabled": {
+                                      color: "#000000",
+                                    },
+                                    "& > span": {
+                                      color:
+                                        item.difficulty === "Easy"
+                                          ? "#00C838 !important"
+                                          : item.difficulty === "Moderate"
+                                          ? "#FF6238"
+                                          : "#FF0000",
+                                    },
+                                  }}
+                                >
+                                  Difficulty:<span>{item.difficulty}</span>
+                                </Button>
+                                <Button
+                                  size="medium"
+                                  disabled={true}
+                                  variant="contained"
+                                  sx={{
+                                    ...disableStyle,
+                                    ":disabled": {
+                                      color: "#636363",
+                                    },
+                                    "& > span": {
+                                      color: "#000000 !important",
+                                    },
+                                  }}
+                                >
+                                  Time :<span>{item.duration}</span>
+                                </Button>
+                                <Button
+                                  disabled={true}
+                                  sx={{
+                                    ...disableStyle,
+                                    ":disabled": {
+                                      color: "#636363",
+                                    },
+                                    "& > span": {
+                                      color: "black !important",
+                                    },
+                                  }}
+                                  variant="contained"
+                                >
+                                  Avg Time : <span>{item.averageDuration}</span>
+                                </Button>
+                              </Box>
+                              <div>
+                                <Button
+                                  size="medium"
+                                  endIcon={<IoIosArrowForward />}
+                                  sx={{ background: "#3A36DB", float: "end" }}
+                                  variant="contained"
+                                >
+                                  Solution
+                                </Button>
+                              </div>
+                            </CardActions>
+                          </Card>
                         </Box>
-                        <div>
-                          <Button
-                            size="medium"
-                            endIcon={<IoIosArrowForward />}
-                            sx={{ background: "#3A36DB", float: "end" }}
-                            variant="contained"
-                          >
-                            Solution
-                          </Button>
-                        </div>
-                      </CardActions>
-                    </Card>
-                  </Box>
-                ))}
+                      );
+                    })
+                  : "<h1>No Questions</h1>"}
               </Box>
               {/*Question side box end*/}
             </Box>
@@ -417,94 +547,37 @@ function ErrorTracker() {
   );
 }
 
-const MyStyledSelect = styled(Select)(({ theme, icon }) => ({
-  select: {
-    paddingRight: theme.spacing(4),
-    "& .MuiSelect-icon": {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      right: 0,
-      top: "50%",
-      transform: "translateY(-50%)",
-    },
-  },
-  icon: {
-    position: "absolute",
-    pointerEvents: "none",
-    right: 0,
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "black",
-  },
-}));
-
-function MySelectField({ label, value, onChange, options }) {
-  const handleSortChange = (event) => {
-    const sortOption = event.target.value;
-    if (sortOption === "low-to-high") {
-      // Sort low to high
-      console.log("Low to high selected");
-    } else if (sortOption === "high-to-low") {
-      // Sort high to low
-      console.log("High to low selected");
-    } else {
-      // No sort selected
-      console.log("No sort selected");
-    }
-  };
-
+const GraphComp = ({ colorDetailing }) => {
   return (
-    <FormControl variant="outlined">
-      <MyStyledSelect
-        value="high-to-low"
-        onChange={onChange}
-        icon={<BsSortDown />}
-        sx={{
-          width: "127",
-          borderRadius: 2,
-          height: 32,
-          fontSize: "12px",
-          fontWeight: 700,
-          fontFamily: "var(--font-inter)",
+    <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
+      {colorDetailing &&
+        colorDetailing.slice(1).map((item, _) => {
+          return (
+            <Box
+              component="item"
+              sx={{
+                display: "flex",
 
-          ".MuiOutlinedInput-notchedOutline": {
-            border: 1,
-            borderColor: "#809EB9",
-          },
-          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-            border: 1,
-            borderColor: "#809EB9",
-          },
-          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-            {
-              border: 2,
-              borderColor: "#809EB9",
-            },
-        }}
-      >
-        <MenuItem
-          value="low-to-high"
-          sx={{
-            fontFamily: "var(--font-inter)",
-            fontSize: "11px",
-            fontWeight: "600",
-          }}
-        >
-          Low to High
-        </MenuItem>
-        <MenuItem
-          value="high-to-low"
-          sx={{
-            fontFamily: "var(--font-inter)",
-            fontSize: "11px",
-            fontWeight: "600",
-          }}
-        >
-          High to Low
-        </MenuItem>
-      </MyStyledSelect>
-    </FormControl>
+                p: 1,
+                flexBasis: "50%",
+                textAlign: "left",
+              }}
+            >
+              <Box
+                sx={{
+                  bgcolor: item.color,
+                  borderRadius: "50%",
+                  marginRight: "5px",
+                  width: "21px",
+                  height: "21px",
+                }}
+              ></Box>
+              <Typography variant="paragraph">{item.value}</Typography>
+            </Box>
+          );
+        })}
+    </Box>
   );
-}
+};
+
 export default ErrorTracker;

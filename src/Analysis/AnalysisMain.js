@@ -223,7 +223,7 @@ function AnalysisMain() {
                       sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}
                     >
                       This is your mock Analysis for
-                      {title ? title : "iCAT 1.0"}.
+                      {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
                   </div>
 
@@ -283,6 +283,13 @@ function AnalysisMain() {
                       height: 177,
                       borderRadius: 5,
                       boxShadow: "none",
+                      cursor: "pointer",
+                      transition: "transform 0.5s ease-out",
+                      ":hover": {
+                        boxShadow: 5,
+                        transform: "scale(1.1)",
+                        transition: "transform 0.5s ease-out", // set a longer duration for the hover transformation
+                      },
                     }}
                   >
                     <CardMedia
@@ -539,7 +546,7 @@ function AnalysisMain() {
                       fontFamily: "var(--font-inter)",
                     }}
                   >
-                    Time spent on questions(sec):
+                    Time spent on questions:
                   </Box>
                   <span>
                     <img
