@@ -64,7 +64,6 @@ export default function ViewSolution() {
     { name: "LRDI", value: "lrdi" },
     { name: "Quants", value: "quants" },
   ];
-
   const ITEM_HEIGHT = "48";
   const ITEM_PADDING_TOP = 3;
   const MenuProps = {
@@ -77,7 +76,6 @@ export default function ViewSolution() {
   console.log(data);
   console.log(open);
   console.log(index);
-
 
   // console.log(data);
   // console.log(open);
@@ -104,90 +102,91 @@ export default function ViewSolution() {
 
   // getting a specific question om mounting
 
-  useEffect(async () => {
-    if (state !== null) {
-      console.log("flow2");
-      const questionId = state.question_id;
-      setLoading(true);
-      const res = await fetchViewSolution(attemptId);
-      if (res?.status == 200) {
-        setData(res.data);
-        res.data?.varc.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("varc");
-            setShow(res.data.varc);
-            setLoading(false);
-          }
-        });
-        res.data?.lrdi.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("lrdi");
-            setShow(res.data.lrdi);
-            setLoading(false);
-          }
-        });
-        res.data?.quants.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("quants");
-            setShow(res.data.quants);
-            setLoading(false);
-          }
-        });
-        // setShow(res.data[selected])
+  useEffect(() => { 
+    const func = async () => {
+      if (state !== null) {
+        console.log("flow2");
+        const questionId = state.question_id;
+        setLoading(true);
+        const res = await fetchViewSolution(attemptId);
+        if (res?.status == 200) {
+          setData(res.data);
+          res.data?.varc.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("varc");
+              setShow(res.data.varc);
+              setLoading(false);
+            }
+          });
+          res.data?.lrdi.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("lrdi");
+              setShow(res.data.lrdi);
+              setLoading(false);
+            }
+          });
+          res.data?.quants.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("quants");
+              setShow(res.data.quants);
+              setLoading(false);
+            }
+          });
+          // setShow(res.data[selected])
+        }
       }
-    }
+    };
+    func();
   }, []);
   console.log(data);
 
   // function getting data on mounting
   useEffect(() => {
+      const getData = async () => {
+        setLoading(true);
+        const res = await fetchViewSolution(attemptId);
+        if (res?.status == 200) {
+          setData(res.data);
+          setShow(res.data.varc);
+          // setTrackerVA(res.data.varc);
+          setTrackerLR(res.data.lrdi);
+          setTrackerQU(res.data.quants);
+          const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
+          const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
+          const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
+          // getting data from local storage(error form)
+          if (errTrackerV?.length > 0) {
+            setTrackerVA(errTrackerV);
+          } else {
+            setTrackerVA(res.data.varc);
+          }
+          if (errTrackerL?.length > 0) {
+            setTrackerLR(errTrackerL);
+          } else {
+            setTrackerLR(res.data.lrdi);
+          }
+          if (errTrackerQ?.length > 0) {
+            setTrackerQU(errTrackerQ);
+          } else {
+            setTrackerQU(res.data.quants);
+          }
+          setLoading(false);
+        } else {
+          setLoading(false);
+          console.log("error", res);
+        }
+      };
     if (state === null) {
       getData();
     }
   }, []);
 
-  // function for fetching data
-
-  const getData = async () => {
-    setLoading(true);
-    const res = await fetchViewSolution(attemptId);
-    if (res?.status == 200) {
-      setData(res.data);
-      setShow(res.data.varc);
-      // setTrackerVA(res.data.varc);
-      setTrackerLR(res.data.lrdi);
-      setTrackerQU(res.data.quants);
-      const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
-      const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
-      const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
-      // getting data from local storage(error form)
-      if (errTrackerV?.length > 0) {
-        setTrackerVA(errTrackerV);
-      } else {
-        setTrackerVA(res.data.varc);
-      }
-      if (errTrackerL?.length > 0) {
-        setTrackerLR(errTrackerL);
-      } else {
-        setTrackerLR(res.data.lrdi);
-      }
-      if (errTrackerQ?.length > 0) {
-        setTrackerQU(errTrackerQ);
-      } else {
-        setTrackerQU(res.data.quants);
-      }
-      setLoading(false);
-    } else {
-      setLoading(false);
-      console.log("error", res);
-    }
-  };
 
   // Changing sectionwise data
 

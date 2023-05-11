@@ -92,10 +92,6 @@ function SectionAnalysis() {
                     color: "black",
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
-                    state: {
-                      question_id : item.question_id
-                  } })}
                 >
                   <StyledTableCell align="center">{index + 1}</StyledTableCell>
                   <StyledTableCell align="center">{item.topic}</StyledTableCell>
