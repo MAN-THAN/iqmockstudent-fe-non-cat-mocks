@@ -4,7 +4,7 @@ import { IoBookSharp } from "react-icons/io5";
 import Typography from "@mui/material/Typography";
 
 import { BootstrapButton, BootstrapTooltip } from "../styleSheets/Style";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { StyledMenu } from "../styleSheets/Style";
 import Zoom from "@mui/material/Zoom";
@@ -26,22 +26,20 @@ import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 import MultipleSelect from "../Common-comp/SelectField";
-import {
-  IncorrectDetailing,
-  CorrectDetailing,
-  SkippedDetailing,
-} from "../services/DataFiles";
-import { useMemo } from "react";
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default function ViewSolution() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
-    useAuth();
-
-  const [selected, setSelected] = useState("varc");
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selected, setSelected] = useState(null);
   const { attemptId } = useParams();
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
@@ -50,12 +48,30 @@ export default function ViewSolution() {
   const [errTrackerLR, setTrackerLR] = useState([]);
   const [errTrackerQU, setTrackerQU] = useState([]);
   const [errValue, setErrValue] = useState("");
+  const { state } = useLocation();
+  const [defVal, setDefVal] = useState("varc");
+  console.log(state);
 
-  const Subjects = [
+
+  const options = [
     { name: "VARC", value: "varc" },
     { name: "LRDI", value: "lrdi" },
     { name: "Quants", value: "quants" },
   ];
+
+  const ITEM_HEIGHT = "48";
+  const ITEM_PADDING_TOP = 3;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+  console.log(data);
+  console.log(open);
+  console.log(index);
+
 
   // console.log(data);
   // console.log(open);
@@ -79,9 +95,55 @@ export default function ViewSolution() {
   //   }
   //   console.log(errTrackerL, errTrackerQ, errTrackerV);
   // }, []);
+
+  // getting a specific question om mounting
+
+  useEffect(async () => {
+    if (state !== null) {
+      console.log("flow2");
+      const questionId = state.question_id;
+      setLoading(true);
+      const res = await fetchViewSolution(attemptId);
+      if (res?.status == 200) {
+        setData(res.data);
+        res.data?.varc.map((item, index) => {
+          if (item.question_id === questionId) {
+            console.log(item, index);
+            setIndex(index);
+            setDefVal("varc");
+            setShow(res.data.varc);
+            setLoading(false);
+          }
+        });
+        res.data?.lrdi.map((item, index) => {
+          if (item.question_id === questionId) {
+            console.log(item, index);
+            setIndex(index);
+            setDefVal("lrdi");
+            setShow(res.data.lrdi);
+            setLoading(false);
+          }
+        });
+        res.data?.quants.map((item, index) => {
+          if (item.question_id === questionId) {
+            console.log(item, index);
+            setIndex(index);
+            setDefVal("quants");
+            setShow(res.data.quants);
+            setLoading(false);
+          }
+        });
+        // setShow(res.data[selected])
+      }
+    }
+  }, []);
+  console.log(data);
+
   // function getting data on mounting
   useEffect(() => {
-    getData();
+    if (state === null) {
+      getData();
+    }
   }, []);
 
   // function for fetching data
@@ -91,7 +153,7 @@ export default function ViewSolution() {
     const res = await fetchViewSolution(attemptId);
     if (res?.status == 200) {
       setData(res.data);
-      setShow(res.data[selected]);
+      setShow(res.data.varc);
       // setTrackerVA(res.data.varc);
       setTrackerLR(res.data.lrdi);
       setTrackerQU(res.data.quants);
@@ -120,24 +182,6 @@ export default function ViewSolution() {
       console.log("error", res);
     }
   };
-
-  // const openMenu = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleFilter = (sub) => {
-  //   setAnchorEl(null);
-  //   setSelected(sub);
-  //   console.log(sub);
-  //   if (sub === "Verbal Ability") {
-  //     setShow(data?.varc);
-  //   } else if (sub === "Logical Reasoning") {
-  //     setShow(data?.lrdi);
-  //   } else if (sub === "Quants") {
-  //     setShow(data?.quants);
-  //   }
-  //   return setIndex(0);
-  // };
 
   // Changing sectionwise data
 
@@ -363,71 +407,72 @@ export default function ViewSolution() {
               }}
             >
               <div style={{ flexBasis: "10%" }}>
-                {/* <BootstrapButton
-                  id="demo-customized-button"
-                  aria-controls={openMenu ? "demo-customized-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={openMenu ? "true" : undefined}
-                  variant="contained"
-                  // disableElevation
-                  onClick={handleClick}
-                  endIcon={<KeyboardArrowDownIcon />}
-                  height={47}
+                {/* <MultipleSelect options={Subjects} setType={setSelected} /> */}
+                <FormControl
                   sx={{
-                    background: "#F1F4F9",
-                    "&:hover ,&:focus": {
-                      background: "#F1F4F9",
-                      color: "black",
-                    },
+                    display: "flex",
+                    flexDirection: "row",
+                    columnGap: 3,
                   }}
                 >
-                  {selected}
-                </BootstrapButton>
+                  <Select
+                    defaultValue={defVal}
+                    // value={selected}
+                    onChange={(e) => setSelected(e.target.value)}
+                    input={
+                      <OutlinedInput
+                        sx={{
+                          width: 127,
+                          borderRadius: 2,
+                          height: 32,
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-inter)",
 
-                <StyledMenu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleFilter}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                  sx={{ ml: 4 }}
-                >
-                  <MenuItem
-                    sx={{
-                      backgroundColor: selected === "Verbal Ability" ? "#f5f5f5" : "",
-                    }}
-                    onClick={() => handleFilter("Verbal Ability")}
-                    disableRipple
+                          ".MuiOutlinedInput-notchedOutline": {
+                            border: 1,
+                            borderColor: "#809EB9",
+                          },
+                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+                            border: 1,
+                            borderColor: "#809EB9",
+                          },
+                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: 2,
+                            borderColor: "#809EB9",
+                          },
+                        }}
+                      />
+                    }
+                    // renderValue={(selected) => {
+                    //   if (selected.length === 0) {
+                    //     return <em>Select{ " " + type }</em>;
+                    //   }
+
+                    //   return selected;
+                    // }}
+                    MenuProps={MenuProps}
+                    inputProps={{ "aria-label": "Select value" }}
                   >
-                    <IoBookSharp className="me-2" />
-                    Verbal Ability
-                  </MenuItem>
-                  <Divider sx={{ my: 0.5 }} />
-                  <MenuItem
-                    sx={{
-                      backgroundColor: selected === "Logical Reasoning" ? "#f5f5f5" : "",
-                    }}
-                    onClick={() => handleFilter("Logical Reasoning")}
-                    disableRipple
-                  >
-                    <IoBookSharp className="me-2" />
-                    Logical Reasoning
-                  </MenuItem>
-                  <Divider sx={{ my: 0.5 }} />
-                  <MenuItem
-                    sx={{
-                      backgroundColor: selected === "Quants" ? "#f5f5f5" : "",
-                    }}
-                    onClick={() => handleFilter("Quants")}
-                    disableRipple
-                  >
-                    <IoBookSharp className="me-2" />
-                    Quants
-                  </MenuItem>
-                </StyledMenu> */}
-                <MultipleSelect options={Subjects} setType={setSelected} />
+                    <MenuItem value={""} disabled>
+                      <em>Select</em>
+                    </MenuItem>
+                    {options &&
+                      options.map((item, _) => (
+                        <MenuItem
+                          key={item.name}
+                          value={item.value}
+                          sx={{
+                            fontFamily: "var(--font-inter)",
+                            fontSize: "11px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
               </div>
 
               <NavigationAvatar
