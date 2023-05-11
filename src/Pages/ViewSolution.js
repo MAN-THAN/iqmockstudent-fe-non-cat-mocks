@@ -26,20 +26,22 @@ import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 import MultipleSelect from "../Common-comp/SelectField";
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import {
   IncorrectDetailing,
   CorrectDetailing,
   SkippedDetailing,
 } from "../services/DataFiles";
 import { useMemo } from "react";
-import Select from "@mui/material/Select";
-import OutlinedInput from "@mui/material/OutlinedInput";
 
 export default function ViewSolution() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
-    useAuth();
-
-  const [selected, setSelected] = useState("varc");
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selected, setSelected] = useState(null);
   const { attemptId } = useParams();
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
@@ -55,7 +57,7 @@ export default function ViewSolution() {
   const { state } = useLocation();
   const [defVal, setDefVal] = useState("varc");
   console.log(state);
-  // const options = [
+
 
   const options = [
     { name: "VARC", value: "varc" },
@@ -100,91 +102,91 @@ export default function ViewSolution() {
 
   // getting a specific question om mounting
 
-  useEffect(async () => {
-    if (state !== null) {
-      console.log("flow2");
-      const questionId = state.question_id;
-      setLoading(true);
-      const res = await fetchViewSolution(attemptId);
-      if (res?.status == 200) {
-        setData(res.data);
-        res.data?.varc.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("varc");
-            setShow(res.data.varc);
-            setLoading(false);
-          }
-        });
-        res.data?.lrdi.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("lrdi");
-            setShow(res.data.lrdi);
-            setLoading(false);
-          }
-        });
-        res.data?.quants.map((item, index) => {
-          if (item.question_id === questionId) {
-            console.log(item, index);
-            setIndex(index);
-            setDefVal("quants");
-            setShow(res.data.quants);
-            setLoading(false);
-          }
-        });
-        // setShow(res.data[selected])
+  useEffect(() => { 
+    const func = async () => {
+      if (state !== null) {
+        console.log("flow2");
+        const questionId = state.question_id;
+        setLoading(true);
+        const res = await fetchViewSolution(attemptId);
+        if (res?.status == 200) {
+          setData(res.data);
+          res.data?.varc.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("varc");
+              setShow(res.data.varc);
+              setLoading(false);
+            }
+          });
+          res.data?.lrdi.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("lrdi");
+              setShow(res.data.lrdi);
+              setLoading(false);
+            }
+          });
+          res.data?.quants.map((item, index) => {
+            if (item.question_id === questionId) {
+              console.log(item, index);
+              setIndex(index);
+              setDefVal("quants");
+              setShow(res.data.quants);
+              setLoading(false);
+            }
+          });
+          // setShow(res.data[selected])
+        }
       }
-    }
-    return () => { }
+    };
+    func();
   }, []);
   console.log(data);
 
   // function getting data on mounting
   useEffect(() => {
+      const getData = async () => {
+        setLoading(true);
+        const res = await fetchViewSolution(attemptId);
+        if (res?.status == 200) {
+          setData(res.data);
+          setShow(res.data.varc);
+          // setTrackerVA(res.data.varc);
+          setTrackerLR(res.data.lrdi);
+          setTrackerQU(res.data.quants);
+          const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
+          const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
+          const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
+          // getting data from local storage(error form)
+          if (errTrackerV?.length > 0) {
+            setTrackerVA(errTrackerV);
+          } else {
+            setTrackerVA(res.data.varc);
+          }
+          if (errTrackerL?.length > 0) {
+            setTrackerLR(errTrackerL);
+          } else {
+            setTrackerLR(res.data.lrdi);
+          }
+          if (errTrackerQ?.length > 0) {
+            setTrackerQU(errTrackerQ);
+          } else {
+            setTrackerQU(res.data.quants);
+          }
+          setLoading(false);
+        } else {
+          setLoading(false);
+          console.log("error", res);
+        }
+      };
     if (state === null) {
       getData();
     }
   }, []);
 
-  // function for fetching data
-
-  const getData = async () => {
-    setLoading(true);
-    const res = await fetchViewSolution(attemptId);
-    if (res?.status == 200) {
-      setData(res.data);
-      setShow(res.data.varc);
-      // setTrackerVA(res.data.varc);
-      setTrackerLR(res.data.lrdi);
-      setTrackerQU(res.data.quants);
-      const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
-      const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
-      const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
-      // getting data from local storage(error form)
-      if (errTrackerV?.length > 0) {
-        setTrackerVA(errTrackerV);
-      } else {
-        setTrackerVA(res.data.varc);
-      }
-      if (errTrackerL?.length > 0) {
-        setTrackerLR(errTrackerL);
-      } else {
-        setTrackerLR(res.data.lrdi);
-      }
-      if (errTrackerQ?.length > 0) {
-        setTrackerQU(errTrackerQ);
-      } else {
-        setTrackerQU(res.data.quants);
-      }
-      setLoading(false);
-    } else {
-      setLoading(false);
-      console.log("error", res);
-    }
-  };
 
   // Changing sectionwise data
 
