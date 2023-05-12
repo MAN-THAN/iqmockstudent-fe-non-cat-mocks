@@ -94,12 +94,18 @@ function OnBoarding() {
       <Box>
         <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
       </Box>
-      <Box sx={{ width: "100%", height: "100%", marginTop : "8em" }}>
+      <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
         <LineChart1 percentile={percentile} />
       </Box>
       <Box sx={{ position: "absolute", top: "15%", zIndex: 100 }}>
         <Accordion defaultExpanded={true} expanded={expand}>
-          <AccordionSummary onClick={ () => setExpand(!expand)} sx={{ margin : 0}} aria-controls="panel1a-content" id="panel1a-header" expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary
+            onClick={() => setExpand(!expand)}
+            sx={{ margin: 0 }}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon />}
+          >
             <Typography
               sx={{
                 color: "#1066DA",
@@ -204,7 +210,7 @@ function OnBoarding() {
                         </Table>
                       </TableContainer>
                     }
-                    heading={"Where you went wrong?"}
+                    heading={"B-Schools you can Crack"}
                   />
                 </Box>
                 {/* <Box>
@@ -221,7 +227,9 @@ function OnBoarding() {
               </Box>
             </Box>
           </Box>
-      ):(<></>)}
+        ) : (
+          <></>
+        )}
       </Box>
       <Box
         sx={{

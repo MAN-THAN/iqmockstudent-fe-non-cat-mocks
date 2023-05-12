@@ -18,6 +18,8 @@ import CustomizedAccordions from "../Common-comp/Accordian";
 import GoalGraph from "../Common-comp/GoalGraph";
 import { getGoalTrackerData } from "../services/Analysis_api";
 import YourGraph from "../Common-comp/YourGraph";
+import LineGraph2 from "../Components/LineGraph2";
+import LineGraph3 from "../Components/LineGraph3";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -115,6 +117,7 @@ export default function GoalTracker() {
       setLoading(false)
     }
   };
+
   return (
     <Box sx={{ width: "100vw", height: "100vh" }}>
       <Box>
@@ -124,7 +127,7 @@ export default function GoalTracker() {
       <Box
         sx={{
           ml: "65px",
-           background: isLoading ?"":"url(/GoalTrackerBackground.jpg)",
+          background: isLoading ? "" : "url(/GoalTrackerBackground.jpg)",
           backgroundSize: "cover",
           height: "100vh",
           p: 2,
@@ -135,151 +138,149 @@ export default function GoalTracker() {
         <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
 
         {/* Header end  */}
-         {/* main Section start */}
-        {isLoading? 
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
+        {/* main Section start */}
+        {isLoading ? (
+          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
-           </div>:
-        
-         <Box
-          component="main"
-          sx={{ display: "flex", flexDirection: "column", mt: 2 }}
-        >
-          {/* Two div */}
-          <Box component="div" sx={{ display: "flex", gap: 2 }}>
-            <Box
-              component="div"
-              sx={{
-                width: 532,
-                height: 269,
-                zIndex: 999,
-                borderRadius: "25px",
-                background: "white",
-                p: 1,
-              }}
-            >
-              <Backdrop
+          </div>
+        ) : (
+          <Box component="main" sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+            {/* Two div */}
+            <Box component="div" sx={{ display: "flex", gap: 2 }}>
+              <Box
+                component="div"
                 sx={{
-                  zIndex: (theme) => theme.zIndex.drawer - 1,
-                  color: "#fff",
+                  width: 532,
+                  height: 269,
+                  zIndex: 999,
+                  borderRadius: "25px",
+                  background: "white",
+                  p: 1,
                 }}
-                open={menuBarOpen}
-                onClick={() => setMenuBarOpen(false)}
-              />
-              <DetailCards
-                cardContent={<CustomizedAccordions />}
-                heading={"Where you went wrong?"}
-                logoPath={"/CardsIcons/idea1.png"}
-              />
+              >
+                <Backdrop
+                  sx={{
+                    zIndex: (theme) => theme.zIndex.drawer - 1,
+                    color: "#fff",
+                  }}
+                  open={menuBarOpen}
+                  onClick={() => setMenuBarOpen(false)}
+                />
+                <DetailCards cardContent={<CustomizedAccordions />} heading={"Where you went wrong?"} logoPath={"/CardsIcons/idea1.png"} />
+              </Box>
+
+              <Box
+                component="div"
+                sx={{
+                  width: 427,
+                  height: 176,
+                  borderRadius: "25px",
+                  background: "white",
+                  zIndex: 99,
+                  p: 1,
+                }}
+              >
+                <DetailCards
+                  logoPath={"/goalSchool.png"}
+                  cardContent={
+                    <TableContainer>
+                      <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
+                        <TableHead>
+                          <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
+                            <TableCell sx={cellStyle} align="left">
+                              1
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Indore
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Rokiee
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              FMS
+                            </TableCell>
+                          </TableRow>
+                          <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
+                            <TableCell sx={cellStyle} align="left">
+                              1
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Indore
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              IIM Rokiee
+                            </TableCell>
+                            <TableCell sx={cellStyle} align="left">
+                              FMS
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
+                  }
+                  heading={"Where you went wrong?"}
+                />
+              </Box>
             </Box>
 
+            {/* Graph start */}
             <Box
-              component="div"
               sx={{
-                width: 427,
-                height: 176,
-                borderRadius: "25px",
-                background: "white",
-                zIndex: 99,
+                width: "95%",
+                height: "100%",
+                position: "absolute",
+                bottom: 0,
+              }}
+            >
+              {/* <YourGraph goalData={goalData} /> */}
+              <LineGraph2 percentile={89} />
+            </Box>
+            <Box
+              sx={{
+                width: "95%",
+                height: "100%",
+                position: "absolute",
+                bottom: 0,
+              }}
+            >
+              {/* <YourGraph goalData={goalData} /> */}
+              <LineGraph3 percentile={89} />
+            </Box>
+
+            {/* Graph end */}
+            {/* bottom instuction Card */}
+            {/* Add the select field */}
+
+            <Box
+              component={Paper}
+              sx={{
+                width: 265,
+                height: 41,
+                position: "absolute",
+                bottom: 20,
+                right: 100,
+                borderRadius: "15px ",
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
                 p: 1,
               }}
             >
-              <DetailCards
-                logoPath={"/goalSchool.png"}
-                cardContent={
-                  <TableContainer>
-                    <Table
-                      sx={{ border: "none", borderCollapse: "collapse" }}
-                      aria-label="simple table"
-                    >
-                      <TableHead>
-                        <TableRow
-                          sx={{ fontWeight: "bold", lineHeight: "unset" }}
-                        >
-                          <TableCell sx={cellStyle} align="left">
-                            1
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            IIM Indore
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            IIM Rokiee
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            FMS
-                          </TableCell>
-                        </TableRow>
-                        <TableRow
-                          sx={{ fontWeight: "bold", lineHeight: "unset" }}
-                        >
-                          <TableCell sx={cellStyle} align="left">
-                            1
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            IIM Indore
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            IIM Rokiee
-                          </TableCell>
-                          <TableCell sx={cellStyle} align="left">
-                            FMS
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                    </Table>
-                  </TableContainer>
-                }
-                heading={"Where you went wrong?"}
-              />
+              <div style={infoStyle.divStyle}></div>
+              <Typography sx={infoStyle.textstyle}>Goal</Typography>
+              <div
+                style={{
+                  ...infoStyle.divStyle,
+                  background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+                }}
+              ></div>
+              <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
             </Box>
           </Box>
-
-          {/* Graph start */}
-          <Box
-            sx={{
-              width: "95%",
-              height: "30em",
-              position: "absolute",
-              bottom: 0,
-            }}
-          >
-            {/* <YourGraph goalData={goalData} /> */}
-            <GoalGraph result={result} />
-          </Box>
-
-          {/* Graph end */}
-          {/* bottom instuction Card */}
-          {/* Add the select field */}
-
-          <Box
-            component={Paper}
-            sx={{
-              width: 265,
-              height: 41,
-              position: "absolute",
-              bottom: 20,
-              right: 100,
-              borderRadius: "15px ",
-              display: "flex",
-              justifyContent: "space-around",
-              alignItems: "center",
-              p: 1,
-            }}
-          >
-            <div style={infoStyle.divStyle}></div>
-            <Typography sx={infoStyle.textstyle}>Goal</Typography>
-            <div
-              style={{
-                ...infoStyle.divStyle,
-                background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
-              }}
-            ></div>
-            <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
-          </Box>
-        </Box>}
+        )}
 
         {/* main Section end */}
       </Box>
