@@ -55,10 +55,7 @@ function LeaderBoard() {
     fetchLeaderBoard(attemptId);
   }, [filter]);
 
-
   console.log(filter, "fiilll");
-
-
 
   return (
     <div style={{ width: "100vw" }}>
