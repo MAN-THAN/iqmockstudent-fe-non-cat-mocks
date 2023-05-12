@@ -10,11 +10,16 @@ const data = [
   },
   {
     name: "Page A",
-    uv: 100,
+    uv: 30,
     pv: 0,
     // amt: 2400,
   },
-];
+ {
+    name: "Page A",
+    uv: 60,
+    pv: 0,
+    // amt: 2400,
+  }]
 
 function CustomDot(props) {
   const { cx, cy, stroke, strokeWidth, value } = props;
@@ -33,13 +38,13 @@ function YourGraph({ goalData }) {
     console.log(goalData)
   return (
       <LineChart
-        width={500}
-        height={300}
-        data={goalData}
+        width='100%'
+        height='100%'
+        data={data}
         margin={{
-          top: 30,
-          right: 100,
-          left: 25,
+          top: 200,
+          right: 200,
+          left: 200,
           bottom: 25,
         }}
       >
@@ -48,7 +53,7 @@ function YourGraph({ goalData }) {
           stroke="url(#gradient1)"
           strokeWidth={8}
         />
-        <Line strokeWidth={8} dataKey="percentile" stroke="url(#gradient2)" dot={<CustomDot />} />
+        <Line strokeWidth={8} dataKey="uv" stroke="url(#gradient2)" dot={<CustomDot />} />
         <svg>
           <defs>
             <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">

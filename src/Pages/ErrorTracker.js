@@ -13,7 +13,7 @@ import BarGraph from "../Components/BarGraphErrorTracker";
 import { useAuth } from "../services/Context";
 import { graphinstructionPoints } from "../services/DataFiles";
 import { fetchErrorTracker } from "../services/Analysis_api";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
@@ -81,6 +81,8 @@ function ErrorTracker() {
   ]);
 
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
+  const params = useParams();
+  const navigate = useNavigate();
 
   //  calling api
   useEffect(() => {
@@ -457,9 +459,7 @@ function ErrorTracker() {
                                 <Latex>{item.question}</Latex>
                               </div>
                             </CardContent>
-                            <CardActions
-                              sx={{ justifyContent: "space-between", px: 3 }}
-                            >
+                            <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
                               <Box
                                 sx={{
                                   display: "flex",
@@ -479,11 +479,7 @@ function ErrorTracker() {
                                     },
                                     "& > span": {
                                       color:
-                                        item.difficulty === "Easy"
-                                          ? "#00C838 !important"
-                                          : item.difficulty === "Moderate"
-                                          ? "#FF6238"
-                                          : "#FF0000",
+                                        item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
                                     },
                                   }}
                                 >
@@ -527,6 +523,13 @@ function ErrorTracker() {
                                   endIcon={<IoIosArrowForward />}
                                   sx={{ background: "#3A36DB", float: "end" }}
                                   variant="contained"
+                                  onClick={() =>
+                                    navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
+                                      state: {
+                                        question_id: item.question_id,
+                                      },
+                                    })
+                                  }
                                 >
                                   Solution
                                 </Button>
