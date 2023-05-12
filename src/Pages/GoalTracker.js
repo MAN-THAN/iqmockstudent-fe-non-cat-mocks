@@ -227,27 +227,30 @@ export default function GoalTracker() {
             </Box>
 
             {/* Graph start */}
-            <Box
-              sx={{
-                width: "95%",
-                height: "100%",
-                position: "absolute",
-                bottom: 0,
-              }}
-            >
-              {/* <YourGraph goalData={goalData} /> */}
-              <LineGraph2 percentile={89} />
-            </Box>
-            <Box
-              sx={{
-                width: "95%",
-                height: "100%",
-                position: "absolute",
-                bottom: 0,
-              }}
-            >
-              {/* <YourGraph goalData={goalData} /> */}
-              <LineGraph3 percentile={89} />
+              <Box>
+              {" "}
+              <Box
+                  sx={{
+                  width: "85%",
+                  height: "50%",
+                  position: "absolute",
+                  bottom: 0,
+                }}
+              >
+                {/* <YourGraph goalData={goalData} /> */}
+                <LineGraph2 percentile={95} />
+              </Box>
+              <Box
+                sx={{
+                  width: "85%",
+                  height: "50%",
+                  position: "absolute",
+                  bottom: 0,
+                }}
+              >
+                {/* <YourGraph goalData={goalData} /> */}
+                <LineGraph3 percentile={90} />
+              </Box>
             </Box>
 
             {/* Graph end */}

@@ -14,7 +14,7 @@ export default class LineGraph3 extends PureComponent {
         },
         {
           x: 50,
-          y: 100,
+          y: 90,
         },
         {
           x: 75,
@@ -60,9 +60,9 @@ export default class LineGraph3 extends PureComponent {
           width="100%"
           height="100%"
           margin={{
-            top: 200,
-            right: 200,
-            left: 200,
+            top: 50,
+            right: 0,
+            left: 0,
             bottom: 0,
           }}
         >
@@ -70,7 +70,7 @@ export default class LineGraph3 extends PureComponent {
 
           <YAxis
             dataKey="y"
-            domain={[0, 110]}
+            domain={[0, 100]}
             type="number"
             interval={0}
             label={{
@@ -87,7 +87,7 @@ export default class LineGraph3 extends PureComponent {
 
           <XAxis
             dataKey="x"
-            domain={[0, 110]}
+            domain={[0, 100]}
             interval={0}
             type="number"
             label={{
@@ -102,9 +102,9 @@ export default class LineGraph3 extends PureComponent {
 
           {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          {/* <Tooltip /> */}
+          <Tooltip />
 
-          <Line strokeWidth={10} data={this.state.data} type="fill" dataKey="y" stroke="#4C08D0" tooltipType="" activeDot={{ r: 100 }} />
+          <Line strokeWidth={10} data={this.state.data} type="fill" dataKey="y" stroke="#4C08D0" tooltipType="" activeDot={{ r: 10 }} />
         </LineChart>
       </ResponsiveContainer>
     );

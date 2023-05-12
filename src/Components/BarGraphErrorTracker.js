@@ -15,6 +15,7 @@ import {
   IncorrectDetailing,
   SkippedDetailing,
 } from "../services/DataFiles";
+
 function BarGraph({ Data, title, width, legend }) {
   const AllDetails = [
     ...CorrectDetailing,
@@ -61,7 +62,7 @@ function BarGraph({ Data, title, width, legend }) {
           {legend && (
             <Legend layout="horizontal" verticalAlign="bottom" align="center" />
           )}
-          <Tooltip />
+          {/* <Tooltip /> */}
 
           {Data &&
             Object.keys(Data).map((e, ind) => {
