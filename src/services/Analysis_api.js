@@ -15,10 +15,10 @@ export const fetchAnalysisData = async (attempt_id) => {
   }
 };
 
-export const fetchLeaderBoard = async (startDate,endDate,mockId ,attemptId) => {
+export const fetchLeaderBoard = async (mockId ,attemptId, uid) => {
   try {
     const res = request({
-      url: `/api/student/v1/analyse/createleaderBoard/${mockId}/${attemptId}/${startDate}/${endDate}`,
+      url: `/api/student/v1/leaderboard/all/${mockId}/${attemptId}/${uid}`,
       headers: { "Content-Type": "application/json" },
     });
     return res;
