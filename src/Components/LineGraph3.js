@@ -10,19 +10,19 @@ export default class LineGraph3 extends PureComponent {
       data: [
         {
           x: 25,
-          y: 20,
+          y: 30,
         },
         {
           x: 50,
-          y: 90,
+          y: 50,
         },
         {
           x: 75,
-          y: 80,
+          y: 70,
         },
         {
           x: 100,
-          y: 75,
+          y: 25,
         },
       ],
     };
@@ -85,7 +85,7 @@ export default class LineGraph3 extends PureComponent {
             display="none"
           />
 
-          {/* <XAxis
+          <XAxis
             dataKey="x"
             domain={[0, 100]}
             interval={0}
@@ -98,7 +98,7 @@ export default class LineGraph3 extends PureComponent {
             allowDataOverflow={true}
             strokeWidth={minY < 0 ? 0 : 1}
             display="none"
-          /> */}
+          />
 
           {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}

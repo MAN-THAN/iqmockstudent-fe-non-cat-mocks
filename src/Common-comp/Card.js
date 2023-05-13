@@ -128,14 +128,6 @@ export const DetailCards = ({ heading, cardContent,logoPath }) => {
             {heading}
           </Typography>
         </div>
-
-        <div>
-          <img
-            src="/CardsIcons/zoom.png"
-            className="img-fluid cursor-pointer"
-            width={22}
-          />
-        </div>
       </CardContent>
 
       <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>

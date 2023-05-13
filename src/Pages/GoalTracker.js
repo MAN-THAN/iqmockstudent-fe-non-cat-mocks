@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Button, Typography } from "@mui/material";
+import { Button, OutlinedInput, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
@@ -20,6 +20,10 @@ import { getGoalTrackerData } from "../services/Analysis_api";
 import YourGraph from "../Common-comp/YourGraph";
 import LineGraph2 from "../Components/LineGraph2";
 import LineGraph3 from "../Components/LineGraph3";
+import MultipleSelect from "../Common-comp/SelectField";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -30,14 +34,7 @@ export default function GoalTracker() {
     color: theme.palette.text.secondary,
   }));
 
-  const {
-    menuBarOpen,
-    setMenuBarOpen,
-    Backdrop,
-    setLoading,
-    isLoading,
-    showToastMessage,
-  } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading, showToastMessage } = useAuth();
 
   const [percentile, setPercentile] = useState(90);
   const [userData, setUserData] = useState();
@@ -47,7 +44,20 @@ export default function GoalTracker() {
   const [c, setC] = useState(0);
   const [d, setD] = useState(0);
   const navigate = useNavigate();
+  const [mockList, setMockList] = useState();
+  const [mock, setMock] = useState();
+  // const [options, setOptions] = useState([]);
+  const options = [{ name: "JKD", value: "jkd" }];
+  const [mockIndex, setMockIndex] = useState(0);
+  const [defVal, setDefVal] = useState();
   console.log(userData);
+
+  useEffect(() => {
+    if (mockList?.length) {
+      setMock(mockList[mockIndex]);
+    }
+  }, [mockIndex]);
+  console.log(mock);
 
   useEffect(() => {
     if (userData) {
@@ -80,6 +90,15 @@ export default function GoalTracker() {
     pb: 0,
     lineHeight: "unset",
   };
+  const ITEM_HEIGHT = "48";
+  const ITEM_PADDING_TOP = 3;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
 
   const infoStyle = {
     textstyle: {
@@ -103,20 +122,24 @@ export default function GoalTracker() {
   // function for fetching data
   const { attemptId } = useParams();
   const [goalData, setGoalData] = useState([]);
-  const [result, setResult] = useState([]);
+  const [yourData, setYourData] = useState([]);
+
   const getData = async () => {
-    setLoading(true)
+    setLoading(true);
     const res = await getGoalTrackerData(attemptId);
     console.log(res);
     if (res?.status == 200) {
-      setResult(res.data.goalData);
-      setGoalData(res.data.yourData);
-      setLoading(false)
+      setMockList(res.data.mockWise);
+      setYourData(res.data.yourData);
+      setLoading(false);
     } else {
       console.log("error", res);
-      setLoading(false)
+      setLoading(false);
     }
   };
+  console.log(goalData);
+  console.log(yourData);
+  console.log(mockList);
 
   return (
     <Box sx={{ width: "100vw", height: "100vh" }}>
@@ -154,7 +177,7 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: 532,
-                  height: 269,
+                  height: 200,
                   zIndex: 999,
                   borderRadius: "25px",
                   background: "white",
@@ -176,7 +199,7 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: 427,
-                  height: 176,
+                  height: 126,
                   borderRadius: "25px",
                   background: "white",
                   zIndex: 99,
@@ -227,29 +250,41 @@ export default function GoalTracker() {
             </Box>
 
             {/* Graph start */}
-              <Box>
+            <Box>
               {" "}
               <Box
-                  sx={{
+                sx={{
                   width: "85%",
-                  height: "50%",
+                  height: "60%",
                   position: "absolute",
                   bottom: 0,
+                  marginTop: 20,
                 }}
               >
                 {/* YourTargetGraph  */}
-                <LineGraph2 percentile={95} />
+                <LineGraph2 percentile={yourData && yourData[0]?.percentile} />
               </Box>
               <Box
                 sx={{
                   width: "85%",
-                  height: "50%",
+                  height: "60%",
                   position: "absolute",
                   bottom: 0,
                 }}
               >
                 {/* <YourActualGraph> */}
-                <LineGraph3 percentile={90} />
+                <LineGraph3 />
+              </Box>
+              <Box
+                sx={{
+                  width: "85%",
+                  height: "60%",
+                  position: "absolute",
+                  bottom: 0,
+                }}
+              >
+                {/* <YourActualGraph> */}
+                <LineGraph3 />
               </Box>
             </Box>
 
@@ -257,6 +292,34 @@ export default function GoalTracker() {
             {/* bottom instuction Card */}
             {/* Add the select field */}
 
+            <Box>
+              {" "}
+              <Box
+                component={Paper}
+                sx={{
+                  width: 265,
+                  height: 41,
+                  position: "absolute",
+                  bottom: 20,
+                  right: 100,
+                  borderRadius: "15px ",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  p: 1,
+                }}
+              >
+                <div style={infoStyle.divStyle}></div>
+                <Typography sx={infoStyle.textstyle}>Goal</Typography>
+                <div
+                  style={{
+                    ...infoStyle.divStyle,
+                    background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+                  }}
+                ></div>
+                <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
+              </Box>
+            </Box>
             <Box
               component={Paper}
               sx={{
@@ -281,6 +344,91 @@ export default function GoalTracker() {
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
+            </Box>
+            <Box>
+              {" "}
+              <Box
+                sx={{
+                  width: 150,
+                  height: 41,
+                  position: "absolute",
+                  bottom: 20,
+                  right: 420,
+                  borderRadius: "15px ",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  p: 1,
+                  backgroundColor: "white",
+                }}
+              >
+                {" "}
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    columnGap: 3,
+                  }}
+                >
+                  <Select
+                    defaultValue={defVal}
+                    // value={selected}
+                    onChange={(e) => {}}
+                    input={
+                      <OutlinedInput
+                        sx={{
+                          width: 127,
+                          borderRadius: 2,
+                          height: 32,
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-inter)",
+
+                          ".MuiOutlinedInput-notchedOutline": {
+                            border: 1,
+                            borderColor: "#809EB9",
+                          },
+                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+                            border: 1,
+                            borderColor: "#809EB9",
+                          },
+                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: 2,
+                            borderColor: "#809EB9",
+                          },
+                        }}
+                      />
+                    }
+                    // renderValue={(selected) => {
+                    //   if (selected.length === 0) {
+                    //     return <em>Select{ " " + type }</em>;
+                    //   }
+
+                    //   return selected;
+                    // }}
+                    MenuProps={MenuProps}
+                    inputProps={{ "aria-label": "Select value" }}
+                  >
+                    <MenuItem value={""} disabled>
+                      <em>Select</em>
+                    </MenuItem>
+                    {options &&
+                      options.map((item, _) => (
+                        <MenuItem
+                          key={item.name}
+                          value={item.value}
+                          sx={{
+                            fontFamily: "var(--font-inter)",
+                            fontSize: "11px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
           </Box>
         )}

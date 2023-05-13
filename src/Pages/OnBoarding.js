@@ -17,6 +17,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Slider from "@mui/material/Slider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -31,7 +34,9 @@ function OnBoarding() {
   const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
-  const [expand, setExpand] = useState(true);
+  const [expandForm, setExpandForm] = useState(true);
+  const [expandPtle, setExpandPtle] = useState(true);
+  const [disabled, setDisabled] = useState(true);
 
 
   const cellStyle = {
@@ -46,7 +51,9 @@ function OnBoarding() {
   useEffect(() => {
     if (college !== null) {
       setStartMock(true);
-      setExpand(false);
+      setExpandForm(false);
+      setExpandPtle(true);
+      setDisabled(false);
     }
   }, [college]);
   // set percentile state
@@ -73,396 +80,196 @@ function OnBoarding() {
       },
     });
   };
-
+  const handlePercentile = () => { 
+    console.log("hdfeuw");
+    
+  }
   // console.log("coolr", college.bschools);
   return (
-    <Box
-      component="main"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        paddingTop: 5,
-        paddingLeft: 6,
-        paddingRight: 6,
-        width: "100vw",
-        height: "100vh",
-        background: "url(/onboarding_image.png)",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <Box>
-        <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
-      </Box>
-      <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
-        <LineChart1 percentile={percentile} />
-      </Box>
-      <Box sx={{ position: "absolute", top: "15%", zIndex: 100 }}>
-        <Accordion defaultExpanded={true} expanded={expand}>
-          <AccordionSummary
-            onClick={() => setExpand(!expand)}
-            sx={{ margin: 0 }}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography
-              sx={{
-                color: "#1066DA",
-                fontWeight: 700,
-                fontSize: "1.5em",
-                marginLeft: "2em",
-              }}
-            >
-              Fill Details
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <LoginForm setCollege={setCollege} percentile={percentile} />
-          </AccordionDetails>
-        </Accordion>
-      </Box>
-      <Box sx={{ position: "absolute", bottom: "5.5%", right: 50 }}>
-        {startMock ? (
-          <Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "right",
-              }}
-            >
-              {" "}
-              <Button
-                startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
-                sx={{
-                  background: "linear-gradient(to bottom, #306DF8, #661FCF)",
-                }}
-                variant="contained"
-                style={{ borderRadius: "25px", padding: "14px" }}
-                onClick={handleSubmit}
-              >
-                Start Mock
-              </Button>
-            </Box>
-            <Box>
-              <Box
-                sx={{
-                  width: "30vw",
-                  height: "12em",
-                  background: "white",
-                  borderRadius: "1em",
-                  padding: "1em",
-                  marginTop: "1em",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Box sx={{ overflow: "scroll" }}>
-                  <DetailCards
-                    logoPath={"/goalSchool.png"}
-                    cardContent={
-                      <TableContainer>
-                        <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
-                          <TableHead>
-                            <TableRow
-                              sx={{
-                                fontWeight: 900,
-                                lineHeight: "unset",
-                              }}
-                            >
-                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left"></TableCell>
-                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
-                                Name
-                              </TableCell>
-                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
-                                Average Package
-                              </TableCell>
-                              <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
-                                Current Package
-                              </TableCell>
-                            </TableRow>
-
-                            {college &&
-                              college.bschools.map((item, ind) => {
-                                return (
-                                  <TableRow
-                                    sx={{
-                                      lineHeight: "unset",
-                                    }}
-                                  >
-                                    <TableCell sx={cellStyle} align="left">
-                                      {ind + 1}
-                                    </TableCell>
-                                    <TableCell sx={cellStyle} align="left">
-                                      {item.college}
-                                    </TableCell>
-                                    <TableCell sx={cellStyle} align="left">
-                                      {item.avgSalary || "tbd"}
-                                    </TableCell>
-                                    <TableCell sx={cellStyle} align="left">
-                                      {item.currentSalary || "tbd"}
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              })}
-                          </TableHead>
-                        </Table>
-                      </TableContainer>
-                    }
-                    heading={"B-Schools you can Crack"}
-                  />
-                </Box>
-                {/* <Box>
-                  {college?.length &&
-                    college.map((e, i) => {
-                      console.log(e);
-                      return (
-                        <>
-                          <Typography sx={{ color: "green", fontWeight: 600, fontSize: "1em", marginTop : 2}}>{e}</Typography>
-                        </>
-                      );
-                    })}
-                </Box> */}
-              </Box>
-            </Box>
-          </Box>
-        ) : (
-          <></>
-        )}
-      </Box>
+    <>
+      <ToastContainer />
       <Box
+        component="main"
         sx={{
-          position: "absolute",
-          right: 200,
-          top: 120,
           display: "flex",
-          flexDirection: "row",
-          gap: "10px",
+          flexDirection: "column",
+          paddingTop: 5,
+          paddingLeft: 6,
+          paddingRight: 6,
+          width: "100vw",
+          height: "100vh",
+          background: "url(/onboarding_image.png)",
+          overflow: "hidden",
+          position: "relative",
         }}
       >
-        <Box
-          sx={{
-            width: "11.199em",
-            height: "4.87em",
-            background: "white",
-            borderRadius: "10px",
-            paddingLeft: 2,
-            paddingRight: 2,
-            paddingTop: 0.4,
-          }}
-        >
-          <Box sx={{ display: "flex", flexDirection: "row", gap: "1px" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  padding: 1,
-                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                  borderRadius: "2px",
-                }}
-              >
-                <Typography color="white" fontSize="20px">
-                  {a[0]}
-                </Typography>
-              </Box>
+        <Box>
+          <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
+        </Box>
+        {/* <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
+        <LineChart1 percentile={percentile} />
+      </Box> */}
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "inline-start" }}>
+          {" "}
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box sx={{ marginTop: 2, width: "32vw" }}>
+              <Accordion defaultExpanded={true} expanded={expandForm}>
+                <AccordionSummary
+                  onClick={() => setExpandForm(!expandForm)}
+                  sx={{ margin: 0 }}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <Typography
+                    sx={{
+                      color: "#1066DA",
+                      fontWeight: 700,
+                      fontSize: "1.5em",
+                      marginLeft: "2em",
+                    }}
+                  >
+                    Fill Details
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <LoginForm setCollege={setCollege} percentile={percentile} />
+                </AccordionDetails>
+              </Accordion>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1px",
-              }}
-            >
-              <img
-                src="/IncUp.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  let num = Number(a);
-                  let inc;
-                  if (num < 100) {
-                    inc = String(num + 1);
-                    if (inc.length === 1) {
-                      setA("00" + inc);
-                    } else if (inc.length === 2) {
-                      setA("0" + inc);
-                    } else {
-                      setA(inc);
-                    }
-                  }
-                }}
-              />
-              <Box
-                sx={{
-                  padding: 1,
-                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                  borderRadius: "2px",
-                }}
-              >
-                <Typography color="white" fontSize="20px">
-                  {a[1]}
-                </Typography>
-              </Box>
-              <img
-                onClick={() => {
-                  let num = Number(a);
-                  let dec;
-                  if (num > 0) {
-                    dec = String(num - 1);
-                    if (dec.length === 1) {
-                      setA("00" + dec);
-                    } else if (dec.length === 2) {
-                      setA("0" + dec);
-                    } else {
-                      setA(dec);
-                    }
-                  }
-                }}
-                src="/DecDown.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  padding: 1,
-                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                  borderRadius: "2px",
-                }}
-              >
-                <Typography color="white" fontSize="20px">
-                  {a[2]}
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1px",
-                marginLeft: "7px",
-              }}
-            >
-              <img
-                onClick={() => {
-                  if (d < 9) {
-                    setD(d + 1);
-                  }
-                }}
-                src="/IncUp.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-              <Box
-                sx={{
-                  padding: 1,
-                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                  borderRadius: "2px",
-                }}
-              >
-                <Typography color="white" fontSize="20px">
-                  {d}
-                </Typography>
-              </Box>
-              <img
-                onClick={() => {
-                  if (d > 0) {
-                    setD(d - 1);
-                  }
-                }}
-                src="/DecDown.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1px",
-              }}
-            >
-              <img
-                onClick={() => {
-                  if (e < 9) {
-                    setE(e + 1);
-                  }
-                }}
-                src="/IncUp.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
-              <Box
-                sx={{
-                  padding: 1,
-                  background: "linear-gradient(180deg, #000000 0%, #686868 100%)",
-                  borderRadius: "2px",
-                }}
-              >
-                <Typography color="white" fontSize="20px">
-                  {e}
-                </Typography>
-              </Box>
-              <img
-                onClick={() => {
-                  if (e > 0) {
-                    setE(e - 1);
-                  }
-                }}
-                src="/DecDown.svg"
-                alt="IncArrow"
-                width="12px"
-                height="12px"
-                style={{ cursor: "pointer" }}
-              />
+            <Box sx={{ marginTop: 1, width: "32vw" }}>
+              <Accordion defaultExpanded={false} expanded={expandPtle}>
+                <AccordionSummary
+                  onClick={() => setExpandPtle(!expandPtle)}
+                  sx={{ margin: 0 }}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <Typography
+                    sx={{
+                      color: "#1066DA",
+                      fontWeight: 700,
+                      fontSize: "1.5em",
+                      marginLeft: "2em",
+                    }}
+                  >
+                    Set Your Target Percentile
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Slider disabled={disabled} defaultValue={95} aria-label="Default" valueLabelDisplay="auto" onChange={handlePercentile} />
+                </AccordionDetails>
+              </Accordion>
             </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          {" "}
-          <Typography fontSize="16px" fontWeight={600} color="white">
-            Set your target
-          </Typography>
-          <Typography color="#FFC700" fontSize="16px" fontWeight={600}>
-            Percentile
-          </Typography>
+          <Box>
+            {startMock ? (
+              <Box sx={{ marginLeft: 10 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "right",
+                  }}
+                >
+                  {" "}
+                </Box>
+                <Box>
+                  <Box
+                    sx={{
+                      width: "55vw",
+                      height: "30em",
+                      background: "white",
+                      borderRadius: "0.3em",
+                      padding: "1em",
+                      marginTop: "1em",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box sx={{ overflow: "scroll" }}>
+                      <DetailCards
+                        logoPath={"/goalSchool.png"}
+                        cardContent={
+                          <TableContainer>
+                            <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
+                              <TableHead>
+                                <TableRow
+                                  sx={{
+                                    fontWeight: 900,
+                                    lineHeight: "unset",
+                                  }}
+                                >
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left"></TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                    Name
+                                  </TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                    Average Package
+                                  </TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                    Median Package
+                                  </TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                    iQuanta College Rating
+                                  </TableCell>
+                                </TableRow>
+
+                                {college &&
+                                  college.bschools[0].college.map((item, ind) => {
+                                    return (
+                                      <TableRow
+                                        sx={{
+                                          lineHeight: "unset",
+                                        }}
+                                      >
+                                        <TableCell sx={cellStyle} align="left">
+                                          {ind + 1}
+                                        </TableCell>
+                                        <TableCell sx={cellStyle} align="left">
+                                          {item}
+                                        </TableCell>
+                                        <TableCell sx={cellStyle} align="left">
+                                          {item.avgSalary || "tbd"}
+                                        </TableCell>
+                                        <TableCell sx={cellStyle} align="left">
+                                          {item.currentSalary || "tbd"}
+                                        </TableCell>
+                                      </TableRow>
+                                    );
+                                  })}
+                              </TableHead>
+                            </Table>
+                          </TableContainer>
+                        }
+                        heading={"B-Schools you can Crack"}
+                      />
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: 2 }}>
+                    {" "}
+                    <Button
+                      startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
+                      sx={{
+                        background: "linear-gradient(to bottom, #306DF8, #661FCF)",
+                      }}
+                      variant="contained"
+                      style={{ borderRadius: "25px", padding: "14px" }}
+                      onClick={handleSubmit}
+                    >
+                      Start Mock
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

@@ -77,7 +77,7 @@ export default class LineGraph2 extends PureComponent {
             display="none"
           />
 
-          {/* <XAxis
+          <XAxis
             dataKey="x"
             domain={[0, 100]}
             interval={0}
@@ -90,13 +90,13 @@ export default class LineGraph2 extends PureComponent {
             allowDataOverflow={true}
             strokeWidth={minY < 0 ? 0 : 1}
             display="none"
-          /> */}
+          />
 
-          {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
+          {/* {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
+          {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />} */}
           <Tooltip />
 
-          <Line strokeWidth={10} data={this.state.data} type="fill" dataKey="y" stroke="#0091FF" tooltipType="" activeDot={{ r: 100 }} />
+          <Line strokeWidth={14} data={this.state.data} type="fill" dataKey="y" stroke="#0091FF" tooltipType="" activeDot={{ r: 100 }} />
         </LineChart>
       </ResponsiveContainer>
     );
