@@ -237,7 +237,7 @@ export default function GoalTracker() {
                   bottom: 0,
                 }}
               >
-                {/* <YourGraph goalData={goalData} /> */}
+                {/* YourTargetGraph  */}
                 <LineGraph2 percentile={95} />
               </Box>
               <Box
@@ -248,7 +248,7 @@ export default function GoalTracker() {
                   bottom: 0,
                 }}
               >
-                {/* <YourGraph goalData={goalData} /> */}
+                {/* <YourActualGraph> */}
                 <LineGraph3 percentile={90} />
               </Box>
             </Box>

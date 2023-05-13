@@ -81,11 +81,11 @@ export default class LineGraph3 extends PureComponent {
               offset: 0,
             }}
             allowDataOverflow={true}
-            strokeWidth={minX < 0 ? 0 : 1}
+            // strokeWidth={minX < 0 ? 0 : 1}
             display="none"
           />
 
-          <XAxis
+          {/* <XAxis
             dataKey="x"
             domain={[0, 100]}
             interval={0}
@@ -98,7 +98,7 @@ export default class LineGraph3 extends PureComponent {
             allowDataOverflow={true}
             strokeWidth={minY < 0 ? 0 : 1}
             display="none"
-          />
+          /> */}
 
           {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
