@@ -22,8 +22,7 @@ import { useParams } from "react-router-dom";
 import { fetchOverallAcross } from "../services/Analysis_api";
 import PieGraphNew from "../Common-comp/PieGraphNew";
 import ExampleAlignmentButtons from "../Common-comp/RadioView";
-
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import LineGraph from "../Common-comp/LineGraphAcross";
 
 const FilterList = ({ mocksList, setIndex }) => {
   const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
@@ -66,13 +65,16 @@ const GraphLegend = [
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState();
+  const [type, setType] = useState("overall");
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
   const [view, setView] = useState("Table");
+  const [response, setResponse] = useState([]);
+  const [lineGraph, setLineGraph] = useState([]);
 
   const Subjects = [
+    { name: "Overall", value: "overall" },
     { name: "VARC", value: "varc" },
     { name: "LRDI", value: "lrdi" },
     { name: "Quants", value: "quants" },
@@ -87,30 +89,36 @@ function AnalysisAcross() {
   } = useAuth();
 
   useEffect(() => {
-    setShow(mocksList[index]?.data?.[type]);
-  }, [index]);
-  useEffect(() => {
-    if (type === "varc") {
-      setShow(mocksList[index]?.data?.varc);
+    if (type === "overall" && mocksList.length > 0) {
+      setLineGraph(response.overallMocks);
+      setShow(mocksList);
+    } else {
+      setShow(mocksList[index]?.data?.[type]);
     }
-    if (type === "lrdi") {
-      setShow(mocksList[index]?.data?.lrdi);
-    }
-    if (type === "quants") {
-      setShow(mocksList[index]?.data?.quants);
-    }
-  }, [type]);
-  console.log(show);
+  }, [index, type, mocksList]);
+
+  // useEffect(() => {
+  //   if (type === "varc") {
+  //     setShow(mocksList[index]?.data?.varc);
+  //   }
+  //   if (type === "lrdi") {
+  //     setShow(mocksList[index]?.data?.lrdi);
+  //   }
+  //   if (type === "quants") {
+  //     setShow(mocksList[index]?.data?.quants);
+  //   }
+  // }, [type]);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
-      setLoading(true);
+      // setLoading(true);
       const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
+        setResponse(response.data);
         setMocksList(response.data?.topicWise);
-        setShow(response.data?.topicWise[index].data.varc);
+        // setShow(response.data?.topicWise[index].data.varc);
         setLoading(false);
       } else {
         showToastMessage();
@@ -121,7 +129,8 @@ function AnalysisAcross() {
     fetchData(params.mockId, uid);
   }, []);
 
-  console.log("MOCK", show);
+  console.log("response", response);
+  console.log("MOCK", mocksList);
   console.log(show);
   console.log(type);
 
@@ -135,6 +144,7 @@ function AnalysisAcross() {
             position: "absolute",
             left: "65px",
             height: "100vh",
+            overflow: "hidden",
             width: "calc(100% - 65px)",
             p: 2,
           }}
@@ -192,8 +202,10 @@ function AnalysisAcross() {
                 sx={{
                   display: "flex",
                   width: "calc(100vw - 108px)",
-                  height: "76Vh",
+                  height: "70vh",
+
                   mt: 3,
+
                   flexWrap: "wrap",
                 }}
               >
@@ -209,6 +221,9 @@ function AnalysisAcross() {
                 <Box
                   sx={{
                     flexBasis: "15%",
+                    height: "100%",
+                    overflow: "scroll",
+                    py: 2,
                     // border: "2px solid #928F8F ",
                   }}
                 >
@@ -218,7 +233,9 @@ function AnalysisAcross() {
                     useFlexGap
                     flexWrap="wrap"
                   >
-                    <FilterList mocksList={mocksList} setIndex={setIndex} />
+                    {show && (
+                      <FilterList mocksList={mocksList} setIndex={setIndex} />
+                    )}
                   </Stack>
                 </Box>
                 {/* Filter div end */}
@@ -230,17 +247,22 @@ function AnalysisAcross() {
                   }
                   sx={{
                     flexBasis: { xs: "100%", md: "85%" },
-                    height: "max-content",
+                    height: "100%",
                     background: "#F6F7F8",
-
                     p: 3,
                     borderRadius: "15px",
+                    overflow: "scroll",
                   }}
                 >
                   {/* Switching sections */}
 
                   {view === "Table" ? (
                     <>
+                      <Stack justifyContent={"center"} my={5} direction="row">
+                        <Box sx={{ width: "80vw", height: "20em" }}>
+                          <LineGraph Data={lineGraph} />
+                        </Box>
+                      </Stack>
                       {/* Cards */}
                       <Box
                         component="div"
@@ -282,6 +304,7 @@ function AnalysisAcross() {
                           flexWrap: "wrap",
                           gap: 1,
                           rowGap: 5,
+
                           justifyContent: "space-around",
                         }}
                       >
@@ -316,23 +339,39 @@ function AnalysisAcross() {
                           })}
                       </Box>
 
-                        <Stack direction="row" spacing={2} justifyContent={"center"} mt={2} >
-                          {GraphLegend.map((e, ind) => {
-                            return (
-                              <div className="d-flex gap-1 align-items-center" key={ind}>
-                                <div
-                                  style={{
-                                    borderRadius: "40%",
-                                    height: "24px",
-                                    width: "24px",
-                                    background: e.shade,
-                                  }}
-                                ></div>
-                                <span style={{fontSize:13, fontFamily:"var(--font-inter)", fontWeight:600}}>{e.Value}</span>
-                              </div>
-                            );
-                          })}
-                        </Stack>
+                      <Stack
+                        direction="row"
+                        spacing={2}
+                        justifyContent={"center"}
+                        mt={2}
+                      >
+                        {GraphLegend.map((e, ind) => {
+                          return (
+                            <div
+                              className="d-flex gap-1 align-items-center"
+                              key={ind}
+                            >
+                              <div
+                                style={{
+                                  borderRadius: "40%",
+                                  height: "24px",
+                                  width: "24px",
+                                  background: e.shade,
+                                }}
+                              ></div>
+                              <span
+                                style={{
+                                  fontSize: 13,
+                                  fontFamily: "var(--font-inter)",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {e.Value}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </Stack>
                     </>
                   )}
                 </Box>
@@ -347,19 +386,6 @@ function AnalysisAcross() {
 }
 
 const DataTable = ({ data }) => {
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
   return (
     <TableContainer
       sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
