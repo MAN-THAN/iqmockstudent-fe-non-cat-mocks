@@ -22,6 +22,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getPredictCollege } from "../services/Mock_api";
 import { motion } from "framer-motion";
+import PrettoSlider from "../Components/Slider";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -111,26 +112,26 @@ function OnBoarding() {
       },
     });
   };
-   const showToastMessage = () => {
-     toast.error("Some error occurred! Please try again.", {
-       position: toast.POSITION.TOP_CENTER,
-     });
+  const showToastMessage = () => {
+    toast.error("Some error occurred! Please try again.", {
+      position: toast.POSITION.TOP_CENTER,
+    });
     //  return setLoading(false);
-   };
+  };
   const handlePercentile = async (e) => {
     console.log("hdfeuw");
     console.log(e.target.value);
-     try {
-        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-       const res = await getPredictCollege(uid, {...formData, minPercentile : e.target.value});
-        console.log(res);
-       if (res?.status == 200) {
-         setCollege(res?.data);
-       }
-      } catch (err) {
-        // showToastMessage();
-        console.log(err);
+    try {
+      const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+      const res = await getPredictCollege(uid, { ...formData, minPercentile: e.target.value });
+      console.log(res);
+      if (res?.status == 200) {
+        setCollege(res?.data);
       }
+    } catch (err) {
+      // showToastMessage();
+      console.log(err);
+    }
   };
   // console.log("coolr", college.bschools);
   return (
@@ -149,6 +150,9 @@ function OnBoarding() {
           background: "url(/onboarding_image.png)",
           overflow: "hidden",
           position: "relative",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
         }}
       >
         <Box>
@@ -157,89 +161,22 @@ function OnBoarding() {
         {/* <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
         <LineChart1 percentile={percentile} />
       </Box> */}
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 4 }}>
           {" "}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box sx={{ marginTop: 2, width: "32vw" }}>
-              <Accordion defaultExpanded={true} expanded={expandForm}>
-                <AccordionSummary
-                  onClick={() => setExpandForm(!expandForm)}
-                  sx={{ margin: 0 }}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  expandIcon={<ExpandMoreIcon />}
-                >
-                  <Typography
-                    sx={{
-                      color: "#1066DA",
-                      fontWeight: 700,
-                      fontSize: "1.5em",
-                      marginLeft: "2em",
-                    }}
-                  >
-                    Fill Details
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
-                </AccordionDetails>
-              </Accordion>
+          <Box sx={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+            <Box sx={{ width: "40%" }}>
+              <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
             </Box>
-            <Box sx={{ marginTop: 1, width: "32vw" }}>
-              <Accordion defaultExpanded={false} expanded={expandPtle}>
-                <AccordionSummary
-                  onClick={() => setExpandPtle(!expandPtle)}
-                  sx={{ margin: 0 }}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  expandIcon={<ExpandMoreIcon />}
-                >
-                  <Typography
-                    sx={{
-                      color: "#1066DA",
-                      fontWeight: 700,
-                      fontSize: "1.5em",
-                      marginLeft: "2em",
-                    }}
-                  >
-                    Set Your Target Percentile
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Slider
-                    marks={ptle}
-                    disabled={disabled}
-                    defaultValue={percentile}
-                    aria-label="Default"
-                    valueLabelDisplay="auto"
-                    onChange={handlePercentile}
-                    step={0.1}
-                  />
-                </AccordionDetails>
-              </Accordion>
-            </Box>
-          </Box>
-          <Box>
-            {startMock ? (
-              <Box sx={{ marginLeft: 10 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "right",
-                  }}
-                >
-                  {" "}
-                </Box>
-                <Box>
+            <Box sx={{ width: "55%" }}>
+              {startMock ? (
+                <Box sx={{ width: "100%" }}>
                   <Box
                     sx={{
-                      width: "53vw",
-                      height: "30em",
+                      width: "100%",
+                      height: "27.5em",
                       background: "white",
-                      borderRadius: "0.3em",
+                      borderRadius: "1em",
                       padding: "1em",
-                      marginTop: "1em",
                       display: "flex",
                       flexDirection: "column",
                     }}
@@ -257,7 +194,9 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">Ranking</TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
+                                    Ranking
+                                  </TableCell>
                                   <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
                                     Name
                                   </TableCell>
@@ -267,7 +206,6 @@ function OnBoarding() {
                                   <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
                                     Highest Package
                                   </TableCell>
-                                 
                                 </TableRow>
 
                                 {college &&
@@ -301,7 +239,7 @@ function OnBoarding() {
                       />
                     </Box>
                   </Box>
-                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: 2 }}>
+                  {/* <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: 2 }}>
                     <Button
                       startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
                       sx={{
@@ -313,12 +251,82 @@ function OnBoarding() {
                     >
                       Start Mock
                     </Button>
-                  </Box>
+                  </Box> */}
                 </Box>
-              </Box>
-            ) : (
-              <></>
-            )}
+              ) : (
+                <>
+                  {" "}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "27.5em",
+                      background: "white",
+                      borderRadius: "1em",
+                      padding: "1.5em",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box>
+                      <Typography sx={{ fontWeight: 900, fontSize: "1.5em", color: "#FF074D", paddingLeft: 1 }}>Predict Your B-School</Typography>
+                    </Box>
+                    <Box>
+                      {" "}
+                      <Typography sx={{ fontWeight: 500, fontSize: "1.2em", color: "#5F5F5F", paddingLeft: 1 }}>
+                        Fill your details and set your desired percentile to see which
+                      </Typography>
+                      <Typography sx={{ fontWeight: 500, fontSize: "1.2em", color: "#5F5F5F", paddingLeft: 1 }}>B-Schools you unlock.</Typography>
+                    </Box>
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Box>
+          <Box sx={{ marginTop: 1, width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <Box>
+              {" "}
+              <Typography
+                sx={{
+                  color: "white",
+                  fontWeight: 700,
+                  fontSize: "1.5em",
+                }}
+              >
+                Set Your Target
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#FEBC00",
+                  fontWeight: 700,
+                  fontSize: "1.5em",
+                }}
+              >
+                Percentile{" "}
+              </Typography>
+            </Box>
+            <Box>
+              <Button onClick={handleSubmit}>Start Mock</Button>
+            </Box>
+          </Box>
+          <Box sx={{ marginTop: 0, width: "85%" }}>
+            {/* <Slider
+              marks={ptle}
+              disabled={disabled}
+              defaultValue={percentile}
+              aria-label="Default"
+              valueLabelDisplay="on"
+              onChange={handlePercentile}
+              step={0.1}
+            /> */}
+            <PrettoSlider
+              step={0.1}
+              disabled={disabled}
+              onChange={handlePercentile}
+              valueLabelDisplay="on"
+              aria-label="pretto slider"
+              defaultValue={percentile}
+              setPercentile={setPercentile}
+            />
           </Box>
         </Box>
       </Box>

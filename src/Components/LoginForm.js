@@ -168,14 +168,23 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
       <ToastContainer />
       <Box
         sx={{
-          width: "30vw",
+          width: "100%",
           height: "auto",
           background: "white",
           borderRadius: "1em",
-          padding: "1px",
+          padding: "1.5em",
         }}
       >
-        {" "}
+        <Typography
+          sx={{
+            color: "#1066DA",
+            fontWeight: 700,
+            fontSize: "1.5em",
+            marginLeft: 0.3,
+          }}
+        >
+          Fill Details
+        </Typography>
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
@@ -185,6 +194,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               justifyContent: "space-between",
               padding: "0.1em",
               gap: "10px",
+              marginTop : 2
             }}
           >
             {" "}
