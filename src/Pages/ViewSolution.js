@@ -41,7 +41,7 @@ import { useMemo } from "react";
 export default function ViewSolution() {
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState("varc");
   const { attemptId } = useParams();
   const [data, setData] = useState();
   const [show, setShow] = useState([]);
@@ -370,7 +370,8 @@ export default function ViewSolution() {
     }
     console.log("datatattaftaf", errorOptions);
   }, [index, show]);
-
+  console.log(selected);
+  console.log(defVal)
   return (
     <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
       <MenuDrawer />
