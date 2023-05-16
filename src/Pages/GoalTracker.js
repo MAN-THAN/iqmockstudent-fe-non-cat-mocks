@@ -283,7 +283,7 @@ export default function GoalTracker() {
                   bottom: 0,
                 }}
               >
-                {/* <YourActualGraph> */}
+                {/* <otherMocksGraph> */}
                 <LineGraph3 />
               </Box>
             </Box>

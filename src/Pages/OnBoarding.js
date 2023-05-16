@@ -20,6 +20,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Slider from "@mui/material/Slider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getPredictCollege } from "../services/Mock_api";
+import { motion } from "framer-motion";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -35,9 +37,10 @@ function OnBoarding() {
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
   const [expandForm, setExpandForm] = useState(true);
-  const [expandPtle, setExpandPtle] = useState(true);
+  const [expandPtle, setExpandPtle] = useState(false);
   const [disabled, setDisabled] = useState(true);
-
+  const [formData, setFormData] = useState();
+  console.log(formData);
 
   const cellStyle = {
     borderBottom: "none",
@@ -45,8 +48,36 @@ function OnBoarding() {
     lineHeight: "unset",
     fontWeight: "bold",
   };
+  const ptle = [
+    {
+      value: 0,
+      label: "0",
+    },
+
+    {
+      value: 60,
+      label: "60",
+    },
+
+    {
+      value: 85,
+      label: "85",
+    },
+    {
+      value: 90,
+      label: "90",
+    },
+    {
+      value: 95,
+      label: "95",
+    },
+    {
+      value: 100,
+      label: "100",
+    },
+  ];
   console.log(state.mockId, state.setId);
-  console.log("CKG",college);
+  console.log("CKG", college);
 
   useEffect(() => {
     if (college !== null) {
@@ -57,18 +88,18 @@ function OnBoarding() {
     }
   }, [college]);
   // set percentile state
-  useEffect(() => {
-    console.log(a, d, e);
-    // if percentile is 100 then no decimal digits
-    if (a === "100") {
-      setD(0);
-      setE(0);
-    }
-    const newPtle = Number(String(a) + "." + String(d) + String(e));
-    setPercentile(newPtle);
-  }, [a, d, e]);
+  // useEffect(() => {
+  //   console.log(a, d, e);
+  //   // if percentile is 100 then no decimal digits
+  //   if (a === "100") {
+  //     setD(0);
+  //     setE(0);
+  //   }
+  //   const newPtle = Number(String(a) + "." + String(d) + String(e));
+  //   setPercentile(newPtle);
+  // }, [a, d, e]);
 
-  console.log(percentile);
+  // console.log(percentile);
   const handleSubmit = () => {
     navigate("/user_authentication", {
       state: {
@@ -80,10 +111,27 @@ function OnBoarding() {
       },
     });
   };
-  const handlePercentile = () => { 
+   const showToastMessage = () => {
+     toast.error("Some error occurred! Please try again.", {
+       position: toast.POSITION.TOP_CENTER,
+     });
+    //  return setLoading(false);
+   };
+  const handlePercentile = async (e) => {
     console.log("hdfeuw");
-    
-  }
+    console.log(e.target.value);
+     try {
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+       const res = await getPredictCollege(uid, {...formData, minPercentile : e.target.value});
+        console.log(res);
+       if (res?.status == 200) {
+         setCollege(res?.data);
+       }
+      } catch (err) {
+        // showToastMessage();
+        console.log(err);
+      }
+  };
   // console.log("coolr", college.bschools);
   return (
     <>
@@ -109,7 +157,7 @@ function OnBoarding() {
         {/* <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
         <LineChart1 percentile={percentile} />
       </Box> */}
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "inline-start" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           {" "}
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box sx={{ marginTop: 2, width: "32vw" }}>
@@ -133,7 +181,7 @@ function OnBoarding() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <LoginForm setCollege={setCollege} percentile={percentile} />
+                  <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
                 </AccordionDetails>
               </Accordion>
             </Box>
@@ -158,7 +206,15 @@ function OnBoarding() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Slider disabled={disabled} defaultValue={95} aria-label="Default" valueLabelDisplay="auto" onChange={handlePercentile} />
+                  <Slider
+                    marks={ptle}
+                    disabled={disabled}
+                    defaultValue={percentile}
+                    aria-label="Default"
+                    valueLabelDisplay="auto"
+                    onChange={handlePercentile}
+                    step={0.1}
+                  />
                 </AccordionDetails>
               </Accordion>
             </Box>
@@ -178,7 +234,7 @@ function OnBoarding() {
                 <Box>
                   <Box
                     sx={{
-                      width: "55vw",
+                      width: "53vw",
                       height: "30em",
                       background: "white",
                       borderRadius: "0.3em",
@@ -201,19 +257,17 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left"></TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">Ranking</TableCell>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
                                     Name
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
                                     Average Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
-                                    Median Package
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
+                                    Highest Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
-                                    iQuanta College Rating
-                                  </TableCell>
+                                 
                                 </TableRow>
 
                                 {college &&
@@ -224,16 +278,16 @@ function OnBoarding() {
                                           lineHeight: "unset",
                                         }}
                                       >
-                                        <TableCell sx={cellStyle} align="left">
+                                        <TableCell sx={cellStyle} align="center">
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="left">
+                                        <TableCell sx={cellStyle} align="center">
                                           {item}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="left">
+                                        <TableCell sx={cellStyle} align="center">
                                           {item.avgSalary || "tbd"}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="left">
+                                        <TableCell sx={cellStyle} align="center">
                                           {item.currentSalary || "tbd"}
                                         </TableCell>
                                       </TableRow>
@@ -248,7 +302,6 @@ function OnBoarding() {
                     </Box>
                   </Box>
                   <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: 2 }}>
-                    {" "}
                     <Button
                       startIcon={<img alt="rocket" width="20px" height="20px" src="/rocket.png" />}
                       sx={{

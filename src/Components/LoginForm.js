@@ -21,7 +21,7 @@ import { LoadingButton } from "@mui/lab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const LoginForm = ({ setCollege, percentile }) => {
+const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [category, setCategory] = useState("");
   const [gender, setGender] = useState("");
   const [program, setProgram] = useState("");
@@ -29,6 +29,7 @@ const LoginForm = ({ setCollege, percentile }) => {
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
+
 
   // Filling details if present
   useEffect(() => {
@@ -144,6 +145,7 @@ const LoginForm = ({ setCollege, percentile }) => {
         minPercentile: percentile,
         currentSalary: values.salary,
       };
+      setFormData(obj);
       setLoading(true);
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -173,7 +175,7 @@ const LoginForm = ({ setCollege, percentile }) => {
           padding: "1px",
         }}
       >
-       {" "}
+        {" "}
         <form onSubmit={handleSubmit}>
           <Box
             sx={{

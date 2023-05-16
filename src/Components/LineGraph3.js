@@ -9,19 +9,19 @@ export default class LineGraph3 extends PureComponent {
     this.state = {
       data: [
         {
-          x: 25,
+          x: 0,
           y: 30,
         },
         {
-          x: 50,
+          x: 33,
           y: 50,
         },
         {
-          x: 75,
+          x: 66,
           y: 70,
         },
         {
-          x: 100,
+          x: 99,
           y: 25,
         },
       ],
