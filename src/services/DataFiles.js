@@ -64,11 +64,6 @@ export const NavigationGalleryData = (mockId, attemptId) => {
       path: `/errortracker/${mockId}/${attemptId}`,
     },
     {
-      heading: "On Boarding",
-      image: "onBoarding-card.png",
-      path: `/leaderboard/${mockId}/${attemptId}`,
-    },
-    {
       heading: "Goal Tracker",
       image: "GoalCard.png",
       path: `/goaltracker/${mockId}/${attemptId}`,
