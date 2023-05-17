@@ -110,7 +110,7 @@ img.hover-zoom:hover {
 }
 .btn-12 {
   position: relative;
-  right: 45px;
+  right: 75px;
   bottom: 20px;
   border: none;
   box-shadow: none;
@@ -124,8 +124,8 @@ img.hover-zoom:hover {
   background: linear-gradient(to right, rgb(2, 36, 172) 0%, rgb(1, 117, 232) 100%);
   display: block;
   position: absolute;
-  width: 150px;
-  height: 40px;
+  width: 180px;
+  height: 52px;
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin: 0;

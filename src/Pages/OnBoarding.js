@@ -48,33 +48,34 @@ function OnBoarding() {
     pb: 0,
     lineHeight: "unset",
     fontWeight: "bold",
+    paddingBottom : "14px"
   };
   const ptle = [
     {
       value: 0,
-      label: "0",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>0</Typography>,
     },
 
     {
       value: 60,
-      label: "60",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>60</Typography>,
     },
 
     {
       value: 85,
-      label: "85",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>85</Typography>,
     },
     {
       value: 90,
-      label: "90",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>90</Typography>,
     },
     {
       value: 95,
-      label: "95",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>95</Typography>,
     },
     {
       value: 100,
-      label: "100",
+      label: <Typography sx={{ color: "white", fontSize: 18 }}>100</Typography>,
     },
   ];
   console.log(state.mockId, state.setId);
@@ -189,17 +190,18 @@ function OnBoarding() {
                       height: "27.5em",
                       background: "white",
                       borderRadius: "1em",
-                      padding: "1em",
+                      padding: "0.5em",
                       display: "flex",
                       flexDirection: "column",
                     }}
                   >
                     <Box sx={{ overflow: "scroll" }}>
                       <DetailCards
+                        dataLength={college && college.bschools[0].college.length}
                         logoPath={"/goalSchool.png"}
                         cardContent={
                           <TableContainer>
-                            <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
+                            <Table sx={{ border: "none" }} aria-label="simple table">
                               <TableHead>
                                 <TableRow
                                   sx={{
@@ -207,8 +209,9 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
-                                    Ranking
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15, display : "flex", flexDirection : "row", gap : 1 }} align="center">
+                                    <Typography sx={{ fontWeight: "bold", fontSize: 15 }}>Ranking</Typography>
+                                    <img src='/onboarding_arrow.svg' alt='no image' width='10px'></img>
                                   </TableCell>
                                   <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
                                     Name
@@ -227,6 +230,7 @@ function OnBoarding() {
                                       <TableRow
                                         sx={{
                                           lineHeight: "unset",
+                                          borderBottom: "1px solid #E1E1E1",
                                         }}
                                       >
                                         <TableCell sx={cellStyle} align="center">
@@ -322,8 +326,8 @@ function OnBoarding() {
               <Box sx={{ marginTop: 1 }}>
                 {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
                 <button onClick={handleSubmit} className="custom-btn btn-12">
-                  <span>Click!</span>
-                  <span>Start Mock</span>
+                  <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
+                  <span style={{ fontSize: 20, paddingTop: 5 }}>Start Mock</span>
                 </button>
               </Box>
             ) : (
@@ -348,6 +352,7 @@ function OnBoarding() {
               aria-label="pretto slider"
               defaultValue={percentile}
               setPercentile={setPercentile}
+              marks={ptle}
             />
           </Box>
         </Box>
