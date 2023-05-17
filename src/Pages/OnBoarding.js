@@ -134,6 +134,19 @@ function OnBoarding() {
     }
   };
   // console.log("coolr", college.bschools);
+
+  const handleSlider = () => { 
+    if (startMock === false) { 
+      toast.info("Please Fill The Details First ", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    }
+  }
   return (
     <>
       <ToastContainer />
@@ -299,16 +312,21 @@ function OnBoarding() {
                   color: "#FEBC00",
                   fontWeight: 700,
                   fontSize: "1.5em",
+                  marginTop: -0.7,
                 }}
               >
                 Percentile{" "}
               </Typography>
             </Box>
-            <Box>
-              <Button onClick={handleSubmit}>Start Mock</Button>
+            <Box sx={{ marginTop: 1 }}>
+              {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
+              <button className="custom-btn btn-12">
+                <span>Click!</span>
+                <span>Start Mock</span>
+              </button>
             </Box>
           </Box>
-          <Box sx={{ marginTop: 0, width: "85%" }}>
+          <Box onClick={handleSlider} sx={{ marginTop: 0, width: "85%" }}>
             {/* <Slider
               marks={ptle}
               disabled={disabled}
