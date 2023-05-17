@@ -209,17 +209,18 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15, display : "flex", flexDirection : "row", gap : 1 }} align="center">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15, display : "flex", flexDirection : "row", gap : 1 }} align="left">
                                     <Typography sx={{ fontWeight: "bold", fontSize: 15 }}>Ranking</Typography>
                                     <img src='/onboarding_arrow.svg' alt='no image' width='10px'></img>
+                                    <Box sx={{width : "1.7em"}}></Box>
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                     Name
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                     Average Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="center">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
@@ -233,16 +234,16 @@ function OnBoarding() {
                                           borderBottom: "1px solid #E1E1E1",
                                         }}
                                       >
-                                        <TableCell sx={cellStyle} align="center">
+                                        <TableCell sx={{ ...cellStyle, paddingRight: 5 }} align="left">
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="center">
+                                        <TableCell sx={cellStyle} align="left">
                                           {item}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="center">
+                                        <TableCell sx={cellStyle} align="left">
                                           {item.avgSalary || "tbd"}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="center">
+                                        <TableCell sx={cellStyle} align="left">
                                           {item.currentSalary || "tbd"}
                                         </TableCell>
                                       </TableRow>
