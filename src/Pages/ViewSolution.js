@@ -756,7 +756,8 @@ export default function ViewSolution() {
                         disabled={show && show[index]?.isVideo === "No" ? true : false}
                         startIcon={<img src="/playButton.png" alt="" className="img-fluid" width="15px" />}
                       >
-                        Video Solution
+                          Video Solution
+                          
                       </Button>
                     </Box>
                   </Box>
