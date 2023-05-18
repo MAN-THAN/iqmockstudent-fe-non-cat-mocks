@@ -1,13 +1,31 @@
 import React, { PureComponent } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-export default class LineGraph3 extends PureComponent {
+export default class LineGraph4 extends PureComponent {
   static demoUrl = "https://codesandbox.io/s/laughing-firefly-dfmkho?file=/src/Chart.tsx";
 
   constructor(props) {
     super(props);
-    this.state = props.data;
-    console.log(props)
+    this.state = {
+      data: [
+        {
+          x: 0,
+          y: 20,
+        },
+        {
+          x: 33,
+          y: 60,
+        },
+        {
+          x: 66,
+          y: 80,
+        },
+        {
+          x: 99,
+          y: 95,
+        },
+      ],
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -27,8 +45,8 @@ export default class LineGraph3 extends PureComponent {
   }
 
   getMinValues = () => {
-    const minX = Math.min(...this.state.map((d) => d.x));
-    const minY = Math.min(...this.state.map((d) => d.y));
+    const minX = Math.min(...this.state.data.map((d) => d.x));
+    const minY = Math.min(...this.state.data.map((d) => d.y));
     return { minX, minY };
   };
 
@@ -86,7 +104,15 @@ export default class LineGraph3 extends PureComponent {
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           <Tooltip />
 
-          <Line strokeWidth={10} data={this.state} type="fill" dataKey="percentile" stroke="#4C08D0" tooltipType="" activeDot={{ r: 10 }} />
+          <Line
+            strokeWidth={10}
+            data={this.state.data}
+            type="fill"
+            dataKey="y"
+            stroke="#9533F7"
+            tooltipType=""
+            activeDot={{ r: 10 }}
+          />
         </LineChart>
       </ResponsiveContainer>
     );
