@@ -84,7 +84,7 @@ export default class LineGraph3 extends PureComponent {
 
           {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          <Tooltip />
+          {/* <Tooltip /> */}
 
           <Line strokeWidth={10} data={this.state} type="fill" dataKey="percentile" stroke="#4C08D0" tooltipType="" activeDot={{ r: 10 }} />
         </LineChart>

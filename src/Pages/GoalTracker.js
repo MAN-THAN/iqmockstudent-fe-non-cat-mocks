@@ -27,7 +27,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -44,11 +43,11 @@ export default function GoalTracker() {
   const [isUserVerified, setUserVerified] = useState(false);
   const navigate = useNavigate();
   const [mockList, setMockList] = useState();
-  const [mockData, setMockData] = useState();
+  const [mockData, setMockData] = useState([]);
   // const [options, setOptions] = useState([]);
   const options = [{ name: "JKD", value: "jkd" }];
   const [mockIndex, setMockIndex] = useState(0);
-  const [defVal, setDefVal] = useState();
+  const [defVal, setDefVal] = useState("fewf");
   console.log(userData);
 
   useEffect(() => {
@@ -63,7 +62,6 @@ export default function GoalTracker() {
       setUserVerified(true);
     }
   }, [userData]);
-  
 
   const cellStyle = {
     borderBottom: "none",
@@ -116,6 +114,8 @@ export default function GoalTracker() {
       setGoalData(res.data.goalData);
       setWeakTopics(res.data.weakTopics[0]);
       setBschool(res.data.bschools);
+      setDefVal(res.data.mockWise[0].title);
+      setMockData(res.data.mockWise[0]);
       setLoading(false);
     } else {
       console.log("error", res);
@@ -125,7 +125,10 @@ export default function GoalTracker() {
   // console.log(goalData);
   // console.log(yourData);
   // console.log(mockList);
-  console.log()
+  console.log(mockList);
+  console.log(defVal);
+  console.log(weakTopics);
+  console.log(mockIndex);
 
   return (
     <Box sx={{ width: "100vw", height: "100vh" }}>
@@ -251,12 +254,12 @@ export default function GoalTracker() {
                   width: "85%",
                   height: "60%",
                   position: "absolute",
-                    bottom: 0,
-                  zIndex : 1000
+                  bottom: 0,
+                  zIndex: 1000,
                 }}
               >
                 {/* <YourActualGraph> */}
-                  <LineGraph3 data={ goalData } />
+                <LineGraph3 data={goalData} />
               </Box>
               <Box
                 sx={{
@@ -267,7 +270,7 @@ export default function GoalTracker() {
                 }}
               >
                 {/* <otherMocksGraph> */}
-                <LineGraph4 />
+                <LineGraph4 data={mockData?.data} />
               </Box>
             </Box>
 
@@ -321,6 +324,7 @@ export default function GoalTracker() {
                   alignItems: "center",
                   p: 1,
                   backgroundColor: "white",
+                  zIndex: 2000,
                 }}
               >
                 {" "}
@@ -334,7 +338,7 @@ export default function GoalTracker() {
                   <Select
                     defaultValue={defVal}
                     // value={selected}
-                    onChange={(e) => {}}
+
                     input={
                       <OutlinedInput
                         sx={{
@@ -370,21 +374,24 @@ export default function GoalTracker() {
                     MenuProps={MenuProps}
                     inputProps={{ "aria-label": "Select value" }}
                   >
-                    <MenuItem value={""} disabled>
+                    <MenuItem value={""}>
                       <em>Select</em>
                     </MenuItem>
-                    {options &&
-                      options.map((item, _) => (
+                    {mockList &&
+                      mockList.map((item, ind) => (
                         <MenuItem
-                          key={item.name}
-                          value={item.value}
+                          key={ind}
+                          value={item.title}
                           sx={{
                             fontFamily: "var(--font-inter)",
                             fontSize: "11px",
                             fontWeight: "600",
                           }}
+                          onClick={(e) => {
+                            setMockIndex(ind);
+                          }}
                         >
-                          {item.name}
+                          {item.title}
                         </MenuItem>
                       ))}
                   </Select>

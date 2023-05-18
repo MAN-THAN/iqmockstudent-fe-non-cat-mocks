@@ -6,54 +6,21 @@ export default class LineGraph4 extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      data: [
-        {
-          x: 0,
-          y: 20,
-        },
-        {
-          x: 33,
-          y: 60,
-        },
-        {
-          x: 66,
-          y: 80,
-        },
-        {
-          x: 99,
-          y: 95,
-        },
-      ],
-    };
+    this.state = {data : this.props.data}
+    // console.log(this.state)
   }
-
+  
   componentDidUpdate(prevProps) {
-    if (prevProps.percentile !== this.props.percentile) {
-      const newData = [
-        {
-          x: 0,
-          y: 0,
-        },
-        {
-          x: this.props.percentile,
-          y: this.props.percentile,
-        },
-      ];
-      this.setState({ data: newData });
+    console.log(prevProps)
+    if (prevProps.data !== this.props.data) {
+      const newData = this.props.data;
+      this.setState({data : newData});
     }
   }
 
-  getMinValues = () => {
-    const minX = Math.min(...this.state.data.map((d) => d.x));
-    const minY = Math.min(...this.state.data.map((d) => d.y));
-    return { minX, minY };
-  };
-
   render() {
-    const { minX, minY } = this.getMinValues();
-    console.log(minX, minY, this.props.percentile);
-
+    console.log(this.state)
+  
     return (
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
@@ -96,19 +63,19 @@ export default class LineGraph4 extends PureComponent {
               position: "bottom",
             }}
             allowDataOverflow={true}
-            strokeWidth={minY < 0 ? 0 : 1}
+            // strokeWidth={minY < 0 ? 0 : 1}
             display="none"
           />
 
-          {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          <Tooltip />
+          {/* {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
+          {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />} */}
+          {/* <Tooltip /> */}
 
           <Line
             strokeWidth={10}
             data={this.state.data}
             type="fill"
-            dataKey="y"
+            dataKey="percentile"
             stroke="#9533F7"
             tooltipType=""
             activeDot={{ r: 10 }}
