@@ -21,6 +21,7 @@ export default class LineGraph3 extends PureComponent {
           x: this.props.percentile,
           y: this.props.percentile,
         },
+        
       ];
       this.setState({ data: newData });
     }
