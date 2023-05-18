@@ -199,7 +199,7 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: 427,
-                  height: 126,
+                  height: 150,
                   borderRadius: "25px",
                   background: "white",
                   zIndex: 99,
