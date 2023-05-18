@@ -11,7 +11,7 @@ function HoverCard({ image, heading, path }) {
   return (
     <>
       <CardWrapper>
-        <p className="titles">{heading}</p>
+        <Typography style={{fontSize : "20px", fontWeight: 700, margin : 10}}>{heading}</Typography>
         <div className="wrapper">
           <div className="card shadow">
             <img

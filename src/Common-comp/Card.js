@@ -2,7 +2,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Fade from "@mui/material/Fade";
 import { styled } from "@mui/material/styles";
 import { tooltipClasses } from "@mui/material/Tooltip";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { SubHeading } from "../styleSheets/Style";
 import {Card, CardContent} from "@mui/material";
 
@@ -94,7 +94,7 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
 };
 
 
-export const DetailCards = ({ heading, cardContent,logoPath }) => {
+export const DetailCards = ({ heading, cardContent,logoPath, dataLength }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
   return (
     <Card
@@ -117,27 +117,18 @@ export const DetailCards = ({ heading, cardContent,logoPath }) => {
           fontFamily: "var(--font-inter)",
         }}
       >
-        <div className="d-flex">
-          <img
-            src={logoPath}
-            className="img-fluid me-2"
-            alt=""
-            width={22}
-          />
-          <Typography variant="h4" color="black" fontSize={18}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }} className="d-flex">
+          <img src={logoPath} className="img-fluid me-2" alt="" width={22} />
+          <Typography fontFamily={"Poppins"} variant="h4" color="black" fontSize={18}>
             {heading}
           </Typography>
         </div>
-
-        <div>
-          <img
-            src="/CardsIcons/zoom.png"
-            className="img-fluid cursor-pointer"
-            width={22}
-          />
-        </div>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", marginTop: 3.9 }}>
+          <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>Results :</Typography>
+          <Typography sx={{ fontSize: "14px", fontWeight: 700, color: "#6D6D6D" }}>{ dataLength }</Typography>
+        </Box>
       </CardContent>
-
+      <div style={{ border: "1px solid #E1E1E1", width: "100%", height: "1px" }}></div>
       <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
     </Card>
   );

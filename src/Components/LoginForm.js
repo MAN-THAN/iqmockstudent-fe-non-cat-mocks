@@ -21,7 +21,7 @@ import { LoadingButton } from "@mui/lab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const LoginForm = ({ setCollege, percentile }) => {
+const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [category, setCategory] = useState("");
   const [gender, setGender] = useState("");
   const [program, setProgram] = useState("");
@@ -29,6 +29,7 @@ const LoginForm = ({ setCollege, percentile }) => {
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
+
 
   // Filling details if present
   useEffect(() => {
@@ -144,6 +145,7 @@ const LoginForm = ({ setCollege, percentile }) => {
         minPercentile: percentile,
         currentSalary: values.salary,
       };
+      setFormData(obj);
       setLoading(true);
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -166,14 +168,23 @@ const LoginForm = ({ setCollege, percentile }) => {
       <ToastContainer />
       <Box
         sx={{
-          width: "30vw",
+          width: "100%",
           height: "auto",
           background: "white",
           borderRadius: "1em",
-          padding: "1px",
+          padding: "1.5em",
         }}
       >
-       {" "}
+        <Typography
+          sx={{
+            color: "#1066DA",
+            fontWeight: 700,
+            fontSize: "1.5em",
+            marginLeft: 0.3,
+          }}
+        >
+          Fill Details
+        </Typography>
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
@@ -183,6 +194,7 @@ const LoginForm = ({ setCollege, percentile }) => {
               justifyContent: "space-between",
               padding: "0.1em",
               gap: "10px",
+              marginTop : 2
             }}
           >
             {" "}
