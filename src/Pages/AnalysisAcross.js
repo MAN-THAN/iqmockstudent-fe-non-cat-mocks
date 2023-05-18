@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography, Stack, Item } from "@mui/material";
@@ -22,10 +22,9 @@ import { useParams } from "react-router-dom";
 import { fetchOverallAcross } from "../services/Analysis_api";
 import PieGraphNew from "../Common-comp/PieGraphNew";
 import ExampleAlignmentButtons from "../Common-comp/RadioView";
+import LineGraph from "../Common-comp/LineGraphAcross";
 
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-
-const FilterList = ({ mocksList, setIndex }) => {
+const FilterList = ({ mocksList, setIndex, scrollTo }) => {
   const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
   return (
     <FormControl>
@@ -42,6 +41,9 @@ const FilterList = ({ mocksList, setIndex }) => {
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
         defaultValue={defaultVal}
+        onClick={() => {
+          scrollTo("info"); // Replace "divId" with the actual ID of the element to scroll to
+        }}
       >
         {mocksList?.map((item, index) => {
           return (
@@ -64,19 +66,32 @@ const GraphLegend = [
   { shade: "#FFC107", Value: "Skipped" },
 ];
 
+const Subjects = [
+  { name: "VARC", value: "varc" },
+  { name: "LRDI", value: "lrdi" },
+  { name: "Quants", value: "quants" },
+];
+
+const GraphListDetails = [
+  { name: "Overall Precentile", value: "overallMocks" },
+  { name: "VARC Percentile", value: "varcMocks" },
+  { name: "LRDI Percentile", value: "lrdiMocks" },
+  { name: "Quants Percentile ", value: "quantsMocks" },
+];
+
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState();
+  const [type, setType] = useState(null);
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
   const [view, setView] = useState("Table");
+  const [response, setResponse] = useState([]);
 
-  const Subjects = [
-    { name: "VARC", value: "varc" },
-    { name: "LRDI", value: "lrdi" },
-    { name: "Quants", value: "quants" },
-  ];
+  const [lineGraph, setLineGraph] = useState([]);
+
+  const [graphList, setGraphList] = useState(null);
+
   const {
     menuBarOpen,
     setMenuBarOpen,
@@ -86,21 +101,24 @@ function AnalysisAcross() {
     showToastMessage,
   } = useAuth();
 
+  const scrollableDivRef = useRef(null);
+
   useEffect(() => {
+    setLineGraph(response[graphList]);
     setShow(mocksList[index]?.data?.[type]);
-  }, [index]);
-  useEffect(() => {
-    if (type === "varc") {
-      setShow(mocksList[index]?.data?.varc);
-    }
-    if (type === "lrdi") {
-      setShow(mocksList[index]?.data?.lrdi);
-    }
-    if (type === "quants") {
-      setShow(mocksList[index]?.data?.quants);
-    }
-  }, [type]);
-  console.log(show);
+  }, [index, type, mocksList, graphList]);
+
+  // useEffect(() => {
+  //   if (type === "varc") {
+  //     setShow(mocksList[index]?.data?.varc);
+  //   }
+  //   if (type === "lrdi") {
+  //     setShow(mocksList[index]?.data?.lrdi);
+  //   }
+  //   if (type === "quants") {
+  //     setShow(mocksList[index]?.data?.quants);
+  //   }
+  // }, [type]);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -109,8 +127,9 @@ function AnalysisAcross() {
       const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
+        setResponse(response.data);
         setMocksList(response.data?.topicWise);
-        setShow(response.data?.topicWise[index].data.varc);
+        // setShow(response.data?.topicWise[index].data.varc);
         setLoading(false);
       } else {
         showToastMessage();
@@ -121,9 +140,16 @@ function AnalysisAcross() {
     fetchData(params.mockId, uid);
   }, []);
 
-  console.log("MOCK", show);
-  console.log(show);
-  console.log(type);
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    element.scrollIntoView({ behavior: "smooth" });
+  };
+
+  console.log("response", response);
+  // console.log("MOCKList", mocksList[0].title);
+  console.log("show", show);
+  console.log("type", type);
+  console.log("index", index);
 
   return (
     <>
@@ -135,6 +161,7 @@ function AnalysisAcross() {
             position: "absolute",
             left: "65px",
             height: "100vh",
+            overflow: "hidden",
             width: "calc(100% - 65px)",
             p: 2,
           }}
@@ -158,7 +185,10 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect options={Subjects} setType={setType} />
+                <MultipleSelect
+                  options={Subjects}
+                  setType={setType}
+                />
                 <div className="d-flex justify-content-between align-items-center">
                   <Typography
                     sx={{
@@ -192,8 +222,10 @@ function AnalysisAcross() {
                 sx={{
                   display: "flex",
                   width: "calc(100vw - 108px)",
-                  height: "76Vh",
+                  height: "70vh",
+
                   mt: 3,
+
                   flexWrap: "wrap",
                 }}
               >
@@ -209,6 +241,9 @@ function AnalysisAcross() {
                 <Box
                   sx={{
                     flexBasis: "15%",
+                    height: "100%",
+                    overflow: "scroll",
+                    py: 2,
                     // border: "2px solid #928F8F ",
                   }}
                 >
@@ -218,7 +253,13 @@ function AnalysisAcross() {
                     useFlexGap
                     flexWrap="wrap"
                   >
-                    <FilterList mocksList={mocksList} setIndex={setIndex} />
+                    {show && (
+                      <FilterList
+                        scrollTo={scrollToDiv}
+                        mocksList={mocksList}
+                        setIndex={setIndex}
+                      />
+                    )}
                   </Stack>
                 </Box>
                 {/* Filter div end */}
@@ -230,17 +271,35 @@ function AnalysisAcross() {
                   }
                   sx={{
                     flexBasis: { xs: "100%", md: "85%" },
-                    height: "max-content",
+                    height: "100%",
                     background: "#F6F7F8",
-
                     p: 3,
                     borderRadius: "15px",
+                    overflow: "scroll",
                   }}
+                  ref={scrollableDivRef}
                 >
                   {/* Switching sections */}
 
                   {view === "Table" ? (
                     <>
+                      <Stack direction="row" justifyContent={"flex-end"}>
+                        <MultipleSelect
+                          options={GraphListDetails}
+                          setType={setGraphList}
+                        />
+                      </Stack>
+                      <Stack
+                        justifyContent={"center"}
+                        my={5}
+                        direction="row"
+                        id="lineGraph"
+                      >
+                        <Box sx={{ width: "80vw", height: "20em" }}>
+                          <LineGraph Data={lineGraph} />
+                        </Box>
+                      </Stack>
+                      <hr />
                       {/* Cards */}
                       <Box
                         component="div"
@@ -268,7 +327,7 @@ function AnalysisAcross() {
                       </Box>
 
                       {/* Table */}
-                      <Box component="div" mt={4}>
+                      <Box component="div" id="info" mt={4}>
                         <DataTable data={show} />
                       </Box>
                     </>
@@ -282,6 +341,7 @@ function AnalysisAcross() {
                           flexWrap: "wrap",
                           gap: 1,
                           rowGap: 5,
+
                           justifyContent: "space-around",
                         }}
                       >
@@ -316,23 +376,39 @@ function AnalysisAcross() {
                           })}
                       </Box>
 
-                        <Stack direction="row" spacing={2} justifyContent={"center"} mt={2} >
-                          {GraphLegend.map((e, ind) => {
-                            return (
-                              <div className="d-flex gap-1 align-items-center" key={ind}>
-                                <div
-                                  style={{
-                                    borderRadius: "40%",
-                                    height: "24px",
-                                    width: "24px",
-                                    background: e.shade,
-                                  }}
-                                ></div>
-                                <span style={{fontSize:13, fontFamily:"var(--font-inter)", fontWeight:600}}>{e.Value}</span>
-                              </div>
-                            );
-                          })}
-                        </Stack>
+                      <Stack
+                        direction="row"
+                        spacing={2}
+                        justifyContent={"center"}
+                        mt={2}
+                      >
+                        {GraphLegend.map((e, ind) => {
+                          return (
+                            <div
+                              className="d-flex gap-1 align-items-center"
+                              key={ind}
+                            >
+                              <div
+                                style={{
+                                  borderRadius: "40%",
+                                  height: "24px",
+                                  width: "24px",
+                                  background: e.shade,
+                                }}
+                              ></div>
+                              <span
+                                style={{
+                                  fontSize: 13,
+                                  fontFamily: "var(--font-inter)",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {e.Value}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </Stack>
                     </>
                   )}
                 </Box>
@@ -347,19 +423,6 @@ function AnalysisAcross() {
 }
 
 const DataTable = ({ data }) => {
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
   return (
     <TableContainer
       sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
