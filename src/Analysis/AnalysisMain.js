@@ -7,6 +7,7 @@ import {
   Paper,
   Card,
   CardMedia,
+  Stack,
 } from "@mui/material";
 import { ModifyButton, SubHeading } from "../styleSheets/Style";
 import { useNavigate, Outlet, NavLink, useLoaderData } from "react-router-dom";
@@ -26,6 +27,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
 import { TooltipCard } from "../Common-comp/Card";
+import { typographyStyles } from "../styleSheets/StyleNew";
+import { ApexChart } from "../Common-comp/CircleChart";
+
+const series = [70];
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -75,6 +80,10 @@ function AnalysisMain() {
     accuracy,
     percentile,
     title,
+    lrdi,
+    quants,
+    targetPercentile,
+    varc,
   } = basicData;
 
   const options = {
@@ -198,20 +207,22 @@ function AnalysisMain() {
                 />
               )}
               {/* Header */}
-              <div className="container-fluid">
+              <div className="container-fluid p-0">
                 <HeaderNew />
               </div>
 
               {/* Header end */}
+
+              {/* Detailing section start */}
               <div
                 className={
                   pdfStyle
                     ? " d-flex  flex-wrap  justify-content-center align-items-center"
-                    : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap justify-content-center align-items-center py-3 px-2 gap-4"
+                    : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap justify-content-bewteen my-3 gap-3"
                 }
               >
-                <div className="flex-item flex-fill">
-                  <div style={{ minWidth: "15em" }}>
+                <div className="flex-item  " style={{ flexBasis: "27%" }}>
+                  <div>
                     <Typography
                       variant="h4"
                       sx={{ color: "var(--dark-blue)", fontSize: "35px" }}
@@ -271,149 +282,273 @@ function AnalysisMain() {
                   </div> */}
                 </div>
 
-                <Box
-                  component="div"
-                  sx={{
-                    borderRadius: "15px",
-                  }}
-                >
-                  <Card
-                    sx={{
-                      width: 292,
-                      height: 177,
-                      borderRadius: 5,
-                      boxShadow: "none",
-                      cursor: "pointer",
-                      transition: "transform 0.5s ease-out",
-                      ":hover": {
-                        boxShadow: 5,
-                        transform: "scale(1.1)",
-                        transition: "transform 0.5s ease-out", // set a longer duration for the hover transformation
-                      },
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      // height="177"
-                      // width="292"
-                      image="/scorevsPrecentile.png"
-                      alt="Paella dish"
-                    />
-                  </Card>
-                </Box>
-
-                <div className="flex-item flex-fill ">
-                  <div
-                    className="mx-auto"
-                    style={{
-                      borderRadius: "15px",
-                      background: "#FFC412",
-                      width: "18.875em",
-                      height: "11em",
-                    }}
-                  >
-                    <div className=" d-flex justify-content-between align-items-center align-content-center p-3 ">
-                      <div className="flex-item">
-                        <Typography
-                          sx={{
-                            fontSize: "26px",
-                            fontFamily: "var( --font-inter)",
-                            fontWeight: "bolder",
-                          }}
-                        >
-                          Your score
-                          <Typography
-                            sx={{
-                              fontSize: "15px",
-                              fontFamily: "var( --font-inter)",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {" "}
-                            out of 198
-                          </Typography>
-                        </Typography>
-                      </div>
-                      <div className="flex-item">
-                        <Typography
-                          sx={{
-                            fontSize: "46px",
-                            fontFamily: "var( --font-inter)",
-                            fontWeight: "900",
-                          }}
-                        >
-                          {overallScore}
-                        </Typography>
-                      </div>
-                    </div>
-                    <div className="pt-1">
-                      <Card
+                <div className="flex-item   " style={{ flexBasis: "23%" }}>
+                  <Card sx={{ width: "100%", height: 348, borderRadius: 4 }}>
+                    <CardContent>
+                      <Typography
                         sx={{
-                          height: 49,
-                          width: 262,
-                          borderRadius: "8.25px",
-                          mx: "auto",
+                          ...typographyStyles.subHeading,
+                          fontSize: "20px",
+                          color: "var(--font-grey)",
+                          lineHeight: 2,
                         }}
                       >
-                        <CardContent
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            gap: 6,
-                            fontWeight: 600,
-                            alignItem: "center",
-                          }}
-                        >
-                          <item>
-                            <Typography
-                              sx={{
-                                fontSize: "15px",
-                                color: "black",
-                                fontWeight: 600,
-                                fontFamily: "var(--font-inter)",
-                              }}
-                              gutterBottom
-                            >
-                              Percentile
-                            </Typography>
-                          </item>
-                          <item>
-                            <Typography
-                              sx={{
-                                fontSize: "15px",
-                                color: "black",
-                                fontWeight: 600,
+                        Overall Score
+                      </Typography>
+                      <Typography
+                        sx={{
+                          ...typographyStyles.subHeading,
+                          fontSize: "23px",
+                          color: "#4149FF",
+                          textAlign: "center",
+                        }}
+                      >
+                        Percentile
+                      </Typography>
 
-                                fontFamily: "var(--font-inter)",
-                              }}
-                              gutterBottom
-                            >
-                              {percentile}
-                            </Typography>
-                          </item>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
+                      <div className="graph d-flex justify-content-center">
+                        <ApexChart
+                          show={{ name: true, value: true }}
+                          series={[percentile]}
+                          title={"Percentile"}
+                          style={{ height: 200, color: "#4149FF", width: 250 }}
+                        />
+                      </div>
+
+                      <Stack
+                        direction="row"
+                        flexWrap="wrap"
+                        fontSize={11}
+                        justifyContent={"space-between"}
+                      >
+                        <p>
+                          <span style={{ color: "#4149FF" }}>
+                            {targetPercentile}
+                          </span>{" "}
+                          Targeted Percentile
+                        </p>
+                        <p>
+                          <span style={{ color: "#4149FF" }}>
+                            {percentile}{" "}
+                          </span>
+                          Result Percentile
+                        </p>
+                        <p>
+                          <span style={{ color: "#4149FF" }}>
+                            {eval(targetPercentile - percentile)}
+                          </span>{" "}
+                          Left To Achieve Your Target
+                        </p>
+                      </Stack>
+                    </CardContent>
+                  </Card>
                 </div>
 
                 {/* Cards sections */}
 
-                <div className="flex-item flex-fill ">
-                  <div className=" d-flex flex-row  justify-content-center  flex-wrap gap-3 row-gap-2 ">
-                    {CardsData.map((item, index) => (
-                      <TooltipCard
-                        key={index}
-                        tooltip={item.tooltip}
-                        values={item.cardTitle}
-                        icon={item.icon}
-                        title={item.title}
-                      />
-                    ))}
+                <div
+                  className="d-flex flex-column gap-3"
+                  style={{ flexBasis: "50%" }}
+                >
+                  <div className="d-flex gap-3">
+                    <Card
+                      sx={{
+                        width: "30%",
+                        height: "10.125em",
+                        borderRadius: 4,
+                        textAlign: "center",
+                      }}
+                    >
+                      <CardContent>
+                        <img
+                          src="/Revenue.png"
+                          alt=""
+                          className="image-fluid mb-2"
+                        />
+                        <Typography
+                          sx={{
+                            ...typographyStyles.subHeading,
+                            fontSize: "14px",
+                            color: "var(--font-grey)",
+                            lineHeight: 1,
+                          }}
+                        >
+                          All India Rank
+                        </Typography>
+                        <Typography
+                          sx={{
+                            ...typographyStyles.subHeading,
+                            fontSize: "37px",
+                          }}
+                        >
+                          53
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                    {/*Marks detail */}
+                    <Card
+                      sx={{
+                        width: "70%",
+                        height: "10.125em",
+                        borderRadius: 4,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography
+                          sx={{
+                            ...typographyStyles.subHeading,
+                            fontSize: "20px",
+                            color: "var(--font-grey)",
+                            lineHeight: 3,
+                          }}
+                        >
+                          Marks
+                        </Typography>
+                        <div className="d-flex justify-content-around align-items-center">
+                          {CardsData &&
+                            CardsData.map((item, ind) => {
+                              return (
+                                <div
+                                  className="Details flex-item text-center"
+                                  key={ind}
+                                >
+                                  <img
+                                    src={item.icon}
+                                    alt="icon"
+                                    width={35}
+                                    className={
+                                      item.icon === "/PS.png"
+                                        ? "image-fluid mb-2 pb-2 align-self-center"
+                                        : "image-fluid mb-2 align-self-center"
+                                    }
+                                  />
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.subHeading,
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {item.cardTitle}
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.subHeading,
+                                      fontSize: "10px",
+                                    }}
+                                  >
+                                    {item.title}
+                                  </Typography>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  {/* Graph Cards */}
+                  <div className="GraphCards">
+                    <Card
+                      sx={{
+                        width: "100%",
+                        height: "10.39em",
+                        borderRadius: 4,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        py: 1,
+                      }}
+                    >
+                      {Object.keys(basicData).length > 0 &&
+                        [
+                          {
+                            name: "varc",
+                            color: "#FF9C41",
+                            title: "Verbal Ability & Reading Comprehension",
+                          },
+                          {
+                            name: "lrdi",
+                            color: "#7748FF",
+                            title: "Logical Reasoning & Data Interpretation",
+                          },
+                          {
+                            name: "quants",
+                            color: "#606060",
+                            title: "Quantitative Aptitude",
+                          },
+                        ].map((item) => {
+                          console.log("itemssmm", item);
+                          const sectionData = basicData[item.name]; // Retrieve the data for the current section
+
+                          return (
+                            <div className="p-2" style={{ flexBasis: "32%" }}>
+                              <Typography
+                                sx={{
+                                  ...typographyStyles.subHeading,
+                                  fontSize: "11.82px",
+                                  pl: 2,
+                                  height:"30px"
+                                }}
+                              >
+                                {item.title}
+                              </Typography>
+                              <div className="d-flex justify-content-start gap-2 align-items-center ">
+                                <div className="graph">
+                                  <ApexChart
+                                    show={{ name: false, value: true }}
+                                    series={[sectionData.percentile]}
+                                    title={"Percentile"}
+                                    style={{
+                                      height: 100,
+                                      width: 80,
+                                      color: item.color,
+                                      fontSize: 15,
+                                      titleSize: 8,
+                                      offsetValue: 2,
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.subHeading,
+                                      fontSize: "13.02px",
+                                      color: item.color,
+                                      pl: 2,
+                                    }}
+                                  >
+                                    Percentile
+                                  </Typography>
+                                </div>
+
+                                <div className="info mb-2">
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.subHeading,
+                                      fontSize: "16.96px",
+                                      lineHeight: 0.5,
+                                    }}
+                                  >
+                                    {sectionData.score}
+                                  </Typography>
+                                  <small
+                                    style={{
+                                      fontSize: "10px",
+                                      color: "#5F5F5F",
+                                    }}
+                                  >
+                                    Your Score
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </Card>
                   </div>
                 </div>
               </div>
+
+              {/* Detailing section End */}
 
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">

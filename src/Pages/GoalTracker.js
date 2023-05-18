@@ -20,7 +20,7 @@ import { getGoalTrackerData } from "../services/Analysis_api";
 import YourGraph from "../Common-comp/YourGraph";
 import LineGraph2 from "../Components/LineGraph2";
 import LineGraph3 from "../Components/LineGraph3";
-
+import { typographyStyles } from "../styleSheets/StyleNew";
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",

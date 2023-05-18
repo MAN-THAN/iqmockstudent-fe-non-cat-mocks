@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography, Stack, Item } from "@mui/material";
@@ -24,7 +24,7 @@ import PieGraphNew from "../Common-comp/PieGraphNew";
 import ExampleAlignmentButtons from "../Common-comp/RadioView";
 import LineGraph from "../Common-comp/LineGraphAcross";
 
-const FilterList = ({ mocksList, setIndex }) => {
+const FilterList = ({ mocksList, setIndex, scrollTo }) => {
   const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
   return (
     <FormControl>
@@ -41,6 +41,9 @@ const FilterList = ({ mocksList, setIndex }) => {
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
         defaultValue={defaultVal}
+        onClick={() => {
+          scrollTo("info"); // Replace "divId" with the actual ID of the element to scroll to
+        }}
       >
         {mocksList?.map((item, index) => {
           return (
@@ -63,22 +66,32 @@ const GraphLegend = [
   { shade: "#FFC107", Value: "Skipped" },
 ];
 
+const Subjects = [
+  { name: "VARC", value: "varc" },
+  { name: "LRDI", value: "lrdi" },
+  { name: "Quants", value: "quants" },
+];
+
+const GraphListDetails = [
+  { name: "Overall Precentile", value: "overallMocks" },
+  { name: "VARC Percentile", value: "varcMocks" },
+  { name: "LRDI Percentile", value: "lrdiMocks" },
+  { name: "Quants Percentile ", value: "quantsMocks" },
+];
+
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState("overall");
+  const [type, setType] = useState(null);
   const [mocksList, setMocksList] = useState([]);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState([]);
   const [view, setView] = useState("Table");
   const [response, setResponse] = useState([]);
+
   const [lineGraph, setLineGraph] = useState([]);
 
-  const Subjects = [
-    { name: "Overall", value: "overall" },
-    { name: "VARC", value: "varc" },
-    { name: "LRDI", value: "lrdi" },
-    { name: "Quants", value: "quants" },
-  ];
+  const [graphList, setGraphList] = useState(null);
+
   const {
     menuBarOpen,
     setMenuBarOpen,
@@ -88,14 +101,12 @@ function AnalysisAcross() {
     showToastMessage,
   } = useAuth();
 
+  const scrollableDivRef = useRef(null);
+
   useEffect(() => {
-    if (type === "overall" && mocksList.length > 0) {
-      setLineGraph(response.overallMocks);
-      setShow(mocksList);
-    } else {
-      setShow(mocksList[index]?.data?.[type]);
-    }
-  }, [index, type, mocksList]);
+    setLineGraph(response[graphList]);
+    setShow(mocksList[index]?.data?.[type]);
+  }, [index, type, mocksList, graphList]);
 
   // useEffect(() => {
   //   if (type === "varc") {
@@ -112,7 +123,7 @@ function AnalysisAcross() {
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (mockId, uid) => {
-      // setLoading(true);
+      setLoading(true);
       const response = await fetchOverallAcross(mockId, uid);
       console.log(response);
       if (response?.status === 200) {
@@ -129,10 +140,16 @@ function AnalysisAcross() {
     fetchData(params.mockId, uid);
   }, []);
 
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    element.scrollIntoView({ behavior: "smooth" });
+  };
+
   console.log("response", response);
-  console.log("MOCK", mocksList);
-  console.log(show);
-  console.log(type);
+  // console.log("MOCKList", mocksList[0].title);
+  console.log("show", show);
+  console.log("type", type);
+  console.log("index", index);
 
   return (
     <>
@@ -168,7 +185,10 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect options={Subjects} setType={setType} />
+                <MultipleSelect
+                  options={Subjects}
+                  setType={setType}
+                />
                 <div className="d-flex justify-content-between align-items-center">
                   <Typography
                     sx={{
@@ -234,7 +254,11 @@ function AnalysisAcross() {
                     flexWrap="wrap"
                   >
                     {show && (
-                      <FilterList mocksList={mocksList} setIndex={setIndex} />
+                      <FilterList
+                        scrollTo={scrollToDiv}
+                        mocksList={mocksList}
+                        setIndex={setIndex}
+                      />
                     )}
                   </Stack>
                 </Box>
@@ -253,16 +277,29 @@ function AnalysisAcross() {
                     borderRadius: "15px",
                     overflow: "scroll",
                   }}
+                  ref={scrollableDivRef}
                 >
                   {/* Switching sections */}
 
                   {view === "Table" ? (
                     <>
-                      <Stack justifyContent={"center"} my={5} direction="row">
+                      <Stack direction="row" justifyContent={"flex-end"}>
+                        <MultipleSelect
+                          options={GraphListDetails}
+                          setType={setGraphList}
+                        />
+                      </Stack>
+                      <Stack
+                        justifyContent={"center"}
+                        my={5}
+                        direction="row"
+                        id="lineGraph"
+                      >
                         <Box sx={{ width: "80vw", height: "20em" }}>
                           <LineGraph Data={lineGraph} />
                         </Box>
                       </Stack>
+                      <hr />
                       {/* Cards */}
                       <Box
                         component="div"
@@ -290,7 +327,7 @@ function AnalysisAcross() {
                       </Box>
 
                       {/* Table */}
-                      <Box component="div" mt={4}>
+                      <Box component="div" id="info" mt={4}>
                         <DataTable data={show} />
                       </Box>
                     </>

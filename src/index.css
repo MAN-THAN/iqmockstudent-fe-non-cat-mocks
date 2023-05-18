@@ -34,6 +34,7 @@ body {
   --font-inder: "Inder", sans-serif;
   --background: #f9faff;
   --blue-new: #0090ff;
+  --font-grey: #5F5F5F;
 }
 .img-wrapper {
   overflow: hidden;
