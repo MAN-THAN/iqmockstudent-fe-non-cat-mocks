@@ -82,6 +82,7 @@ export default class LineGraph4 extends PureComponent {
           />
         </LineChart>
       </ResponsiveContainer>
+      
     );
   }
 }
