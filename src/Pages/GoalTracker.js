@@ -20,10 +20,12 @@ import { getGoalTrackerData } from "../services/Analysis_api";
 import YourGraph from "../Common-comp/YourGraph";
 import LineGraph2 from "../Components/LineGraph2";
 import LineGraph3 from "../Components/LineGraph3";
+import { typographyStyles } from "../styleSheets/StyleNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
