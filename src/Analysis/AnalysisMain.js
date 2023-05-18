@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Typography,
-  InputAdornment,
-  Box,
-  Paper,
-  Card,
-  CardMedia,
-  Stack,
-} from "@mui/material";
-import { ModifyButton, SubHeading } from "../styleSheets/Style";
-import { useNavigate, Outlet, NavLink, useLoaderData } from "react-router-dom";
+import { Typography, Box, Card, Stack, Tooltip } from "@mui/material";
+import { ModifyButton } from "../styleSheets/Style";
+import { useNavigate, Outlet, NavLink } from "react-router-dom";
 import CardContent from "@mui/material/CardContent";
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../services/Context";
@@ -26,7 +17,6 @@ import { PacmanLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
-import { TooltipCard } from "../Common-comp/Card";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
 
@@ -411,37 +401,39 @@ function AnalysisMain() {
                           {CardsData &&
                             CardsData.map((item, ind) => {
                               return (
-                                <div
-                                  className="Details flex-item text-center"
-                                  key={ind}
-                                >
-                                  <img
-                                    src={item.icon}
-                                    alt="icon"
-                                    width={35}
-                                    className={
-                                      item.icon === "/PS.png"
-                                        ? "image-fluid mb-2 pb-2 align-self-center"
-                                        : "image-fluid mb-2 align-self-center"
-                                    }
-                                  />
-                                  <Typography
-                                    sx={{
-                                      ...typographyStyles.subHeading,
-                                      fontSize: "14px",
-                                    }}
+                                <Tooltip title={item.tooltip} arrow>
+                                  <div
+                                    className="Details flex-item text-center"
+                                    key={ind}
                                   >
-                                    {item.cardTitle}
-                                  </Typography>
-                                  <Typography
-                                    sx={{
-                                      ...typographyStyles.subHeading,
-                                      fontSize: "10px",
-                                    }}
-                                  >
-                                    {item.title}
-                                  </Typography>
-                                </div>
+                                    <img
+                                      src={item.icon}
+                                      alt="icon"
+                                      width={35}
+                                      className={
+                                        item.icon === "/PS.png"
+                                          ? "image-fluid mb-2 pb-2 align-self-center"
+                                          : "image-fluid mb-2 align-self-center"
+                                      }
+                                    />
+                                    <Typography
+                                      sx={{
+                                        ...typographyStyles.subHeading,
+                                        fontSize: "14px",
+                                      }}
+                                    >
+                                      {item.cardTitle}
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        ...typographyStyles.subHeading,
+                                        fontSize: "10px",
+                                      }}
+                                    >
+                                      {item.title}
+                                    </Typography>
+                                  </div>
+                                </Tooltip>
                               );
                             })}
                         </div>
@@ -488,7 +480,7 @@ function AnalysisMain() {
                                   ...typographyStyles.subHeading,
                                   fontSize: "11.82px",
                                   pl: 2,
-                                  height:"30px"
+                                  height: "30px",
                                 }}
                               >
                                 {item.title}
