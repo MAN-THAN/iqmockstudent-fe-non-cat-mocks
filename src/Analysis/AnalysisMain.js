@@ -226,50 +226,52 @@ function AnalysisMain() {
                       This is your mock Analysis for
                       {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
-                  </div>
 
-                  {/* <div className="d-flex gap-3 m-3 ms-0 ">
-                    <ModifyButton
-                      variant="filled"
-                      onClick={() =>
-                        navigate(`/viewsolutions/${attemptId}/varc`)
-                      }
-                      sx={{
-                        border: "2px solid #0057CB",
-                        backgroundColor: "#0057CB",
-                        color: "white",
-                        height: "59px",
-                        width: "200px",
-                        borderRadius: "20px",
-                        p: 2,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      View solutions
-                    </ModifyButton>
-                    <ModifyButton
-                      variant="outlined"
-                      startIcon={
-                        <img
-                          src="/Download.png"
-                          className="img-fluid"
-                          width={13}
-                        />
-                      }
-                      onClick={handleDownloadPDF}
-                      sx={{
-                        p: 2,
-                        height: "59px",
-                        border: "2px solid #0057CB",
-                        width: "215px",
-                        color: "#0057CB",
-                        fontWeight: "bold",
-                        borderRadius: "20px",
-                      }}
-                    >
-                      Download report
-                    </ModifyButton>
-                  </div> */}
+                    <div className="flex justify-content-between">
+                      <ModifyButton
+                        variant="filled"
+                        // onClick={() =>
+                        //   navigate(`/viewsolutions/${attemptId}/varc`)
+                        // }
+                        sx={{
+                          border: "2px solid #0057CB",
+                          backgroundColor: "#0057CB",
+                          color: "white",
+                          height: "24px",
+                          width: "auto",
+                          borderRadius: "15px",
+                          p: 2,
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                        }}
+                      >
+                        View solutions
+                      </ModifyButton>
+                      <ModifyButton
+                        variant="outlined"
+                        startIcon={
+                          <img
+                            src="/Download.png"
+                            className="img-fluid"
+                            width={13}
+                          />
+                        }
+                        // onClick={handleDownloadPDF}
+                        sx={{
+                          p: 2,
+                          height: "24px",
+                          border: "2px solid #0057CB",
+                          width: "auto",
+                          color: "#0057CB",
+                          fontWeight: "bold",
+                          borderRadius: "15px",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Download report
+                      </ModifyButton>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex-item   " style={{ flexBasis: "23%" }}>
