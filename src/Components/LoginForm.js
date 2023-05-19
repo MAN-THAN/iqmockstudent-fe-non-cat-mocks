@@ -194,7 +194,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               justifyContent: "space-between",
               padding: "0.1em",
               gap: "10px",
-              marginTop : 2
+              marginTop: 2,
             }}
           >
             {" "}
@@ -336,6 +336,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/school (2).png" />
                   </InputAdornment>
                 ),
+                inputProps: { min: 0, max: 100 },
               }}
               autoComplete="off"
               required
@@ -358,6 +359,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/school (2).png" />
                   </InputAdornment>
                 ),
+                inputProps: { min: 0, max: 100 },
               }}
               autoComplete="off"
               required
@@ -380,6 +382,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/school (1).png" />
                   </InputAdornment>
                 ),
+                inputProps: { min: 0, max: 100 },
               }}
               autoComplete="off"
               required
@@ -454,6 +457,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/salary.png" />
                   </InputAdornment>
                 ),
+                inputProps: { min: 0, max: 100 },
               }}
               autoComplete="off"
             />
@@ -475,6 +479,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </InputAdornment>
                 ),
+                inputProps: { min: 0, max: 40 },
               }}
               autoComplete="off"
               required
