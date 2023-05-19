@@ -19,8 +19,9 @@ import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
+import { motion } from "framer-motion";
 
-const series = [70];
+
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -152,7 +153,7 @@ function AnalysisMain() {
     <>
       <ToastContainer />
       {isErr ? (
-        <div></div>
+        <div>Error occured</div>
       ) : isLoading ? (
         <div
           style={{
@@ -174,12 +175,15 @@ function AnalysisMain() {
         </div>
       ) : (
         <>
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             id="my-component"
             style={{
               background: "var(--background)",
               position: "absolute",
-              left: "70px",
+              left: "65px",
               padding: "15px",
             }}
           >
@@ -215,7 +219,7 @@ function AnalysisMain() {
                   <div>
                     <Typography
                       variant="h4"
-                      sx={{ color: "var(--dark-blue)", fontSize: "35px" }}
+                      sx={{ color: "var(--blue-new)", fontSize: "35px" }}
                     >
                       Hey {name},
                       <br />
@@ -227,15 +231,15 @@ function AnalysisMain() {
                       {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
 
-                    <div className="flex justify-content-between">
+                    <div className="d-flex justify-content-start mt-4 gap-2 ">
                       <ModifyButton
                         variant="filled"
                         // onClick={() =>
                         //   navigate(`/viewsolutions/${attemptId}/varc`)
                         // }
                         sx={{
-                          border: "2px solid #0057CB",
-                          backgroundColor: "#0057CB",
+                          border: "2px solid var( --blue-new)",
+                          backgroundColor: "var( --blue-new)",
                           color: "white",
                           height: "24px",
                           width: "auto",
@@ -245,7 +249,7 @@ function AnalysisMain() {
                           fontSize: "12px",
                         }}
                       >
-                        View solutions
+                        Score vs Percentile
                       </ModifyButton>
                       <ModifyButton
                         variant="outlined"
@@ -253,19 +257,23 @@ function AnalysisMain() {
                           <img
                             src="/Download.png"
                             className="img-fluid"
-                            width={13}
+                            width={10}
                           />
                         }
                         // onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
                           height: "24px",
-                          border: "2px solid #0057CB",
+                          // border: "2px solid var( --blue-new)",
                           width: "auto",
-                          color: "#0057CB",
+                          color: "var( --blue-new)",
                           fontWeight: "bold",
                           borderRadius: "15px",
                           fontSize: "12px",
+                          ":hover , :focus": {
+                            background: "inherit",
+                            color: "var( --blue-new)",
+                          },
                         }}
                       >
                         Download report
@@ -545,7 +553,7 @@ function AnalysisMain() {
               {/* Detailing section End */}
 
               {/* Buttons for changing sections */}
-              <div className=" d-flex mt-3">
+              <div className=" d-flex pt-4">
                 <div
                   style={{ flexBasis: "70%" }}
                   className=" d-flex gap-3 ps-2"
@@ -566,7 +574,7 @@ function AnalysisMain() {
                         background:
                           location.pathname ===
                           `/analysis/${attemptId}/sectionwise/${subject}`
-                            ? "#0057CB"
+                            ? "var( --blue-new)"
                             : "",
                         color:
                           location.pathname ===
@@ -671,7 +679,7 @@ function AnalysisMain() {
                       padding: "8px 16px",
                       borderRadius: "20px",
                       lineHeight: 1.5,
-                      backgroundColor: "#0057CB",
+                      backgroundColor: "var( --blue-new)",
                       fontFamily: "var(--font-inter)",
                     }}
                   >
@@ -689,7 +697,7 @@ function AnalysisMain() {
               </div>
               <Outlet />
             </div>
-          </div>
+          </motion.div>
         </>
       )}
     </>

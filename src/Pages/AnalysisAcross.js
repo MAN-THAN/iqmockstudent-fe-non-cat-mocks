@@ -23,6 +23,7 @@ import { fetchOverallAcross } from "../services/Analysis_api";
 import PieGraphNew from "../Common-comp/PieGraphNew";
 import ExampleAlignmentButtons from "../Common-comp/RadioView";
 import LineGraph from "../Common-comp/LineGraphAcross";
+import { motion } from "framer-motion";
 
 const FilterList = ({ mocksList, setIndex, scrollTo }) => {
   const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
@@ -185,10 +186,7 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect
-                  options={Subjects}
-                  setType={setType}
-                />
+                <MultipleSelect options={Subjects} setType={setType} />
                 <div className="d-flex justify-content-between align-items-center">
                   <Typography
                     sx={{
@@ -295,9 +293,14 @@ function AnalysisAcross() {
                         direction="row"
                         id="lineGraph"
                       >
-                        <Box sx={{ width: "80vw", height: "20em" }}>
+                        <motion.div
+                          initial={{ opacity: 0, y: -20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 1.0 }}
+                          style={{ width: "80vw", height: "20em" }}
+                        >
                           <LineGraph Data={lineGraph} />
-                        </Box>
+                        </motion.div>
                       </Stack>
                       <hr />
                       {/* Cards */}
@@ -335,13 +338,15 @@ function AnalysisAcross() {
                     <>
                       {/* Graphs view */}
 
-                      <Box
-                        sx={{
+                      <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.0 }}
+                        style={{
                           display: "flex",
                           flexWrap: "wrap",
                           gap: 1,
                           rowGap: 5,
-
                           justifyContent: "space-around",
                         }}
                       >
@@ -349,7 +354,7 @@ function AnalysisAcross() {
                           show.map((item, ind) => {
                             console.log(show);
                             return (
-                              <Box>
+                              <Box key={ind}>
                                 <Typography
                                   lineHeight={0}
                                   sx={{
@@ -374,7 +379,7 @@ function AnalysisAcross() {
                               </Box>
                             );
                           })}
-                      </Box>
+                      </motion.div>
 
                       <Stack
                         direction="row"

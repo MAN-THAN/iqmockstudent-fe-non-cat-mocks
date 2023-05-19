@@ -77,7 +77,7 @@ export const ApexChart = ({ series, style, title, show }) => {
         series={series}
         type="radialBar"
         height={style.height}
-         width={style.width || "inherit"}
+        width={style.width || "inherit"}
         color={style.color}
       />
     </div>

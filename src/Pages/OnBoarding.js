@@ -325,7 +325,7 @@ function OnBoarding() {
             </Box>
             {startMock ? (
               <Box sx={{ marginTop: 1 }}>
-                {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
+             
                 <button onClick={handleSubmit} className="custom-btn btn-12">
                   <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
                   <span style={{ fontSize: 20, paddingTop: 5 }}>Start Mock</span>
