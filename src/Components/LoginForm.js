@@ -30,7 +30,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
 
-
+  console.log(program)
   // Filling details if present
   useEffect(() => {
     // console.log(name, gh);
@@ -139,7 +139,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
         category: values.category,
-        graduationStream: "",
+        graduationStream: program,
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,
@@ -498,10 +498,10 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                 label="Program"
                 onChange={(e) => setProgram(e.target.value)}
               >
-                <MenuItem value={"obc"}>B.Tech</MenuItem>
-                <MenuItem value={"general"}>BCA</MenuItem>
-                <MenuItem value={"general"}>BBA</MenuItem>
-                <MenuItem value={"general"}>B.Com</MenuItem>
+                <MenuItem value={"btech"}>B.Tech</MenuItem>
+                <MenuItem value={"bca"}>BCA</MenuItem>
+                <MenuItem value={"bba"}>BBA</MenuItem>
+                <MenuItem value={"Bcom"}>B.Com</MenuItem>
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
