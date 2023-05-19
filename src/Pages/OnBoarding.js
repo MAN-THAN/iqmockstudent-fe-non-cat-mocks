@@ -127,14 +127,14 @@ function OnBoarding() {
       const res = await getPredictCollege(uid, { ...formData, minPercentile: e.target.value });
       console.log(res);
       if (res?.status == 200) {
-        setCollege(res?.data);
+        setCollege(res?.data.bschools);
       }
     } catch (err) {
       // showToastMessage();
       console.log(err);
     }
   };
-  // console.log("coolr", college.bschools);
+  console.log("coolr", college);
 
   const handleSlider = () => {
     if (startMock === false) {
@@ -181,7 +181,7 @@ function OnBoarding() {
             <Box sx={{ width: "40%" }}>
               <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
             </Box>
-            <Box sx={{ width: "55%" }}>
+            <Box sx={{ width: "58%" }}>
               {startMock ? (
                 <Box sx={{ width: "100%" }}>
                   <Box
@@ -197,7 +197,7 @@ function OnBoarding() {
                   >
                     <Box sx={{ overflow: "scroll" }}>
                       <DetailCards
-                        dataLength={college && college.bschools[0].college.length}
+                        dataLength={college && college.length}
                         logoPath={"/goalSchool.png"}
                         cardContent={
                           <TableContainer>
@@ -209,24 +209,24 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15, display : "flex", flexDirection : "row", gap : 1 }} align="left">
-                                    <Typography sx={{ fontWeight: "bold", fontSize: 15 }}>Ranking</Typography>
-                                    <img src='/onboarding_arrow.svg' alt='no image' width='10px'></img>
-                                    <Box sx={{width : "1.7em"}}></Box>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, display: "flex", flexDirection: "row", gap: 1 }} align="left">
+                                    <Typography sx={{ fontWeight: "bold", fontSize: 16.5 }}>Ranking</Typography>
+                                    <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                                    {/* <Box sx={{ width: "1.7em" }}></Box> */}
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Name
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Average Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
 
                                 {college &&
-                                  college.bschools[0].college.map((item, ind) => {
+                                  college.map((item, ind) => {
                                     return (
                                       <TableRow
                                         sx={{
@@ -237,14 +237,14 @@ function OnBoarding() {
                                         <TableCell sx={{ ...cellStyle, paddingRight: 5 }} align="left">
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="left">
-                                          {item}
+                                        <TableCell sx={{ cellStyle, fontWeight: 600 }} align="left">
+                                          {item.name}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">
-                                          {item.avgSalary || "tbd"}
+                                          {item.avgSalary + " LPA" || "tbd"}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">
-                                          {item.currentSalary || "tbd"}
+                                          {item.highestSalary + " LPA" || "tbd"}
                                         </TableCell>
                                       </TableRow>
                                     );
