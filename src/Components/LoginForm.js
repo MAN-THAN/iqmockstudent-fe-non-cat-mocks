@@ -479,7 +479,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </InputAdornment>
                 ),
-                inputProps: { min: 0, max: 40 },
+                inputProps: { min: 0, max: 40 }
               }}
               autoComplete="off"
               required

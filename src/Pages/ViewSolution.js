@@ -692,7 +692,6 @@ export default function ViewSolution() {
                       display: "flex",
                       justifyContent: "space-around",
                       flexWrap: "wrap",
-                      width: "25em",
                       rowGap: 2,
                       marginTop: 2,
                     }}
