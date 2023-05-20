@@ -123,15 +123,20 @@ const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState(null);
-  const [mocksList, setMocksList] = useState([]);
-  const [index, setIndex] = useState(0);
-  const [show, setShow] = useState([]);
-  const [view, setView] = useState("Table");
-  const [response, setResponse] = useState([]);
-  const [lineGraph, setLineGraph] = useState([]);
-  const [graphList, setGraphList] = useState(null);
-  const [topics, setTopics] = useState([]);
+  const [type, setType] = useState(null); // this state for the type of section
+  const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
+  const [index, setIndex] = useState(0); // state for setting the index
+  const [show, setShow] = useState([]); // this state for table data has been showing
+  const [view, setView] = useState("Table"); // View setting state graph or table
+  const [response, setResponse] = useState([]); // main Data that come from api set in this state
+
+  const [topics, setTopics] = useState([]); // for weak strong and moderate card state
+  const [topicsType, setTopicsType] = useState([]); //for topic and subtopic filter state
+
+  const [graph, setGraph] = useState({
+    data: [],
+    type: null,
+  }); //state for setting the line graph
 
   const {
     menuBarOpen,
@@ -145,9 +150,12 @@ function AnalysisAcross() {
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
-    setLineGraph(response[graphList]);
+    if (graph.type) {
+      setGraph({ ...graph, data: response[graph.type] });
+    }
+
     setShow(mocksList[index]?.data?.[type]);
-  }, [index, type, mocksList, graphList]);
+  }, [index, type, mocksList, graph.type]);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -172,7 +180,7 @@ function AnalysisAcross() {
   useEffect(() => {
     if (response.analysismetrics && type !== null) {
       const newTopics = { weak: [], moderate: [], strong: [] };
-      
+
       response.analysismetrics[0]?.["overall"].forEach((e) => {
         if (e.accuracy <= 30) {
           newTopics.weak.push({
@@ -213,6 +221,7 @@ function AnalysisAcross() {
   console.log("type", type);
   console.log("index", index);
   console.log("topics", topics);
+  console.log("graph", graph);
 
   return (
     <>
@@ -346,7 +355,12 @@ function AnalysisAcross() {
                       <Stack direction="row" justifyContent={"flex-end"}>
                         <MultipleSelect
                           options={GraphListDetails}
-                          setType={setGraphList}
+                          setType={(selectedValue) =>
+                            setGraph({
+                              ...graph,
+                              type: selectedValue,
+                            })
+                          }
                         />
                       </Stack>
                       <Stack
@@ -361,7 +375,7 @@ function AnalysisAcross() {
                           transition={{ duration: 1.0 }}
                           style={{ width: "80vw", height: "20em" }}
                         >
-                          <LineGraph Data={lineGraph} />
+                          <LineGraph Data={graph.data} />
                         </motion.div>
                       </Stack>
                       <hr />
@@ -374,7 +388,15 @@ function AnalysisAcross() {
                           justifyContent: "flex-end",
                         }}
                       >
-                        {/* <MultipleSelect options={Subjects} setType={setType} /> */}
+                        {topicsType && (
+                          <MultipleSelect
+                            options={[
+                              { name: "Topic", value: "maintopic" },
+                              { name: "Subtopic", value: "subtopic" },
+                            ]}
+                            setType={setTopicsType}
+                          />
+                        )}
                         {AnalysisAcrossCard.map((item, _) => (
                           <LogoCard
                             cardTitle={item.title}
