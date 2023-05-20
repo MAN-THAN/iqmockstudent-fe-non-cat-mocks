@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 function SubtopicAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
-  const { sectionWiseAnalysis } = useAuth();
+  const { subtopicWiseAnalysis } = useAuth();
   const navigate = useNavigate();
 
 
@@ -30,13 +30,13 @@ function SubtopicAnalysis() {
 
   useEffect(() => {
     if (params.subject == "varc") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
+      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.varc);
     } else if (params.subject === "lrdi") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis?.lrdi);
+      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.lrdi);
     } else if (params.subject === "quants") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis?.quants);
+      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.quants);
     }
-  }, [params, sectionWiseAnalysis]);
+  }, [params, subtopicWiseAnalysis]);
   console.log("section", data);
 
   console.log("manthan tyagi")
@@ -49,8 +49,8 @@ function SubtopicAnalysis() {
      "Number of Correct Attempts",
      "Number of Incorrect Attempts",
      "Mark obtained by correct questions",
-     "Overall score in the topic ",
-     "Mark Obtained by Topper in this topic",
+     "Overall score in the Subtopic ",
+     "Mark Obtained by Topper in this Subtopic",
      "Mark lose by Incorrect Attempt",
    ];
 
@@ -84,7 +84,7 @@ function SubtopicAnalysis() {
 
         <TableBody>
           {data.length > 0 &&
-            data.map((item, index) => {
+            data.slice(1).map((item, index) => {
               return (
                 <StyledTableRow
                   key={index}
@@ -95,20 +95,22 @@ function SubtopicAnalysis() {
                     cursor: "pointer",
                   }}
                 >
-                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                  <StyledTableCell align="center">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="center" style={{ fontSize: "15px" }}>
-                    {item.subtopic}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.studentAnswer !== undefined ? (item.studentAnswer === item.correctAnswer ? "Yes" : "No") : "Not attempted"}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{item.difficulty}</StyledTableCell>
-                  <StyledTableCell align="center">{item.score}</StyledTableCell>
+                  <StyledTableCell align="center">{item.number}</StyledTableCell>
+                  <StyledTableCell align="center">{item.subtopic[0]}</StyledTableCell>
+                  <StyledTableCell align="center">{item.numberOfQuestions}</StyledTableCell>
+                  <StyledTableCell align="center">{item.numberOfAttemptedQuestions}</StyledTableCell>
+                  <StyledTableCell align="center">{item.numberOfCorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="center">{item.numberOfIncorrectAttempt}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
-                    {item.duration}
+                    {item.markObtainedByCorrectQuestion}
                   </StyledTableCell>
-                  <StyledTableCell align="center"></StyledTableCell>
+                  <StyledTableCell align="center">{item.overallScoreInTheSubtopic}</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                    {item.markObtainedByTopperInThisSubtopic}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                    {item.markLoseByIncorrectAttempt}
+                  </StyledTableCell>
                 </StyledTableRow>
               );
             })}
