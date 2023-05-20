@@ -152,28 +152,28 @@ export default function ViewSolution() {
       if (res?.status == 200) {
         setData(res.data);
         setShow(res.data.varc);
-        // setTrackerVA(res.data.varc);
-        setTrackerLR(res.data.lrdi);
-        setTrackerQU(res.data.quants);
-        const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
-        const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
-        const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
-        // getting data from local storage(error form)
-        if (errTrackerV?.length > 0) {
-          setTrackerVA(errTrackerV);
-        } else {
-          setTrackerVA(res.data.varc);
-        }
-        if (errTrackerL?.length > 0) {
-          setTrackerLR(errTrackerL);
-        } else {
-          setTrackerLR(res.data.lrdi);
-        }
-        if (errTrackerQ?.length > 0) {
-          setTrackerQU(errTrackerQ);
-        } else {
-          setTrackerQU(res.data.quants);
-        }
+        setTrackerVA(res.data.errorData?.varc);
+        setTrackerLR(res.data.errorData?.lrdi);
+        setTrackerQU(res.data.errorData?.quants);
+        // const errTrackerV = JSON.parse(sessionStorage.getItem("errTrackerVA"));
+        // const errTrackerL = JSON.parse(sessionStorage.getItem("errTrackerLR"));
+        // const errTrackerQ = JSON.parse(sessionStorage.getItem("errTrackerQU"));
+        // // getting data from local storage(error form)
+        // if (errTrackerV?.length > 0) {
+        //   setTrackerVA(errTrackerV);
+        // } else {
+        //   setTrackerVA(res.data.varc);
+        // }
+        // if (errTrackerL?.length > 0) {
+        //   setTrackerLR(errTrackerL);
+        // } else {
+        //   setTrackerLR(res.data.lrdi);
+        // }
+        // if (errTrackerQ?.length > 0) {
+        //   setTrackerQU(errTrackerQ);
+        // } else {
+        //   setTrackerQU(res.data.quants);
+        // }
         setLoading(false);
       } else {
         setLoading(false);
@@ -276,7 +276,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerVA];
         arr.splice(index, 1, tempObj);
         setTrackerVA(arr);
-        sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
+        // sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
       }
       if (type == "lrdi") {
         const tempObj = {
@@ -287,7 +287,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerLR];
         arr.splice(index, 1, tempObj);
         setTrackerLR(arr);
-        sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
+        // sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
       }
       if (type == "quants") {
         const tempObj = {
@@ -298,7 +298,7 @@ export default function ViewSolution() {
         let arr = [...errTrackerQU];
         arr.splice(index, 1, tempObj);
         setTrackerQU(arr);
-        sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
+        // sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
       }
     }
   };
@@ -330,7 +330,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     }
-  }, [index, errTrackerVA, errTrackerLR, errTrackerQU]);
+  }, [index, errTrackerVA, errTrackerLR, errTrackerQU, selected]);
 
   // setting into local
 
