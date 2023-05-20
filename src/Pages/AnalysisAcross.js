@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
-import { Box, Typography, Stack, Item } from "@mui/material";
+import { Box, Typography, Stack, Card, CardContent } from "@mui/material";
 import { typographyStyles, style } from "../styleSheets/StyleNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import Radio from "@mui/material/Radio";
@@ -80,6 +80,47 @@ const GraphListDetails = [
   { name: "Quants Percentile ", value: "quantsMocks" },
 ];
 
+const DataTable = ({ data }) => {
+  return (
+    <TableContainer
+      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
+      component={Paper}
+    >
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableBody>
+          {data?.map((row) => (
+            <TableRow
+              key={row.topic}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
+                {row.topic}
+              </TableCell>
+              <TableCell align="center">{row.noOfQuestion}</TableCell>
+              <TableCell align="center">{row.attempted}</TableCell>
+              <TableCell align="center">{row.correct}</TableCell>
+              <TableCell align="center">{row.incorrect}</TableCell>
+              <TableCell align="center">{row.skipped}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const CardStyle = {
+  fontSize: 8,
+  width: "169px",
+  height: "52px",
+  display: "flex",
+  flexDirection: "row-reverse",
+  justifyContent: "space-around",
+  alignItems: "center",
+};
+
+const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
+
 function AnalysisAcross() {
   const params = useParams();
   const [type, setType] = useState(null);
@@ -88,10 +129,9 @@ function AnalysisAcross() {
   const [show, setShow] = useState([]);
   const [view, setView] = useState("Table");
   const [response, setResponse] = useState([]);
-
   const [lineGraph, setLineGraph] = useState([]);
-
   const [graphList, setGraphList] = useState(null);
+  const [topics, setTopics] = useState([]);
 
   const {
     menuBarOpen,
@@ -109,24 +149,12 @@ function AnalysisAcross() {
     setShow(mocksList[index]?.data?.[type]);
   }, [index, type, mocksList, graphList]);
 
-  // useEffect(() => {
-  //   if (type === "varc") {
-  //     setShow(mocksList[index]?.data?.varc);
-  //   }
-  //   if (type === "lrdi") {
-  //     setShow(mocksList[index]?.data?.lrdi);
-  //   }
-  //   if (type === "quants") {
-  //     setShow(mocksList[index]?.data?.quants);
-  //   }
-  // }, [type]);
-
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-    const fetchData = async (mockId, uid) => {
+    const fetchData = async (uid, attemptId) => {
       setLoading(true);
-      const response = await fetchOverallAcross(mockId, uid);
-      console.log(response);
+      const response = await fetchOverallAcross(uid, attemptId);
+      console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
         setMocksList(response.data?.topicWise);
@@ -138,19 +166,53 @@ function AnalysisAcross() {
         return;
       }
     };
-    fetchData(params.mockId, uid);
+    fetchData(uid, params.attemptId);
   }, []);
+
+  useEffect(() => {
+    if (response.analysismetrics && type !== null) {
+      const newTopics = { weak: [], moderate: [], strong: [] };
+      
+      response.analysismetrics[0]?.["overall"].forEach((e) => {
+        if (e.accuracy <= 30) {
+          newTopics.weak.push({
+            title: "Weak",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        } else if (e.accuracy > 30 && e.accuracy <= 60) {
+          newTopics.moderate.push({
+            title: "",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        } else {
+          newTopics.strong.push({
+            title: "",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        }
+      });
+
+      setTopics(newTopics);
+    }
+  }, [response, type]);
 
   const scrollToDiv = (id) => {
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: "smooth" });
   };
-
-  console.log("response", response);
+  // D
+  // console.log("response", ...response.analysismetrics);
   // console.log("MOCKList", mocksList[0].title);
   console.log("show", show);
   console.log("type", type);
   console.log("index", index);
+  console.log("topics", topics);
 
   return (
     <>
@@ -303,7 +365,7 @@ function AnalysisAcross() {
                         </motion.div>
                       </Stack>
                       <hr />
-                      {/* Cards */}
+                      {/* Cards of table*/}
                       <Box
                         component="div"
                         sx={{
@@ -312,19 +374,13 @@ function AnalysisAcross() {
                           justifyContent: "flex-end",
                         }}
                       >
+                        {/* <MultipleSelect options={Subjects} setType={setType} /> */}
                         {AnalysisAcrossCard.map((item, _) => (
                           <LogoCard
                             cardTitle={item.title}
                             key={item.id}
                             icon={item.icon}
-                            style={{
-                              fontSize: 8,
-                              width: "169px",
-                              height: "52px",
-                              flexBasis: "15%",
-                              flexGrow: 0,
-                              justifyContent: "center",
-                            }}
+                            style={CardStyle}
                           />
                         ))}
                       </Box>
@@ -333,6 +389,93 @@ function AnalysisAcross() {
                       <Box component="div" id="info" mt={4}>
                         <DataTable data={show} />
                       </Box>
+
+                      {/* Cards of weak , moderate and  strong */}
+                      <Typography
+                        sx={{
+                          ...typographyStyles.mainHeading,
+                          pt: 2,
+                        }}
+                      >
+                        {" "}
+                        Analysis Metrics
+                      </Typography>
+                      <div className="my-2 d-flex justify-content-between">
+                        {Object.keys(topics).length > 0 &&
+                          ["Weak", "Moderate", "Strong"].map((type, index) => {
+                            return (
+                              <>
+                                <div className="d-flex flex-column p-2 ">
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.mainHeading,
+                                      lineHeight: 4,
+                                      fontSize: "17.02px",
+                                      pl: 2,
+                                    }}
+                                  >
+                                    {" "}
+                                    <span className="me-2">
+                                      <img
+                                        src={
+                                          type === "Weak"
+                                            ? "/CardsIcons/broken.png"
+                                            : type === "Moderate"
+                                            ? "/CardsIcons/flag.png"
+                                            : "/CardsIcons/arm.png"
+                                        }
+                                        width={28}
+                                        className="img-fluid"
+                                      />
+                                    </span>{" "}
+                                    {type}
+                                  </Typography>
+                                  <Card
+                                    key={type}
+                                    sx={{
+                                      minHeight: "19.188em",
+                                      minWidth: "17.938em",
+                                      backgroundColor:
+                                        cardsColor[index % cardsColor.length],
+                                      borderRadius: 5,
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      gap: 3,
+                                    }}
+                                  >
+                                    <CardContent>
+                                      {topics?.[type.toLowerCase()].map(
+                                        (item, ind) => (
+                                          <motion.div
+                                            key={ind}
+                                            initial={{ opacity: 0, scale: 0.5 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.5 }}
+                                          >
+                                            <LogoCard
+                                              cardTitle={item.topic}
+                                              icon={"/Acc.png"}
+                                              style={{
+                                                ...CardStyle,
+                                                fontSize: "15px",
+                                                iconSize: 24,
+                                                width: "17.1em",
+                                                marginBottom: "15px",
+                                                justifyContent: "flex-end",
+                                                columnGap: "10px",
+                                                borderRadius: "15px",
+                                              }}
+                                            />
+                                          </motion.div>
+                                        )
+                                      )}
+                                    </CardContent>
+                                  </Card>
+                                </div>
+                              </>
+                            );
+                          })}
+                      </div>
                     </>
                   ) : (
                     <>
@@ -426,34 +569,5 @@ function AnalysisAcross() {
     </>
   );
 }
-
-const DataTable = ({ data }) => {
-  return (
-    <TableContainer
-      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
-      component={Paper}
-    >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableBody>
-          {data?.map((row) => (
-            <TableRow
-              key={row.topic}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.topic}
-              </TableCell>
-              <TableCell align="center">{row.noOfQuestion}</TableCell>
-              <TableCell align="center">{row.attempted}</TableCell>
-              <TableCell align="center">{row.correct}</TableCell>
-              <TableCell align="center">{row.incorrect}</TableCell>
-              <TableCell align="center">{row.skipped}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
 
 export default AnalysisAcross;

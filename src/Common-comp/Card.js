@@ -63,19 +63,19 @@ export const TooltipCard = ({ tooltip, title,values, icon }) => {
 export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
   return (
     <div
-      className="card shadow "
+      className="card shadow p-2"
       style={{
         ...style,
         border: "1px solid white",
       }}
     >
-      <div className="card-body d-flex flex-row-reverse flex-row justify-content-between align-items-center">
+     
         {infoIcon && (
-          <div className="flex-item">
-            <img src={infoIcon} alt="" className="img-fluid" width={15} />
+          <div>
+            <img src={infoIcon} alt="" className="img-fluid" width={ style.iconSize || 15} />
           </div>
         )}
-        <div className="flex-item ">
+        <div>
           <SubHeading
             className="card-title"
             sx={{ fontSize: style.fontSize, mt: 1.5 }}
@@ -84,10 +84,10 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
           </SubHeading>
         </div>
 
-        <div className="flex-item">
+        <div>
           <img src={icon} alt="" className="img-fluid" width={style.iconSize? style.iconSize : 22 } />
         </div>
-      </div>
+     
        {select && select}
     </div>
   );

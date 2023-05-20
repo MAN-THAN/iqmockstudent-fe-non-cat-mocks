@@ -28,10 +28,10 @@ export const fetchLeaderBoard = async (mockId ,attemptId, uid) => {
   }
 };
 
-export const fetchOverallAcross = async (mockId ,attemptId) => {
+export const fetchOverallAcross = async (uid, attemptId) => {
   try {
     const res = request({
-      url: `api/student/v1/analyse/across/${attemptId} `,
+      url: `api/student/v1/analyse/across/${uid}/${attemptId} `,
       headers: { "Content-Type": "application/json" },
     });
     return res;
