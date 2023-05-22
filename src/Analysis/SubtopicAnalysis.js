@@ -96,7 +96,7 @@ function SubtopicAnalysis() {
                   }}
                 >
                   <StyledTableCell align="center">{item.number}</StyledTableCell>
-                  <StyledTableCell align="center">{item.subtopic[0]}</StyledTableCell>
+                  <StyledTableCell align="center">{item.subtopic}</StyledTableCell>
                   <StyledTableCell align="center">{item.numberOfQuestions}</StyledTableCell>
                   <StyledTableCell align="center">{item.numberOfAttemptedQuestions}</StyledTableCell>
                   <StyledTableCell align="center">{item.numberOfCorrectAttempt}</StyledTableCell>
