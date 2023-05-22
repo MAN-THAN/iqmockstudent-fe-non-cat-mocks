@@ -94,21 +94,21 @@ const DataTable = ({ data }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.topic || [...row.subtopic]}
+                {row.topic || row.subtopic}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="left">
                 {row.noOfQuestion || row.numberOfQuestions}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="left">
                 {row.attempted || row.numberOfAttemptedQuestions}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="left">
                 {row.correct || row.numberOfCorrectAttempt}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="left">
                 {row.incorrect || row.numberOfIncorrectAttempt}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="left">
                 {row.skipped || row.numberofSkippedQuestion}
               </TableCell>
             </TableRow>
@@ -140,7 +140,7 @@ function AnalysisAcross() {
   const [view, setView] = useState("Table"); // View setting state graph or table
   const [response, setResponse] = useState([]); // main Data that come from api set in this state
   const [topics, setTopics] = useState([]); // for weak strong and moderate card state
-  const [topicsType, setTopicsType] = useState("topicWise"); //for topic and subtopic filter state
+  const [topicsType, setTopicsType] = useState(null); //for topic and subtopic filter state
   const [graph, setGraph] = useState({
     data: [],
     type: null,
@@ -230,6 +230,7 @@ function AnalysisAcross() {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
+  console.log("Mock List", mocksList);
   console.log("show", show);
   console.log("type", type);
 
@@ -365,6 +366,7 @@ function AnalysisAcross() {
                       <Stack direction="row" justifyContent={"flex-end"}>
                         <MultipleSelect
                           options={GraphListDetails}
+                          defaultValue={topicsType}
                           setType={(selectedValue) =>
                             setGraph({
                               ...graph,
@@ -398,13 +400,13 @@ function AnalysisAcross() {
                           justifyContent: "flex-end",
                         }}
                       >
-                        {topicsType && (
+                        {mocksList.length > 0 && (
                           <MultipleSelect
                             options={[
-                              { name: "Topic", value: "topicWise" },
+                              { name: "Topics", value: "topicWise" },
                               {
-                                name: "Subtopic",
-                                value: "subtopicWiseAnalysis",
+                                name: "Sub-Topics",
+                                value: "Subtopic",
                               },
                             ]}
                             setType={setTopicsType}
@@ -541,15 +543,21 @@ function AnalysisAcross() {
                                   }}
                                   color="black"
                                 >
-                                  {item.topic}
+                                  {item.topic || item.subtopic}
                                 </Typography>
                                 <Box sx={{ width: "14em", height: "15em" }}>
                                   <PieGraphNew
                                     data={{
-                                      topic: item.topic,
-                                      correct: item.correct,
-                                      incorrect: item.incorrect,
-                                      skipped: item.skipped,
+                                      topic: item.topic || item.subtopic,
+                                      correct:
+                                        item.correct ||
+                                        item.numberOfCorrectAttempt,
+                                      incorrect:
+                                        item.incorrect ||
+                                        item.numberOfIncorrectAttempt,
+                                      skipped:
+                                        item.skipped ||
+                                        item.numberofSkippedQuestion,
                                     }}
                                     color={GraphLegend.map((e) => e.shade)}
                                   />
