@@ -306,7 +306,7 @@ export default function ViewSolution() {
   // making state empty after question change
   useEffect(() => {
     if (selected === "varc") {
-      const tempObj = errTrackerVA[index];
+      const tempObj = errTrackerVA?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
@@ -314,7 +314,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     } else if (selected === "lrdi") {
-      const tempObj = errTrackerLR[index];
+      const tempObj = errTrackerLR?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
@@ -322,7 +322,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     } else if (selected === "quants") {
-      const tempObj = errTrackerQU[index];
+      const tempObj = errTrackerQU?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
