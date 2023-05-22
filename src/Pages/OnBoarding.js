@@ -48,7 +48,7 @@ function OnBoarding() {
     pb: 0,
     lineHeight: "unset",
     fontWeight: "bold",
-    paddingBottom : "14px"
+    paddingBottom: "14px",
   };
   const ptle = [
     {
@@ -124,17 +124,20 @@ function OnBoarding() {
     console.log(e.target.value);
     try {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-      const res = await getPredictCollege(uid, { ...formData, minPercentile: e.target.value });
+      const res = await getPredictCollege(uid, {
+        ...formData,
+        minPercentile: e.target.value,
+      });
       console.log(res);
       if (res?.status == 200) {
-        setCollege(res?.data);
+        setCollege(res?.data.bschools);
       }
     } catch (err) {
       // showToastMessage();
       console.log(err);
     }
   };
-  // console.log("coolr", college.bschools);
+  console.log("coolr", college);
 
   const handleSlider = () => {
     if (startMock === false) {
@@ -170,18 +173,39 @@ function OnBoarding() {
         }}
       >
         <Box>
-          <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
+          <HeaderNew
+            logoPath={"/iQuantaWhite.png"}
+            style={{ color: "white" }}
+          />
         </Box>
         {/* <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
         <LineChart1 percentile={percentile} />
       </Box> */}
-        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: 4,
+          }}
+        >
           {" "}
-          <Box sx={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
             <Box sx={{ width: "40%" }}>
-              <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
+              <LoginForm
+                setCollege={setCollege}
+                percentile={percentile}
+                setFormData={setFormData}
+              />
             </Box>
-            <Box sx={{ width: "55%" }}>
+            <Box sx={{ width: "58%" }}>
               {startMock ? (
                 <Box sx={{ width: "100%" }}>
                   <Box
@@ -197,11 +221,14 @@ function OnBoarding() {
                   >
                     <Box sx={{ overflow: "scroll" }}>
                       <DetailCards
-                        dataLength={college && college.bschools[0].college.length}
+                        dataLength={college && college.length}
                         logoPath={"/goalSchool.png"}
                         cardContent={
                           <TableContainer>
-                            <Table sx={{ border: "none" }} aria-label="simple table">
+                            <Table
+                              sx={{ border: "none" }}
+                              aria-label="simple table"
+                            >
                               <TableHead>
                                 <TableRow
                                   sx={{
@@ -209,24 +236,65 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15, display : "flex", flexDirection : "row", gap : 1 }} align="left">
-                                    <Typography sx={{ fontWeight: "bold", fontSize: 15 }}>Ranking</Typography>
-                                    <img src='/onboarding_arrow.svg' alt='no image' width='10px'></img>
-                                    <Box sx={{width : "1.7em"}}></Box>
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      gap: 1,
+                                    }}
+                                    align="left"
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontWeight: "bold",
+                                        fontSize: 16.5,
+                                      }}
+                                    >
+                                      Ranking
+                                    </Typography>
+                                    <img
+                                      src="/onboarding_arrow.svg"
+                                      alt="no image"
+                                      width="10px"
+                                    ></img>
+                                    {/* <Box sx={{ width: "1.7em" }}></Box> */}
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Name
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Average Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 15 }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
 
-                                {college &&
-                                  college.bschools[0].college.map((item, ind) => {
+                                {college.length > 0 &&
+                                  college.map((item, ind) => {
                                     return (
                                       <TableRow
                                         sx={{
@@ -234,17 +302,23 @@ function OnBoarding() {
                                           borderBottom: "1px solid #E1E1E1",
                                         }}
                                       >
-                                        <TableCell sx={{ ...cellStyle, paddingRight: 5 }} align="left">
+                                        <TableCell
+                                          sx={{ ...cellStyle, paddingRight: 5 }}
+                                          align="left"
+                                        >
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell sx={cellStyle} align="left">
-                                          {item}
+                                        <TableCell
+                                          sx={{ cellStyle, fontWeight: 600 }}
+                                          align="left"
+                                        >
+                                          {item.name}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">
-                                          {item.avgSalary || "tbd"}
+                                          {item.avgSalary + " LPA" || "tbd"}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">
-                                          {item.currentSalary || "tbd"}
+                                          {item.highestSalary + " LPA" || "tbd"}
                                         </TableCell>
                                       </TableRow>
                                     );
@@ -286,21 +360,55 @@ function OnBoarding() {
                     }}
                   >
                     <Box>
-                      <Typography sx={{ fontWeight: 900, fontSize: "1.5em", color: "#FF074D", paddingLeft: 1 }}>Predict Your B-School</Typography>
+                      <Typography
+                        sx={{
+                          fontWeight: 900,
+                          fontSize: "1.5em",
+                          color: "#FF074D",
+                          paddingLeft: 1,
+                        }}
+                      >
+                        Predict Your B-School
+                      </Typography>
                     </Box>
                     <Box>
                       {" "}
-                      <Typography sx={{ fontWeight: 500, fontSize: "1.2em", color: "#5F5F5F", paddingLeft: 1 }}>
-                        Fill your details and set your desired percentile to see which
+                      <Typography
+                        sx={{
+                          fontWeight: 500,
+                          fontSize: "1.2em",
+                          color: "#5F5F5F",
+                          paddingLeft: 1,
+                        }}
+                      >
+                        Fill your details and set your desired percentile to see
+                        which
                       </Typography>
-                      <Typography sx={{ fontWeight: 500, fontSize: "1.2em", color: "#5F5F5F", paddingLeft: 1 }}>B-Schools you unlock.</Typography>
+                      <Typography
+                        sx={{
+                          fontWeight: 500,
+                          fontSize: "1.2em",
+                          color: "#5F5F5F",
+                          paddingLeft: 1,
+                        }}
+                      >
+                        B-Schools you unlock.
+                      </Typography>
                     </Box>
                   </Box>
                 </>
               )}
             </Box>
           </Box>
-          <Box sx={{ marginTop: 1, width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              marginTop: 1,
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <Box>
               {" "}
               <Typography
@@ -325,10 +433,12 @@ function OnBoarding() {
             </Box>
             {startMock ? (
               <Box sx={{ marginTop: 1 }}>
-             
+                {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
                 <button onClick={handleSubmit} className="custom-btn btn-12">
                   <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
-                  <span style={{ fontSize: 20, paddingTop: 5 }}>Start Mock</span>
+                  <span style={{ fontSize: 20, paddingTop: 5 }}>
+                    Start Mock
+                  </span>
                 </button>
               </Box>
             ) : (

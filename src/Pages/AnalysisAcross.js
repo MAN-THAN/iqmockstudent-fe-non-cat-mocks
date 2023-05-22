@@ -94,13 +94,23 @@ const DataTable = ({ data }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.topic}
+                {row.topic || [...row.subtopic]}
               </TableCell>
-              <TableCell align="center">{row.noOfQuestion}</TableCell>
-              <TableCell align="center">{row.attempted}</TableCell>
-              <TableCell align="center">{row.correct}</TableCell>
-              <TableCell align="center">{row.incorrect}</TableCell>
-              <TableCell align="center">{row.skipped}</TableCell>
+              <TableCell align="center">
+                {row.noOfQuestion || row.numberOfQuestions}
+              </TableCell>
+              <TableCell align="center">
+                {row.attempted || row.numberOfAttemptedQuestions}
+              </TableCell>
+              <TableCell align="center">
+                {row.correct || row.numberOfCorrectAttempt}
+              </TableCell>
+              <TableCell align="center">
+                {row.incorrect || row.numberOfIncorrectAttempt}
+              </TableCell>
+              <TableCell align="center">
+                {row.skipped || row.numberofSkippedQuestion}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -130,13 +140,13 @@ function AnalysisAcross() {
   const [view, setView] = useState("Table"); // View setting state graph or table
   const [response, setResponse] = useState([]); // main Data that come from api set in this state
   const [topics, setTopics] = useState([]); // for weak strong and moderate card state
-  const [topicsType, setTopicsType] = useState([]); //for topic and subtopic filter state
+  const [topicsType, setTopicsType] = useState("topicWise"); //for topic and subtopic filter state
   const [graph, setGraph] = useState({
     data: [],
     type: null,
   }); //state for setting the line graph
 
-   const {
+  const {
     menuBarOpen,
     setMenuBarOpen,
     Backdrop,
@@ -151,9 +161,15 @@ function AnalysisAcross() {
     if (graph.type) {
       setGraph({ ...graph, data: response[graph.type] });
     }
-
     setShow(mocksList[index]?.data?.[type]);
   }, [index, type, mocksList, graph.type]);
+
+  useEffect(() => {
+    if (response) {
+      const topicWiseData = response?.[topicsType] || [];
+      setMocksList(topicWiseData);
+    }
+  }, [topicsType, response]);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -163,8 +179,9 @@ function AnalysisAcross() {
       console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
-        setMocksList(response.data?.topicWise);
-        // setShow(response.data?.topicWise[index].data.varc);
+        const topicWiseData = response.data?.[topicsType] || ["topicWise"];
+        setMocksList(topicWiseData); //first time data pre setting
+
         setLoading(false);
       } else {
         showToastMessage();
@@ -212,12 +229,9 @@ function AnalysisAcross() {
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: "smooth" });
   };
- 
+
   console.log("show", show);
   console.log("type", type);
-  console.log("index", index);
-  console.log("topics", topics);
-  console.log("graph", graph);
 
   return (
     <>
@@ -387,8 +401,11 @@ function AnalysisAcross() {
                         {topicsType && (
                           <MultipleSelect
                             options={[
-                              { name: "Topic", value: "maintopic" },
-                              { name: "Subtopic", value: "subtopic" },
+                              { name: "Topic", value: "topicWise" },
+                              {
+                                name: "Subtopic",
+                                value: "subtopicWiseAnalysis",
+                              },
                             ]}
                             setType={setTopicsType}
                           />
