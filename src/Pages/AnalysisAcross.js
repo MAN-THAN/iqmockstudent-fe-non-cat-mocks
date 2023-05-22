@@ -129,16 +129,14 @@ function AnalysisAcross() {
   const [show, setShow] = useState([]); // this state for table data has been showing
   const [view, setView] = useState("Table"); // View setting state graph or table
   const [response, setResponse] = useState([]); // main Data that come from api set in this state
-
   const [topics, setTopics] = useState([]); // for weak strong and moderate card state
   const [topicsType, setTopicsType] = useState([]); //for topic and subtopic filter state
-
   const [graph, setGraph] = useState({
     data: [],
     type: null,
   }); //state for setting the line graph
 
-  const {
+   const {
     menuBarOpen,
     setMenuBarOpen,
     Backdrop,
@@ -214,9 +212,7 @@ function AnalysisAcross() {
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: "smooth" });
   };
-  // D
-  // console.log("response", ...response.analysismetrics);
-  // console.log("MOCKList", mocksList[0].title);
+ 
   console.log("show", show);
   console.log("type", type);
   console.log("index", index);

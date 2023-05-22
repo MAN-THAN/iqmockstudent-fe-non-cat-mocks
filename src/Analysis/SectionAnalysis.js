@@ -18,10 +18,6 @@ function SectionAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
   const { sectionWiseAnalysis } = useAuth();
-  const navigate = useNavigate();
-
-
- 
 
   useEffect(() => {
     if (sectionWiseAnalysis) {
@@ -34,7 +30,6 @@ function SectionAnalysis() {
       }
     }
   }, [params, sectionWiseAnalysis]);
-
 
   const headings = [
     "Serial no.",
@@ -49,7 +44,6 @@ function SectionAnalysis() {
 
   return (
     <>
-    
       <TableContainer
         sx={{
           display: "flex",
@@ -65,11 +59,7 @@ function SectionAnalysis() {
             <TableRow sx={{ background: "white", width: "100%" }}>
               {headings.map((heading, ind) => {
                 return (
-                  <StyledTableCell
-                    align="center"
-                    key={ind}
-                    className="fw-bold "
-                  >
+                  <StyledTableCell align="left" key={ind} className="fw-bold ">
                     {heading}
                   </StyledTableCell>
                 );
@@ -90,35 +80,30 @@ function SectionAnalysis() {
                       cursor: "pointer",
                     }}
                   >
-                    <StyledTableCell align="center">
-                      {index + 1}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.topic}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ fontSize: "15px" }}
-                    >
+                    <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                    <StyledTableCell align="left">{item.topic}</StyledTableCell>
+                    <StyledTableCell align="left" style={{ fontSize: "15px" }}>
                       {item.subtopic}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.studentAnswer !== undefined
-                        ? item.studentAnswer === item.correctAnswer
-                          ? <FcCheckmark/>
-                          : <RxCross2 color="red"/>
-                        : "N/A"}
+                    <StyledTableCell align="left">
+                      {item.studentAnswer !== undefined ? (
+                        item.studentAnswer === item.correctAnswer ? (
+                          <FcCheckmark />
+                        ) : (
+                          <RxCross2 color="red" />
+                        )
+                      ) : (
+                        "N/A"
+                      )}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="left">
                       {item.difficulty}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.score}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                    <StyledTableCell align="left">{item.score}</StyledTableCell>
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                       {item.duration}
                     </StyledTableCell>
-                    <StyledTableCell align="center"></StyledTableCell>
+                    <StyledTableCell align="left"></StyledTableCell>
                   </StyledTableRow>
                 );
               })}
