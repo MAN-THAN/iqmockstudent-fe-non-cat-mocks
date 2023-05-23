@@ -69,7 +69,6 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
             width={style.infoIcon ? style.infoIcon : 22}
           />
         </div>
-<<<<<<< HEAD
       )}
       <div>
         <SubHeading
@@ -89,13 +88,6 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
         />
       </div>
       <div>{select && select}</div>
-=======
-        <div>
-          <img src={icon} alt="" className="img-fluid" width={style.iconSize? style.iconSize : 22 } />
-        </div>
-     
-       {select && select}
->>>>>>> 6cafb32e3a9c53696fca874853c27a3d21fd4092
     </div>
   );
 };
