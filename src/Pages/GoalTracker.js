@@ -20,12 +20,12 @@ import { getGoalTrackerData } from "../services/Analysis_api";
 import YourGraph from "../Common-comp/YourGraph";
 import LineGraph2 from "../Components/LineGraph2";
 import LineGraph3 from "../Components/LineGraph3";
+import LineGraph4 from "../Components/LineGraph4";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -41,51 +41,27 @@ export default function GoalTracker() {
   const [percentile, setPercentile] = useState(90);
   const [userData, setUserData] = useState();
   const [isUserVerified, setUserVerified] = useState(false);
-  const [a, setA] = useState(8);
-  const [b, setB] = useState(8);
-  const [c, setC] = useState(0);
-  const [d, setD] = useState(0);
   const navigate = useNavigate();
   const [mockList, setMockList] = useState();
-  const [mock, setMock] = useState();
+  const [mockData, setMockData] = useState([]);
   // const [options, setOptions] = useState([]);
   const options = [{ name: "JKD", value: "jkd" }];
   const [mockIndex, setMockIndex] = useState(0);
-  const [defVal, setDefVal] = useState();
+  const [defVal, setDefVal] = useState("fewf");
   console.log(userData);
 
   useEffect(() => {
     if (mockList?.length) {
-      setMock(mockList[mockIndex]);
+      setMockData(mockList[mockIndex]);
     }
   }, [mockIndex]);
-  console.log(mock);
+  console.log(mockData);
 
   useEffect(() => {
     if (userData) {
       setUserVerified(true);
     }
   }, [userData]);
-  // set percentile state
-  // console.log(userData);
-  useEffect(() => {
-    console.log(a, b, c, d);
-    console.log(Number(String(a) + String(b)));
-    const newPtle = Number(String(a) + String(b) + "." + String(c) + String(d));
-    setPercentile(newPtle);
-  }, [a, b, c, d]);
-
-  // console.log(percentile);
-  const handleSubmit = () => {
-    navigate("/user_authentication", {
-      state: {
-        name: "manthan",
-        email: "xyz@gmail.com",
-        uid: "323445343356",
-        mockId: "6430e9e837185e086ad69368",
-      },
-    });
-  };
 
   const cellStyle = {
     borderBottom: "none",
@@ -125,6 +101,8 @@ export default function GoalTracker() {
   const { attemptId } = useParams();
   const [goalData, setGoalData] = useState([]);
   const [yourData, setYourData] = useState([]);
+  const [weakTopics, setWeakTopics] = useState();
+  const [bschool, setBschool] = useState([]);
 
   const getData = async () => {
     setLoading(true);
@@ -133,15 +111,24 @@ export default function GoalTracker() {
     if (res?.status == 200) {
       setMockList(res.data.mockWise);
       setYourData(res.data.yourData);
+      setGoalData(res.data.goalData);
+      setWeakTopics(res.data.weakTopics[0]);
+      setBschool(res.data.bschools);
+      setDefVal(res.data.mockWise[0].title);
+      setMockData(res.data.mockWise[0]);
       setLoading(false);
     } else {
       console.log("error", res);
       setLoading(false);
     }
   };
-  console.log(goalData);
-  console.log(yourData);
+  // console.log(goalData);
+  // console.log(yourData);
+  // console.log(mockList);
   console.log(mockList);
+  console.log(defVal);
+  console.log(weakTopics);
+  console.log(mockIndex);
 
   return (
     <Box sx={{ width: "100vw", height: "100vh" }}>
@@ -179,29 +166,25 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: 532,
-                  height: 200,
+                  height: 220,
                   zIndex: 999,
                   borderRadius: "25px",
                   background: "white",
                   p: 1,
                 }}
               >
-                <Backdrop
-                  sx={{
-                    zIndex: (theme) => theme.zIndex.drawer - 1,
-                    color: "#fff",
-                  }}
-                  open={menuBarOpen}
-                  onClick={() => setMenuBarOpen(false)}
+                <DetailCards
+                  cardContent={<CustomizedAccordions data={weakTopics} />}
+                  heading={"Where you went wrong?"}
+                  logoPath={"/CardsIcons/idea1.png"}
                 />
-                <DetailCards cardContent={<CustomizedAccordions />} heading={"Where you went wrong?"} logoPath={"/CardsIcons/idea1.png"} />
               </Box>
 
               <Box
                 component="div"
                 sx={{
                   width: 427,
-                  height: 126,
+                  height: 170,
                   borderRadius: "25px",
                   background: "white",
                   zIndex: 99,
@@ -214,7 +197,7 @@ export default function GoalTracker() {
                     <TableContainer>
                       <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
                         <TableHead>
-                          <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
+                          {/* <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
                             <TableCell sx={cellStyle} align="left">
                               1
                             </TableCell>
@@ -241,12 +224,12 @@ export default function GoalTracker() {
                             <TableCell sx={cellStyle} align="left">
                               FMS
                             </TableCell>
-                          </TableRow>
+                          </TableRow> */}
                         </TableHead>
                       </Table>
                     </TableContainer>
                   }
-                  heading={"Where you went wrong?"}
+                  heading={"B-Schools You Can Crack"}
                 />
               </Box>
             </Box>
@@ -272,10 +255,11 @@ export default function GoalTracker() {
                   height: "60%",
                   position: "absolute",
                   bottom: 0,
+                  zIndex: 1000,
                 }}
               >
                 {/* <YourActualGraph> */}
-                <LineGraph3 />
+                <LineGraph3 data={goalData} />
               </Box>
               <Box
                 sx={{
@@ -286,50 +270,21 @@ export default function GoalTracker() {
                 }}
               >
                 {/* <otherMocksGraph> */}
-                <LineGraph3 />
+                <LineGraph4 data={mockData?.data} />
               </Box>
             </Box>
 
             {/* Graph end */}
             {/* bottom instuction Card */}
             {/* Add the select field */}
-
-            <Box>
-              {" "}
-              <Box
-                component={Paper}
-                sx={{
-                  width: 265,
-                  height: 41,
-                  position: "absolute",
-                  bottom: 20,
-                  right: 100,
-                  borderRadius: "15px ",
-                  display: "flex",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  p: 1,
-                }}
-              >
-                <div style={infoStyle.divStyle}></div>
-                <Typography sx={infoStyle.textstyle}>Goal</Typography>
-                <div
-                  style={{
-                    ...infoStyle.divStyle,
-                    background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
-                  }}
-                ></div>
-                <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
-              </Box>
-            </Box>
             <Box
               component={Paper}
               sx={{
-                width: 265,
+                width: 350,
                 height: 41,
                 position: "absolute",
                 bottom: 20,
-                right: 100,
+                right: 50,
                 borderRadius: "15px ",
                 display: "flex",
                 justifyContent: "space-around",
@@ -343,6 +298,13 @@ export default function GoalTracker() {
                 style={{
                   ...infoStyle.divStyle,
                   background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+                }}
+              ></div>
+              <Typography sx={infoStyle.textstyle}>Current Mock</Typography>
+              <div
+                style={{
+                  ...infoStyle.divStyle,
+                  background: "linear-gradient(360deg,#BA27D2 0%, #9533F7 100%)",
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
@@ -362,6 +324,7 @@ export default function GoalTracker() {
                   alignItems: "center",
                   p: 1,
                   backgroundColor: "white",
+                  zIndex: 2000,
                 }}
               >
                 {" "}
@@ -375,7 +338,7 @@ export default function GoalTracker() {
                   <Select
                     defaultValue={defVal}
                     // value={selected}
-                    onChange={(e) => {}}
+
                     input={
                       <OutlinedInput
                         sx={{
@@ -411,21 +374,24 @@ export default function GoalTracker() {
                     MenuProps={MenuProps}
                     inputProps={{ "aria-label": "Select value" }}
                   >
-                    <MenuItem value={""} disabled>
+                    <MenuItem value={""}>
                       <em>Select</em>
                     </MenuItem>
-                    {options &&
-                      options.map((item, _) => (
+                    {mockList &&
+                      mockList.map((item, ind) => (
                         <MenuItem
-                          key={item.name}
-                          value={item.value}
+                          key={ind}
+                          value={item.title}
                           sx={{
                             fontFamily: "var(--font-inter)",
                             fontSize: "11px",
                             fontWeight: "600",
                           }}
+                          onClick={(e) => {
+                            setMockIndex(ind);
+                          }}
                         >
-                          {item.name}
+                          {item.title}
                         </MenuItem>
                       ))}
                   </Select>

@@ -28,16 +28,7 @@ function AnalysisMain() {
   const params = useParams();
   const location = useLocation();
   const { mockId, attemptId, subject } = params;
-  const {
-    analysisDataApi,
-    isLoading,
-    basicAnalysis,
-    isErr,
-    handlePageClick,
-    menuBarOpen,
-    setMenuBarOpen,
-    Backdrop,
-  } = useAuth();
+  const { analysisDataApi, isLoading, basicAnalysis, isErr, handlePageClick, menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
@@ -104,7 +95,13 @@ function AnalysisMain() {
 
     navigate(`sectionwise/${sub}`);
   };
+  
+   const handleCloseSubTopic = (sub) => {
+     setAnchorEl(null);
+     setSelected(sub);
 
+     navigate(`subtopicwise/${sub}`);
+   };
   const showToastMessage = () => {
     toast.error("Some error occurred! Please reload the page.", {
       position: toast.POSITION.TOP_CENTER,
@@ -141,8 +138,7 @@ function AnalysisMain() {
       title: "Your Accuracy",
     },
     {
-      tooltip:
-        "Simple percentage formula it  is :p (your score/Total score)*100 ",
+      tooltip: "Simple percentage formula it  is :p (your score/Total score)*100 ",
       cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
       icon: "/PS.png",
       title: "Overall Precentage",
@@ -166,10 +162,7 @@ function AnalysisMain() {
           }}
         >
           <PacmanLoader color="var(--orange)" size="100" />
-          <h5
-            className="loader_title"
-            style={{ textAlign: "center", marginTop: "1em" }}
-          >
+          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
             Preparing Analysis!
           </h5>
         </div>
@@ -217,16 +210,11 @@ function AnalysisMain() {
               >
                 <div className="flex-item  " style={{ flexBasis: "27%" }}>
                   <div>
-                    <Typography
-                      variant="h4"
-                      sx={{ color: "var(--blue-new)", fontSize: "35px" }}
-                    >
+                    <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "35px" }}>
                       Hey {name},
                       <br />
                     </Typography>
-                    <Typography
-                      sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}
-                    >
+                    <Typography sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}>
                       This is your mock Analysis for
                       {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
@@ -315,29 +303,16 @@ function AnalysisMain() {
                         />
                       </div>
 
-                      <Stack
-                        direction="row"
-                        flexWrap="wrap"
-                        fontSize={11}
-                        justifyContent={"space-between"}
-                      >
+                      <Stack direction="row" flexWrap="wrap" fontSize={11} justifyContent={"space-between"}>
                         <p>
-                          <span style={{ color: "#4149FF" }}>
-                            {targetPercentile}
-                          </span>{" "}
-                          Targeted Percentile
+                          <span style={{ color: "#4149FF" }}>{targetPercentile}</span> Targeted Percentile
                         </p>
                         <p>
-                          <span style={{ color: "#4149FF" }}>
-                            {percentile}{" "}
-                          </span>
+                          <span style={{ color: "#4149FF" }}>{percentile} </span>
                           Result Percentile
                         </p>
                         <p>
-                          <span style={{ color: "#4149FF" }}>
-                            {eval(targetPercentile - percentile)}
-                          </span>{" "}
-                          Left To Achieve Your Target
+                          <span style={{ color: "#4149FF" }}>{eval(targetPercentile - percentile)}</span> Left To Achieve Your Target
                         </p>
                       </Stack>
                     </CardContent>
@@ -346,10 +321,7 @@ function AnalysisMain() {
 
                 {/* Cards sections */}
 
-                <div
-                  className="d-flex flex-column gap-3"
-                  style={{ flexBasis: "50%" }}
-                >
+                <div className="d-flex flex-column gap-3" style={{ flexBasis: "50%" }}>
                   <div className="d-flex gap-3">
                     <Card
                       sx={{
@@ -360,11 +332,7 @@ function AnalysisMain() {
                       }}
                     >
                       <CardContent>
-                        <img
-                          src="/Revenue.png"
-                          alt=""
-                          className="image-fluid mb-2"
-                        />
+                        <img src="/Revenue.png" alt="" className="image-fluid mb-2" />
                         <Typography
                           sx={{
                             ...typographyStyles.subHeading,
@@ -412,18 +380,13 @@ function AnalysisMain() {
                             CardsData.map((item, ind) => {
                               return (
                                 <Tooltip title={item.tooltip} arrow>
-                                  <div
-                                    className="Details flex-item text-center"
-                                    key={ind}
-                                  >
+                                  <div className="Details flex-item text-center" key={ind}>
                                     <img
                                       src={item.icon}
                                       alt="icon"
                                       width={35}
                                       className={
-                                        item.icon === "/PS.png"
-                                          ? "image-fluid mb-2 pb-2 align-self-center"
-                                          : "image-fluid mb-2 align-self-center"
+                                        item.icon === "/PS.png" ? "image-fluid mb-2 pb-2 align-self-center" : "image-fluid mb-2 align-self-center"
                                       }
                                     />
                                     <Typography
@@ -553,16 +516,9 @@ function AnalysisMain() {
               {/* Detailing section End */}
 
               {/* Buttons for changing sections */}
-              <div className=" d-flex pt-4">
-                <div
-                  style={{ flexBasis: "70%" }}
-                  className=" d-flex gap-3 ps-2"
-                >
-                  <NavLink
-                    to="overall"
-                    activeClassName="active "
-                    className="link flex-item"
-                  >
+              <div className=" d-flex mt-3">
+                <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
+                  <NavLink to="overall" activeClassName="active " className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
@@ -636,21 +592,75 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink
-                    to="topicwise"
-                    activeClassName="active "
-                    className="link flex-item"
-                  >
+                  <NavLink to="topicwise" activeClassName="active " className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Topic-wise
                     </ModifyButton>
                   </NavLink>
 
-                  <NavLink
-                    to="difficulty"
-                    activeClassName="active"
-                    className="link flex-item"
+                  <NavLink activeClassName="active" className="link flex-item">
+                    <ModifyButton
+                      variant="filled"
+                      style={{
+                        background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
+                        color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
+                      }}
+                      id="demo-customized-button"
+                      aria-controls={open ? "demo-customized-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      disableElevation
+                      onClick={handleClick}
+                      endIcon={<KeyboardArrowDownIcon />}
+                    >
+                      Subtopic-wise
+                    </ModifyButton>
+                  </NavLink>
+
+                  <StyledMenu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleCloseSubTopic}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
                   >
+                    <MenuItem
+                      sx={{
+                        backgroundColor: selected === "varc" ? "#f5f5f5" : "",
+                      }}
+                      onClick={() => handleCloseSubTopic("varc")}
+                      disableRipple
+                    >
+                      <IoBookSharp className="me-2" />
+                      VARC
+                    </MenuItem>
+                    <Divider sx={{ my: 0.5 }} />
+                    <MenuItem
+                      sx={{
+                        backgroundColor: selected === "lrdi" ? "#f5f5f5" : "",
+                      }}
+                      onClick={() => handleCloseSubTopic("lrdi")}
+                      disableRipple
+                    >
+                      <IoBookSharp className="me-2" />
+                      LRDI
+                    </MenuItem>
+                    <Divider sx={{ my: 0.5 }} />
+                    <MenuItem
+                      sx={{
+                        backgroundColor: selected === "quants" ? "#f5f5f5" : "",
+                      }}
+                      onClick={() => handleCloseSubTopic("quants")}
+                      disableRipple
+                    >
+                      <IoBookSharp className="me-2" />
+                      QUANTS
+                    </MenuItem>
+                  </StyledMenu>
+
+                  <NavLink to="difficulty" activeClassName="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Difficulty-wise
                     </ModifyButton>
@@ -659,12 +669,7 @@ function AnalysisMain() {
 
                 <div
                   style={{ flexBasis: "30%" }}
-                  className={
-                    location.pathname ===
-                    `/analysis/${mockId}/${attemptId}/overall`
-                      ? "flex-item "
-                      : "d-none"
-                  }
+                  className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item " : "d-none"}
                 >
                   <Box
                     component="span"
@@ -686,12 +691,7 @@ function AnalysisMain() {
                     Time spent on questions:
                   </Box>
                   <span>
-                    <img
-                      src="/Group17.svg"
-                      className="ms-2"
-                      width={20}
-                      alt=""
-                    />
+                    <img src="/Group17.svg" className="ms-2" width={20} alt="" />
                   </span>
                 </div>
               </div>

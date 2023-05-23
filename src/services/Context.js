@@ -91,6 +91,7 @@ export const ContextProvider = ({ children }) => {
   const sectionWiseAnalysis = analysisData[2];
   const topicWiseAnalysis = analysisData[3];
   const difficulty = analysisData[4];
+  const subtopicWiseAnalysis = analysisData[6];
 
   return (
     <>
@@ -98,6 +99,7 @@ export const ContextProvider = ({ children }) => {
         value={{
           basicAnalysis,
           sectionWiseAnalysis,
+          subtopicWiseAnalysis,
           topicWiseAnalysis,
           overallAnalysis,
           difficulty,
