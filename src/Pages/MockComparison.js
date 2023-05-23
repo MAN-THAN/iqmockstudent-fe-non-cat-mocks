@@ -57,8 +57,13 @@ function MockComparison() {
 
   const innerCardStyle = {
     height: "auto",
-    justifyContent: "center",
+    justifyContent: "space-around",
     iconSize: 25,
+    display: "flex",
+    flexDirection: "row-reverse", 
+    alignItems: "center",
+    infoIcon:20
+    
   };
 
   const [MockName, setMockName] = React.useState([]);
@@ -190,7 +195,7 @@ function MockComparison() {
                         <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{result?.title}</Typography>
                       </>
                     }
-                    style={innerCardStyle}
+                    style={{...innerCardStyle}}
                   />
                 }
                 style={OuterCardStyle}
@@ -209,7 +214,7 @@ function MockComparison() {
                         <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
                       </>
                     }
-                    style={innerCardStyle}
+                    style={{ ...innerCardStyle}}
                     icon={"/click 1.svg"}
                     infoIcon={"/info1.svg"}
                     select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}

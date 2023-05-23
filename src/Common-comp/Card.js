@@ -67,28 +67,37 @@ export const LogoCard = ({ cardTitle, icon, style, infoIcon, select }) => {
       style={{
         ...style,
         border: "1px solid white",
+        flexWrap:"wrap"
       }}
     >
-     
-        {infoIcon && (
-          <div>
-            <img src={infoIcon} alt="" className="img-fluid" width={ style.iconSize || 15} />
-          </div>
-        )}
+      {infoIcon && (
         <div>
-          <SubHeading
-            className="card-title"
-            sx={{ fontSize: style.fontSize, mt: 1.5 }}
-          >
-            {cardTitle}
-          </SubHeading>
+          <img
+            src={infoIcon}
+            alt=""
+            className="img-fluid"
+            width={style.infoIcon ? style.infoIcon : 22}
+          />
         </div>
+      )}
+      <div>
+        <SubHeading
+          className="card-title"
+          sx={{ fontSize: style.fontSize, mt: 1.5 }}
+        >
+          {cardTitle}
+        </SubHeading>
+      </div>
 
-        <div>
-          <img src={icon} alt="" className="img-fluid" width={style.iconSize? style.iconSize : 22 } />
-        </div>
-     
-       {select && select}
+      <div>
+        <img
+          src={icon}
+          alt=""
+          className="img-fluid"
+          width={style.iconSize ? style.iconSize : 22}
+        />
+      </div>
+      <div>{select && select}</div>
     </div>
   );
 };
