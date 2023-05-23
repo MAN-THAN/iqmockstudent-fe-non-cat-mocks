@@ -5,10 +5,9 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
+const Accordion = styled((props) => <MuiAccordion disableGutters elevation={0} square {...props} />)(({ theme }) => ({
   //   border: `1px solid ${theme.palette.divider}`,
   "&:not(:last-child)": {
     border: 0,
@@ -18,26 +17,23 @@ const Accordion = styled((props) => (
   },
 }));
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  //   backgroundColor:
-  //     theme.palette.mode === "dark"
-  //       ? "rgba(255, 255, 255, .05)"
-  //       : "rgba(0, 0, 0, .03)",
-  flexDirection: "row",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    fontSize: 16,
-    fontFamily: "var(--font-inter)",
-    fontWeight: 600,
-  },
-}));
+const AccordionSummary = styled((props) => <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />} {...props} />)(
+  ({ theme }) => ({
+    //   backgroundColor:
+    //     theme.palette.mode === "dark"
+    //       ? "rgba(255, 255, 255, .05)"
+    //       : "rgba(0, 0, 0, .03)",
+    flexDirection: "row",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+      transform: "rotate(90deg)",
+    },
+    "& .MuiAccordionSummary-content": {
+      fontSize: 16,
+      fontFamily: "var(--font-inter)",
+      fontWeight: 600,
+    },
+  })
+);
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -53,44 +49,81 @@ const Title = styled(Typography)({
   color: "#333",
 });
 
-export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = React.useState("");
+export default function CustomizedAccordions({ data }) {
+  const [expandVarc, setExpandVarc] = React.useState(false);
+  const [expandLrdi, setExpandLrdi] = React.useState(false);
+  const [expandQuant, setExpandQuant] = React.useState(false);
+  console.log(data);
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+  // const handleChange = (panel) => (event, newExpanded) => {
+  //   setExpanded(newExpanded ? panel : false);
+  // };
 
   return (
     <div>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
+      <Accordion expanded={expandVarc} onChange={() => setExpandVarc(!expandVarc)}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Title>1.Collapsible Group Item #1</Title>
+          <Title>VARC</Title>
         </AccordionSummary>
         <AccordionDetails>
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Topics"}</Typography>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Accuracy"}</Typography>
+          </Box>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
+            {data &&
+              data.varc.map((e, ind) => {
+                return (
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                    <Typography>{e.topic}</Typography>
+                    <Typography>{e.accuracy}</Typography>
+                  </Box>
+                );
+              })}
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
+      <Accordion expanded={expandLrdi} onChange={() => setExpandLrdi(!expandLrdi)}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Title>1.Collapsible Group Item #1</Title>
+          <Title>LRDI</Title>
         </AccordionSummary>
         <AccordionDetails>
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Topics"}</Typography>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Accuracy"}</Typography>
+          </Box>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
+            {data &&
+              data.lrdi.map((e, ind) => {
+                return (
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                    <Typography>{e.topic}</Typography>
+                    <Typography>{e.accuracy}</Typography>
+                  </Box>
+                );
+              })}
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expandQuant} onChange={() => setExpandQuant(!expandQuant)}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Title>Quants</Title>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Topics"}</Typography>
+            <Typography sx={{ fontSize: "16px", fontWeight: 700 }}>{"Accuracy"}</Typography>
+          </Box>
+          <Typography>
+            {data &&
+              data.quants.map((e, ind) => {
+                return (
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                    <Typography>{e.topic}</Typography>
+                    <Typography>{e.accuracy}</Typography>
+                  </Box>
+                );
+              })}
           </Typography>
         </AccordionDetails>
       </Accordion>

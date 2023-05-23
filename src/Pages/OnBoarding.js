@@ -236,64 +236,25 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell
-                                    sx={{
-                                      fontWeight: "bold",
-                                      fontSize: 16.5,
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      gap: 1,
-                                    }}
-                                    align="left"
-                                  >
-                                    <Typography
-                                      sx={{
-                                        fontWeight: "bold",
-                                        fontSize: 16.5,
-                                      }}
-                                    >
-                                      Ranking
-                                    </Typography>
-                                    <img
-                                      src="/onboarding_arrow.svg"
-                                      alt="no image"
-                                      width="10px"
-                                    ></img>
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, display: "flex", flexDirection: "row", gap: 1 }} align="left">
+                                    <Typography sx={{ fontWeight: "bold", fontSize: 16.5 }}>Ranking</Typography>
+                                    <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
                                     {/* <Box sx={{ width: "1.7em" }}></Box> */}
                                   </TableCell>
-                                  <TableCell
-                                    sx={{
-                                      fontWeight: "bold",
-                                      fontSize: 16.5,
-                                      color: "#676767",
-                                    }}
-                                    align="left"
-                                  >
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Name
                                   </TableCell>
-                                  <TableCell
-                                    sx={{
-                                      fontWeight: "bold",
-                                      fontSize: 16.5,
-                                      color: "#676767",
-                                    }}
-                                    align="left"
-                                  >
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Average Package
                                   </TableCell>
-                                  <TableCell
-                                    sx={{
-                                      fontWeight: "bold",
-                                      fontSize: 16.5,
-                                      color: "#676767",
-                                    }}
-                                    align="left"
-                                  >
+                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
 
+
                                 {college.length > 0 &&
+                                {college &&
                                   college.map((item, ind) => {
                                     return (
                                       <TableRow
@@ -308,10 +269,7 @@ function OnBoarding() {
                                         >
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell
-                                          sx={{ cellStyle, fontWeight: 600 }}
-                                          align="left"
-                                        >
+                                        <TableCell sx={{ cellStyle, fontWeight: 600 }} align="left">
                                           {item.name}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">

@@ -8,6 +8,7 @@ import Protected from "./Components/Protected";
 import AnalysisMain from "./Analysis/AnalysisMain";
 import TopicAnalysis from "./Analysis/TopicAnalysis";
 import SectionAnalysis from "./Analysis/SectionAnalysis";
+import SubtopicAnalysis from "./Analysis/SubtopicAnalysis";
 import DifficultyAnalysis from "./Analysis/DifficultyAnalysis";
 import OverallAnalysis from "./Analysis/OverallAnalysis";
 import ViewSolution from "./Pages/ViewSolution";
@@ -30,10 +31,10 @@ function App() {
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/user_authentication" element={<UserAuth />} />
-   
 
         <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
           <Route path="topicwise" element={<TopicAnalysis />} />
+          <Route path="subtopicwise/:subject" element={<SubtopicAnalysis />} />
           <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
           <Route path="overall" element={<OverallAnalysis />} />
           <Route path="difficulty" element={<DifficultyAnalysis />} />
