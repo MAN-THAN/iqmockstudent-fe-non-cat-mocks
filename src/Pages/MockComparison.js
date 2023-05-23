@@ -17,6 +17,7 @@ import { PuffLoader } from "react-spinners";
 const ITEM_HEIGHT = 28;
 const ITEM_PADDING_TOP = 3;
 const MenuProps = {
+  disableScrollLock: true,
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -295,6 +296,7 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           sx={{ height: "30px" }}
           // input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
+
           displayEmpty={true}
         >
           <MenuItem value="" disabled>
