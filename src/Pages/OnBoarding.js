@@ -251,9 +251,7 @@ function OnBoarding() {
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
-
-
-                                {college.length > 0 &&
+                                
                                 {college &&
                                   college.map((item, ind) => {
                                     return (
