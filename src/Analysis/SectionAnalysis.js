@@ -11,35 +11,25 @@ import {
 import { useAuth } from "../services/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { RxCross2 } from "react-icons/rx";
+import { FcCheckmark } from "react-icons/fc";
 
 function SectionAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
   const { sectionWiseAnalysis } = useAuth();
-  const navigate = useNavigate();
-
-
-  function getStyles(MockId, mockid, theme) {
-  return {
-    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
-    backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
-    color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
-
-  };
-}
 
   useEffect(() => {
-    if (params.subject == "varc") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
-    } else if (params.subject === "lrdi") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis?.lrdi);
-    } else if (params.subject === "quants") {
-      setData(sectionWiseAnalysis.sectionWiseAnalysis?.quants);
+    if (sectionWiseAnalysis) {
+      if (params.subject == "varc") {
+        setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
+      } else if (params.subject === "lrdi") {
+        setData(sectionWiseAnalysis.sectionWiseAnalysis.lrdi);
+      } else if (params.subject === "quants") {
+        setData(sectionWiseAnalysis.sectionWiseAnalysis.quants);
+      }
     }
   }, [params, sectionWiseAnalysis]);
-  console.log("section", data);
-
-  console.log("manthan tyagi")
 
   const headings = [
     "Serial no.",
@@ -53,66 +43,74 @@ function SectionAnalysis() {
   ];
 
   return (
-    <TableContainer
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center",
-        p: 3,
-        pt: 0,
-        flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
-      }}
-    >
-      <StyledTable sx={{ maxWidth: "auto" }} aria-label="customized table">
-        <TableHead>
-          <TableRow sx={{ background: "white", width: "100%" }}>
-            {headings.map((heading, ind) => {
-              return (
-                <StyledTableCell
-                  align="center"
-                  key={ind}
-                  className="fw-bold "
-                >
-                  {heading}
-                </StyledTableCell>
-              );
-            })}
-          </TableRow>
-        </TableHead>
+    <>
+      <TableContainer
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          p: 3,
+          pt: 0,
+          flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
+        }}
+      >
+        <StyledTable sx={{ maxWidth: "auto" }} aria-label="customized table">
+          <TableHead>
+            <TableRow sx={{ background: "white", width: "100%" }}>
+              {headings.map((heading, ind) => {
+                return (
+                  <StyledTableCell align="left" key={ind} className="fw-bold ">
+                    {heading}
+                  </StyledTableCell>
+                );
+              })}
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {data.length > 0 &&
-            data.map((item, index) => {
-              return (
-                <StyledTableRow
-                  key={index}
-                  sx={{
-                    background: "white",
-                    border: "none",
-                    color: "black",
-                    cursor: "pointer",
-                  }}
-                >
-                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                  <StyledTableCell align="center">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="center" style={{ fontSize: "15px" }}>
-                    {item.subtopic}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.studentAnswer !== undefined ? (item.studentAnswer === item.correctAnswer ? "Yes" : "No") : "Not attempted"}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{item.difficulty}</StyledTableCell>
-                  <StyledTableCell align="center">{item.score}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
-                    {item.duration}
-                  </StyledTableCell>
-                  <StyledTableCell align="center"></StyledTableCell>
-                </StyledTableRow>
-              );
-            })}
-        </TableBody>
-      </StyledTable>
-    </TableContainer>
+          <TableBody>
+            {data.length > 0 &&
+              data.map((item, index) => {
+                return (
+                  <StyledTableRow
+                    key={index}
+                    sx={{
+                      background: "white",
+                      border: "none",
+                      color: "black",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                    <StyledTableCell align="left">{item.topic}</StyledTableCell>
+                    <StyledTableCell align="left" style={{ fontSize: "15px" }}>
+                      {item.subtopic}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.studentAnswer !== undefined ? (
+                        item.studentAnswer === item.correctAnswer ? (
+                          <FcCheckmark />
+                        ) : (
+                          <RxCross2 color="red" />
+                        )
+                      ) : (
+                        "N/A"
+                      )}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {item.difficulty}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">{item.score}</StyledTableCell>
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                      {item.duration}
+                    </StyledTableCell>
+                    <StyledTableCell align="left"></StyledTableCell>
+                  </StyledTableRow>
+                );
+              })}
+          </TableBody>
+        </StyledTable>
+      </TableContainer>
+    </>
   );
 }
 

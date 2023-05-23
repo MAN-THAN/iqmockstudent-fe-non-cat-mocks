@@ -106,7 +106,7 @@ export const MyButton = styled(Button)(({ height }) => ({
   backgroundColor: "#0090FF;",
   fontFamily: "var(--font-inter)",
   color: "white",
-  cursor:"pointer",
+  cursor: "pointer",
   "&:hover": {
     borderColor: "#0062cc",
     boxShadow: "none",
@@ -166,19 +166,19 @@ export const ModifyButton = styled(Button)({
   backgroundColor: "var( --light-background)",
   fontFamily: "var(--font-inter)",
   "&:hover": {
-    backgroundColor: "#0057CB",
+    backgroundColor: "var( --blue-new)",
     // borderColor: "none",
     // boxShadow: "none",
     color: "white",
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#0057CB",
+    backgroundColor: "var( --blue-new)",
     borderColor: "none",
   },
   "&:focus": {
     // boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-    backgroundColor: "#0057CB",
+    backgroundColor: "var( --blue-new)",
     color: "white",
     outerLine: "none",
   },
@@ -295,9 +295,9 @@ export const BootstrapTooltip = styled(({ className, ...props }) => (
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#E9EEF4",
     width: 103,
-     height: 49,
-     textAlign: "center",
-    padding:1,
-    borderRadius:10
+    height: 49,
+    textAlign: "center",
+    padding: 1,
+    borderRadius: 10,
   },
 }));

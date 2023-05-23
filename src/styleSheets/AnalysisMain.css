@@ -1,5 +1,5 @@
 .active .nav-button {
-    background: #0057CB;
+    background: var( --blue-new);
     color: white;
    
     

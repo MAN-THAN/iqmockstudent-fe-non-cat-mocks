@@ -52,12 +52,12 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #0057CB",
+            border: "2px solid var( --blue-new)",
             width: "200px",
-            color: "#0057CB",
-            color: activeButton === "Overall" ? "white" : "#0057CB",
+            color: "var( --blue-new)",
+            color: activeButton === "Overall" ? "white" : "var( --blue-new)",
             fontWeight: "bold",
-            background: activeButton === "Overall" && "#0057CB",
+            background: activeButton === "Overall" && "var( --blue-new)",
           }}
           autoFocus={true}
         >
@@ -70,12 +70,12 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #0057CB",
+            border: "2px solid var( --blue-new)",
             width: "200px",
-            color: "#0057CB",
-            color: activeButton === "VARC" ? "white" : "#0057CB",
+            color: "var( --blue-new)",
+            color: activeButton === "VARC" ? "white" : "var( --blue-new)",
             fontWeight: "bold",
-            background: activeButton === "VARC" && "#0057CB",
+            background: activeButton === "VARC" && "var( --blue-new)",
           }}
         >
           VARC
@@ -87,12 +87,12 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #0057CB",
+            border: "2px solid var( --blue-new)",
             width: "200px",
-            color: "#0057CB",
-            color: activeButton === "LRDI" ? "white" : "#0057CB",
+            color: "var( --blue-new)",
+            color: activeButton === "LRDI" ? "white" : "var( --blue-new)",
             fontWeight: "bold",
-            background: activeButton === "LRDI" && "#0057CB",
+            background: activeButton === "LRDI" && "var( --blue-new)",
           }}
         >
           LRDI
@@ -103,11 +103,11 @@ function DifficultyAnalysis() {
           sx={{
             p: 2,
             height: "35px",
-            border: "2px solid #0057CB",
+            border: "2px solid var( --blue-new)",
             width: "200px",
-            color: activeButton === "Quant" ? "white" : "#0057CB",
+            color: activeButton === "Quant" ? "white" : "var( --blue-new)",
             fontWeight: "bold",
-            background: activeButton === "Quant" && "#0057CB",
+            background: activeButton === "Quant" && "var( --blue-new)",
           }}
         >
           Quants
@@ -128,7 +128,7 @@ function DifficultyAnalysis() {
           }}
         />
         <div className="flex-item">
-          <PieChart data={pieData} type={ activeButton } />
+          <PieChart data={pieData} type={activeButton} />
         </div>
       </div>
       <hr
@@ -148,7 +148,12 @@ function DifficultyAnalysis() {
           show.map((item, ind) => {
             return (
               <div className="mx-auto">
-                <BarGrapgh Data={item} title={item.name} width={"30vw"} legend={true} />
+                <BarGrapgh
+                  Data={item}
+                  title={item.name}
+                  width={"30vw"}
+                  legend={true}
+                />
               </div>
             );
           })}

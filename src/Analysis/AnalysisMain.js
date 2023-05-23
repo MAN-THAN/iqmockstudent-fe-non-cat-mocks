@@ -19,8 +19,9 @@ import "react-toastify/dist/ReactToastify.css";
 import MenuDrawer from "../Components/MenuDrawer";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
+import { motion } from "framer-motion";
 
-const series = [70];
+
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -148,7 +149,7 @@ function AnalysisMain() {
     <>
       <ToastContainer />
       {isErr ? (
-        <div></div>
+        <div>Error occured</div>
       ) : isLoading ? (
         <div
           style={{
@@ -167,12 +168,15 @@ function AnalysisMain() {
         </div>
       ) : (
         <>
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             id="my-component"
             style={{
               background: "var(--background)",
               position: "absolute",
-              left: "70px",
+              left: "65px",
               padding: "15px",
             }}
           >
@@ -214,50 +218,56 @@ function AnalysisMain() {
                       This is your mock Analysis for
                       {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
-                  </div>
 
-                  {/* <div className="d-flex gap-3 m-3 ms-0 ">
-                    <ModifyButton
-                      variant="filled"
-                      onClick={() =>
-                        navigate(`/viewsolutions/${attemptId}/varc`)
-                      }
-                      sx={{
-                        border: "2px solid #0057CB",
-                        backgroundColor: "#0057CB",
-                        color: "white",
-                        height: "59px",
-                        width: "200px",
-                        borderRadius: "20px",
-                        p: 2,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      View solutions
-                    </ModifyButton>
-                    <ModifyButton
-                      variant="outlined"
-                      startIcon={
-                        <img
-                          src="/Download.png"
-                          className="img-fluid"
-                          width={13}
-                        />
-                      }
-                      onClick={handleDownloadPDF}
-                      sx={{
-                        p: 2,
-                        height: "59px",
-                        border: "2px solid #0057CB",
-                        width: "215px",
-                        color: "#0057CB",
-                        fontWeight: "bold",
-                        borderRadius: "20px",
-                      }}
-                    >
-                      Download report
-                    </ModifyButton>
-                  </div> */}
+                    <div className="d-flex justify-content-start mt-4 gap-2 ">
+                      <ModifyButton
+                        variant="filled"
+                        // onClick={() =>
+                        //   navigate(`/viewsolutions/${attemptId}/varc`)
+                        // }
+                        sx={{
+                          border: "2px solid var( --blue-new)",
+                          backgroundColor: "var( --blue-new)",
+                          color: "white",
+                          height: "24px",
+                          width: "auto",
+                          borderRadius: "15px",
+                          p: 2,
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Score vs Percentile
+                      </ModifyButton>
+                      <ModifyButton
+                        variant="outlined"
+                        startIcon={
+                          <img
+                            src="/Download.png"
+                            className="img-fluid"
+                            width={10}
+                          />
+                        }
+                        // onClick={handleDownloadPDF}
+                        sx={{
+                          p: 2,
+                          height: "24px",
+                          // border: "2px solid var( --blue-new)",
+                          width: "auto",
+                          color: "var( --blue-new)",
+                          fontWeight: "bold",
+                          borderRadius: "15px",
+                          fontSize: "12px",
+                          ":hover , :focus": {
+                            background: "inherit",
+                            color: "var( --blue-new)",
+                          },
+                        }}
+                      >
+                        Download report
+                      </ModifyButton>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex-item   " style={{ flexBasis: "23%" }}>
@@ -517,8 +527,15 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
-                        color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
+                        background:
+                          location.pathname ===
+                          `/analysis/${attemptId}/sectionwise/${subject}`
+                            ? "var( --blue-new)"
+                            : "",
+                        color:
+                          location.pathname ===
+                            `/analysis/${attemptId}/sectionwise/${subject}` &&
+                          "white",
                       }}
                       id="demo-customized-button"
                       aria-controls={open ? "demo-customized-menu" : undefined}
@@ -667,7 +684,7 @@ function AnalysisMain() {
                       padding: "8px 16px",
                       borderRadius: "20px",
                       lineHeight: 1.5,
-                      backgroundColor: "#0057CB",
+                      backgroundColor: "var( --blue-new)",
                       fontFamily: "var(--font-inter)",
                     }}
                   >
@@ -680,7 +697,7 @@ function AnalysisMain() {
               </div>
               <Outlet />
             </div>
-          </div>
+          </motion.div>
         </>
       )}
     </>

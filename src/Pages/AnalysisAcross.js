@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
-import { Box, Typography, Stack, Item } from "@mui/material";
+import { Box, Typography, Stack, Card, CardContent } from "@mui/material";
 import { typographyStyles, style } from "../styleSheets/StyleNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import Radio from "@mui/material/Radio";
@@ -23,6 +23,7 @@ import { fetchOverallAcross } from "../services/Analysis_api";
 import PieGraphNew from "../Common-comp/PieGraphNew";
 import ExampleAlignmentButtons from "../Common-comp/RadioView";
 import LineGraph from "../Common-comp/LineGraphAcross";
+import { motion } from "framer-motion";
 
 const FilterList = ({ mocksList, setIndex, scrollTo }) => {
   const [defaultVal, setDefaultVal] = useState(mocksList[0]?.title);
@@ -79,18 +80,71 @@ const GraphListDetails = [
   { name: "Quants Percentile ", value: "quantsMocks" },
 ];
 
+const DataTable = ({ data }) => {
+  return (
+    <TableContainer
+      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
+      component={Paper}
+    >
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableBody>
+          {data?.map((row) => (
+            <TableRow
+              key={row.topic}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
+                {row.topic || row.subtopic}
+              </TableCell>
+              <TableCell align="left">
+                {row.noOfQuestion || row.numberOfQuestions}
+              </TableCell>
+              <TableCell align="left">
+                {row.attempted || row.numberOfAttemptedQuestions}
+              </TableCell>
+              <TableCell align="left">
+                {row.correct || row.numberOfCorrectAttempt}
+              </TableCell>
+              <TableCell align="left">
+                {row.incorrect || row.numberOfIncorrectAttempt}
+              </TableCell>
+              <TableCell align="left">
+                {row.skipped || row.numberofSkippedQuestion}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const CardStyle = {
+  fontSize: 8,
+  width: "169px",
+  height: "52px",
+  display: "flex",
+  flexDirection: "row-reverse",
+  justifyContent: "space-around",
+  alignItems: "center",
+};
+
+const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
+
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState(null);
-  const [mocksList, setMocksList] = useState([]);
-  const [index, setIndex] = useState(0);
-  const [show, setShow] = useState([]);
-  const [view, setView] = useState("Table");
-  const [response, setResponse] = useState([]);
-
-  const [lineGraph, setLineGraph] = useState([]);
-
-  const [graphList, setGraphList] = useState(null);
+  const [type, setType] = useState(null); // this state for the type of section
+  const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
+  const [index, setIndex] = useState(0); // state for setting the index
+  const [show, setShow] = useState([]); // this state for table data has been showing
+  const [view, setView] = useState("Table"); // View setting state graph or table
+  const [response, setResponse] = useState([]); // main Data that come from api set in this state
+  const [topics, setTopics] = useState([]); // for weak strong and moderate card state
+  const [topicsType, setTopicsType] = useState(null); //for topic and subtopic filter state
+  const [graph, setGraph] = useState({
+    data: [],
+    type: null,
+  }); //state for setting the line graph
 
   const {
     menuBarOpen,
@@ -104,32 +158,30 @@ function AnalysisAcross() {
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
-    setLineGraph(response[graphList]);
+    if (graph.type) {
+      setGraph({ ...graph, data: response[graph.type] });
+    }
     setShow(mocksList[index]?.data?.[type]);
-  }, [index, type, mocksList, graphList]);
+  }, [index, type, mocksList, graph.type]);
 
-  // useEffect(() => {
-  //   if (type === "varc") {
-  //     setShow(mocksList[index]?.data?.varc);
-  //   }
-  //   if (type === "lrdi") {
-  //     setShow(mocksList[index]?.data?.lrdi);
-  //   }
-  //   if (type === "quants") {
-  //     setShow(mocksList[index]?.data?.quants);
-  //   }
-  // }, [type]);
+  useEffect(() => {
+    if (response) {
+      const topicWiseData = response?.[topicsType] || [];
+      setMocksList(topicWiseData);
+    }
+  }, [topicsType, response]);
 
   useEffect(() => {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-    const fetchData = async (mockId, uid) => {
+    const fetchData = async (uid, attemptId) => {
       setLoading(true);
-      const response = await fetchOverallAcross(mockId, uid);
-      console.log(response);
+      const response = await fetchOverallAcross(uid, attemptId);
+      console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
-        setMocksList(response.data?.topicWise);
-        // setShow(response.data?.topicWise[index].data.varc);
+        const topicWiseData = response.data?.[topicsType] || ["topicWise"];
+        setMocksList(topicWiseData); //first time data pre setting
+
         setLoading(false);
       } else {
         showToastMessage();
@@ -137,19 +189,50 @@ function AnalysisAcross() {
         return;
       }
     };
-    fetchData(params.mockId, uid);
+    fetchData(uid, params.attemptId);
   }, []);
+
+  useEffect(() => {
+    if (response.analysismetrics && type !== null) {
+      const newTopics = { weak: [], moderate: [], strong: [] };
+
+      response.analysismetrics[0]?.["overall"].forEach((e) => {
+        if (e.accuracy <= 30) {
+          newTopics.weak.push({
+            title: "Weak",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        } else if (e.accuracy > 30 && e.accuracy <= 60) {
+          newTopics.moderate.push({
+            title: "",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        } else {
+          newTopics.strong.push({
+            title: "",
+            icon: "",
+            topic: e.topic,
+            accuracy: e.accuracy,
+          });
+        }
+      });
+
+      setTopics(newTopics);
+    }
+  }, [response, type]);
 
   const scrollToDiv = (id) => {
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log("response", response);
-  // console.log("MOCKList", mocksList[0].title);
+  console.log("Mock List", mocksList);
   console.log("show", show);
   console.log("type", type);
-  console.log("index", index);
 
   return (
     <>
@@ -185,10 +268,7 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect
-                  options={Subjects}
-                  setType={setType}
-                />
+                <MultipleSelect options={Subjects} setType={setType} />
                 <div className="d-flex justify-content-between align-items-center">
                   <Typography
                     sx={{
@@ -286,7 +366,13 @@ function AnalysisAcross() {
                       <Stack direction="row" justifyContent={"flex-end"}>
                         <MultipleSelect
                           options={GraphListDetails}
-                          setType={setGraphList}
+                          defaultValue={topicsType}
+                          setType={(selectedValue) =>
+                            setGraph({
+                              ...graph,
+                              type: selectedValue,
+                            })
+                          }
                         />
                       </Stack>
                       <Stack
@@ -295,12 +381,17 @@ function AnalysisAcross() {
                         direction="row"
                         id="lineGraph"
                       >
-                        <Box sx={{ width: "80vw", height: "20em" }}>
-                          <LineGraph Data={lineGraph} />
-                        </Box>
+                        <motion.div
+                          initial={{ opacity: 0, y: -20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 1.0 }}
+                          style={{ width: "80vw", height: "20em" }}
+                        >
+                          <LineGraph Data={graph.data} />
+                        </motion.div>
                       </Stack>
                       <hr />
-                      {/* Cards */}
+                      {/* Cards of table*/}
                       <Box
                         component="div"
                         sx={{
@@ -309,19 +400,24 @@ function AnalysisAcross() {
                           justifyContent: "flex-end",
                         }}
                       >
+                        {mocksList.length > 0 && (
+                          <MultipleSelect
+                            options={[
+                              { name: "Topics", value: "topicWise" },
+                              {
+                                name: "Sub-Topics",
+                                value: "Subtopic",
+                              },
+                            ]}
+                            setType={setTopicsType}
+                          />
+                        )}
                         {AnalysisAcrossCard.map((item, _) => (
                           <LogoCard
                             cardTitle={item.title}
                             key={item.id}
                             icon={item.icon}
-                            style={{
-                              fontSize: 8,
-                              width: "169px",
-                              height: "52px",
-                              flexBasis: "15%",
-                              flexGrow: 0,
-                              justifyContent: "center",
-                            }}
+                            style={CardStyle}
                           />
                         ))}
                       </Box>
@@ -330,18 +426,107 @@ function AnalysisAcross() {
                       <Box component="div" id="info" mt={4}>
                         <DataTable data={show} />
                       </Box>
+
+                      {/* Cards of weak , moderate and  strong */}
+                      <Typography
+                        sx={{
+                          ...typographyStyles.mainHeading,
+                          pt: 2,
+                        }}
+                      >
+                        {" "}
+                        Analysis Metrics
+                      </Typography>
+                      <div className="my-2 d-flex justify-content-between">
+                        {Object.keys(topics).length > 0 &&
+                          ["Weak", "Moderate", "Strong"].map((type, index) => {
+                            return (
+                              <>
+                                <div className="d-flex flex-column p-2 ">
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.mainHeading,
+                                      lineHeight: 4,
+                                      fontSize: "17.02px",
+                                      pl: 2,
+                                    }}
+                                  >
+                                    {" "}
+                                    <span className="me-2">
+                                      <img
+                                        src={
+                                          type === "Weak"
+                                            ? "/CardsIcons/broken.png"
+                                            : type === "Moderate"
+                                            ? "/CardsIcons/flag.png"
+                                            : "/CardsIcons/arm.png"
+                                        }
+                                        width={28}
+                                        className="img-fluid"
+                                      />
+                                    </span>{" "}
+                                    {type}
+                                  </Typography>
+                                  <Card
+                                    key={type}
+                                    sx={{
+                                      minHeight: "19.188em",
+                                      minWidth: "17.938em",
+                                      backgroundColor:
+                                        cardsColor[index % cardsColor.length],
+                                      borderRadius: 5,
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      gap: 3,
+                                    }}
+                                  >
+                                    <CardContent>
+                                      {topics?.[type.toLowerCase()].map(
+                                        (item, ind) => (
+                                          <motion.div
+                                            key={ind}
+                                            initial={{ opacity: 0, scale: 0.5 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.5 }}
+                                          >
+                                            <LogoCard
+                                              cardTitle={item.topic}
+                                              icon={"/Acc.png"}
+                                              style={{
+                                                ...CardStyle,
+                                                fontSize: "15px",
+                                                iconSize: 24,
+                                                width: "17.1em",
+                                                marginBottom: "15px",
+                                                justifyContent: "flex-end",
+                                                columnGap: "10px",
+                                                borderRadius: "15px",
+                                              }}
+                                            />
+                                          </motion.div>
+                                        )
+                                      )}
+                                    </CardContent>
+                                  </Card>
+                                </div>
+                              </>
+                            );
+                          })}
+                      </div>
                     </>
                   ) : (
                     <>
                       {/* Graphs view */}
 
-                      <Box
-                        sx={{
+                      <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.0 }}
+                        style={{
                           display: "flex",
                           flexWrap: "wrap",
                           gap: 1,
                           rowGap: 5,
-
                           justifyContent: "space-around",
                         }}
                       >
@@ -349,7 +534,7 @@ function AnalysisAcross() {
                           show.map((item, ind) => {
                             console.log(show);
                             return (
-                              <Box>
+                              <Box key={ind}>
                                 <Typography
                                   lineHeight={0}
                                   sx={{
@@ -358,15 +543,21 @@ function AnalysisAcross() {
                                   }}
                                   color="black"
                                 >
-                                  {item.topic}
+                                  {item.topic || item.subtopic}
                                 </Typography>
                                 <Box sx={{ width: "14em", height: "15em" }}>
                                   <PieGraphNew
                                     data={{
-                                      topic: item.topic,
-                                      correct: item.correct,
-                                      incorrect: item.incorrect,
-                                      skipped: item.skipped,
+                                      topic: item.topic || item.subtopic,
+                                      correct:
+                                        item.correct ||
+                                        item.numberOfCorrectAttempt,
+                                      incorrect:
+                                        item.incorrect ||
+                                        item.numberOfIncorrectAttempt,
+                                      skipped:
+                                        item.skipped ||
+                                        item.numberofSkippedQuestion,
                                     }}
                                     color={GraphLegend.map((e) => e.shade)}
                                   />
@@ -374,7 +565,7 @@ function AnalysisAcross() {
                               </Box>
                             );
                           })}
-                      </Box>
+                      </motion.div>
 
                       <Stack
                         direction="row"
@@ -421,34 +612,5 @@ function AnalysisAcross() {
     </>
   );
 }
-
-const DataTable = ({ data }) => {
-  return (
-    <TableContainer
-      sx={{ p: 2, borderRadius: 4, border: "none", boxShadow: 2 }}
-      component={Paper}
-    >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableBody>
-          {data?.map((row) => (
-            <TableRow
-              key={row.topic}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
-                {row.topic}
-              </TableCell>
-              <TableCell align="center">{row.noOfQuestion}</TableCell>
-              <TableCell align="center">{row.attempted}</TableCell>
-              <TableCell align="center">{row.correct}</TableCell>
-              <TableCell align="center">{row.incorrect}</TableCell>
-              <TableCell align="center">{row.skipped}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
 
 export default AnalysisAcross;

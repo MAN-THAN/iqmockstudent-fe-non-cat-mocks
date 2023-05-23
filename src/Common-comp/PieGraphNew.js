@@ -29,7 +29,7 @@ const renderCustomizedLabel = ({
 };
 
 const PieGraphNew = ({ color, data }) => {
-   const COLORS = [...color]
+  const COLORS = [...color];
   const newData = [
     { name: data.topic, value: data.correct },
     { name: data.topic, value: data.incorrect },

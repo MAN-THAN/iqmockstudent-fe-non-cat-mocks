@@ -26,6 +26,9 @@ export default function MultipleSelect({ options, setType }) {
 
   useEffect(() => {
     setType(value);
+    return (() => {
+      setType((prev)=> prev)
+    })
   }, [value]);
 
   console.log("Selectfield",value)

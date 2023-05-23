@@ -19,7 +19,9 @@ function TopicAnalysis() {
   const { topicWiseAnalysis } = useAuth();
   
   useEffect(() => {
-    setData(topicWiseAnalysis.topicWiseAnalysis);
+    if (topicWiseAnalysis) {
+     setData(topicWiseAnalysis.topicWiseAnalysis); 
+    } 
   }, [topicWiseAnalysis]);
 
   const headings = [
@@ -70,20 +72,20 @@ function TopicAnalysis() {
                     color: "black",
                   }}
                 >
-                  <StyledTableCell align="center">{item.number}</StyledTableCell>
-                  <StyledTableCell align="center">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfQuestions}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfAttemptedQuestions}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfCorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfIncorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left">{item.number}</StyledTableCell>
+                  <StyledTableCell align="left">{item.topic}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markObtainedByCorrectQuestion}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{item.overallScoreInTheTopic}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markObtainedByTopperInThisTopic}
                   </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markLoseByIncorrectAttempt}
                   </StyledTableCell>
                 </StyledTableRow>
