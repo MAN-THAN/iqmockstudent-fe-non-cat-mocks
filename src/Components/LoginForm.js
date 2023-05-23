@@ -139,7 +139,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
         category: values.category,
-        graduationStream: program,
+        graduationStream: program === "btech" ? "eng" : "non-eng" ,
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,
