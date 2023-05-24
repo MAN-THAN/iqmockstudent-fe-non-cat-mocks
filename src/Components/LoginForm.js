@@ -28,9 +28,20 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { name: name_, email: email_, phone: phone_, gender: gender_, category: category_ } = userData;
+  const {
+    name: name_,
+    email: email_,
+    phone: phone_,
+    gender: gender_,
+    category: category_,
+    dob: dob_,
+    min10th,
+    min12th,
+    minWorkExInMon,
+    mingrad,
+  } = userData;
 
-  console.log(program)
+  console.log(program);
   // Filling details if present
   useEffect(() => {
     // console.log(name, gh);
@@ -48,6 +59,24 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     }
     if (category_ !== undefined) {
       setCategory(category_);
+    }
+    if (dob_ !== undefined) {
+      setDob(dob_);
+    }
+    if (min10th !== undefined) {
+      values.class_10th_result = min10th;
+    }
+    if (min10th !== undefined) {
+      values.class_10th_result = min10th;
+    }
+    if (min12th !== undefined) {
+      values.class_12th_result = min12th;
+    }
+    if (minWorkExInMon !== undefined) {
+      values.work_experience = minWorkExInMon;
+    }
+    if (mingrad !== undefined) {
+      values.graduation_marks = mingrad;
     }
   }, []);
 
@@ -139,7 +168,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
         category: values.category,
-        graduationStream: program === "btech" ? "eng" : "non-eng" ,
+        graduationStream: program === "btech" ? "eng" : "non-eng",
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,
@@ -285,28 +314,29 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
-            {/* <TextField
-            sx={{ width: "48%" }}
-            size="small"
-            id="dob"
-            name="dob"
-            label="Date of Birth"
-            type="dob"
-            value={values.dob}
-            onChange={handleChange}
-            error={touched.dob && Boolean(errors.dob)}
-            helperText={touched.dob && errors.dob}
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <img alt="no image" width="20px" height="20px" src="/calendar.png" />
-                </InputAdornment>
-              ),
-            }}
-            autoComplete="off"
-          /> */}
-            <Box sx={{ width: "48%" }}>
+            <TextField
+              sx={{ width: "48%" }}
+              size="small"
+              id="dob"
+              name="dob"
+              type="string"
+              value={dob}
+              onChange={handleChange}
+              error={touched.dob && Boolean(errors.dob)}
+              helperText={touched.dob && errors.dob}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <img alt="no image" width="20px" height="20px" src="/calendar.png" />
+                  </InputAdornment>
+                ),
+              }}
+              autoComplete="off"
+              disabled={dob_ === undefined ? false : true}
+              required
+            />
+            {/* <Box sx={{ width: "48%" }}>
               {" "}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
@@ -317,7 +347,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                   slotProps={{ textField: { size: "small" } }}
                 />
               </LocalizationProvider>
-            </Box>
+            </Box> */}
             <TextField
               sx={{ width: "48%" }}
               size="small"
@@ -479,7 +509,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                     <img alt="no image" width="20px" height="20px" src="/application.png" />
                   </InputAdornment>
                 ),
-                inputProps: { min: 0, max: 40 }
+                inputProps: { min: 0, max: 40 },
               }}
               autoComplete="off"
               required
