@@ -1,6 +1,6 @@
   [context.production]
   [context.production.environment]
-    REACT_APP_BASE_URL= ""
+    REACT_APP_BASE_URL= "https://tlwojqenmffmbuf6fwdxxpa6ky0tgcos.lambda-url.ap-south-1.on.aws"
    
    
 
