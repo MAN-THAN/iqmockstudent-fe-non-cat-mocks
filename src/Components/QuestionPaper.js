@@ -68,7 +68,7 @@ export default function QuestionPaper({ question_paper }) {
             <br />
             {question_paper?.map((e, index) => {
               return (
-                <div className="container p-2 ">
+                <div className="container p-2 " key={index}>
                   <Typography variant="paragraph fw-bold">
                     Question : {index + 1}
                   </Typography>

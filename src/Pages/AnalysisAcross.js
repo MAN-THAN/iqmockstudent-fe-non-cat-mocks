@@ -53,6 +53,7 @@ const FilterList = ({ mocksList, setIndex, scrollTo }) => {
               value={item.title}
               control={<Radio />}
               label={item.title}
+              key={item.title}
             />
           );
         })}
@@ -442,7 +443,7 @@ function AnalysisAcross() {
                           ["Weak", "Moderate", "Strong"].map((type, index) => {
                             return (
                               <>
-                                <div className="d-flex flex-column p-2 ">
+                                <div className="d-flex flex-column p-2" key={index}>
                                   <Typography
                                     sx={{
                                       ...typographyStyles.mainHeading,

@@ -53,19 +53,18 @@ function AnalysisMain() {
   }, [basicAnalysis]);
 
   const {
-    uid,
+   
     name,
     negativeMarks,
     overallPercentage,
-    overallScore,
+
     potentialScore,
     accuracy,
     percentile,
     title,
-    lrdi,
-    quants,
+ 
     targetPercentile,
-    varc,
+   
   } = basicData;
 
   const options = {
@@ -246,6 +245,7 @@ function AnalysisMain() {
                             src="/Download.png"
                             className="img-fluid"
                             width={10}
+                            alt="Download button logo"
                           />
                         }
                         // onClick={handleDownloadPDF}
@@ -518,12 +518,12 @@ function AnalysisMain() {
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
                 <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeClassName="active " className="link flex-item">
+                  <NavLink to="overall" activeclassname="active " className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
                   </NavLink>
-                  <NavLink activeClassName="active" className="link flex-item">
+                  <NavLink activeclassname="active" className="link flex-item">
                     <ModifyButton
                       variant="filled"
                       style={{
@@ -592,13 +592,13 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="topicwise" activeClassName="active " className="link flex-item">
+                  <NavLink to="topicwise" activeclassname="active " className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Topic-wise
                     </ModifyButton>
                   </NavLink>
 
-                  <NavLink activeClassName="active" className="link flex-item">
+                  <NavLink activeclassname="active" className="link flex-item">
                     <ModifyButton
                       variant="filled"
                       style={{
@@ -660,7 +660,7 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="difficulty" activeClassName="active" className="link flex-item">
+                  <NavLink to="difficulty" activeclassname="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Difficulty-wise
                     </ModifyButton>

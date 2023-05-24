@@ -74,7 +74,7 @@ export default function CustomizedAccordions({ data }) {
             {data &&
               data.varc.map((e, ind) => {
                 return (
-                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                  <Box key={ind} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
                     <Typography>{e.topic}</Typography>
                     <Typography>{e.accuracy}</Typography>
                   </Box>
@@ -96,7 +96,7 @@ export default function CustomizedAccordions({ data }) {
             {data &&
               data.lrdi.map((e, ind) => {
                 return (
-                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                  <Box key={ind} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
                     <Typography>{e.topic}</Typography>
                     <Typography>{e.accuracy}</Typography>
                   </Box>
@@ -118,7 +118,7 @@ export default function CustomizedAccordions({ data }) {
             {data &&
               data.quants.map((e, ind) => {
                 return (
-                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
+                  <Box key={ind}  sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 1 }}>
                     <Typography>{e.topic}</Typography>
                     <Typography>{e.accuracy}</Typography>
                   </Box>

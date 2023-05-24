@@ -27,7 +27,7 @@ export default function SliderSwiper({ data }) {
           className="mySwiper"
         >
           {data.map((item, index) => (
-            <SwiperSlide >
+            <SwiperSlide key={index} >
               <ImgMediaCard cardData={ item } />
             </SwiperSlide>
           ))}

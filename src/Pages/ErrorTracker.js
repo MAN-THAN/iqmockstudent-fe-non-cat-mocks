@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
@@ -11,7 +11,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import Button from "@mui/material/Button";
 import BarGraph from "../Components/BarGraphErrorTracker";
 import { useAuth } from "../services/Context";
-import { graphinstructionPoints } from "../services/DataFiles";
 import { fetchErrorTracker } from "../services/Analysis_api";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";

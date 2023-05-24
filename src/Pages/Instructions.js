@@ -11,7 +11,7 @@ function Instructions() {
   return (
     <div className="container overflow-hidden ">
       <div className="logo container text-center mt-4">
-        <img src={require("../images/iQuanta.png")} className="img-fuid mx-auto " width={150} alt="no img" />
+        <img src={require("../images/iQuanta.png")} className="img-fluid mx-auto " width={150} alt="IquantaLogo" />
       </div>
 
       <div className="container border-2 mt-4 p-2 text-center ">
