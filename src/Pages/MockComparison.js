@@ -132,6 +132,7 @@ function MockComparison() {
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
+            <Typography sx={{fontWeight : 500}}>It may take some longer, Please be patient!</Typography>
           </div>
         ) : (
           <Box
@@ -187,7 +188,7 @@ function MockComparison() {
                 miniCard={
                   <LogoCard
                     icon={"/click 1.svg"}
-                    infoIcon={"/info1.svg"}
+                    infoIcon={"/circle-info-solid.svg"}
                     cardTitle={
                       <>
                         <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
@@ -196,7 +197,7 @@ function MockComparison() {
                         <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{result?.title}</Typography>
                       </>
                     }
-                    style={{...innerCardStyle}}
+                    style={{ ...innerCardStyle }}
                   />
                 }
                 style={OuterCardStyle}
@@ -215,9 +216,9 @@ function MockComparison() {
                         <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
                       </>
                     }
-                    style={{ ...innerCardStyle}}
+                    style={{ ...innerCardStyle }}
                     icon={"/click 1.svg"}
-                    infoIcon={"/info1.svg"}
+                    infoIcon={"/circle-info-solid.svg"}
                     select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
                   />
                 }
@@ -232,12 +233,12 @@ function MockComparison() {
                         <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
                           {topper?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "", fontSize: 15 }}> {topper?.title}</Typography>
+                        <Typography sx={{ fontSize: "12px", fontWeight: 700 }}> {"Topper Analysis"}</Typography>
                       </>
                     }
                     style={{ ...innerCardStyle, background: "#FFECB9" }}
                     icon={"/top-rated.png"}
-                    infoIcon={"/info1.svg"}
+                    infoIcon={"/circle-info-solid.svg"}
                   />
                 }
                 style={{ ...OuterCardStyle, background: "#FFC107" }}

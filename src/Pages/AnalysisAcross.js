@@ -255,14 +255,12 @@ function AnalysisAcross() {
           </Box>
 
           {isLoading ? (
-            <div
-              className="d-flex align-items-center flex-column gap-2 justify-content-center"
-              style={{ width: "100%", height: "80%" }}
-            >
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
               <div class="loading-container">
                 <div class="loading"></div>
                 <div id="loading-text">Loading...</div>
               </div>
+              <Typography sx={{ fontWeight: 500 }}>It may take some longer, Please be patient!</Typography>
             </div>
           ) : (
             <>
@@ -290,8 +288,7 @@ function AnalysisAcross() {
                       fontWeight: 600,
                     }}
                   >
-                    <span>Change View</span>{" "}
-                    <ExampleAlignmentButtons setValue={setView} value={view} />
+                    <span>Change View</span> <ExampleAlignmentButtons setValue={setView} value={view} />
                   </Stack>
                 </div>
               </Box>
@@ -327,28 +324,15 @@ function AnalysisAcross() {
                     // border: "2px solid #928F8F ",
                   }}
                 >
-                  <Stack
-                    spacing={2}
-                    direction="column"
-                    useFlexGap
-                    flexWrap="wrap"
-                  >
-                    {show && (
-                      <FilterList
-                        scrollTo={scrollToDiv}
-                        mocksList={mocksList}
-                        setIndex={setIndex}
-                      />
-                    )}
+                  <Stack spacing={2} direction="column" useFlexGap flexWrap="wrap">
+                    {show && <FilterList scrollTo={scrollToDiv} mocksList={mocksList} setIndex={setIndex} />}
                   </Stack>
                 </Box>
                 {/* Filter div end */}
 
                 {/*Question side box start*/}
                 <Box
-                  className={
-                    view === "Table" ? "table-section" : "graph-section"
-                  }
+                  className={view === "Table" ? "table-section" : "graph-section"}
                   sx={{
                     flexBasis: { xs: "100%", md: "85%" },
                     height: "100%",
@@ -375,12 +359,7 @@ function AnalysisAcross() {
                           }
                         />
                       </Stack>
-                      <Stack
-                        justifyContent={"center"}
-                        my={5}
-                        direction="row"
-                        id="lineGraph"
-                      >
+                      <Stack justifyContent={"center"} my={5} direction="row" id="lineGraph">
                         <motion.div
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -413,12 +392,7 @@ function AnalysisAcross() {
                           />
                         )}
                         {AnalysisAcrossCard.map((item, _) => (
-                          <LogoCard
-                            cardTitle={item.title}
-                            key={item.id}
-                            icon={item.icon}
-                            style={CardStyle}
-                          />
+                          <LogoCard cardTitle={item.title} key={item.id} icon={item.icon} style={CardStyle} />
                         ))}
                       </Box>
 
@@ -472,8 +446,7 @@ function AnalysisAcross() {
                                     sx={{
                                       minHeight: "19.188em",
                                       minWidth: "17.938em",
-                                      backgroundColor:
-                                        cardsColor[index % cardsColor.length],
+                                      backgroundColor: cardsColor[index % cardsColor.length],
                                       borderRadius: 5,
                                       display: "flex",
                                       flexDirection: "column",
@@ -481,31 +454,29 @@ function AnalysisAcross() {
                                     }}
                                   >
                                     <CardContent>
-                                      {topics?.[type.toLowerCase()].map(
-                                        (item, ind) => (
-                                          <motion.div
-                                            key={ind}
-                                            initial={{ opacity: 0, scale: 0.5 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ duration: 0.5 }}
-                                          >
-                                            <LogoCard
-                                              cardTitle={item.topic}
-                                              icon={"/Acc.png"}
-                                              style={{
-                                                ...CardStyle,
-                                                fontSize: "15px",
-                                                iconSize: 24,
-                                                width: "17.1em",
-                                                marginBottom: "15px",
-                                                justifyContent: "flex-end",
-                                                columnGap: "10px",
-                                                borderRadius: "15px",
-                                              }}
-                                            />
-                                          </motion.div>
-                                        )
-                                      )}
+                                      {topics?.[type.toLowerCase()].map((item, ind) => (
+                                        <motion.div
+                                          key={ind}
+                                          initial={{ opacity: 0, scale: 0.5 }}
+                                          animate={{ opacity: 1, scale: 1 }}
+                                          transition={{ duration: 0.5 }}
+                                        >
+                                          <LogoCard
+                                            cardTitle={item.topic}
+                                            icon={"/Acc.png"}
+                                            style={{
+                                              ...CardStyle,
+                                              fontSize: "15px",
+                                              iconSize: 24,
+                                              width: "17.1em",
+                                              marginBottom: "15px",
+                                              justifyContent: "flex-end",
+                                              columnGap: "10px",
+                                              borderRadius: "15px",
+                                            }}
+                                          />
+                                        </motion.div>
+                                      ))}
                                     </CardContent>
                                   </Card>
                                 </div>
@@ -549,15 +520,9 @@ function AnalysisAcross() {
                                   <PieGraphNew
                                     data={{
                                       topic: item.topic || item.subtopic,
-                                      correct:
-                                        item.correct ||
-                                        item.numberOfCorrectAttempt,
-                                      incorrect:
-                                        item.incorrect ||
-                                        item.numberOfIncorrectAttempt,
-                                      skipped:
-                                        item.skipped ||
-                                        item.numberofSkippedQuestion,
+                                      correct: item.correct || item.numberOfCorrectAttempt,
+                                      incorrect: item.incorrect || item.numberOfIncorrectAttempt,
+                                      skipped: item.skipped || item.numberofSkippedQuestion,
                                     }}
                                     color={GraphLegend.map((e) => e.shade)}
                                   />
@@ -567,18 +532,10 @@ function AnalysisAcross() {
                           })}
                       </motion.div>
 
-                      <Stack
-                        direction="row"
-                        spacing={2}
-                        justifyContent={"center"}
-                        mt={2}
-                      >
+                      <Stack direction="row" spacing={2} justifyContent={"center"} mt={2}>
                         {GraphLegend.map((e, ind) => {
                           return (
-                            <div
-                              className="d-flex gap-1 align-items-center"
-                              key={ind}
-                            >
+                            <div className="d-flex gap-1 align-items-center" key={ind}>
                               <div
                                 style={{
                                   borderRadius: "40%",
