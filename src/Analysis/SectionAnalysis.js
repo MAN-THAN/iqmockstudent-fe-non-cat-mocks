@@ -9,7 +9,7 @@ import {
   StyledTableRow,
 } from "../styleSheets/Style";
 import { useAuth } from "../services/Context";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FcCheckmark } from "react-icons/fc";
@@ -29,7 +29,7 @@ function SectionAnalysis() {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.quants);
       }
     }
-  }, [params, sectionWiseAnalysis]);
+  },[params, sectionWiseAnalysis]);
 
   const headings = [
     "Serial no.",
@@ -69,10 +69,10 @@ function SectionAnalysis() {
 
           <TableBody>
             {data.length > 0 &&
-              data.map((item, index) => {
+              data.map((item,ind) => {
                 return (
                   <StyledTableRow
-                    key={index}
+                    key={ind}
                     sx={{
                       background: "white",
                       border: "none",
@@ -80,7 +80,7 @@ function SectionAnalysis() {
                       cursor: "pointer",
                     }}
                   >
-                    <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                    <StyledTableCell align="left">{ind + 1}</StyledTableCell>
                     <StyledTableCell align="left">{item.topic}</StyledTableCell>
                     <StyledTableCell align="left" style={{ fontSize: "15px" }}>
                       {item.subtopic}

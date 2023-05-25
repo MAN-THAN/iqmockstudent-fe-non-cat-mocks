@@ -430,17 +430,17 @@ function AnalysisMain() {
                           {
                             name: "varc",
                             color: "#FF9C41",
-                            title: "Verbal Ability & Reading Comprehension",
+                            title: "VARC",
                           },
                           {
                             name: "lrdi",
                             color: "#7748FF",
-                            title: "Logical Reasoning & Data Interpretation",
+                            title: "LRDI",
                           },
                           {
                             name: "quants",
                             color: "#606060",
-                            title: "Quantitative Aptitude",
+                            title: "QA",
                           },
                         ].map((item) => {
                           console.log("itemssmm", item);
@@ -451,7 +451,7 @@ function AnalysisMain() {
                               <Typography
                                 sx={{
                                   ...typographyStyles.subHeading,
-                                  fontSize: "11.82px",
+                                  fontSize: "13.82px",
                                   pl: 2,
                                   height: "30px",
                                 }}
