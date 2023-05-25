@@ -247,18 +247,7 @@ function AnalysisMain() {
                       </ModifyButton>
                       <ModifyButton
                         variant="outlined"
-<<<<<<< HEAD
-                        startIcon={
-                          <img
-                            src="/Download.png"
-                            className="img-fluid"
-                            width={10}
-                            alt="Download button logo"
-                          />
-                        }
-=======
-                        startIcon={<img src="/Download.png" className="img-fluid" width={10} />}
->>>>>>> 988060cd695e020fd360e6000b52189f0852d490
+                        startIcon={<img src="/Vector1.png" className="img-fluid" width={8} />}
                         // onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
@@ -529,7 +518,7 @@ function AnalysisMain() {
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
                 <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeclassname="active " className="link flex-item">
+                  <NavLink to="overall" activeclassname="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
