@@ -83,20 +83,27 @@ function AnalysisMain() {
   //Dropdown functions:
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
   const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleClick2 = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
   const handleClose = (sub) => {
+    console.log("working")
     setAnchorEl(null);
     setSelected(sub);
 
     navigate(`sectionwise/${sub}`);
   };
   
-   const handleCloseSubTopic = (sub) => {
-     setAnchorEl(null);
+  const handleCloseSubTopic = (sub) => {
+     console.log("subtopic working")
+     setAnchorEl2(null);
      setSelected(sub);
 
      navigate(`subtopicwise/${sub}`);
@@ -240,6 +247,7 @@ function AnalysisMain() {
                       </ModifyButton>
                       <ModifyButton
                         variant="outlined"
+<<<<<<< HEAD
                         startIcon={
                           <img
                             src="/Download.png"
@@ -248,6 +256,9 @@ function AnalysisMain() {
                             alt="Download button logo"
                           />
                         }
+=======
+                        startIcon={<img src="/Download.png" className="img-fluid" width={10} />}
+>>>>>>> 988060cd695e020fd360e6000b52189f0852d490
                         // onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
@@ -527,15 +538,8 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background:
-                          location.pathname ===
-                          `/analysis/${attemptId}/sectionwise/${subject}`
-                            ? "var( --blue-new)"
-                            : "",
-                        color:
-                          location.pathname ===
-                            `/analysis/${attemptId}/sectionwise/${subject}` &&
-                          "white",
+                        background: location.pathname === `/analysis/${mockId}/${attemptId}/sectionwise/${subject}` ? "var( --blue-new)" : "",
+                        color: location.pathname === `/analysis/${mockId}/${attemptId}/sectionwise/${subject}` && "white",
                       }}
                       id="demo-customized-button"
                       aria-controls={open ? "demo-customized-menu" : undefined}
@@ -602,15 +606,15 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` ? "#0057CB" : "",
-                        color: location.pathname === `/analysis/${attemptId}/sectionwise/${subject}` && "white",
+                        background: location.pathname === `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` ? "var( --blue-new)" : "",
+                        color: location.pathname === `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` && "white",
                       }}
                       id="demo-customized-button"
-                      aria-controls={open ? "demo-customized-menu" : undefined}
+                      aria-controls={open2 ? "demo-customized-menu" : undefined}
                       aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
+                      aria-expanded={open2 ? "true" : undefined}
                       disableElevation
-                      onClick={handleClick}
+                      onClick={handleClick2}
                       endIcon={<KeyboardArrowDownIcon />}
                     >
                       Subtopic-wise
@@ -619,8 +623,8 @@ function AnalysisMain() {
 
                   <StyledMenu
                     id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
+                    anchorEl={anchorEl2}
+                    open={open2}
                     onClose={handleCloseSubTopic}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",

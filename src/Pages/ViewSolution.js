@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import { IoBookSharp } from "react-icons/io5";
 import Typography from "@mui/material/Typography";
@@ -363,7 +363,12 @@ export default function ViewSolution() {
     console.log("datatattaftaf", errorOptions);
   }, [index, show]);
   console.log(selected);
-  console.log(defVal)
+  console.log(defVal);
+  const bottomRef = useRef(null);
+  
+  useEffect(() => { 
+     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [viewSol])
   return (
     <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
       <MenuDrawer />
@@ -550,6 +555,7 @@ export default function ViewSolution() {
                                   ? "error"
                                   : "default"
                               }
+                              disableRipple
                             />
                           }
                           label={
@@ -585,6 +591,7 @@ export default function ViewSolution() {
                                   ? "error"
                                   : "default"
                               }
+                              disableRipple
                             />
                           }
                           label={
@@ -620,6 +627,7 @@ export default function ViewSolution() {
                                   ? "error"
                                   : "default"
                               }
+                              disableRipple
                             />
                           }
                           label={
@@ -655,6 +663,7 @@ export default function ViewSolution() {
                                   ? "error"
                                   : "default"
                               }
+                              disableRipple
                             />
                           }
                           label={
@@ -756,13 +765,12 @@ export default function ViewSolution() {
                         disabled={show && show[index]?.isVideo === "No" ? true : false}
                         startIcon={<img src="/playButton.png" alt="" className="img-fluid" width="15px" />}
                       >
-                          Video Solution
-                          
+                        Video Solution
                       </Button>
                     </Box>
                   </Box>
                   {viewSol ? (
-                    <Box marginTop="2em">
+                      <Box ref={bottomRef} marginTop="2em">
                       <Typography fontWeight={700}>
                         <Latex>{(show && show[index]?.explanations) || ""}</Latex>
                       </Typography>
