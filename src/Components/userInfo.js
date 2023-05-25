@@ -6,7 +6,6 @@ import Modal from "@mui/material/Modal";
 import { BootstrapButton } from "../styleSheets/Style";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -37,10 +36,12 @@ const MenuProps = {
 
 function getStyles(MockId, mockid, theme) {
   return {
-    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
+    fontWeight:
+      MockId === mockid
+        ? theme.typography.fontWeightMedium
+        : theme.typography.fontWeightRegular,
     backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
     color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
-
   };
 }
 
@@ -152,14 +153,16 @@ export default function BasicModal() {
                 onChange={handleChange}
                 MenuProps={MenuProps}
                 value={value.mockid || ""}
-            
-              
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
                 {MockID.map((MockID) => (
-                  <MenuItem key={MockID} value={MockID}   style={getStyles(MockID, value.mockid, theme)}>
+                  <MenuItem
+                    key={MockID}
+                    value={MockID}
+                    style={getStyles(MockID, value.mockid, theme)}
+                  >
                     {MockID}
                   </MenuItem>
                 ))}

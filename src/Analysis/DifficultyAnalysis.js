@@ -150,6 +150,7 @@ function DifficultyAnalysis() {
               <div className="mx-auto">
                 <BarGrapgh
                   Data={item}
+                  key={ind}
                   title={item.name}
                   width={"30vw"}
                   legend={true}

@@ -1,5 +1,5 @@
 import Main from "./Pages/Main";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./styleSheets/Style";
 import Instructions from "./Pages/Instructions";
@@ -20,10 +20,25 @@ import GoalTracker from "./Pages/GoalTracker";
 import MarketPlace from "./Pages/MarketPlace";
 import MockComparison from "./Pages/MockComparison";
 import OnBoarding from "./Pages/OnBoarding";
-import Login from "./Pages/Login";
 import MainUserAuth from "./Pages/MainUserAuth";
+import MobileTemp from "./Pages/MobileTemp";
+import { useEffect,useLocation } from "react";
 
 function App() {
+    const navigate = useNavigate();
+  function isMobileOrTablet() {
+    const screenWidth = window.innerWidth;
+    const mobileBreakpoint = 768; // Adjust this value to match  breakpoint for mobile screens
+
+    return screenWidth < mobileBreakpoint;
+  }
+
+  useEffect(() => {
+    const isMobile = isMobileOrTablet();
+    if (isMobile) {
+      navigate("/mobileErrorPage");
+    }
+  },[navigate]);
   return (
     <ThemeProvider theme={theme}>
       <Routes>
@@ -31,6 +46,7 @@ function App() {
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/user_authentication" element={<UserAuth />} />
+        <Route path="/mobileErrorPage" element={<MobileTemp />} />
 
         <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
           <Route path="topicwise" element={<TopicAnalysis />} />
@@ -39,15 +55,36 @@ function App() {
           <Route path="overall" element={<OverallAnalysis />} />
           <Route path="difficulty" element={<DifficultyAnalysis />} />
         </Route>
-        <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
-        <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
+        <Route
+          path="/leaderboard/:mockId/:attemptId"
+          element={<LeaderBoard />}
+        />
+        <Route
+          path="/viewsolutions/:mockId/:attemptId"
+          element={<ViewSolution />}
+        />
         <Route path="/main/:mockId/:type" element={<Protected Comp={Main} />} />
 
-        <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross />} />
-        <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker />} />
-        <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker />} />
-        <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace />} />
-        <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison />} />
+        <Route
+          path="/analysisacross/:mockId/:attemptId"
+          element={<AnalysisAcross />}
+        />
+        <Route
+          path="/errortracker/:mockId/:attemptId"
+          element={<ErrorTracker />}
+        />
+        <Route
+          path="/goaltracker/:mockId/:attemptId"
+          element={<GoalTracker />}
+        />
+        <Route
+          path="/marketplace/:mockId/:attemptId"
+          element={<MarketPlace />}
+        />
+        <Route
+          path="/mockcomparison/:mockId/:attemptId"
+          element={<MockComparison />}
+        />
         <Route path="/onboarding" element={<OnBoarding />} />
       </Routes>
     </ThemeProvider>

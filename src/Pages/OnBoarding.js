@@ -1,36 +1,26 @@
 import React, { useEffect } from "react";
-import MenuDrawer from "../Components/MenuDrawer";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import LineChart1 from "../Components/LineGraph1";
 import LoginForm from "../Components/LoginForm";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HeaderNew from "../Components/HeaderNew";
 import { DetailCards } from "../Common-comp/Card";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Slider from "@mui/material/Slider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getPredictCollege } from "../services/Mock_api";
-import { motion } from "framer-motion";
 import PrettoSlider from "../Components/Slider";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
   const [startMock, setStartMock] = useState(false);
-  const [a, setA] = useState("099");
-  const [d, setD] = useState(0);
-  const [e, setE] = useState(0);
+
   const navigate = useNavigate();
   const { state } = useLocation();
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -129,7 +119,7 @@ function OnBoarding() {
         minPercentile: e.target.value,
       });
       console.log(res);
-      if (res?.status == 200) {
+      if (res?.status === 200) {
         setCollege(res?.data.bschools);
       }
     } catch (err) {
@@ -236,26 +226,68 @@ function OnBoarding() {
                                     lineHeight: "unset",
                                   }}
                                 >
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, display: "flex", flexDirection: "row", gap: 1 }} align="left">
-                                    <Typography sx={{ fontWeight: "bold", fontSize: 16.5 }}>Ranking</Typography>
-                                    <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      gap: 1,
+                                    }}
+                                    align="left"
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontWeight: "bold",
+                                        fontSize: 16.5,
+                                      }}
+                                    >
+                                      Ranking
+                                    </Typography>
+                                    <img
+                                      src="/onboarding_arrow.svg"
+                                      alt="no image"
+                                      width="10px"
+                                    ></img>
                                     {/* <Box sx={{ width: "1.7em" }}></Box> */}
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Name
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Average Package
                                   </TableCell>
-                                  <TableCell sx={{ fontWeight: "bold", fontSize: 16.5, color: "#676767" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      fontWeight: "bold",
+                                      fontSize: 16.5,
+                                      color: "#676767",
+                                    }}
+                                    align="left"
+                                  >
                                     Highest Package
                                   </TableCell>
                                 </TableRow>
-                                
+
                                 {college &&
                                   college.map((item, ind) => {
                                     return (
                                       <TableRow
+                                        key={ind}
                                         sx={{
                                           lineHeight: "unset",
                                           borderBottom: "1px solid #E1E1E1",
@@ -267,7 +299,10 @@ function OnBoarding() {
                                         >
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell sx={{ cellStyle, fontWeight: 600 }} align="left">
+                                        <TableCell
+                                          sx={{ cellStyle, fontWeight: 600 }}
+                                          align="left"
+                                        >
                                           {item.name}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">

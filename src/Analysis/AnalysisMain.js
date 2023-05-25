@@ -53,19 +53,18 @@ function AnalysisMain() {
   }, [basicAnalysis]);
 
   const {
-    uid,
+   
     name,
     negativeMarks,
     overallPercentage,
-    overallScore,
+
     potentialScore,
     accuracy,
     percentile,
     title,
-    lrdi,
-    quants,
+ 
     targetPercentile,
-    varc,
+   
   } = basicData;
 
   const options = {
@@ -248,7 +247,7 @@ function AnalysisMain() {
                       </ModifyButton>
                       <ModifyButton
                         variant="outlined"
-                        startIcon={<img src="/Download.png" className="img-fluid" width={10} />}
+                        startIcon={<img src="/Vector1.png" className="img-fluid" width={8} />}
                         // onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
@@ -431,17 +430,17 @@ function AnalysisMain() {
                           {
                             name: "varc",
                             color: "#FF9C41",
-                            title: "Verbal Ability & Reading Comprehension",
+                            title: "VARC",
                           },
                           {
                             name: "lrdi",
                             color: "#7748FF",
-                            title: "Logical Reasoning & Data Interpretation",
+                            title: "LRDI",
                           },
                           {
                             name: "quants",
                             color: "#606060",
-                            title: "Quantitative Aptitude",
+                            title: "QA",
                           },
                         ].map((item) => {
                           console.log("itemssmm", item);
@@ -452,7 +451,7 @@ function AnalysisMain() {
                               <Typography
                                 sx={{
                                   ...typographyStyles.subHeading,
-                                  fontSize: "11.82px",
+                                  fontSize: "13.82px",
                                   pl: 2,
                                   height: "30px",
                                 }}
@@ -519,12 +518,12 @@ function AnalysisMain() {
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
                 <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeClassName="active " className="link flex-item">
+                  <NavLink to="overall" activeclassname="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
                   </NavLink>
-                  <NavLink activeClassName="active" className="link flex-item">
+                  <NavLink activeclassname="active" className="link flex-item">
                     <ModifyButton
                       variant="filled"
                       style={{
@@ -586,13 +585,13 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="topicwise" activeClassName="active " className="link flex-item">
+                  <NavLink to="topicwise" activeclassname="active " className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Topic-wise
                     </ModifyButton>
                   </NavLink>
 
-                  <NavLink activeClassName="active" className="link flex-item">
+                  <NavLink activeclassname="active" className="link flex-item">
                     <ModifyButton
                       variant="filled"
                       style={{
@@ -654,7 +653,7 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="difficulty" activeClassName="active" className="link flex-item">
+                  <NavLink to="difficulty" activeclassname="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Difficulty-wise
                     </ModifyButton>

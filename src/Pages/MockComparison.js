@@ -61,10 +61,9 @@ function MockComparison() {
     justifyContent: "space-around",
     iconSize: 25,
     display: "flex",
-    flexDirection: "row-reverse", 
+    flexDirection: "row-reverse",
     alignItems: "center",
-    infoIcon:20
-    
+    infoIcon: 20,
   };
 
   const [MockName, setMockName] = React.useState([]);
@@ -107,7 +106,7 @@ function MockComparison() {
     }
   };
   console.log(result, topper, prevMocks);
-  console.log(compMock)
+  console.log(compMock);
 
   return (
     <Box component="main">
@@ -127,7 +126,10 @@ function MockComparison() {
         </Box>
 
         {isLoading ? (
-          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+          <div
+            className="d-flex align-items-center flex-column gap-2 justify-content-center"
+            style={{ width: "100%", height: "80%" }}
+          >
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
@@ -191,10 +193,17 @@ function MockComparison() {
                     infoIcon={"/circle-info-solid.svg"}
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
-                          {result?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
+                          {result?.percentile}{" "}
+                          <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{result?.title}</Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
+                          {result?.title}
+                        </Typography>
                       </>
                     }
                     style={{ ...innerCardStyle }}
@@ -209,11 +218,17 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
                           {compMock?.percentile}
                           <span style={{ fontSize: "15px" }}>%ile</span>
                         </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
+                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
+                          {compMock?.title}
+                        </Typography>
                       </>
                     }
                     style={{ ...innerCardStyle }}
@@ -230,8 +245,17 @@ function MockComparison() {
                   <LogoCard
                     cardTitle={
                       <>
-                        <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
-                          {topper?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: 17 }}
+                          color={"black"}
+                        >
+                          {topper?.percentile}{" "}
+                          <span style={{ fontSize: "15px" }}>%ile</span>
+                        </Typography>
+                        <Typography sx={{ color: "", fontSize: 15 }}>
+                          {" "}
+                          {topper?.title}
                         </Typography>
                         <Typography sx={{ fontSize: "12px", fontWeight: 700 }}> {"Topper Analysis"}</Typography>
                       </>
@@ -285,19 +309,14 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
   const theme = useTheme();
   return (
     <div>
-      <FormControl sx={{ m: 1, mt: 0, width: "94%" }}>
-        {/* <InputLabel id="demo-multiple-name-label" sx={{ fontSize: "15px" }}>
-         Mock
-        </InputLabel> */}
+      <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           value={mockName}
           onChange={onSelect}
-          sx={{ height: "30px" }}
-          // input={<OutlinedInput label="Name" />}
+          sx={{ height: "30px"}}
           MenuProps={MenuProps}
-
           displayEmpty={true}
         >
           <MenuItem value="" disabled>
@@ -305,9 +324,7 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           </MenuItem>
           {options?.map((item, index) => (
             <MenuItem
-              onClick={() =>
-                setCompMock(options[index])
-              }
+              onClick={() => setCompMock(options[index])}
               key={index}
               value={item._id}
               style={getStyles(item._id, mockName, theme)}

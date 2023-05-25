@@ -53,6 +53,7 @@ const FilterList = ({ mocksList, setIndex, scrollTo }) => {
               value={item.title}
               control={<Radio />}
               label={item.title}
+              key={item.title}
             />
           );
         })}
@@ -125,8 +126,10 @@ const CardStyle = {
   height: "52px",
   display: "flex",
   flexDirection: "row-reverse",
-  justifyContent: "space-around",
+  justifyContent: "flex-end",
+  columnGap:10,
   alignItems: "center",
+  alignContent:'center',
 };
 
 const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
@@ -376,7 +379,8 @@ function AnalysisAcross() {
                         sx={{
                           display: "flex",
                           gap: 2,
-                          justifyContent: "flex-end",
+                          justifyContent: "space-around",
+                          alignItems:"center"
                         }}
                       >
                         {mocksList.length > 0 && (
@@ -416,7 +420,7 @@ function AnalysisAcross() {
                           ["Weak", "Moderate", "Strong"].map((type, index) => {
                             return (
                               <>
-                                <div className="d-flex flex-column p-2 ">
+                                <div className="d-flex flex-column p-2" key={index}>
                                   <Typography
                                     sx={{
                                       ...typographyStyles.mainHeading,
