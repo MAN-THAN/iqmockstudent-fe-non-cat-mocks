@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 import MuiBackdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate,useLocation } from "react-router-dom";
 
 export const Context = React.createContext();
 
@@ -12,11 +13,13 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
+   const [previousLocation, setPreviousLocation] = useState(null);
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const analysisDataApi = async (attemptId) => {
 
     const response = await fetchAnalysisData(attemptId);
@@ -49,6 +52,30 @@ export const ContextProvider = ({ children }) => {
       setMenuBarOpen(false);
     }
   };
+useLayoutEffect(() => {
+  function handleResize() {
+  
+     const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
+   console.log("IS mobile or tablet", isMobileOrTablet);
+   if (isMobileOrTablet && !previousLocation) {
+     setPreviousLocation(location.pathname);
+     navigate("/mobileErrorPage");
+   } else if (!isMobileOrTablet && previousLocation) {
+     navigate(previousLocation);
+     setPreviousLocation(null);
+   }
+  }
+
+  handleResize(); // Check the initial screen size
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, [navigate, previousLocation, location]);
+
+
 
   // function  for disable the right click and inspect panel from keyboard
 
@@ -85,7 +112,7 @@ export const ContextProvider = ({ children }) => {
 
 
   console.log("isloading", isLoading)
-  //Set data to variables according to category that data exports to pages accordin to need
+  //Set data to variables according to category that data exports to pages according to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
   const sectionWiseAnalysis = analysisData[2];

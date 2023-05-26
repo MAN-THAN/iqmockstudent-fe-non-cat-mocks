@@ -22,23 +22,10 @@ import MockComparison from "./Pages/MockComparison";
 import OnBoarding from "./Pages/OnBoarding";
 import MainUserAuth from "./Pages/MainUserAuth";
 import MobileTemp from "./Pages/MobileTemp";
-import { useEffect,useLocation } from "react";
 
 function App() {
-    const navigate = useNavigate();
-  function isMobileOrTablet() {
-    const screenWidth = window.innerWidth;
-    const mobileBreakpoint = 768; // Adjust this value to match  breakpoint for mobile screens
 
-    return screenWidth < mobileBreakpoint;
-  }
-
-  useEffect(() => {
-    const isMobile = isMobileOrTablet();
-    if (isMobile) {
-      navigate("/mobileErrorPage");
-    }
-  },[navigate]);
+ 
   return (
     <ThemeProvider theme={theme}>
       <Routes>

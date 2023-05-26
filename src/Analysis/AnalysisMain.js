@@ -349,7 +349,7 @@ function AnalysisMain() {
                             fontSize: "37px",
                           }}
                         >
-                          53
+                          {53}
                         </Typography>
                       </CardContent>
                     </Card>
@@ -452,8 +452,9 @@ function AnalysisMain() {
                                 sx={{
                                   ...typographyStyles.subHeading,
                                   fontSize: "13.82px",
-                                  pl: 2,
+                                  pl: 3,
                                   height: "30px",
+                                  
                                 }}
                               >
                                 {item.title}
@@ -478,7 +479,7 @@ function AnalysisMain() {
                                       ...typographyStyles.subHeading,
                                       fontSize: "13.02px",
                                       color: item.color,
-                                      pl: 2,
+                                      pl: 3,
                                     }}
                                   >
                                     Percentile
