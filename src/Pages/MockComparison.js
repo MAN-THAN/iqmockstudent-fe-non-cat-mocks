@@ -134,6 +134,7 @@ function MockComparison() {
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
+            <Typography sx={{fontWeight : 500}}>It may take some longer, Please be patient!</Typography>
           </div>
         ) : (
           <Box
@@ -189,7 +190,7 @@ function MockComparison() {
                 miniCard={
                   <LogoCard
                     icon={"/click 1.svg"}
-                    infoIcon={"/info1.svg"}
+                    infoIcon={"/circle-info-solid.svg"}
                     cardTitle={
                       <>
                         <Typography
@@ -232,15 +233,8 @@ function MockComparison() {
                     }
                     style={{ ...innerCardStyle }}
                     icon={"/click 1.svg"}
-                    infoIcon={"/info1.svg"}
-                    select={
-                      <SelectBox
-                        onSelect={handleChange}
-                        mockName={MockName}
-                        options={prevMocks}
-                        setCompMock={setCompMock}
-                      />
-                    }
+                    infoIcon={"/circle-info-solid.svg"}
+                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
                   />
                 }
                 style={OuterCardStyle}
@@ -263,11 +257,12 @@ function MockComparison() {
                           {" "}
                           {topper?.title}
                         </Typography>
+                        <Typography sx={{ fontSize: "12px", fontWeight: 700 }}> {"Topper Analysis"}</Typography>
                       </>
                     }
                     style={{ ...innerCardStyle, background: "#FFECB9" }}
                     icon={"/top-rated.png"}
-                    infoIcon={"/info1.svg"}
+                    infoIcon={"/circle-info-solid.svg"}
                   />
                 }
                 style={{ ...OuterCardStyle, background: "#FFC107" }}
