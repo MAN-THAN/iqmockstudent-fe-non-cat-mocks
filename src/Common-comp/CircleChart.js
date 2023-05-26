@@ -51,7 +51,7 @@ export const ApexChart = ({ series, style, title, show }) => {
           },
           value: {
             formatter: function (val) {
-              return parseInt(val);
+              return parseFloat(val);
             },
 
             color: "#111",
