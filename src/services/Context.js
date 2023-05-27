@@ -53,7 +53,7 @@ export const ContextProvider = ({ children }) => {
   };
   useLayoutEffect(() => {
     function handleResize() {
-      const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
+      const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
       console.log("IS mobile or tablet", isMobileOrTablet);
       if (isMobileOrTablet && !previousLocation) {
         setPreviousLocation(location.pathname);
