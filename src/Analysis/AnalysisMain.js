@@ -290,9 +290,9 @@ function AnalysisMain() {
                       >
                         Download report
                       </ModifyButton>
-                      <Link onClick={openDesktopView}>
+                      {/* <Link onClick={openDesktopView}>
                         Please Open In Desktop Version
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>

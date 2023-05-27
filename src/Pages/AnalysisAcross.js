@@ -103,7 +103,7 @@ const DataTable = ({ data }) => {
               <TableCell align="left">
                 {row.attempted || row.numberOfAttemptedQuestions}
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{color:"green"}}>
                 {row.correct || row.numberOfCorrectAttempt}
               </TableCell>
               <TableCell align="left">
