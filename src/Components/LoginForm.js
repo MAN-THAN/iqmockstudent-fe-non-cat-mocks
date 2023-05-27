@@ -514,7 +514,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               autoComplete="off"
               required
             />
-            <FormControl size="small" sx={{ width: "48%" }}>
+            <FormControl size="small" sx={{ width: "48%" }} required>
               <InputLabel id="program">Program</InputLabel>
               <Select
                 IconComponent={() => (
