@@ -54,25 +54,20 @@ export default function ViewSolution() {
   const [errValue, setErrValue] = useState("");
   const { state } = useLocation();
   const [defVal, setDefVal] = useState("varc");
+  const [isVideo, setVideo] = useState();
 
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
-    setPopoverOpen(true);
     setPopoverAnchorEl(event.currentTarget);
   };
 
   const handlePopoverClose = () => {
-    setPopoverOpen(false);
     setPopoverAnchorEl(null);
   };
 
+  const popOpen = Boolean(popoverAnchorEl);
 
-  
-  
-  
-  
   const options = [
     { name: "VARC", value: "varc" },
     { name: "LRDI", value: "lrdi" },
@@ -1014,8 +1009,8 @@ export default function ViewSolution() {
                   </FormControl>
                 </Box>
                 {/* button for redirect to error page */}
-                <Box
-                  sx={{
+                <div
+                  style={{
                     position: "sticky",
                     bottom: "5px",
                     background: "none",
@@ -1024,9 +1019,13 @@ export default function ViewSolution() {
                   }}
                 >
                   <ModifyButton
+                    aria-describedby="mouse-over-popover"
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
                     variant="outlined"
-                    onMouseEnter={handlePopoverOpen} // Open popover on mouse enter
-                    onMouseLeave={handlePopoverClose} // Close popover on mouse leave
+                    onClick={() =>
+                      navigate(`/errortracker/${mockId}/${attemptId}`)
+                    }
                     startIcon={
                       <img
                         src="/errorTracker.png"
@@ -1050,25 +1049,29 @@ export default function ViewSolution() {
                     Error Tracker Report
                   </ModifyButton>
                   <Popover
-                    open={popoverOpen}
+                    id="mouse-over-popover"
+                    sx={{
+                      pointerEvents: "none",
+                    }}
+                    open={popOpen}
                     anchorEl={popoverAnchorEl}
-                    onClose={handlePopoverClose}
                     anchorOrigin={{
                       vertical: "bottom",
                       horizontal: "center",
                     }}
                     transformOrigin={{
                       vertical: "top",
-                      horizontal: "center",
+                      horizontal: "left",
                     }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
                   >
-                    <Box sx={{ p: 2 }}>
-                      <Typography>
-                        This is the content of the popover.
-                      </Typography>
-                    </Box>
+                    <Typography sx={{ p: 1 }}>
+                      Complete Mock Analysis to get the Exact Mock Analysis
+                      Report
+                    </Typography>
                   </Popover>
-                </Box>
+                </div>
               </Box>
               {/* Right main end */}
             </Box>
