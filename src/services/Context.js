@@ -51,27 +51,38 @@ export const ContextProvider = ({ children }) => {
       setMenuBarOpen(false);
     }
   };
-  useLayoutEffect(() => {
-    function handleResize() {
-      const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
-      console.log("IS mobile or tablet", isMobileOrTablet);
-      if (isMobileOrTablet && !previousLocation) {
-        setPreviousLocation(location.pathname);
-        navigate("/mobileErrorPage");
-      } else if (!isMobileOrTablet && previousLocation) {
-        navigate(previousLocation);
-        setPreviousLocation(null);
-      }
-    }
 
-    handleResize(); // Check the initial screen size
+   const openDesktopView = () => {
+       const isChrome =
+         /Chrome/.test(navigator.userAgent) &&
+         /Google Inc/.test(navigator.vendor);
+       if (isChrome) {
+         navigate(previousLocation);
+         const url = window.location.href.replace("m.", "");
+         window.location.href = url;
+       }
+     };
+  // useLayoutEffect(() => {
+  //   function handleResize() {
+  //     const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
+  //     console.log("IS mobile or tablet", isMobileOrTablet);
+  //     if (isMobileOrTablet && !previousLocation) {
+  //       setPreviousLocation(location.pathname);
+  //       navigate("/mobileErrorPage");
+  //     } else if (!isMobileOrTablet && previousLocation) {
+  //       navigate(previousLocation);
+  //       setPreviousLocation(null);
+  //     }
+  //   }
 
-    window.addEventListener("resize", handleResize);
+  //   handleResize(); // Check the initial screen size
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [navigate, previousLocation, location]);
+  //   window.addEventListener("resize", handleResize);
+
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, [navigate, previousLocation, location]);
 
   // function  for disable the right click and inspect panel from keyboard
 
@@ -135,6 +146,7 @@ export const ContextProvider = ({ children }) => {
           Backdrop,
           showToastMessage,
           setLoading,
+          openDesktopView,
         }}
       >
         {children}
