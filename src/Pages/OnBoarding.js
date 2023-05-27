@@ -112,6 +112,7 @@ function OnBoarding() {
   const handlePercentile = async (e) => {
     console.log("hdfeuw");
     console.log(e.target.value);
+    setPercentile(e.target.value);
     try {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
       const res = await getPredictCollege(uid, {
