@@ -3,7 +3,7 @@ import { Typography, Box, Card, Stack, Tooltip } from "@mui/material";
 import { ModifyButton } from "../styleSheets/Style";
 import { useNavigate, Outlet, NavLink } from "react-router-dom";
 import CardContent from "@mui/material/CardContent";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams ,Link} from "react-router-dom";
 import { useAuth } from "../services/Context";
 import HeaderNew from "../Components/HeaderNew";
 import html2pdf from "html2pdf.js";
@@ -28,7 +28,17 @@ function AnalysisMain() {
   const params = useParams();
   const location = useLocation();
   const { mockId, attemptId, subject } = params;
-  const { analysisDataApi, isLoading, basicAnalysis, isErr, handlePageClick, menuBarOpen, setMenuBarOpen, Backdrop } = useAuth();
+  const {
+    analysisDataApi,
+    isLoading,
+    basicAnalysis,
+    isErr,
+    handlePageClick,
+    menuBarOpen,
+    setMenuBarOpen,
+    Backdrop,
+    openDesktopView,
+  } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
   const [selected, setSelected] = useState("");
@@ -168,7 +178,10 @@ function AnalysisMain() {
           }}
         >
           <PacmanLoader color="var(--orange)" size="100" />
-          <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
+          <h5
+            className="loader_title"
+            style={{ textAlign: "center", marginTop: "1em" }}
+          >
             Preparing Analysis!
           </h5>
         </div>
@@ -216,11 +229,16 @@ function AnalysisMain() {
               >
                 <div className="flex-item  " style={{ flexBasis: "27%" }}>
                   <div>
-                    <Typography variant="h4" sx={{ color: "var(--dark-blue)", fontSize: "35px" }}>
+                    <Typography
+                      variant="h4"
+                      sx={{ color: "var(--dark-blue)", fontSize: "35px" }}
+                    >
                       Hey {name},
                       <br />
                     </Typography>
-                    <Typography sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}>
+                    <Typography
+                      sx={{ fontSize: "25px", color: "black", fontWeight: 600 }}
+                    >
                       This is your mock Analysis for
                       {title ? " " + title : "iCAT 1.0"}.
                     </Typography>
@@ -247,7 +265,13 @@ function AnalysisMain() {
                       </ModifyButton>
                       <ModifyButton
                         variant="outlined"
-                        startIcon={<img src="/Vector1.png" className="img-fluid" width={8} />}
+                        startIcon={
+                          <img
+                            src="/Vector1.png"
+                            className="img-fluid"
+                            width={8}
+                          />
+                        }
                         // onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
@@ -266,6 +290,9 @@ function AnalysisMain() {
                       >
                         Download report
                       </ModifyButton>
+                      {/* <Link onClick={openDesktopView}>
+                        Please Open In Desktop Version
+                      </Link> */}
                     </div>
                   </div>
                 </div>
@@ -303,16 +330,29 @@ function AnalysisMain() {
                         />
                       </div>
 
-                      <Stack direction="row" flexWrap="wrap" fontSize={11} justifyContent={"space-between"}>
+                      <Stack
+                        direction="row"
+                        flexWrap="wrap"
+                        fontSize={11}
+                        justifyContent={"space-between"}
+                      >
                         <p>
-                          <span style={{ color: "#4149FF" }}>{targetPercentile}</span> Targeted Percentile
+                          <span style={{ color: "#4149FF" }}>
+                            {targetPercentile}
+                          </span>{" "}
+                          Targeted Percentile
                         </p>
                         <p>
-                          <span style={{ color: "#4149FF" }}>{percentile} </span>
+                          <span style={{ color: "#4149FF" }}>
+                            {percentile}{" "}
+                          </span>
                           Result Percentile
                         </p>
                         <p>
-                          <span style={{ color: "#4149FF" }}>{eval(targetPercentile - percentile)}</span> Left To Achieve Your Target
+                          <span style={{ color: "#4149FF" }}>
+                            {eval(targetPercentile - percentile)}
+                          </span>{" "}
+                          Left To Achieve Your Target
                         </p>
                       </Stack>
                     </CardContent>
@@ -321,7 +361,10 @@ function AnalysisMain() {
 
                 {/* Cards sections */}
 
-                <div className="d-flex flex-column gap-3" style={{ flexBasis: "50%" }}>
+                <div
+                  className="d-flex flex-column gap-3"
+                  style={{ flexBasis: "50%" }}
+                >
                   <div className="d-flex gap-3">
                     <Card
                       sx={{
@@ -332,7 +375,11 @@ function AnalysisMain() {
                       }}
                     >
                       <CardContent>
-                        <img src="/Revenue.png" alt="" className="image-fluid mb-2" />
+                        <img
+                          src="/Revenue.png"
+                          alt=""
+                          className="image-fluid mb-2"
+                        />
                         <Typography
                           sx={{
                             ...typographyStyles.subHeading,
@@ -380,13 +427,18 @@ function AnalysisMain() {
                             CardsData.map((item, ind) => {
                               return (
                                 <Tooltip title={item.tooltip} arrow>
-                                  <div className="Details flex-item text-center" key={ind}>
+                                  <div
+                                    className="Details flex-item text-center"
+                                    key={ind}
+                                  >
                                     <img
                                       src={item.icon}
                                       alt="icon"
                                       width={35}
                                       className={
-                                        item.icon === "/PS.png" ? "image-fluid mb-2 pb-2 align-self-center" : "image-fluid mb-2 align-self-center"
+                                        item.icon === "/PS.png"
+                                          ? "image-fluid mb-2 pb-2 align-self-center"
+                                          : "image-fluid mb-2 align-self-center"
                                       }
                                     />
                                     <Typography
@@ -454,7 +506,6 @@ function AnalysisMain() {
                                   fontSize: "13.82px",
                                   pl: 3,
                                   height: "30px",
-                                  
                                 }}
                               >
                                 {item.title}
@@ -518,8 +569,15 @@ function AnalysisMain() {
 
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
-                <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeclassname="active" className="link flex-item">
+                <div
+                  style={{ flexBasis: "70%" }}
+                  className=" d-flex gap-3 ps-2"
+                >
+                  <NavLink
+                    to="overall"
+                    activeclassname="active"
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
@@ -528,8 +586,15 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background: location.pathname === `/analysis/${mockId}/${attemptId}/sectionwise/${subject}` ? "var( --blue-new)" : "",
-                        color: location.pathname === `/analysis/${mockId}/${attemptId}/sectionwise/${subject}` && "white",
+                        background:
+                          location.pathname ===
+                          `/analysis/${mockId}/${attemptId}/sectionwise/${subject}`
+                            ? "var( --blue-new)"
+                            : "",
+                        color:
+                          location.pathname ===
+                            `/analysis/${mockId}/${attemptId}/sectionwise/${subject}` &&
+                          "white",
                       }}
                       id="demo-customized-button"
                       aria-controls={open ? "demo-customized-menu" : undefined}
@@ -586,7 +651,11 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="topicwise" activeclassname="active " className="link flex-item">
+                  <NavLink
+                    to="topicwise"
+                    activeclassname="active "
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Topic-wise
                     </ModifyButton>
@@ -596,8 +665,15 @@ function AnalysisMain() {
                     <ModifyButton
                       variant="filled"
                       style={{
-                        background: location.pathname === `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` ? "var( --blue-new)" : "",
-                        color: location.pathname === `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` && "white",
+                        background:
+                          location.pathname ===
+                          `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}`
+                            ? "var( --blue-new)"
+                            : "",
+                        color:
+                          location.pathname ===
+                            `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` &&
+                          "white",
                       }}
                       id="demo-customized-button"
                       aria-controls={open2 ? "demo-customized-menu" : undefined}
@@ -654,7 +730,11 @@ function AnalysisMain() {
                     </MenuItem>
                   </StyledMenu>
 
-                  <NavLink to="difficulty" activeclassname="active" className="link flex-item">
+                  <NavLink
+                    to="difficulty"
+                    activeclassname="active"
+                    className="link flex-item"
+                  >
                     <ModifyButton variant="filled" className="nav-button">
                       Difficulty-wise
                     </ModifyButton>
@@ -663,7 +743,12 @@ function AnalysisMain() {
 
                 <div
                   style={{ flexBasis: "30%" }}
-                  className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item " : "d-none"}
+                  className={
+                    location.pathname ===
+                    `/analysis/${mockId}/${attemptId}/overall`
+                      ? "flex-item "
+                      : "d-none"
+                  }
                 >
                   <Box
                     component="span"
@@ -685,7 +770,12 @@ function AnalysisMain() {
                     Time spent on questions:
                   </Box>
                   <span>
-                    <img src="/Group17.svg" className="ms-2" width={20} alt="" />
+                    <img
+                      src="/Group17.svg"
+                      className="ms-2"
+                      width={20}
+                      alt=""
+                    />
                   </span>
                 </div>
               </div>
