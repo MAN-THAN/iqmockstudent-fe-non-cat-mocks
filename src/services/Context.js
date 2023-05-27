@@ -15,7 +15,7 @@ export function useAuth() {
 export const ContextProvider = ({ children }) => {
   const [previousLocation, setPreviousLocation] = useState(null);
   const [analysisData, setAnalysisData] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
   const navigate = useNavigate();
