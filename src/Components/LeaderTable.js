@@ -8,6 +8,7 @@ import {
   StyledTable,
   StyledTableRow,
 } from "../styleSheets/Style";
+import { Box } from "@mui/material";
 
 const SkeletonRows = () => {
   return (
@@ -42,20 +43,33 @@ export default function LeaderTable({
               "&:hover": { background: "none!important" },
             }}
           >
-            <StyledTableCell>Rank</StyledTableCell>
-            <StyledTableCell align="left">Name</StyledTableCell>
-            <StyledTableCell align="left">QUANT %ile </StyledTableCell>
-            <StyledTableCell align="left">LRDI %ile</StyledTableCell>
-            <StyledTableCell align="left">VARC %ile</StyledTableCell>
-            <StyledTableCell align="left">Overall %ile</StyledTableCell>
-            <StyledTableCell align="left">Overall Score</StyledTableCell>
+            <StyledTableCell className="fw-bold" align="left">
+              Rank
+            </StyledTableCell>
+            <StyledTableCell className="fw-bold" align="left">
+              Name
+            </StyledTableCell>
+            <StyledTableCell align="left" className="fw-bold">
+              QUANT %ile{" "}
+            </StyledTableCell>
+            <StyledTableCell align="left" className="fw-bold">
+              LRDI %ile
+            </StyledTableCell>
+            <StyledTableCell align="left" className="fw-bold">
+              VARC %ile
+            </StyledTableCell>
+            <StyledTableCell align="left" className="fw-bold">
+              Overall %ile
+            </StyledTableCell>
+            <StyledTableCell align="left" className="fw-bold">
+              Overall Score
+            </StyledTableCell>
           </StyledTableRow>
           <StyledTableRow
             sx={{
-              height: "20px",
               backgroundColor: "#E1E2FE",
               "&:hover": { background: "#E1E2FE!important" },
-              boxShadow: 10,
+              boxShadow: 6,
             }}
           >
             {isLoading ? (
@@ -66,23 +80,25 @@ export default function LeaderTable({
               ))
             ) : (
               <>
-                <StyledTableCell>{data[0] && data[0].rank}</StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" sx={{ fontSize: 16}}>
+                  {data[0] && data[0].rank}
+                </StyledTableCell>
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].name}
                 </StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].qaPercentile}
                 </StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].lrdiPercentile}
                 </StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].varcPercentile}
                 </StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].overallPercentile}
                 </StyledTableCell>
-                <StyledTableCell align="left">
+                <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
                   {data[0] && data[0].result[0].overallScore}
                 </StyledTableCell>
               </>
@@ -90,47 +106,30 @@ export default function LeaderTable({
           </StyledTableRow>
         </TableHead>
         <TableBody>
+          <Box style={{minHeight : "3px"}}></Box>
           {isLoading ? (
             <SkeletonRows />
           ) : (
-            <>
+              <>
               {data[0] &&
                 data[0].leaderList.map((item, index) => (
                   <StyledTableRow
                     key={index}
                     sx={{
-                      background:
-                        index == 0
-                          ? "#FF7A00"
-                          : index == 1
-                          ? "#4B87FC"
-                          : index == 2
-                          ? "#B53FFD"
-                          : "white",
+                      background: index == 0 ? "#FF7A00" : index == 1 ? "#4B87FC" : index == 2 ? "#B53FFD" : "white",
                       color: "black",
                       display: data[0].rank - 1 === index && "none",
-                    
                     }}
                   >
                     <StyledTableCell component="th" scope="row">
                       {index + 1}
                     </StyledTableCell>
                     <StyledTableCell align="left">{item.name}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.qaPercentile}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.lrdiPercentile}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.varcPercentile}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.overallPercentile}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.overallScore}
-                    </StyledTableCell>
+                    <StyledTableCell align="left">{item.qaPercentile}</StyledTableCell>
+                    <StyledTableCell align="left">{item.lrdiPercentile}</StyledTableCell>
+                    <StyledTableCell align="left">{item.varcPercentile}</StyledTableCell>
+                    <StyledTableCell align="left">{item.overallPercentile}</StyledTableCell>
+                    <StyledTableCell align="left">{item.overallScore}</StyledTableCell>
                   </StyledTableRow>
                 ))}
             </>
