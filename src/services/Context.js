@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 import MuiBackdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
@@ -52,21 +52,24 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-   const openDesktopView = () => {
-       const isChrome =
-         /Chrome/.test(navigator.userAgent) &&
-         /Google Inc/.test(navigator.vendor);
-       if (isChrome) {
-         navigate(previousLocation);
-         const url = window.location.href.replace("m.", "");
-         window.location.href = url;
-       }
-     };
-  useEffect(() => {
+  const openDesktopView = () => {
+    const isChrome =
+      /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (isChrome) {
+      navigate(previousLocation);
+      const url = window.location.href.replace("m.", "");
+      window.location.href = url;
+    }
+  };
+  useLayoutEffect(() => {
     function handleResize() {
       const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
       console.log("IS mobile or tablet", isMobileOrTablet);
-      if (isMobileOrTablet && !previousLocation) {
+      if (
+        isMobileOrTablet &&
+        !previousLocation &&
+        location.pathname !== "/mobileErrorPage"
+      ) {
         setPreviousLocation(location.pathname);
         navigate("/mobileErrorPage");
       } else if (!isMobileOrTablet && previousLocation) {
