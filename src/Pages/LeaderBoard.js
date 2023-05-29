@@ -94,11 +94,11 @@ function LeaderBoard() {
             sx={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
+              gap : 1
             }}
           >
             {" "}
-            <Box sx={{ display: "flex", flexDirection: "row", width: "15em" }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography
                 sx={{
                   fontSize: "30px",
