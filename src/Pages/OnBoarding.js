@@ -121,7 +121,8 @@ function OnBoarding() {
       });
       console.log(res);
       if (res?.status === 200) {
-        setCollege(res?.data.bschools);
+        let arr = res?.data.bschools;
+        setCollege(arr);
       }
     } catch (err) {
       // showToastMessage();
