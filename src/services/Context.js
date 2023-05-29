@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { fetchAnalysisData } from "./Analysis_api";
 import MuiBackdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
@@ -62,27 +62,27 @@ export const ContextProvider = ({ children }) => {
          window.location.href = url;
        }
      };
-  // useLayoutEffect(() => {
-  //   function handleResize() {
-  //     const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
-  //     console.log("IS mobile or tablet", isMobileOrTablet);
-  //     if (isMobileOrTablet && !previousLocation) {
-  //       setPreviousLocation(location.pathname);
-  //       navigate("/mobileErrorPage");
-  //     } else if (!isMobileOrTablet && previousLocation) {
-  //       navigate(previousLocation);
-  //       setPreviousLocation(null);
-  //     }
-  //   }
+  useEffect(() => {
+    function handleResize() {
+      const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
+      console.log("IS mobile or tablet", isMobileOrTablet);
+      if (isMobileOrTablet && !previousLocation) {
+        setPreviousLocation(location.pathname);
+        navigate("/mobileErrorPage");
+      } else if (!isMobileOrTablet && previousLocation) {
+        navigate(previousLocation);
+        setPreviousLocation(null);
+      }
+    }
 
-  //   handleResize(); // Check the initial screen size
+    handleResize(); // Check the initial screen size
 
-  //   window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, [navigate, previousLocation, location]);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [navigate, previousLocation, location]);
 
   // function  for disable the right click and inspect panel from keyboard
 
