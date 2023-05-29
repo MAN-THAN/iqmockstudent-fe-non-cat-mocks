@@ -61,31 +61,33 @@ export const ContextProvider = ({ children }) => {
       window.location.href = url;
     }
   };
-  useLayoutEffect(() => {
-    function handleResize() {
-      const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
-      console.log("IS mobile or tablet", isMobileOrTablet);
-      if (
-        isMobileOrTablet &&
-        !previousLocation &&
-        location.pathname !== "/mobileErrorPage"
-      ) {
-        setPreviousLocation(location.pathname);
-        navigate("/mobileErrorPage");
-      } else if (!isMobileOrTablet && previousLocation) {
-        navigate(previousLocation);
-        setPreviousLocation(null);
-      }
-    }
+ useLayoutEffect(() => {
+   function handleResize() {
+     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
+     console.log("Is mobile or tablet:", isMobileOrTablet);
 
-    handleResize(); // Check the initial screen size
+     if (isMobileOrTablet && !previousLocation) {
+       setPreviousLocation(location.pathname);
+       navigate("/mobileErrorPage");
+     } else if (!isMobileOrTablet && previousLocation) {
+       navigate(previousLocation);
+       setPreviousLocation(null);
+     }
+   }
 
-    window.addEventListener("resize", handleResize);
+   // Check the initial screen size
+   handleResize();
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [navigate, previousLocation, location]);
+   // Add event listener to handle screen resize
+   window.addEventListener("resize", handleResize);
+
+   // Cleanup by removing the event listener
+   return () => {
+     window.removeEventListener("resize", handleResize);
+   };
+ }, [navigate, previousLocation, location]);
+
+
 
   // function  for disable the right click and inspect panel from keyboard
 
