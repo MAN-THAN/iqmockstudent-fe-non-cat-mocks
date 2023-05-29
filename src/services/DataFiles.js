@@ -75,7 +75,7 @@ export const NavigationGalleryData = (mockId, attemptId) => {
     },
 
     {
-      heading: "Overall across analysis",
+      heading: "Overall Across Analysis",
       image: "AnalysisAcross-card.png",
       path: `/analysisacross/${mockId}/${attemptId}`,
     },
