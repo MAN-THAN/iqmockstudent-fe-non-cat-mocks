@@ -38,9 +38,9 @@ function App() {
           setPreviousLocation(location.pathname);
           navigate("/mobileErrorPage");
         }
-        if (previousLocation) {
-          navigate("/mobileErrorPage");
-        }
+        // if (previousLocation) {
+        //   navigate("/mobileErrorPage");
+        // }
       } else if (!isMobileOrTablet && previousLocation) {
         navigate(previousLocation);
         setPreviousLocation(null);
