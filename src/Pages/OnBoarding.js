@@ -232,6 +232,7 @@ function OnBoarding() {
                                         sx={{
                                           fontWeight: "bold",
                                           fontSize: 16.5,
+                                          color: "#676767",
                                         }}
                                       >
                                         Ranking
