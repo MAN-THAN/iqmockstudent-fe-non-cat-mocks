@@ -6,17 +6,11 @@ WORKDIR /usr/local/iqmockstudent-fe-dev
 COPY . /usr/local/iqmockstudent-fe-dev
 
 # Install all the dependencies
-#RUN npm install -g @angular/cli
-#RUN npm install -g npm@9.6.7
-#RUN rm -f package-lock.json
-#RUN npm install @material-ui/core
-RUN node --version
-RUN npm --version
 RUN npm install -g npm@9.6.7
 RUN npm install --save react react-dom react-scripts
 #RUN npm install
 # Generate the build of the application
-RUN npm run build --base-href='http://iqmocktest.iquanta.in'
+RUN npm run build
 # Stage 2: Serve app with nginx server
 # Use official nginx image as the base image
 FROM nginx:1.24
