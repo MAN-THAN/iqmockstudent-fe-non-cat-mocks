@@ -4,11 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  StyledTableCell,
-  StyledTable,
-  StyledTableRow,
-} from "../styleSheets/Style";
+import { StyledTableCell, StyledTable, StyledTableRow } from "../styleSheets/Style";
 import moment from "moment/moment";
 import NavigationGallery from "../Components/NavigationGallery";
 import { Typography } from "@mui/material";
@@ -19,27 +15,17 @@ function OverallAnalysis() {
   console.log("overall", data);
   useEffect(() => setData(overallAnalysis?.overAllAnalysis), [overallAnalysis]);
 
-  const headings = [
-    "Name",
-    "Questions",
-    "Attempted",
-    "Correct",
-    "Incorrect",
-    "Score",
-    "% Accuracy",
-    "% Score",
-    "Percentile",
-  ];
-   const convertStoMs = (seconds) => {
-     let minutes = Math.floor(seconds / 60);
-     let extraSeconds = seconds % 60;
-     minutes = minutes < 10 ? + minutes : minutes;
-     extraSeconds = extraSeconds < 10 ?  + extraSeconds : extraSeconds;
-     console.log(minutes, extraSeconds);
-     return ( `${minutes + "min" + " " + extraSeconds + "sec"}`)
-  }
-  convertStoMs(70)
-  console.log(data)
+  const headings = ["Name", "Questions", "Attempted", "Correct", "Incorrect", "Score", "% Accuracy", "% Score", "Percentile"];
+  const convertStoMs = (seconds) => {
+    let minutes = Math.floor(seconds / 60);
+    let extraSeconds = seconds % 60;
+    minutes = minutes < 10 ? +minutes : minutes;
+    extraSeconds = extraSeconds < 10 ? +extraSeconds : extraSeconds;
+    console.log(minutes, extraSeconds);
+    return `${minutes + "min" + " " + extraSeconds + "sec"}`;
+  };
+  convertStoMs(70);
+  console.log(data);
   return (
     <>
       <TableContainer
@@ -47,7 +33,7 @@ function OverallAnalysis() {
           display: "flex",
           justifyContent: "center",
           alignContent: "center",
-           p: 1,
+          p: 1,
           flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
         }}
       >
@@ -56,11 +42,7 @@ function OverallAnalysis() {
             <TableRow sx={{ background: "white", width: "10%" }}>
               {headings.map((heading, ind) => {
                 return (
-                  <StyledTableCell
-                    align="center"
-                    key={ind}
-                    className="fw-bold py-4"
-                  >
+                  <StyledTableCell align="left" key={ind} className="fw-bold py-4">
                     {heading}
                   </StyledTableCell>
                 );
@@ -80,31 +62,19 @@ function OverallAnalysis() {
                       color: "black",
                     }}
                   >
-                    <StyledTableCell align="center" className="fw-bold">
+                    <StyledTableCell align="left" className="fw-bold">
                       {item.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.question}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.attempted}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.correct}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.incorrect}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.score}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                    <StyledTableCell align="left">{item.question}</StyledTableCell>
+                    <StyledTableCell align="left">{item.attempted}</StyledTableCell>
+                    <StyledTableCell align="left">{item.correct}</StyledTableCell>
+                    <StyledTableCell align="left">{item.incorrect}</StyledTableCell>
+                    <StyledTableCell align="left">{item.score}</StyledTableCell>
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                       {item.accuracy}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {+item.perScore < 0 ? 0 : +item.perScore}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                    <StyledTableCell align="left">{+item.perScore < 0 ? 0 : +item.perScore}</StyledTableCell>
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                       {item.percentile}
                     </StyledTableCell>
                   </StyledTableRow>
@@ -114,10 +84,7 @@ function OverallAnalysis() {
         </StyledTable>
         {/* 2nd table  side table */}
 
-        <StyledTable
-          sx={{ maxWidth: "30%", ml: 5 }}
-          aria-label="customized table"
-        >
+        <StyledTable sx={{ maxWidth: "30%", ml: 5 }} aria-label="customized table">
           <TableHead>
             <TableRow sx={{ background: "white", borderBottom: "none" }}>
               <StyledTableCell className="fw-bold py-4" align="left ">
@@ -162,7 +129,7 @@ function OverallAnalysis() {
       </TableContainer>
 
       <div className="container-fluid my-4">
-        <NavigationGallery/>
+        <NavigationGallery />
       </div>
     </>
   );

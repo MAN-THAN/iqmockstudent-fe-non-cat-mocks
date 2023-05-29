@@ -71,7 +71,7 @@ function SubtopicAnalysis() {
             {headings.map((heading, ind) => {
               return (
                 <StyledTableCell
-                  align="center"
+                  align="left"
                   key={ind}
                   className="fw-bold "
                 >
@@ -95,20 +95,20 @@ function SubtopicAnalysis() {
                     cursor: "pointer",
                   }}
                 >
-                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
-                  <StyledTableCell align="center">{item.subtopic}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfQuestions}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfAttemptedQuestions}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfCorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="center">{item.numberOfIncorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left">{index + 1}</StyledTableCell>
+                  <StyledTableCell align="left">{item.subtopic}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markObtainedByCorrectQuestion}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{item.overallScoreInTheSubtopic}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left">{item.overallScoreInTheSubtopic}</StyledTableCell>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markObtainedByTopperInThisSubtopic}
                   </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markLoseByIncorrectAttempt}
                   </StyledTableCell>
                 </StyledTableRow>
