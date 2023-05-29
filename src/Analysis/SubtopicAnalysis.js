@@ -95,7 +95,7 @@ function SubtopicAnalysis() {
                     cursor: "pointer",
                   }}
                 >
-                  <StyledTableCell align="center">{item.number}</StyledTableCell>
+                  <StyledTableCell align="center">{index + 1}</StyledTableCell>
                   <StyledTableCell align="center">{item.subtopic}</StyledTableCell>
                   <StyledTableCell align="center">{item.numberOfQuestions}</StyledTableCell>
                   <StyledTableCell align="center">{item.numberOfAttemptedQuestions}</StyledTableCell>
