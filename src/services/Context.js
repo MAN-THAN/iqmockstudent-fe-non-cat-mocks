@@ -13,13 +13,12 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  const [previousLocation, setPreviousLocation] = useState(null);
+  
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
-  const navigate = useNavigate();
-  const location = useLocation();
+ 
   const analysisDataApi = async (attemptId) => {
     const response = await fetchAnalysisData(attemptId);
     console.log(response);
@@ -52,40 +51,17 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  const openDesktopView = () => {
-    const isChrome =
-      /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    if (isChrome) {
-      navigate(previousLocation);
-      const url = window.location.href.replace("m.", "");
-      window.location.href = url;
-    }
-  };
-  useLayoutEffect(() => {
-    function handleResize() {
-      const isMobileOrTablet = window.matchMedia("(max-width: 1000px)").matches;
-      console.log("IS mobile or tablet", isMobileOrTablet);
-      if (
-        isMobileOrTablet &&
-        !previousLocation &&
-        location.pathname !== "/mobileErrorPage"
-      ) {
-        setPreviousLocation(location.pathname);
-        navigate("/mobileErrorPage");
-      } else if (!isMobileOrTablet && previousLocation) {
-        navigate(previousLocation);
-        setPreviousLocation(null);
-      }
-    }
+  // const openDesktopView = () => {
+  //   const isChrome =
+  //     /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  //   if (isChrome) {
+  //     navigate(previousLocation);
+  //     const url = window.location.href.replace("m.", "");
+  //     window.location.href = url;
+  //   }
+  // };
 
-    handleResize(); // Check the initial screen size
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [navigate, previousLocation, location]);
 
   // function  for disable the right click and inspect panel from keyboard
 
@@ -149,7 +125,7 @@ export const ContextProvider = ({ children }) => {
           Backdrop,
           showToastMessage,
           setLoading,
-          openDesktopView,
+     
         }}
       >
         {children}
