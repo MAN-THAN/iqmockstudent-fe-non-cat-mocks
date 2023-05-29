@@ -568,9 +568,9 @@ export default function ViewSolution() {
                             <Typography
                               color={
                                 show && show[index]?.options[0] === show[index]?.correctAnswer
-                                  ? "green"
+                                  ? "#63B31E"
                                   : show[index]?.options[0] === show[index]?.studentAnswer
-                                  ? "red"
+                                  ? "#E94504"
                                   : "black"
                               }
                               marginTop={2}
@@ -604,9 +604,9 @@ export default function ViewSolution() {
                             <Typography
                               color={
                                 show && show[index]?.options[1] === show[index]?.correctAnswer
-                                  ? "green"
+                                  ? "#63B31E"
                                   : show[index]?.options[1] === show[index]?.studentAnswer
-                                  ? "red"
+                                  ? "#E94504"
                                   : "black"
                               }
                               marginTop={2}
@@ -640,9 +640,9 @@ export default function ViewSolution() {
                             <Typography
                               color={
                                 show && show[index]?.options[2] === show[index]?.correctAnswer
-                                  ? "green"
+                                  ? "#63B31E"
                                   : show[index]?.options[2] === show[index]?.studentAnswer
-                                  ? "red"
+                                  ? "#E94504"
                                   : "black"
                               }
                               marginTop={2}
@@ -676,9 +676,9 @@ export default function ViewSolution() {
                             <Typography
                               color={
                                 show && show[index]?.options[3] === show[index]?.correctAnswer
-                                  ? "green"
+                                  ? "#63B31E"
                                   : show[index]?.options[3] === show[index]?.studentAnswer
-                                  ? "red"
+                                  ? "#E94504"
                                   : "black"
                               }
                               marginTop={2}
@@ -857,14 +857,14 @@ export default function ViewSolution() {
                     flexDirection: "column",
                   }}
                 >
-                    <Typography
+                  <Typography
                     sx={{
                       textAlign: "center",
                       fontSize: "17px",
                       fontWeight: 750,
                       "& > span": {
                         fontSize: 19,
-                        },
+                      },
                     }}
                   >
                     Why did you get it wrong?
@@ -882,11 +882,11 @@ export default function ViewSolution() {
                       onChange={handleErrorForm}
                       value={errValue}
                       aria-labelledby="demo-radio-buttons-group-label"
-                        name="radio-buttons-group"
+                      name="radio-buttons-group"
                     >
                       {errorOptions &&
                         errorOptions.map((item, _) => {
-                          return <FormControlLabel  key={item.id} value={item.value} control={<Radio size="small" />} label={item.value} />;
+                          return <FormControlLabel key={item.id} value={item.value} control={<Radio size="small" />} label={item.value} />;
                         })}
                     </RadioGroup>
                   </FormControl>
@@ -1016,8 +1016,8 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
                 item.stage === 0 || item.stage === 2 || item.stage === 3
                   ? "#2196F3"
                   : item.stage === (1 || 4) && item.studentAnswer === item.correctAnswer
-                  ? "green"
-                  : "red",
+                  ? "#43D200"
+                  : "#F32121",
               cursor: "pointer",
               width: "33.95px",
               height: "33.95px",
