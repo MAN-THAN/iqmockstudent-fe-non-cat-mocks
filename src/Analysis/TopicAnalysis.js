@@ -52,7 +52,7 @@ function TopicAnalysis() {
           <TableRow sx={{ background: "white", width: "10%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell align="center" key={ind} className="fw-bold">
+                <StyledTableCell align="left" key={ind} className="fw-bold">
                   {heading}
                 </StyledTableCell>
               );

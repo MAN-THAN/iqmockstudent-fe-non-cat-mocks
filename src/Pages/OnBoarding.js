@@ -121,7 +121,8 @@ function OnBoarding() {
       });
       console.log(res);
       if (res?.status === 200) {
-        setCollege(res?.data.bschools);
+        let arr = res?.data.bschools;
+        setCollege(arr);
       }
     } catch (err) {
       // showToastMessage();
@@ -156,7 +157,8 @@ function OnBoarding() {
           width: "100vw",
           height: "100vh",
           background: "url(/onboarding_image.png)",
-          overflow: "hidden",
+          overflowX: "hidden",
+          overflowY: "scroll",
           position: "relative",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
@@ -164,10 +166,7 @@ function OnBoarding() {
         }}
       >
         <Box>
-          <HeaderNew
-            logoPath={"/iQuantaWhite.png"}
-            style={{ color: "white" }}
-          />
+          <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
         </Box>
         {/* <Box sx={{ width: "100%", height: "100%", marginTop: "8em" }}>
         <LineChart1 percentile={percentile} />
@@ -190,11 +189,7 @@ function OnBoarding() {
             }}
           >
             <Box sx={{ width: "40%" }}>
-              <LoginForm
-                setCollege={setCollege}
-                percentile={percentile}
-                setFormData={setFormData}
-              />
+              <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
             </Box>
             <Box sx={{ width: "58%" }}>
               {startMock ? (
@@ -216,10 +211,7 @@ function OnBoarding() {
                         logoPath={"/goalSchool.png"}
                         cardContent={
                           <TableContainer>
-                            <Table
-                              sx={{ border: "none" }}
-                              aria-label="simple table"
-                            >
+                            <Table sx={{ border: "none" }} aria-label="simple table">
                               <TableHead>
                                 <TableRow
                                   sx={{
@@ -231,25 +223,22 @@ function OnBoarding() {
                                     sx={{
                                       fontWeight: "bold",
                                       fontSize: 16.5,
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      gap: 1,
                                     }}
                                     align="left"
                                   >
-                                    <Typography
-                                      sx={{
-                                        fontWeight: "bold",
-                                        fontSize: 16.5,
-                                      }}
-                                    >
-                                      Ranking
-                                    </Typography>
-                                    <img
-                                      src="/onboarding_arrow.svg"
-                                      alt="no image"
-                                      width="10px"
-                                    ></img>
+                                    <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                                      {" "}
+                                      <Typography
+                                        sx={{
+                                          fontWeight: "bold",
+                                          fontSize: 16.5,
+                                          color: "#676767",
+                                        }}
+                                      >
+                                        Ranking
+                                      </Typography>
+                                      <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                                    </Box>
                                     {/* <Box sx={{ width: "1.7em" }}></Box> */}
                                   </TableCell>
                                   <TableCell
@@ -294,16 +283,10 @@ function OnBoarding() {
                                           borderBottom: "1px solid #E1E1E1",
                                         }}
                                       >
-                                        <TableCell
-                                          sx={{ ...cellStyle, paddingRight: 5 }}
-                                          align="left"
-                                        >
+                                        <TableCell sx={{ ...cellStyle, paddingRight: 5 }} align="left">
                                           {ind + 1}
                                         </TableCell>
-                                        <TableCell
-                                          sx={{ cellStyle, fontWeight: 600 }}
-                                          align="left"
-                                        >
+                                        <TableCell sx={{ cellStyle, fontWeight: 600, width: "40% !important" }} align="left">
                                           {item.name}
                                         </TableCell>
                                         <TableCell sx={cellStyle} align="left">
@@ -373,8 +356,7 @@ function OnBoarding() {
                           paddingLeft: 1,
                         }}
                       >
-                        Fill your details and set your desired percentile to see
-                        which
+                        Fill your details and set your desired percentile to see which
                       </Typography>
                       <Typography
                         sx={{
@@ -428,9 +410,7 @@ function OnBoarding() {
                 {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
                 <button onClick={handleSubmit} className="custom-btn btn-12">
                   <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
-                  <span style={{ fontSize: 20, paddingTop: 5 }}>
-                    Start Mock
-                  </span>
+                  <span style={{ fontSize: 20, paddingTop: 5 }}>Start Mock</span>
                 </button>
               </Box>
             ) : (

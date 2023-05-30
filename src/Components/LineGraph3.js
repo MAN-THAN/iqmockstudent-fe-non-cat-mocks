@@ -7,7 +7,7 @@ export default class LineGraph3 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = props.data;
-    console.log(props)
+    console.log(props);
   }
 
   componentDidUpdate(prevProps) {
@@ -21,7 +21,6 @@ export default class LineGraph3 extends PureComponent {
           x: this.props.percentile,
           y: this.props.percentile,
         },
-        
       ];
       this.setState({ data: newData });
     }
@@ -32,6 +31,22 @@ export default class LineGraph3 extends PureComponent {
     const minY = Math.min(...this.state.map((d) => d.y));
     return { minX, minY };
   };
+  renderCustomTooltip({ active, payload, label }) {
+    if (active && payload && payload.length) {
+      // Customize the tooltip content based on your data and requirements
+      console.log(payload)
+      return (
+        <div
+          style={{ background: "#4C08D0", width: "10em", height: "4em", display: "flex", justifyContent: "center", alignItems: "center" }}
+          className="custom-tooltip"
+        >
+          <p className="label" style={{color : "white", marginTop : "10px", fontWeight : 600}}>{`${payload[0].payload.name.toUpperCase() + " %ile"} : ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  }
 
   render() {
     const { minX, minY } = this.getMinValues();
@@ -85,7 +100,7 @@ export default class LineGraph3 extends PureComponent {
 
           {minY < 0 && <ReferenceLine y={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
           {minX < 0 && <ReferenceLine x={0} stroke="gray" strokeWidth={1.5} strokeOpacity={0.65} />}
-          {/* <Tooltip /> */}
+          <Tooltip content={this.renderCustomTooltip} />
 
           <Line strokeWidth={10} data={this.state} type="fill" dataKey="percentile" stroke="#4C08D0" tooltipType="" activeDot={{ r: 10 }} />
         </LineChart>
