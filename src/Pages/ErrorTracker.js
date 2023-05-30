@@ -258,6 +258,7 @@ function ErrorTracker() {
           position: "absolute",
           left: "70px",
           width: "calc(100% - 70px)",
+          height : "100%"
         }}
       >
         {/* Header */}
