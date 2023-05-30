@@ -35,13 +35,16 @@ function App() {
 
       if (isMobileOrTablet) {
         if (!previousLocation) {
+          console.log("tyagi");
           setPreviousLocation(location.pathname);
           navigate("/mobileErrorPage");
         }
         // if (previousLocation) {
         //   navigate("/mobileErrorPage");
         // }
-      } else if (!isMobileOrTablet && previousLocation) {
+      }
+      if (!isMobileOrTablet && previousLocation) {
+        console.log("mantha");
         navigate(previousLocation);
         setPreviousLocation(null);
       }
@@ -77,36 +80,15 @@ function App() {
           <Route path="overall" element={<OverallAnalysis />} />
           <Route path="difficulty" element={<DifficultyAnalysis />} />
         </Route>
-        <Route
-          path="/leaderboard/:mockId/:attemptId"
-          element={<LeaderBoard />}
-        />
-        <Route
-          path="/viewsolutions/:mockId/:attemptId"
-          element={<ViewSolution />}
-        />
+        <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
+        <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
         <Route path="/main/:mockId/:type" element={<Protected Comp={Main} />} />
 
-        <Route
-          path="/analysisacross/:mockId/:attemptId"
-          element={<AnalysisAcross />}
-        />
-        <Route
-          path="/errortracker/:mockId/:attemptId"
-          element={<ErrorTracker />}
-        />
-        <Route
-          path="/goaltracker/:mockId/:attemptId"
-          element={<GoalTracker />}
-        />
-        <Route
-          path="/marketplace/:mockId/:attemptId"
-          element={<MarketPlace />}
-        />
-        <Route
-          path="/mockcomparison/:mockId/:attemptId"
-          element={<MockComparison />}
-        />
+        <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross />} />
+        <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker />} />
+        <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker />} />
+        <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace />} />
+        <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison />} />
         <Route path="/onboarding" element={<OnBoarding />} />
       </Routes>
     </ThemeProvider>

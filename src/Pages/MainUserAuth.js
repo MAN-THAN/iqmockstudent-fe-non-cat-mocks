@@ -13,8 +13,15 @@ const MainUserAuth = () => {
   const temp = { email: "john@example.com", otp: "49858", setId: "xyx", mockId: "6430e9e837185e086ad69368" };
 
   useEffect(() => {
-    // userAuthCheck();
-    startVerification();
+     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
+     console.log(isMobileOrTablet);
+    if (isMobileOrTablet) {
+      navigate("/mobileErrorPage");
+    }
+    else {
+      // userAuthCheck();
+      startVerification();
+    }
   }, []);
 
   // Function for VERIFICATION
