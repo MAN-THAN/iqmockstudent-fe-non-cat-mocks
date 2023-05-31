@@ -770,7 +770,7 @@ function CenterMain() {
                                 item.stage === 0
                                   ? "/BL.png"
                                   : item.stage === 1
-                                  ? "/Answered.png"
+                                  ? "/answered.png"
                                   : item.stage === 2
                                   ? "/NotAnswered.png"
                                   : item.stage === 3
