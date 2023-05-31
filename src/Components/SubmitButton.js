@@ -115,7 +115,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
             <>
               {" "}
               <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                <SubHeading className="m-4 ps-3">Test Submitting... </SubHeading>
+                <SubHeading className="m-4 ps-3">Submitting Test... </SubHeading>
               </div>
               <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                 <div style={{ marginLeft: "12px" }}>

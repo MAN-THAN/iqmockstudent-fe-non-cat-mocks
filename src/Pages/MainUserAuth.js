@@ -51,7 +51,7 @@ const MainUserAuth = () => {
         }
       }
     } catch (err) {
-      showToastMessage();
+      showToastMessage(err?.response?.data?.message);
       console.log(err);
     }
   };
@@ -61,8 +61,8 @@ const MainUserAuth = () => {
      });
      return null;
    };
-  const showToastMessage = () => {
-    toast.error("Some error occurred! Please reload the page.", {
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
       position: toast.POSITION.TOP_CENTER,
     });
     return setLoader(false);

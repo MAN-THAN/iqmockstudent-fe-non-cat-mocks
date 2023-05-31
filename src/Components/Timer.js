@@ -128,7 +128,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData }) => {
                   <>
                     {" "}
                     <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+                      <SubHeading className="m-4 ps-3">Submitting Section... </SubHeading>
                     </div>
                     <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                       <div style={{ marginLeft: "12px" }}>
@@ -143,7 +143,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData }) => {
                 ) : (
                   <>
                     <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                      <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+                      <SubHeading className="m-4 ps-3">Submitting Section... </SubHeading>
                     </div>
                     <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
                       <div style={{ marginLeft: "12px" }}>
