@@ -81,25 +81,25 @@ export default function LeaderTable({
             ) : (
               <>
                 <StyledTableCell className="fw-bold" sx={{ fontSize: 16}}>
-                  {data[0] && data[0].rank}
+                  {data[0] && data[0]?.rank}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].name}
+                  {data[0] && data[0].result[0]?.name}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].qaPercentile}
+                  {data[0] && data[0].result[0]?.qaPercentile}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].lrdiPercentile}
+                  {data[0] && data[0].result[0]?.lrdiPercentile}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].varcPercentile}
+                  {data[0] && data[0].result[0]?.varcPercentile}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].overallPercentile}
+                  {data[0] && data[0].result[0]?.overallPercentile}
                 </StyledTableCell>
                 <StyledTableCell className="fw-bold" align="left" sx={{ fontSize: 16 }}>
-                  {data[0] && data[0].result[0].overallScore}
+                  {data[0] && data[0].result[0]?.overallScore}
                 </StyledTableCell>
               </>
             )}
