@@ -4,7 +4,7 @@ import Typography from "antd/es/typography/Typography";
 
 function HeaderNew({ style, logoPath }) {
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { _id, name, photoURL } = userData;
+  const { _id, name, photoURL, mbrId } = userData;
 
   return (
     <header className="w-100">
@@ -19,7 +19,7 @@ function HeaderNew({ style, logoPath }) {
               style={{
                 fontFamily: "var(--font-inter)",
                 fontSize: "19px",
-                fontWeight: 600,
+                fontWeight: 700,
                 ...style,
               }}
             >
@@ -28,12 +28,13 @@ function HeaderNew({ style, logoPath }) {
             <Typography
               style={{
                 fontFamily: "var(--font-inter)",
-                fontSize: "13px",
-                fontWeight: 400,
+                fontSize: "12.5px",
+                color : "gray",
+                fontWeight: 550,
                 ...style,
               }}
             >
-              User id :{_id}
+              UID : {mbrId}
             </Typography>
           </div>
 

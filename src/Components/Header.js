@@ -7,7 +7,7 @@ import "../styleSheets/header.css"
 
 function Header() {
     const userName = JSON.parse(localStorage.getItem("userData"))?.name;
-    const userID = JSON.parse(localStorage.getItem("userData"))?._id;
+    const userID = JSON.parse(localStorage.getItem("userData"))?.mbrId;
     const img_url = JSON.parse(localStorage.getItem("userData"))?.photoURL;
    
     return (
@@ -24,7 +24,7 @@ function Header() {
                     <div className="d-flex gap-3  justify-self-end">
                         <div className='text-end'>
                             <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "20px", fontWeight: 400 }} >{ userName }</Typography>
-                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>User id : { userID}</Typography>
+                            <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>UID : {userID}</Typography>
                         </div>
                         <div className=''>
                             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
