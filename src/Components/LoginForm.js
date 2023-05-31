@@ -39,6 +39,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     min12th,
     minWorkExInMon,
     mingrad,
+    graduationStream
   } = userData;
 
   console.log(program);
@@ -77,6 +78,9 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     }
     if (mingrad !== undefined) {
       values.graduation_marks = mingrad;
+    }
+    if (graduationStream !== undefined) {
+      setProgram(graduationStream);
     }
   }, []);
 
@@ -168,7 +172,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
         min12th: values.class_12th_result,
         mingrad: values.graduation_marks,
         category: values.category,
-        graduationStream: program === "btech" ? "eng" : "non-eng",
+        graduationStream: program,
         minWorkExInMon: Number(values.work_experience),
         gender: values.gender,
         minPercentile: percentile,

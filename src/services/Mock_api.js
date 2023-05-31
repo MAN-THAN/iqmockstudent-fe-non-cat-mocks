@@ -83,7 +83,7 @@ export const getPredictCollege = async (uid, payload) => {
   return res;
 };
 
-// api for verification (MBR)
+// api for verification (MBR Side)
 
 export const getVerified = async (email, otp) => {
   try {

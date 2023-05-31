@@ -185,48 +185,93 @@ export default function GoalTracker() {
               <Box
                 component="div"
                 sx={{
-                  width: 427,
+                  width: 460,
                   height: 170,
                   borderRadius: "25px",
                   background: "white",
                   zIndex: 99,
                   p: 1,
+                  overflowX : "hidden"
                 }}
               >
                 <DetailCards
                   logoPath={"/goalSchool.png"}
                   cardContent={
                     <TableContainer>
-                      <Table sx={{ border: "none", borderCollapse: "collapse" }} aria-label="simple table">
+                      <Table sx={{ border: "none" }} aria-label="simple table">
                         <TableHead>
-                          {/* <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
-                            <TableCell sx={cellStyle} align="left">
-                              1
+                          <TableRow
+                            sx={{
+                              fontWeight: 900,
+                              lineHeight: "unset",
+                            }}
+                          >
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 16.5,
+                              }}
+                              align="left"
+                            >
+                              <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                                {" "}
+                                <Typography
+                                  sx={{
+                                    fontWeight: "bold",
+                                    fontSize: 15,
+                                    color: "#676767",
+                                  }}
+                                >
+                                  Ranking
+                                </Typography>
+                                <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                              </Box>
+                              {/* <Box sx={{ width: "1.7em" }}></Box> */}
                             </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Indore
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 15,
+                                color: "#676767",
+                              }}
+                              align="left"
+                            >
+                              Name
                             </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Rokiee
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              FMS
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 15,
+                                color: "#676767",
+                              }}
+                              align="left"
+                            >
+                              Avg. Package
                             </TableCell>
                           </TableRow>
-                          <TableRow sx={{ fontWeight: "bold", lineHeight: "unset" }}>
-                            <TableCell sx={cellStyle} align="left">
-                              1
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Indore
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              IIM Rokiee
-                            </TableCell>
-                            <TableCell sx={cellStyle} align="left">
-                              FMS
-                            </TableCell>
-                          </TableRow> */}
+
+                          {bschool &&
+                            bschool.map((item, ind) => {
+                              return (
+                                <TableRow
+                                  key={ind}
+                                  sx={{
+                                    lineHeight: "unset",
+                                    borderBottom: "1px solid #E1E1E1",
+                                  }}
+                                >
+                                  <TableCell sx={{ ...cellStyle, paddingRight: 5, fontWeight: 600, paddingTop: "0 !important" }} align="left">
+                                    {ind + 1}
+                                  </TableCell>
+                                  <TableCell sx={{ cellStyle, fontWeight: 600, width: "40% !important" }} align="left">
+                                    {item.name}
+                                  </TableCell>
+                                  <TableCell sx={{ ...cellStyle, paddingTop: "0 !important" }} align="left">
+                                    {item.avgSalary + " LPA" || "tbd"}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
                         </TableHead>
                       </Table>
                     </TableContainer>

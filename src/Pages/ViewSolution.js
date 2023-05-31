@@ -52,6 +52,7 @@ export default function ViewSolution() {
   const { state } = useLocation();
   const [defVal, setDefVal] = useState("varc");
   const [isVideo, setVideo] = useState();
+  const ref = useRef(null);
 
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
 
@@ -80,11 +81,12 @@ export default function ViewSolution() {
     },
   };
 
-   const showToastMessage = () => {
-     toast.error("Some error occurred! Please reload the page.", {
+   const showToastMessage = (msg) => {
+     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
        position: toast.POSITION.TOP_CENTER,
      });
-     return;
+     return (ref.current.style.display = "none");
+;
    };
   console.log(data);
   console.log(open);
@@ -179,8 +181,8 @@ export default function ViewSolution() {
         }
       } catch (err) {
          setLoading(false);
-        console.log(err);
-        showToastMessage();
+        console.log(err?.response?.data?.msg);
+        showToastMessage(err?.response?.data?.msg);
       }
     };
     if (state === null) {
@@ -375,7 +377,7 @@ export default function ViewSolution() {
   return (
     <>
       <ToastContainer />
-      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
+      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }} ref={ ref }>
         <MenuDrawer />
         <Box component="main" sx={{ ml: "65px", height: "100%" }}>
           <Backdrop
