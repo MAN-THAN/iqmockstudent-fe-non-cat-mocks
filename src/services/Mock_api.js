@@ -85,12 +85,12 @@ export const getPredictCollege = async (uid, payload) => {
 
 // api for verification (MBR Side)
 
-export const getVerified = async (email, otp) => {
+export const getVerified = async (email, otp, mockId) => {
   try {
     const res = request({
       url: `/api/student/v1/verify/user`,
       type: "POST",
-      data: { email: email, otp: otp },
+      data: { email: email, otp: otp, mockId : mockId },
       headers: { "Content-Type": "application/json" },
     });
     return res;

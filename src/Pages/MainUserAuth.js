@@ -13,12 +13,11 @@ const MainUserAuth = () => {
   const temp = { email: "john@example.com", otp: "49858", setId: "xyx", mockId: "6430e9e837185e086ad69368" };
 
   useEffect(() => {
-     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
-     console.log(isMobileOrTablet);
+    const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
+    console.log(isMobileOrTablet);
     if (isMobileOrTablet) {
       navigate("/mobileErrorPage");
-    }
-    else {
+    } else {
       // userAuthCheck();
       startVerification();
     }
@@ -28,23 +27,40 @@ const MainUserAuth = () => {
   const startVerification = async () => {
     console.log("verifying");
     try {
-      const response = await getVerified(email, otp);
+      const response = await getVerified(email, otp, mockId);
       console.log(response);
       if (response?.status == 200) {
-          localStorage.setItem("auth_token", response?.data?.accessToken);
-           localStorage.setItem("userData", JSON.stringify(response?.data?.data));
-        navigate(`/onboarding`, {
-          state: {
-            mockId: mockId,
-            setId: setId
-          },
-        });
+        localStorage.setItem("auth_token", response?.data?.accessToken);
+        localStorage.setItem("userData", JSON.stringify(response?.data?.data));
+        const arr_length = response?.data?.attemptList?.length;
+        if (arr_length == 0) {
+          console.log("New user");
+          navigate(`/onboarding`, {
+            state: {
+              mockId: mockId,
+              setId: setId,
+            },
+          });
+        } else {
+          console.log("already attempted");
+          showToastMessageForAnalysis();
+          const Last_attempt_id = response?.data.attemptList[0];
+          setTimeout(() => { 
+            navigate(`/analysis/${mockId}/${Last_attempt_id}/overall`);
+          }, 4000)
+        }
       }
     } catch (err) {
-        showToastMessage();
+      showToastMessage();
       console.log(err);
     }
   };
+   const showToastMessageForAnalysis = () => {
+     toast.info("You have already attempted this mock, redirecting to your Analysis", {
+       position: toast.POSITION.TOP_CENTER,
+     });
+     return null;
+   };
   const showToastMessage = () => {
     toast.error("Some error occurred! Please reload the page.", {
       position: toast.POSITION.TOP_CENTER,
