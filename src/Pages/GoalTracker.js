@@ -146,8 +146,10 @@ export default function GoalTracker() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Header start  */}
-        <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
+        {/* Header */}
+        <Box component="header">
+          <HeaderNew />
+        </Box>
 
         {/* Header end  */}
         {/* main Section start */}
