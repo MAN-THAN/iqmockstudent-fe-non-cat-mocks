@@ -9,6 +9,7 @@ import { MyButton } from "./../styleSheets/Style";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import Fade from "@mui/material/Fade";
+import { useRef, useEffect } from "react";
 
 import Latex from "react-latex-next";
 import "katex/dist/katex.min.css";
@@ -35,7 +36,7 @@ export default function QuestionPaper({ question_paper }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+ 
   return (
     <span>
       <MyButton
@@ -51,37 +52,24 @@ export default function QuestionPaper({ question_paper }) {
       >
         Question Paper
       </MyButton>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Fade in={open}>
           <Box sx={style}>
             <div className="d-flex text-center">
-              <SubHeading className="m-0 ps-1 fw-bold text-center">
-                Question Paper{" "}
-              </SubHeading>
+              <SubHeading className="m-0 ps-1 fw-bold text-center">Question Paper </SubHeading>
               {/* <RxCross1 role="button" onClick={handleClose} /> */}
             </div>
             <br />
             {question_paper?.map((e, index) => {
               return (
                 <div className="container p-2 " key={index}>
-                  <Typography variant="paragraph fw-bold">
-                    Question : {index + 1}
-                  </Typography>
+                  <Typography variant="paragraph fw-bold">Question : {index + 1}</Typography>
                   <br />
 
                   <Latex>{e.paragraph || ""}</Latex>
 
                   <br />
-                  <Typography variant="paragraph fw-bold">
-                    {Boolean(e.question) === true && (
-                      <Latex>{e.question}</Latex>
-                    )}
-                  </Typography>
+                  <Typography variant="paragraph fw-bold">{Boolean(e.question) === true && <Latex>{e.question}</Latex>}</Typography>
 
                   <ul
                     style={{
