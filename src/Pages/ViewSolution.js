@@ -31,7 +31,6 @@ import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 
-
 export default function ViewSolution() {
   const navigate = useNavigate();
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
@@ -81,13 +80,12 @@ export default function ViewSolution() {
     },
   };
 
-   const showToastMessage = (msg) => {
-     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-       position: toast.POSITION.TOP_CENTER,
-     });
-     return (ref.current.style.display = "none");
-;
-   };
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return (ref.current.style.display = "none");
+  };
   console.log(data);
   console.log(open);
   console.log(index);
@@ -180,7 +178,7 @@ export default function ViewSolution() {
           console.log("error", res);
         }
       } catch (err) {
-         setLoading(false);
+        setLoading(false);
         console.log(err?.response?.data?.msg);
         showToastMessage(err?.response?.data?.msg);
       }
@@ -374,10 +372,11 @@ export default function ViewSolution() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [viewSol]);
+
   return (
     <>
       <ToastContainer />
-      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }} ref={ ref }>
+      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }} ref={ref}>
         <MenuDrawer />
         <Box component="main" sx={{ ml: "65px", height: "100%" }}>
           <Backdrop
