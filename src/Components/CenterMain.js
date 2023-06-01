@@ -29,8 +29,8 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
-  console.log("Question status",questionStatus)
- 
+  console.log("Question status", questionStatus);
+
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
@@ -288,21 +288,37 @@ function CenterMain() {
     setInputVal("");
   };
 
-  // options setting after fetching their html content
-  // const [options, setOptions] = useState([]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const optionsArr = questionStatus?.[selectedQuestionIndex].options;
-  //     console.log(optionsArr);
-  //     const promises = optionsArr?.map((option_url) => fetch(option_url).then((res) => res.text())); // array of promises
-  //     const results = await Promise.all(promises); // waiting for all promises to resolve
-  //     console.log(results);
-  //     setOptions(results); // update state with the resolved data
-  //   };
-  //   if (questionStatus?.length) {
-  //     fetchData();
-  //   }
-  // }, [selectedQuestionIndex, questionStatus]);
+  //Restricting User from text selection and Copying
+
+  useEffect(() => {
+    const disableRightClick = (e) => {
+      e.preventDefault();
+    };
+    const disableTextSelection = (event) => {
+      if (window.getSelection) {
+        const selection = window.getSelection();
+        if (selection.toString().length !== 0) {
+          event.preventDefault();
+        }
+      }
+    };
+    const disableKeys = (event) => {
+      const disabledKeys = ["KeyA", "KeyC", "KeyX", "KeyF", "KeyS", "KeyD", "KeyI"]; // Array of keys to disable
+
+      if (disabledKeys.includes(event.code)) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener("contextmenu", disableRightClick);
+    // document.addEventListener("selectstart", disableTextSelection);
+    document.addEventListener("keydown", disableKeys);
+
+    return () => {
+      document.removeEventListener("contextmenu", disableRightClick);
+      // document.removeEventListener("selectstart", disableTextSelection);
+      document.addEventListener("keydown", disableKeys);
+    };
+  });
 
   return loading ? (
     <div
@@ -388,7 +404,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer initMinute={40} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -455,41 +471,40 @@ function CenterMain() {
                       {questionStatus[selectedQuestionIndex]?.type === 0 || questionStatus[selectedQuestionIndex]?.type === null ? (
                         <>
                           <TextField
-                              id="outlined-basic"
-                              label="Enter Answer"
-                              variant="outlined"
-                              value={inputVal !== "" ? inputVal : ""}
-                              // onChange={(e) => setInputVal(e.target.value)}
-                              // inputRef={(input) => input && input.focus()}
-                              sx={{
-                                my: 3,
+                            id="outlined-basic"
+                            label="Enter Answer"
+                            variant="outlined"
+                            value={inputVal !== "" ? inputVal : ""}
+                            // onChange={(e) => setInputVal(e.target.value)}
+                            // inputRef={(input) => input && input.focus()}
+                            sx={{
+                              my: 3,
+                              color: "black",
+                              width: "400px",
+                              "& label.Mui-focused": {
                                 color: "black",
-                                width: "400px",
-                                "& label.Mui-focused": {
-                                  color: "black",
+                              },
+                              "& .MuiInput-underline:after": {
+                                borderBottomColor: "var(--orange)",
+                              },
+                              "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                  borderColor: "var(--orange)",
                                 },
-                                "& .MuiInput-underline:after": {
-                                  borderBottomColor: "var(--orange)",
+                                "&:hover fieldset": {
+                                  borderColor: "var(--orange)",
                                 },
-                                "& .MuiOutlinedInput-root": {
-                                  "& fieldset": {
-                                    borderColor: "var(--orange)",
-                                  },
-                                  "&:hover fieldset": {
-                                    borderColor: "var(--orange)",
-                                  },
-                                  "&.Mui-focused fieldset": {
-                                    borderColor: "var(--orange)",
-                                  },
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "var(--orange)",
                                 },
-                              }}
-                              autoComplete="off"
-                              
+                              },
+                            }}
+                            autoComplete="off"
                           />
                           <div className="keys p-3 rounded shadow">
                             <div className="d-flex flex-wrap justify-content-center gap-2 fs-4 m-2 ">
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -501,7 +516,7 @@ function CenterMain() {
                                 1
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -513,7 +528,7 @@ function CenterMain() {
                                 2
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -525,7 +540,7 @@ function CenterMain() {
                                 3
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -537,7 +552,7 @@ function CenterMain() {
                                 4
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -548,10 +563,9 @@ function CenterMain() {
                               >
                                 5
                               </BootstrapButton>
-                        
-                            
+
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -563,7 +577,7 @@ function CenterMain() {
                                 6
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -575,7 +589,7 @@ function CenterMain() {
                                 7
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -587,7 +601,7 @@ function CenterMain() {
                                 8
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -599,7 +613,7 @@ function CenterMain() {
                                 9
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -610,10 +624,9 @@ function CenterMain() {
                               >
                                 0
                               </BootstrapButton>
-                              
-                            
+
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -625,7 +638,7 @@ function CenterMain() {
                                 .
                               </BootstrapButton>
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "auto",
                                   p: 1,
@@ -638,7 +651,7 @@ function CenterMain() {
                               </BootstrapButton>
 
                               <BootstrapButton
-                               className="flex-item"
+                                className="flex-item"
                                 sx={{
                                   width: "151px",
                                   p: 1,
@@ -671,7 +684,7 @@ function CenterMain() {
                                   value={index}
                                   control={<Radio />}
                                   label={
-                                    <div style={{paddingTop : "1em"}}>
+                                    <div style={{ paddingTop: "1em" }}>
                                       <small>
                                         <Latex>{option}</Latex>
                                       </small>
