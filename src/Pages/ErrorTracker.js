@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { Box, Typography } from "@mui/material";
@@ -22,6 +22,8 @@ import {
   CorrectDetailing,
   SkippedDetailing,
 } from "../services/DataFiles";
+import { ToastContainer, toast } from "react-toastify";
+
 
 const disableStyle = {
   ":disabled": {
@@ -82,18 +84,25 @@ function ErrorTracker() {
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
   const params = useParams();
   const navigate = useNavigate();
+  const ref = useRef(null);
 
   //  calling api
   useEffect(() => {
     const getData = async () => {
-      const res = await fetchErrorTracker(attemptId);
-      setLoading(true);
-      if (res?.status === 200) {
-        setData(res.data);
+      try {
+        const res = await fetchErrorTracker(attemptId);
+        setLoading(true);
+        if (res?.status === 200) {
+          setData(res.data);
+          setLoading(false);
+        } else {
+          console.log("Error fetching data: ", res);
+          setLoading(false);
+        }
+      } catch (err) { 
+        console.log(err);
         setLoading(false);
-      } else {
-        console.log("Error fetching data: ", res);
-        setLoading(false);
+        showToastMessage(err?.response?.data?.msg);
       }
     };
     getData();
@@ -248,305 +257,291 @@ function ErrorTracker() {
   console.log("Sections", section);
   console.log(graphData, "graohData");
 
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return (ref.current.style.display = "none");
+  };
+
   return (
-    <Box component="main" sx={{ height: "100vh" }}>
-      <MenuDrawer />
+    <>
+      <ToastContainer />
+      <Box component="main" sx={{ height: "100vh" }}>
+        <MenuDrawer />
 
-      <Box
-        sx={{
-          p: 2,
-          position: "absolute",
-          left: "70px",
-          width: "calc(100% - 70px)",
-          height : "100%"
-        }}
-      >
-        {/* Header */}
-        <Box component="header">
-          <HeaderNew />
-        </Box>
+        <Box
+          sx={{
+            p: 2,
+            position: "absolute",
+            left: "70px",
+            width: "calc(100% - 70px)",
+            height: "100%",
+          }}
+          ref={ref}
+        >
+          {/* Header */}
+          <Box component="header">
+            <HeaderNew />
+          </Box>
 
-        {isLoading ? (
-          <div
-            className="d-flex align-items-center flex-column gap-2 justify-content-center"
-            style={{ width: "100%", height: "80%" }}
-          >
-            <div class="loading-container">
-              <div class="loading"></div>
-              <div id="loading-text">Loading...</div>
+          {isLoading ? (
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+              <div class="loading-container">
+                <div class="loading"></div>
+                <div id="loading-text">Loading...</div>
+              </div>
             </div>
-          </div>
-        ) : (
-          <>
-            <Box
-              component="div"
-              sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}
-            >
-              {" "}
-              <MultipleSelect options={filter1} setType={setCorrection} />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  flexBasis: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="d-flex gap-3">
-                  <MultipleSelect options={filter2} setType={setSection} />
-                  <MultipleSelect options={topicList} setType={setTopic} />
-                </div>
-                <div>
-                  <MultipleSelect options={priorities} setType={setPriorty} />
-                </div>
-              </Box>
-            </Box>
-
-            <Typography
-              sx={{
-                ...typographyStyles.mainHeading,
-                pt: 2,
-              }}
-            >
-              {" "}
-              Error Tracker
-            </Typography>
-
-            <Box
-              component="main"
-              sx={{ display: "flex", width: "100%", height: "76Vh" }}
-            >
-              <Backdrop
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer - 1,
-                  color: "#fff",
-                }}
-                open={menuBarOpen}
-                onClick={() => setMenuBarOpen(false)}
-              />
-              {/* Graph side div start */}
-              <Box
-                sx={{
-                  backgroundColor: "",
-                  flexBasis: "40%",
-                  borderRight: "2px solid #928F8F ",
-                  justifyContent: " ",
-                }}
-              >
+          ) : (
+            <>
+              <Box component="div" sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}>
+                {" "}
+                <MultipleSelect options={filter1} setType={setCorrection} />
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "flex-start",
-                    width: "35rem",
+                    flexDirection: "row",
+                    flexBasis: "100%",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <BarGraph
-                    Data={graphData && graphData[0]}
-                    width={"97%"}
-                    legend={false}
-                  />
-                </Box>
-                <Box sx={{ mt: 2 }}>
-                  {<GraphComp colorDetailing={colorDetailing} />}
+                  <div className="d-flex gap-3">
+                    <MultipleSelect options={filter2} setType={setSection} />
+                    <MultipleSelect options={topicList} setType={setTopic} />
+                  </div>
+                  <div>
+                    <MultipleSelect options={priorities} setType={setPriorty} />
+                  </div>
                 </Box>
               </Box>
-              {/* Graph side div end */}
 
-              {/*Question side box start*/}
-              <Box
+              <Typography
                 sx={{
-                  flexBasis: "60%",
-                  px: 3,
-                  overflow: "scroll",
-                  height: "100%",
+                  ...typographyStyles.mainHeading,
+                  pt: 2,
                 }}
               >
-                {/* Color selection div */}
-                <div className="d-flex justify-content-between align-items-center">
-                  <Typography
+                {" "}
+                Error Tracker
+              </Typography>
+
+              <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
+                <Backdrop
+                  sx={{
+                    zIndex: (theme) => theme.zIndex.drawer - 1,
+                    color: "#fff",
+                  }}
+                  open={menuBarOpen}
+                  onClick={() => setMenuBarOpen(false)}
+                />
+                {/* Graph side div start */}
+                <Box
+                  sx={{
+                    backgroundColor: "",
+                    flexBasis: "40%",
+                    borderRight: "2px solid #928F8F ",
+                    justifyContent: " ",
+                  }}
+                >
+                  <Box
                     sx={{
-                      ...typographyStyles.subHeading,
-                      alignSelf: "flex-end",
-                      fontWeight: "600",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      width: "35rem",
                     }}
                   >
-                    Question Summary
-                  </Typography>
-                  <div>
+                    <BarGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
+                  </Box>
+                  <Box sx={{ mt: 2 }}>{<GraphComp colorDetailing={colorDetailing} />}</Box>
+                </Box>
+                {/* Graph side div end */}
+
+                {/*Question side box start*/}
+                <Box
+                  sx={{
+                    flexBasis: "60%",
+                    px: 3,
+                    overflow: "scroll",
+                    height: "100%",
+                  }}
+                >
+                  {/* Color selection div */}
+                  <div className="d-flex justify-content-between align-items-center">
                     <Typography
                       sx={{
-                        lineHeight: 3,
-                        fontSize: 11,
-                        fontWeight: 400,
-                        fontFamily: "var(--font-inter)",
+                        ...typographyStyles.subHeading,
+                        alignSelf: "flex-end",
+                        fontWeight: "600",
                       }}
                     >
-                      Question Selector
+                      Question Summary
                     </Typography>
+                    <div>
+                      <Typography
+                        sx={{
+                          lineHeight: 3,
+                          fontSize: 11,
+                          fontWeight: 400,
+                          fontFamily: "var(--font-inter)",
+                        }}
+                      >
+                        Question Selector
+                      </Typography>
 
-                    <div className="d-flex gap-3">
-                      {colorDetailing &&
-                        colorDetailing.map((item, ind) => {
-                          return (
-                            <Tooltip title={item.value} placement="top" arrow>
-                              <div
-                                key={ind}
-                                onClick={() => {
-                                  // section !== "allsections" && setArr(data[section]);
-                                  handleColorDetail(item.value);
-                                }}
-                                style={{
-                                  background: item.color,
-                                  width: colorDetail === item.value ? 29 : 26,
-                                  height: colorDetail === item.value ? 29 : 26,
-                                  borderRadius: "50%",
-                                  cursor: "pointer",
-                                  transition: "all 0.2s ease-in-out",
-                                  boxShadow:
-                                    colorDetail === item.value
-                                      ? "0 0 10px rgba(0, 0, 0, 0.5)"
-                                      : "none",
-                                  border:
-                                    colorDetail === item.value
-                                      ? "0px solid #333"
-                                      : "none",
-                                }}
-                              />
-                            </Tooltip>
-                          );
-                        })}
+                      <div className="d-flex gap-3">
+                        {colorDetailing &&
+                          colorDetailing.map((item, ind) => {
+                            return (
+                              <Tooltip title={item.value} placement="top" arrow>
+                                <div
+                                  key={ind}
+                                  onClick={() => {
+                                    // section !== "allsections" && setArr(data[section]);
+                                    handleColorDetail(item.value);
+                                  }}
+                                  style={{
+                                    background: item.color,
+                                    width: colorDetail === item.value ? 29 : 26,
+                                    height: colorDetail === item.value ? 29 : 26,
+                                    borderRadius: "50%",
+                                    cursor: "pointer",
+                                    transition: "all 0.2s ease-in-out",
+                                    boxShadow: colorDetail === item.value ? "0 0 10px rgba(0, 0, 0, 0.5)" : "none",
+                                    border: colorDetail === item.value ? "0px solid #333" : "none",
+                                  }}
+                                />
+                              </Tooltip>
+                            );
+                          })}
+                      </div>
                     </div>
                   </div>
-                </div>
-                {show
-                  ? show.map((item, index) => {
-                      const colorObj = colorDetailing.find(
-                        (detail) => item.error === detail.value
-                      );
+                  {show
+                    ? show.map((item, index) => {
+                        const colorObj = colorDetailing.find((detail) => item.error === detail.value);
 
-                      const borderColor = colorObj
-                        ? colorObj.color
-                        : "transparent";
+                        const borderColor = colorObj ? colorObj.color : "transparent";
 
-                      return (
-                        <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
-                          <Card
-                            sx={{
-                              maxWidth: " 100% ",
-                              background: "#eaeaea",
-                              p: 2,
-                              boxShadow: "none",
-                              color: "black",
-                              borderLeft: "8px solid",
-                              borderRadius: "5px 10px 10px 5px",
-                              borderColor: borderColor,
-                              width: "100%",
-                            }}
-                          >
-                            <CardContent sx={{ display: "flex", gap: 2 }}>
-                              <Typography
-                                sx={{
-                                  fontFamily: "var(--inter)",
-                                  fontSize: "19px",
-                                  fontWeight: 800,
-                                  lineHeight: "29px",
-                                  textAlign: "left",
-                                }}
-                              >
-                                Q{index + 1}.
-                              </Typography>
-                              <div>
-                                <Latex>{item.question}</Latex>
-                              </div>
-                            </CardContent>
-                            <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  columnGap: 2,
-                                  flexWrap: "wrap",
-                                  rowGap: 2,
-                                }}
-                              >
-                                <Button
-                                  size="medium"
-                                  disabled={true}
-                                  variant="contained"
+                        return (
+                          <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
+                            <Card
+                              sx={{
+                                maxWidth: " 100% ",
+                                background: "#eaeaea",
+                                p: 2,
+                                boxShadow: "none",
+                                color: "black",
+                                borderLeft: "8px solid",
+                                borderRadius: "5px 10px 10px 5px",
+                                borderColor: borderColor,
+                                width: "100%",
+                              }}
+                            >
+                              <CardContent sx={{ display: "flex", gap: 2 }}>
+                                <Typography
                                   sx={{
-                                    ...disableStyle,
-                                    ":disabled": {
-                                      color: "#000000",
-                                    },
-                                    "& > span": {
-                                      color:
-                                        item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
-                                    },
+                                    fontFamily: "var(--inter)",
+                                    fontSize: "19px",
+                                    fontWeight: 800,
+                                    lineHeight: "29px",
+                                    textAlign: "left",
                                   }}
                                 >
-                                  Difficulty:<span>{item.difficulty}</span>
-                                </Button>
-                                <Button
-                                  size="medium"
-                                  disabled={true}
-                                  variant="contained"
+                                  Q{index + 1}.
+                                </Typography>
+                                <div>
+                                  <Latex>{item.question}</Latex>
+                                </div>
+                              </CardContent>
+                              <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
+                                <Box
                                   sx={{
-                                    ...disableStyle,
-                                    ":disabled": {
-                                      color: "#636363",
-                                    },
-                                    "& > span": {
-                                      color: "#000000 !important",
-                                    },
+                                    display: "flex",
+                                    columnGap: 2,
+                                    flexWrap: "wrap",
+                                    rowGap: 2,
                                   }}
                                 >
-                                  Time :<span>{item.duration}</span>
-                                </Button>
-                                <Button
-                                  disabled={true}
-                                  sx={{
-                                    ...disableStyle,
-                                    ":disabled": {
-                                      color: "#636363",
-                                    },
-                                    "& > span": {
-                                      color: "black !important",
-                                    },
-                                  }}
-                                  variant="contained"
-                                >
-                                  Avg Time : <span>{item.averageDuration}</span>
-                                </Button>
-                              </Box>
-                              <div>
-                                <Button
-                                  size="medium"
-                                  endIcon={<IoIosArrowForward />}
-                                  sx={{ background: "#3A36DB", float: "end" }}
-                                  variant="contained"
-                                  onClick={() =>
-                                    navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
-                                      state: {
-                                        question_id: item.question_id,
+                                  <Button
+                                    size="medium"
+                                    disabled={true}
+                                    variant="contained"
+                                    sx={{
+                                      ...disableStyle,
+                                      ":disabled": {
+                                        color: "#000000",
                                       },
-                                    })
-                                  }
-                                >
-                                  Solution
-                                </Button>
-                              </div>
-                            </CardActions>
-                          </Card>
-                        </Box>
-                      );
-                    })
-                  : "<h1>No Questions</h1>"}
+                                      "& > span": {
+                                        color:
+                                          item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
+                                      },
+                                    }}
+                                  >
+                                    Difficulty:<span>{item.difficulty}</span>
+                                  </Button>
+                                  <Button
+                                    size="medium"
+                                    disabled={true}
+                                    variant="contained"
+                                    sx={{
+                                      ...disableStyle,
+                                      ":disabled": {
+                                        color: "#636363",
+                                      },
+                                      "& > span": {
+                                        color: "#000000 !important",
+                                      },
+                                    }}
+                                  >
+                                    Time :<span>{item.duration}</span>
+                                  </Button>
+                                  <Button
+                                    disabled={true}
+                                    sx={{
+                                      ...disableStyle,
+                                      ":disabled": {
+                                        color: "#636363",
+                                      },
+                                      "& > span": {
+                                        color: "black !important",
+                                      },
+                                    }}
+                                    variant="contained"
+                                  >
+                                    Avg Time : <span>{item.averageDuration}</span>
+                                  </Button>
+                                </Box>
+                                <div>
+                                  <Button
+                                    size="medium"
+                                    endIcon={<IoIosArrowForward />}
+                                    sx={{ background: "#3A36DB", float: "end" }}
+                                    variant="contained"
+                                    onClick={() =>
+                                      navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
+                                        state: {
+                                          question_id: item.question_id,
+                                        },
+                                      })
+                                    }
+                                  >
+                                    Solution
+                                  </Button>
+                                </div>
+                              </CardActions>
+                            </Card>
+                          </Box>
+                        );
+                      })
+                    : "<h1>No Questions</h1>"}
+                </Box>
+                {/*Question side box end*/}
               </Box>
-              {/*Question side box end*/}
-            </Box>
-          </>
-        )}
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

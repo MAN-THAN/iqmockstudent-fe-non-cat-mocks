@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import { useAuth } from "../services/Context";
@@ -12,6 +12,8 @@ import { LogoCard } from "../Common-comp/Card";
 import { getMockComparison } from "../services/Analysis_api";
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+
 import { PuffLoader } from "react-spinners";
 
 const ITEM_HEIGHT = 28;
@@ -28,21 +30,12 @@ const MenuProps = {
 
 function getStyles(name, MockName, theme) {
   return {
-    fontWeight:
-      MockName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+    fontWeight: MockName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
   };
 }
 
 function MockComparison() {
-  const Subjects = [
-    { name: "Varc" },
-    { name: "Quants" },
-    { name: "LRdi" },
-    { name: "MBA" },
-    { name: "MIA" },
-  ];
+  const Subjects = [{ name: "Varc" }, { name: "Quants" }, { name: "LRdi" }, { name: "MBA" }, { name: "MIA" }];
 
   const OuterCardStyle = {
     width: 246,
@@ -67,6 +60,7 @@ function MockComparison() {
   };
 
   const [MockName, setMockName] = React.useState([]);
+  const ref = useRef(null);
 
   const handleChange = (event) => {
     const {
@@ -78,8 +72,7 @@ function MockComparison() {
     );
   };
 
-  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } =
-    useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
 
   useEffect(() => {
     getData();
@@ -92,186 +85,178 @@ function MockComparison() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await getMockComparison(mockId, attemptId);
-    if (res?.status == 200) {
-      console.log(res.data);
-      setResult(res.data?.result);
-      setTopper(res.data?.topperResult);
-      setPrevMocks(res.data?.previousMocks);
-      setCompMock(res.data?.previousMocks[0]);
+    try {
+      const res = await getMockComparison(mockId, attemptId);
+      if (res?.status == 200) {
+        console.log(res.data);
+        setResult(res.data?.result);
+        setTopper(res.data?.topperResult);
+        setPrevMocks(res.data?.previousMocks);
+        setCompMock(res.data?.previousMocks[0]);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        console.log("error", res);
+      }
+    } catch (err) {
+      console.log(err);
       setLoading(false);
-    } else {
-      setLoading(false);
-      console.log("error", res);
+      showToastMessage(err?.response?.data?.msg);
     }
   };
   console.log(result, topper, prevMocks);
   console.log(compMock);
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return (ref.current.style.display = "none");
+  };
 
   return (
-    <Box component="main">
-      <MenuDrawer />
+    <>
+      <ToastContainer />{" "}
+      <Box component="main">
+        <MenuDrawer />
 
-      <Box
-        sx={{
-          position: "absolute",
-          left: "65px",
-          height: "100vh",
-          width: "calc(100% - 65px)",
-          p: 2,
-        }}
-      >
-        <Box component="header">
-          <HeaderNew />
-        </Box>
-
-        {isLoading ? (
-          <div
-            className="d-flex align-items-center flex-column gap-2 justify-content-center"
-            style={{ width: "100%", height: "80%" }}
-          >
-            <div class="loading-container">
-              <div class="loading"></div>
-              <div id="loading-text">Loading...</div>
-            </div>
-            <Typography sx={{fontWeight : 500}}>It may take some longer, Please be patient!</Typography>
-          </div>
-        ) : (
-          <Box
-            component="section"
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-around",
-              mt: 3,
-            }}
-          >
-            <Backdrop
-              sx={{
-                zIndex: (theme) => theme.zIndex.drawer - 1,
-                color: "#fff",
-              }}
-              open={menuBarOpen}
-              onClick={() => setMenuBarOpen(false)}
-            />
-
-            <Box className="comparison-Section p-2">
-              <Typography
-                sx={{
-                  ...typographyStyles.mainHeading,
-                  pt: 2,
-                }}
-              >
-                {" "}
-                Mock <br /> Comparison
-              </Typography>
-
-              <ul
-                className="list-unstyled "
-                style={{
-                  lineHeight: "4.4em",
-                  ...typographyStyles.subHeading,
-                  fontSize: "15px",
-                  marginTop: "5px",
-                }}
-              >
-                <li>Score</li>
-                <li>Number of Questions Attempted</li>
-                <li>Number of Correct Questions Attempted</li>
-                <li>Number of Incorrect Questions Attempted</li>
-                <li>Number of Skipped Questions Attempted</li>
-                <li>Average time spent per question</li>
-              </ul>
-            </Box>
-
-            <Box className="Cards d-flex gap-5 align-items-center mt-4 ">
-              <OuterCard
-                data={result}
-                miniCard={
-                  <LogoCard
-                    icon={"/click 1.svg"}
-                    infoIcon={"/circle-info-solid.svg"}
-                    cardTitle={
-                      <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {result?.percentile}{" "}
-                          <span style={{ fontSize: "15px" }}>%ile</span>
-                        </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
-                          {result?.title}
-                        </Typography>
-                      </>
-                    }
-                    style={{ ...innerCardStyle }}
-                  />
-                }
-                style={OuterCardStyle}
-              />
-              <OuterCard
-                data={compMock}
-                icon={"/click 1.svg"}
-                miniCard={
-                  <LogoCard
-                    cardTitle={
-                      <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {compMock?.percentile}
-                          <span style={{ fontSize: "15px" }}>%ile</span>
-                        </Typography>
-                        <Typography sx={{ color: "#809FB8", fontSize: 15 }}>
-                          {compMock?.title}
-                        </Typography>
-                      </>
-                    }
-                    style={{ ...innerCardStyle }}
-                    icon={"/click 1.svg"}
-                    infoIcon={"/circle-info-solid.svg"}
-                    select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
-                  />
-                }
-                style={OuterCardStyle}
-              />
-              <OuterCard
-                data={topper}
-                miniCard={
-                  <LogoCard
-                    cardTitle={
-                      <>
-                        <Typography
-                          variant="h4"
-                          sx={{ fontSize: 17 }}
-                          color={"black"}
-                        >
-                          {topper?.percentile}{" "}
-                          <span style={{ fontSize: "15px" }}>%ile</span>
-                        </Typography>
-                        <Typography sx={{ color: "", fontSize: 15 }}>
-                          {" "}
-                          {topper?.title}
-                        </Typography>
-                        <Typography sx={{ fontSize: "12px", fontWeight: 700 }}> {"Topper Analysis"}</Typography>
-                      </>
-                    }
-                    style={{ ...innerCardStyle, background: "#FFECB9" }}
-                    icon={"/top-rated.png"}
-                    infoIcon={"/circle-info-solid.svg"}
-                  />
-                }
-                style={{ ...OuterCardStyle, background: "#FFC107" }}
-              />
-            </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            left: "65px",
+            height: "100vh",
+            width: "calc(100% - 65px)",
+            p: 2,
+          }}
+        >
+          <Box component="header">
+            <HeaderNew />
           </Box>
-        )}
+
+          {isLoading ? (
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+              <div class="loading-container">
+                <div class="loading"></div>
+                <div id="loading-text">Loading...</div>
+              </div>
+              <Typography sx={{ fontWeight: 500 }}>It may take some longer, Please be patient!</Typography>
+            </div>
+          ) : (
+            <Box
+              component="section"
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-around",
+                mt: 3,
+              }}
+              ref={ref}
+            >
+              <Backdrop
+                sx={{
+                  zIndex: (theme) => theme.zIndex.drawer - 1,
+                  color: "#fff",
+                }}
+                open={menuBarOpen}
+                onClick={() => setMenuBarOpen(false)}
+              />
+
+              <Box className="comparison-Section p-2">
+                <Typography
+                  sx={{
+                    ...typographyStyles.mainHeading,
+                    pt: 2,
+                  }}
+                >
+                  {" "}
+                  Mock <br /> Comparison
+                </Typography>
+
+                <ul
+                  className="list-unstyled "
+                  style={{
+                    lineHeight: "4.4em",
+                    ...typographyStyles.subHeading,
+                    fontSize: "15px",
+                    marginTop: "5px",
+                  }}
+                >
+                  <li>Score</li>
+                  <li>Number of Questions Attempted</li>
+                  <li>Number of Correct Questions Attempted</li>
+                  <li>Number of Incorrect Questions Attempted</li>
+                  <li>Number of Skipped Questions Attempted</li>
+                  <li>Average time spent per question</li>
+                </ul>
+              </Box>
+
+              <Box className="Cards d-flex gap-5 align-items-center mt-4 ">
+                <OuterCard
+                  data={result}
+                  miniCard={
+                    <LogoCard
+                      icon={"/click 1.svg"}
+                      infoIcon={"/circle-info-solid.svg"}
+                      cardTitle={
+                        <>
+                          <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                            {result?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                          </Typography>
+                          <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{result?.title}</Typography>
+                        </>
+                      }
+                      style={{ ...innerCardStyle }}
+                    />
+                  }
+                  style={OuterCardStyle}
+                />
+                <OuterCard
+                  data={compMock}
+                  icon={"/click 1.svg"}
+                  miniCard={
+                    <LogoCard
+                      cardTitle={
+                        <>
+                          <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                            {compMock?.percentile}
+                            <span style={{ fontSize: "15px" }}>%ile</span>
+                          </Typography>
+                          <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
+                        </>
+                      }
+                      style={{ ...innerCardStyle }}
+                      icon={"/click 1.svg"}
+                      infoIcon={"/circle-info-solid.svg"}
+                      select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
+                    />
+                  }
+                  style={OuterCardStyle}
+                />
+                <OuterCard
+                  data={topper}
+                  miniCard={
+                    <LogoCard
+                      cardTitle={
+                        <>
+                          <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
+                            {topper?.percentile} <span style={{ fontSize: "15px" }}>%ile</span>
+                          </Typography>
+                          <Typography sx={{ color: "", fontSize: 15 }}> {topper?.title}</Typography>
+                          <Typography sx={{ fontSize: "12px", fontWeight: 700 }}> {"Topper Analysis"}</Typography>
+                        </>
+                      }
+                      style={{ ...innerCardStyle, background: "#FFECB9" }}
+                      icon={"/top-rated.png"}
+                      infoIcon={"/circle-info-solid.svg"}
+                    />
+                  }
+                  style={{ ...OuterCardStyle, background: "#FFC107" }}
+                />
+              </Box>
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 
@@ -315,7 +300,7 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           id="demo-multiple-name"
           value={mockName}
           onChange={onSelect}
-          sx={{ height: "30px"}}
+          sx={{ height: "30px" }}
           MenuProps={MenuProps}
           displayEmpty={true}
         >
@@ -323,12 +308,7 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
             Select Mock
           </MenuItem>
           {options?.map((item, index) => (
-            <MenuItem
-              onClick={() => setCompMock(options[index])}
-              key={index}
-              value={item._id}
-              style={getStyles(item._id, mockName, theme)}
-            >
+            <MenuItem onClick={() => setCompMock(options[index])} key={index} value={item._id} style={getStyles(item._id, mockName, theme)}>
               {item.title}
             </MenuItem>
           ))}

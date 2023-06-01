@@ -94,25 +94,6 @@ export default function ViewSolution() {
   // console.log(open);
   console.log("show", show[index], index);
 
-  // getting data from local
-
-  // useEffect(() => {
-  //   const errTrackerV = JSON.parse(localStorage.getItem("errTrackerVA"));
-  //   const errTrackerL = JSON.parse(localStorage.getItem("errTrackerLR"));
-  //   const errTrackerQ = JSON.parse(localStorage.getItem("errTrackerQU"));
-  //   if (errTrackerV.length) {
-  //     console.log("dewwfewfw");
-  //     setTrackerVA(errTrackerV);
-  //   }
-  //   if (errTrackerL.length) {
-  //     setTrackerLR(errTrackerL);
-  //   }
-  //   if (errTrackerQ.length) {
-  //     setTrackerQU(errTrackerQ);
-  //   }
-  //   console.log(errTrackerL, errTrackerQ, errTrackerV);
-  // }, []);
-
   // getting a specific question om mounting
 
   useEffect(() => {
@@ -376,9 +357,9 @@ export default function ViewSolution() {
   return (
     <>
       <ToastContainer />
-      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }} ref={ref}>
+      <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
         <MenuDrawer />
-        <Box component="main" sx={{ ml: "65px", height: "100%" }}>
+        <Box component="main" sx={{ ml: "65px", height: "100%" }} ref={ref}>
           <Backdrop
             sx={{
               zIndex: (theme) => theme.zIndex.drawer - 1,
