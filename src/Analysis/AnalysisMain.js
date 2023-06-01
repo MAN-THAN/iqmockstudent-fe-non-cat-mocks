@@ -263,7 +263,7 @@ function AnalysisMain() {
                       >
                         Score vs Percentile
                       </ModifyButton>
-                      <ModifyButton
+                      {/* <ModifyButton
                         variant="outlined"
                         startIcon={
                           <img
@@ -272,7 +272,7 @@ function AnalysisMain() {
                             width={8}
                           />
                         }
-                        // onClick={handleDownloadPDF}
+                        onClick={handleDownloadPDF}
                         sx={{
                           p: 2,
                           height: "24px",
@@ -289,7 +289,7 @@ function AnalysisMain() {
                         }}
                       >
                         Download report
-                      </ModifyButton>
+                      </ModifyButton> */}
                       {/* <Link onClick={openDesktopView}>
                         Please Open In Desktop Version
                       </Link> */}
