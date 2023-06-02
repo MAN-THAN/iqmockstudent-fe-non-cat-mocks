@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { submitSection } from "../services/Mock_api";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -9,13 +9,13 @@ import { Typography } from "@mui/material";
 import { InfinitySpin } from "react-loader-spinner";
 import { Button } from "antd";
 
-const Timer = ({ initMinute, initSeconds, studentAnswersData }) => {
+const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) => {
   const navigate = useNavigate();
   const params = useParams();
   const [minutes, setMinutes] = useState(initMinute);
   const [seconds, setSeconds] = useState(initSeconds);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentSection, setCurrentSection] = useState(params.type);
+  const [currentSection, setCurrentSection] = useState(type);
   const [err, setErr] = useState(false);
 
   const COUNTER_KEY_SEC = "my-counter-sec";
@@ -45,13 +45,23 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData }) => {
         window.localStorage.removeItem("questionStatus");
         if (subject === "varc") {
           console.log("varc submitted");
-          navigate(`/main/${params.mockId}/lrdi`);
+          navigate(`/main`, {
+            state: {
+              mockId: mockId,
+              type : "lrdi"
+            }
+          });
         } else if (subject === "lrdi") {
           console.log("lrdi submitted");
-          navigate(`/main/${params.mockId}/quants`);
+          navigate(`/main`, {
+            state: {
+              mockId: mockId,
+              type: "quants",
+            },
+          });
         } else if (subject === "quants") {
           console.log("Your mock is submitted!!!");
-          navigate(`/analysis/${params.mockId}/${attemptID}/overall`);
+          navigate(`/analysis/${mockId}/${attemptID}/overall`);
         }
         return true;
       }

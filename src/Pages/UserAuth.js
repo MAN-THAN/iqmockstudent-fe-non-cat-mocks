@@ -10,7 +10,7 @@ const UserAuth = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const { state } = useLocation();
-console.log(state)
+  console.log(state);
   useEffect(() => {
     // userAuthCheck();
     createAttemptId();
@@ -35,26 +35,32 @@ console.log(state)
   // Function for creating attempt id
   const createAttemptId = async () => {
     console.log("creating attemptid");
-    const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
-    console.log(response);
-    if (response?.status === 200) {
-      localStorage.setItem("attemptId", JSON.stringify(response.data.attemptId));
-      // userAuthCheck();
-       navigate(`/instructions`, {
-        state: {
-        mockId : state.mockId
-      } });
-    } else {
+    try {
+      const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
+      console.log(response);
+      if (response?.status === 200) {
+        localStorage.setItem("attemptId", JSON.stringify(response.data.attemptId));
+        // userAuthCheck();
+        navigate(`/instructions`, {
+          state: {
+            mockId: state.mockId,
+          },
+        });
+      } else {
+        showToastMessage(response?.response?.data?.message);
+        return;
+      }
+    } catch (err) {
+      console.log(err);
       showToastMessage();
-      return 
     }
   };
-  const showToastMessage = () => {
-    toast.error("Some error occurred! Please reload the page.", {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return setLoader(false)
-  };
+   const showToastMessage = (msg) => {
+     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+       position: toast.POSITION.TOP_CENTER,
+     });
+     return setLoader(false);
+   };
 
   return (
     <React.Fragment>

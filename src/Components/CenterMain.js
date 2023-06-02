@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography, Stack, TextField, Box } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import "../styleSheets/centerMain.css";
 import Calc from "./Calculator";
 import ContentDrawer from "./ContentDrawer";
@@ -29,6 +29,7 @@ function CenterMain() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0); // set indexing for display the question
   const [isFullScreen, setFullScreen] = useState(false);
   const [questionStatus, setQuestionStatus] = useState(null);
+  const { state } = useLocation();
   console.log("Question status", questionStatus);
 
   // syncing question status with local
@@ -79,11 +80,8 @@ function CenterMain() {
   useEffect(() => {
     setLoading(true);
     setSelectedQuestionIndex(0);
-    const mockId = params.mockId;
-    // console.log(mockId)
-    const subject_type = params.type;
     const fetchDataFromApi = async () => {
-      const response = await fetchQuestions(mockId, subject_type);
+      const response = await fetchQuestions(state.mockId, state.type);
       console.log(response);
       if (response?.status === 200) {
         setData(response.data.data);
@@ -105,7 +103,7 @@ function CenterMain() {
       setSelectedAnswer(null);
       setLoading(false);
     }
-  }, [params.type]);
+  }, [state.type]);
 
   // Function for making stage 0 in Question status(Only when data fetching from api)
 
@@ -346,14 +344,14 @@ function CenterMain() {
                   <BootstrapButton
                     height="41"
                     sx={{ borderRadius: "20px" }}
-                    disabled={params.type === "quants" || params.type === "lrdi" ? true : false}
+                    disabled={state.type === "quants" || state.type === "lrdi" ? true : false}
                     variant="contained"
                   >
                     Verbal Ability
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={params.type === "varc" || params.type === "quants" ? true : false}
+                    disabled={state.type === "varc" || state.type === "quants" ? true : false}
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -361,7 +359,7 @@ function CenterMain() {
                   </BootstrapButton>
                   <BootstrapButton
                     height="41"
-                    disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+                    disabled={state.type === "varc" || state.type === "lrdi" ? true : false}
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
@@ -403,10 +401,8 @@ function CenterMain() {
                   >
                     {
                       <>
-                          <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                          
-                          <Timer initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
-                          
+                        <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
+                        <Timer type={state.type} mockId={state.mockId} initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -748,7 +744,7 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing <b>{params.type === "varc" ? "Verbal Ability" : params.type === "lrdi" ? "LRDI" : "Quant"}</b> section
+                You are viewing <b>{state.type === "varc" ? "Verbal Ability" : state.type === "lrdi" ? "LRDI" : "Quant"}</b> section
               </Typography>
 
               <SubHeading
@@ -813,7 +809,7 @@ function CenterMain() {
                 <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
-              <ButtonSubmit studentAnswersData={questionStatus} />
+              <ButtonSubmit type={state.type} mockId={state.mockId} studentAnswersData={questionStatus} />
             </div>
 
             <div className=" flex-item flex-fill  p-3 mt-3 markingNotation align-self-bottom">
