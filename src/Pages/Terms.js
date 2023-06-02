@@ -95,7 +95,11 @@ function Terms() {
               background: agree ? "" : "#d2d4d6",
               borderRadius: "30px",
             }}
-            onClick={() => navigate(`/main/${state.mockId}/varc`)}
+            onClick={() => navigate(`/main`, {
+              state: {
+                mockId: state.mockId,
+                type : "varc"
+            }})}
           >
             Start Test
           </BootstrapButton>

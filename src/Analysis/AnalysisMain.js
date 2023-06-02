@@ -21,8 +21,6 @@ import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
 import { motion } from "framer-motion";
 
-
-
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -45,14 +43,28 @@ function AnalysisMain() {
 
   const userData = JSON.parse(localStorage.getItem("userData"));
 
-  useEffect(() => {
-    setPDfStyle(false);
-  });
+  // useEffect(() => {
+  //   setPDfStyle(false);
+  // });
+
+  // Restricting back routes
+    useEffect(() => {
+     window.history.pushState(null, document.title, location.href);
+
+     window.addEventListener("popstate", function (event) {
+       window.history.pushState(null, document.title, location.href);
+     });
+    }, []);
+
+    const handlePopstate = () => {
+      window.history.pushState(null, document.title, window.location.href);
+    };
 
   useEffect(() => {
     // localStorage.clear();
     window.localStorage.removeItem("my-counter-sec");
     window.localStorage.removeItem("my-counter-min");
+    window.localStorage.removeItem("questionStatus");
     analysisDataApi(attemptId); //call analysis data api and send attempt id to api function also!
   }, []);
 

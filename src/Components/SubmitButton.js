@@ -29,7 +29,7 @@ const style = {
   m: 0,
 };
 
-export default function ButtonSubmit({ studentAnswersData }) {
+export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const buttonStyle = {
     background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
     width: "138px",
@@ -64,9 +64,9 @@ export default function ButtonSubmit({ studentAnswersData }) {
         sx={{
           width: "96%",
           marginTop: "1em",
-          background: params.type === "varc" || params.type === "lrdi" ? "#EBEBEB" : "",
+          background: type === "varc" || type === "lrdi" ? "#EBEBEB" : "",
         }}
-        disabled={params.type === "varc" || params.type === "lrdi" ? true : false}
+        disabled={type === "varc" || type === "lrdi" ? true : false}
         variant="contained"
         onClick={() => setOpenConfirm(true)}
       >
@@ -160,7 +160,7 @@ export default function ButtonSubmit({ studentAnswersData }) {
                     background: " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
                     borderRadius: "30px",
                   }}
-                  onClick={() => navigate(`/analysis/${params.mockId}/${attemptID}/overall`)}
+                  onClick={() => navigate(`/analysis/${mockId}/${attemptID}/overall`)}
                 >
                   DONE
                 </MyButton>
