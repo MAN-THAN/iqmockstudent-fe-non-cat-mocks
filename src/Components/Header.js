@@ -15,9 +15,9 @@ function Header() {
             <div className="container-fluid  ">
                 <div className="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-between py-2 px-3">
                     <div className='flex-item ' >
-                        <img src={require("../images/iquanta_Logo.png")} width={100} alt="iquanta_logo" className='img-fluid  '/>
+                        <img src={require("../images/iquanta_Logo.png")} width={120} alt="iquanta_logo" className='img-fluid  '/>
                     </div>
-                    <div className='flex-item pt-1 ms-5 ps-5' >
+                    <div className='flex-item pt-1 ms-1 ps-5' >
                         <Typography variant='h4' sx={{fontSize:"25px"}}>iCAT 1.O 2023</Typography>
                     </div>
 

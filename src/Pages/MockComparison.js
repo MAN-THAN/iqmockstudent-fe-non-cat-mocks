@@ -127,6 +127,7 @@ function MockComparison() {
             width: "calc(100% - 65px)",
             p: 2,
           }}
+          ref={ref}
         >
           <Box component="header">
             <HeaderNew />
@@ -149,7 +150,6 @@ function MockComparison() {
                 justifyContent: "space-around",
                 mt: 3,
               }}
-              ref={ref}
             >
               <Backdrop
                 sx={{
