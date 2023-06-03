@@ -62,7 +62,7 @@ function MarketPlace() {
     if (res?.status == 200) {
       console.log(res);
       setData(res.data.item);
-      setLoading(false);
+      // setLoading(false);
     } else {
       console.log("error", res);
       setLoading(false);
@@ -73,25 +73,31 @@ function MarketPlace() {
     <>
       <Box component="main">
         <MenuDrawer />
-        <Box component="div" sx={{ 
-           position: "absolute",
-          left: "65px",
-          height: "100vh",
-          width: "calc(100% - 65px)",
-          p: 2, }}>
+        <Box
+          component="div"
+          sx={{
+            position: "absolute",
+            left: "65px",
+            height: "100vh",
+            width: "calc(100% - 65px)",
+            p: 2,
+          }}
+        >
           {/* Header start */}
           <Box component="header">
             <HeaderNew />
           </Box>
           {/* Header end */}
           {isLoading ? (
-            
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{width:"100%", height:"80%"}}>
-            <div class="loading-container">
-              <div class="loading"></div>
-              <div id="loading-text">Loading...</div>
+            <div
+              className="d-flex align-items-center flex-column gap-2 justify-content-center"
+              style={{ width: "100%", height: "80%" }}
+            >
+              <div class="loading-container">
+                <div class="loading"></div>
+                <div id="loading-text">Loading...</div>
+              </div>
             </div>
-           </div>
           ) : (
             <>
               <Box component="div">
