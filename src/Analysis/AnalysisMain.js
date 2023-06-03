@@ -68,13 +68,11 @@ function AnalysisMain() {
     name,
     negativeMarks,
     overallPercentage,
-
     potentialScore,
     accuracy,
     percentile,
     title,
     air = "TBD",
-
     targetPercentile,
   } = basicData;
 
