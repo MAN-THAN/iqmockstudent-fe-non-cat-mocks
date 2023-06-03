@@ -38,6 +38,7 @@ function AnalysisMain() {
   // });
 
   // Restricting back routes
+  
   useEffect(() => {
     window.history.pushState(null, document.title, location.href);
 
