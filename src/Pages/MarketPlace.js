@@ -62,7 +62,7 @@ function MarketPlace() {
     if (res?.status == 200) {
       console.log(res);
       setData(res.data.item);
-      // setLoading(false);
+      setLoading(false);
     } else {
       console.log("error", res);
       setLoading(false);
