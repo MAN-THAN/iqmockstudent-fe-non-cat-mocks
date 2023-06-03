@@ -61,9 +61,9 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     if (category_ !== undefined) {
       setCategory(category_);
     }
-    if (dob_ !== undefined) {
-      setDob(dob_);
-    }
+    // if (dob_ !== undefined) {
+    //   setDob(dob_);
+    // }
     if (min10th !== undefined) {
       values.class_10th_result = min10th;
     }
@@ -298,7 +298,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               disabled={phone_ === undefined ? false : true}
               required
             />
-            <FormControl disabled={gender_ === undefined ? false : true} size="small" sx={{ width: "48%" }} required>
+            <FormControl size="small" sx={{ width: "48%" }} required>
               <InputLabel id="gender">Gender</InputLabel>
               <Select
                 IconComponent={() => (
@@ -318,7 +318,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
-            <TextField
+            {/* <TextField
               sx={{ width: "48%" }}
               size="small"
               id="dob"
@@ -339,19 +339,19 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               autoComplete="off"
               disabled={dob_ === undefined ? false : true}
               required
-            />
-            {/* <Box sx={{ width: "48%" }}>
+            /> */}
+            <Box sx={{ width: "48%" }}>
               {" "}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Date of Birth"
+                  label="Date of Birth(optional)"
                   value={dob}
                   onChange={(newVal) => setDob(newVal)}
                   renderInput={(params) => <TextField {...params} />}
                   slotProps={{ textField: { size: "small" } }}
                 />
               </LocalizationProvider>
-            </Box> */}
+            </Box>
             <TextField
               sx={{ width: "48%" }}
               size="small"
