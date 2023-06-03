@@ -402,7 +402,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer type={state.type} mockId={state.mockId} initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer type={state.type} mockId={state.mockId} initMinute={30} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
