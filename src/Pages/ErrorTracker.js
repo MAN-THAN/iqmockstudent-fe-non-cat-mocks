@@ -272,9 +272,9 @@ function ErrorTracker() {
 
         <Box
           sx={{
-            p: 2,
+            p:2,
             position: "absolute",
-            left: "70px",
+            left: "65px",
             width: "calc(100% - 70px)",
             height: "100%",
           }}
