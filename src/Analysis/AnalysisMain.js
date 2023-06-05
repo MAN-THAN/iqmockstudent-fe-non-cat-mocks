@@ -413,7 +413,7 @@ function AnalysisMain() {
                         height: "10.125em",
                         borderRadius: 4,
                         textAlign: "center",
-                        p: 1,
+                        p:1,
                       }}
                     >
                       <CardContent>
@@ -426,7 +426,7 @@ function AnalysisMain() {
                         >
                           All India Rank
                         </Typography>
-                        <div className="d-flex justify-content-between align-items-center mt-2 ">
+                        <div className="d-flex justify-content-between align-items-center mt-2 p-2">
                           <img
                             src="/india1.png"
                             alt="india rank icon"
