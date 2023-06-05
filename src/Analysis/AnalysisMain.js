@@ -38,7 +38,7 @@ function AnalysisMain() {
   // });
 
   // Restricting back routes
-  
+
   useEffect(() => {
     window.history.pushState(null, document.title, location.href);
 
@@ -154,7 +154,8 @@ function AnalysisMain() {
       title: "Your Accuracy",
     },
     {
-      tooltip: "Simple percentage formula it  is :p (your score/Total score)*100 ",
+      tooltip:
+        "Simple percentage formula it  is :p (your score/Total score)*100 ",
       cardTitle: +overallPercentage < 0 ? 0 : +overallPercentage,
       icon: "/PS.png",
       title: "Overall Precentage",
@@ -295,44 +296,108 @@ function AnalysisMain() {
                       <Typography
                         sx={{
                           ...typographyStyles.subHeading,
-                          fontSize: "20px",
+                          fontSize: "19px",
                           color: "var(--font-grey)",
-                          lineHeight: 2,
                         }}
                       >
                         Overall Score
                       </Typography>
-                      <Typography
-                        sx={{
-                          ...typographyStyles.subHeading,
-                          fontSize: "23px",
-                          color: "#4149FF",
-                          textAlign: "center",
-                        }}
-                      >
-                        Percentile
-                      </Typography>
+                      {/* Graph */}
 
-                      <div className="graph d-flex justify-content-center">
+                      <div className="graph d-flex align-items-center justify-content-center">
                         <ApexChart
                           show={{ name: true, value: true }}
                           series={[percentile]}
                           title={"Percentile"}
-                          style={{ height: 200, color: "#4149FF", width: 250 }}
+                          style={{
+                            height: 180,
+                            color: "#4149FF",
+                            width: 250,
+                            fontSize: 18,
+                            titleSize: 12,
+                            offsetValue: -2,
+                            // offsetTitle: -2,
+                          }}
                         />
                       </div>
-
-                      <Stack direction="row" flexWrap="wrap" fontSize={11} justifyContent={"space-between"}>
-                        <p>
-                          <span style={{ color: "#4149FF" }}>{targetPercentile}</span> Targeted Percentile
-                        </p>
-                        <p>
-                          <span style={{ color: "#4149FF" }}>{percentile} </span>
-                          Result Percentile
-                        </p>
-                        <p>
-                          <span style={{ color: "#4149FF" }}>{eval(targetPercentile - percentile)}</span> Left To Achieve Your Target
-                        </p>
+                      <div className="text-center" style={{position:"relative" , bottom:"13px"}}>
+                        <Typography
+                          sx={{
+                            ...typographyStyles.subHeading,
+                            fontSize: "19.22px",
+                          }}
+                        >
+                          99
+                        </Typography>
+                        <Typography
+                          sx={{
+                            ...typographyStyles.subHeading,
+                            fontSize: "10px",
+                            color: "var(--font-grey)",
+                            // lineHeight: 0,
+                          }}
+                        >
+                          Your score
+                        </Typography>
+                      </div>
+                      <Stack direction="column" fontSize={11} gap={1}>
+                        <div className="d-flex justify-content-between">
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                            }}
+                          >
+                            Targeted Percentile
+                          </Typography>
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                              color: "#4149FF",
+                            }}
+                          >
+                            {targetPercentile}
+                          </Typography>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                            }}
+                          >
+                            Result Percentile
+                          </Typography>
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                              color: "#4149FF",
+                            }}
+                          >
+                            {percentile}
+                          </Typography>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                            }}
+                          >
+                            Left To Achieve Your Target
+                          </Typography>
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "14px",
+                              color: "#4149FF",
+                            }}
+                          >
+                            {eval(targetPercentile - percentile)}
+                          </Typography>
+                        </div>
                       </Stack>
                     </CardContent>
                   </Card>
@@ -348,28 +413,37 @@ function AnalysisMain() {
                         height: "10.125em",
                         borderRadius: 4,
                         textAlign: "center",
+                        p: 1,
                       }}
                     >
                       <CardContent>
-                        <img src="/Revenue.png" alt="" className="image-fluid mb-2" />
                         <Typography
                           sx={{
                             ...typographyStyles.subHeading,
                             fontSize: "14px",
                             color: "var(--font-grey)",
-                            lineHeight: 1,
                           }}
                         >
                           All India Rank
                         </Typography>
-                        <Typography
-                          sx={{
-                            ...typographyStyles.subHeading,
-                            fontSize: "37px",
-                          }}
-                        >
-                          {air}
-                        </Typography>
+                        <div className="d-flex justify-content-between align-items-center mt-2 ">
+                          <img
+                            src="/india1.png"
+                            alt="india rank icon"
+                            className="image-fluid"
+                          />
+
+                          <Typography
+                            sx={{
+                              ...typographyStyles.subHeading,
+                              fontSize: "37px",
+                              color: "#FF8B41",
+                            }}
+                          >
+                            {53}
+                          </Typography>
+                        </div>
+
                       </CardContent>
                     </Card>
                     {/*Marks detail */}
@@ -432,7 +506,8 @@ function AnalysisMain() {
                       </CardContent>
                     </Card>
                   </div>
-                  {/* Graph Cards */}
+
+                  {/* Graph Card main */}
                   <div className="GraphCards">
                     <Card
                       sx={{
@@ -441,7 +516,8 @@ function AnalysisMain() {
                         borderRadius: 4,
                         display: "flex",
                         justifyContent: "space-between",
-                        py: 1,
+                        p: 2,
+                        alignItems: "center",
                       }}
                     >
                       {Object.keys(basicData).length > 0 &&
@@ -466,50 +542,40 @@ function AnalysisMain() {
                           const sectionData = basicData[item.name]; // Retrieve the data for the current section
 
                           return (
-                            <div className="p-2" style={{ flexBasis: "32%" }}>
-                              <Typography
-                                sx={{
-                                  ...typographyStyles.subHeading,
-                                  fontSize: "13.82px",
-                                  pl: 3,
-                                  height: "30px",
-                                }}
-                              >
-                                {item.title}
-                              </Typography>
-                              <div className="d-flex justify-content-start gap-2 align-items-center ">
+                            <div className="" style={{ flexBasis: "32%" }}>
+                              <div className="d-flex flex-row justify-content-start gap-2 align-items-center pt-1 ">
                                 <div className="graph">
                                   <ApexChart
-                                    show={{ name: false, value: true }}
+                                    show={{ name: true, value: true }}
                                     series={[sectionData.percentile]}
                                     title={"Percentile"}
                                     style={{
-                                      height: 100,
-                                      width: 80,
+                                      height: 150,
+                                      width: 100,
                                       color: item.color,
                                       fontSize: 15,
-                                      titleSize: 8,
-                                      offsetValue: 2,
+                                      titleSize: 10,
+                                      offsetValue: -2,
+                                      offsetTitle: -2,
                                     }}
                                   />
-                                  <Typography
-                                    sx={{
-                                      ...typographyStyles.subHeading,
-                                      fontSize: "13.02px",
-                                      color: item.color,
-                                      pl: 3,
-                                    }}
-                                  >
-                                    Percentile
-                                  </Typography>
                                 </div>
 
                                 <div className="info mb-2">
                                   <Typography
                                     sx={{
                                       ...typographyStyles.subHeading,
+                                      fontSize: "13.82px",
+                                      height: "30px",
+                                      color: "var(--font-grey)",
+                                    }}
+                                  >
+                                    {item.title}
+                                  </Typography>
+                                  <Typography
+                                    sx={{
+                                      ...typographyStyles.subHeading,
                                       fontSize: "16.96px",
-                                      lineHeight: 0.5,
                                     }}
                                   >
                                     {sectionData.score}

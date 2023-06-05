@@ -44,7 +44,7 @@ export const ApexChart = ({ series, style, title, show }) => {
         dataLabels: {
           show: show.value,
           name: {
-            offsetY: -10,
+            offsetY: style.offsetTitle || -10,
             show: show.name,
             color: "#888",
             fontSize: style.titleSize || "14px",
@@ -55,7 +55,7 @@ export const ApexChart = ({ series, style, title, show }) => {
             },
 
             color: "#111",
-            offsetY: 5,
+            offsetY: style.offsetValue || 5,
             align: "center",
             fontSize: style.fontSize || 28,
           },
