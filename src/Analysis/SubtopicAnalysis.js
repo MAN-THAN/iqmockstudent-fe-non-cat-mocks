@@ -106,7 +106,7 @@ function SubtopicAnalysis() {
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheSubtopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByTopperInThisSubtopic}
+                    {item.markObtainedByTopperInThisSubtopic ? item.markObtainedByTopperInThisSubtopic : 0}
                   </StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markLoseByIncorrectAttempt}
