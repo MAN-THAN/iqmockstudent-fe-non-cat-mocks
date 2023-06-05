@@ -133,6 +133,9 @@ export default function ViewSolution() {
             }
           });
           // setShow(res.data[selected])
+           setTrackerVA(res.data.errorData?.varc);
+           setTrackerLR(res.data.errorData?.lrdi);
+           setTrackerQU(res.data.errorData?.quants);
         }
       }
     };
