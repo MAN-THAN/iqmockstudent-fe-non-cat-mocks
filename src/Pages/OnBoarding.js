@@ -122,7 +122,8 @@ function OnBoarding() {
       console.log(res);
       if (res?.status === 200) {
         let arr = res?.data.bschools;
-        setCollege(arr);
+        const temp_arr = arr;
+        setCollege(temp_arr);
       }
     } catch (err) {
       // showToastMessage();
@@ -430,7 +431,7 @@ function OnBoarding() {
             <PrettoSlider
               step={0.1}
               disabled={disabled}
-              onChange={handlePercentile}
+              onChange={(e) => setTimeout(() => handlePercentile(e), 200)}
               valueLabelDisplay="on"
               aria-label="pretto slider"
               defaultValue={percentile}

@@ -999,9 +999,9 @@ const NavigationAvatar = ({ Data, setInd, selectedQuestionIndex, difficulty, set
           <Avatar
             sx={{
               bgcolor:
-                item.stage === 0 || item.stage === 2 || item.stage === 3
+                (item.stage === 0 || item.stage === 2 || item.stage === 3)
                   ? "#2196F3"
-                  : item.stage === (1 || 4) && item.studentAnswer === item.correctAnswer
+                  : (item.stage === 1 || item.stage === 4) && (item.studentAnswer === item.correctAnswer)
                   ? "#43D200"
                   : "#F32121",
               cursor: "pointer",
