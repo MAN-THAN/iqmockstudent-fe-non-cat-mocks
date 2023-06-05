@@ -130,7 +130,7 @@ function MenuDrawer() {
                     />
                   </ListItemIcon>
                   <ListItemText sx={{ opacity: menuBarOpen ? 1 : 0 }}>
-                    <Typography variant="paragraph">{item.text}</Typography>
+                    <Typography fontWeight={500} variant="paragraph">{item.text}</Typography>
                   </ListItemText>
                 </ListItemButton>
               </ListItem>
