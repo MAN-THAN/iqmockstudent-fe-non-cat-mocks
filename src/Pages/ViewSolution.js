@@ -133,6 +133,9 @@ export default function ViewSolution() {
             }
           });
           // setShow(res.data[selected])
+           setTrackerVA(res.data.errorData?.varc);
+           setTrackerLR(res.data.errorData?.lrdi);
+           setTrackerQU(res.data.errorData?.quants);
         }
       }
     };
@@ -251,6 +254,7 @@ export default function ViewSolution() {
     const res = await postToErrorTracker(attemptId, type, payload);
     console.log(res);
     if (res?.status == 200) {
+      console.log(index);
       if (type == "varc") {
         const tempObj = {
           question_id: selectedObj.question_id,
@@ -258,7 +262,11 @@ export default function ViewSolution() {
           error: e.target.value,
         };
         let arr = [...errTrackerVA];
-        arr.splice(index, 1, tempObj);
+        if (index < arr.length) {
+          arr.splice(index, 1, tempObj);
+        } else {
+          arr[index] = tempObj;
+        }
         setTrackerVA(arr);
         // sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
       }
@@ -269,7 +277,11 @@ export default function ViewSolution() {
           error: e.target.value,
         };
         let arr = [...errTrackerLR];
-        arr.splice(index, 1, tempObj);
+        if (index < arr.length) {
+          arr.splice(index, 1, tempObj);
+        } else {
+          arr[index] = tempObj;
+        }
         setTrackerLR(arr);
         // sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
       }
@@ -280,7 +292,11 @@ export default function ViewSolution() {
           error: e.target.value,
         };
         let arr = [...errTrackerQU];
-        arr.splice(index, 1, tempObj);
+         if (index < arr.length) {
+           arr.splice(index, 1, tempObj);
+         } else {
+           arr[index] = tempObj;
+         }
         setTrackerQU(arr);
         // sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
       }

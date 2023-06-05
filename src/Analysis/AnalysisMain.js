@@ -440,7 +440,7 @@ function AnalysisMain() {
                               color: "#FF8B41",
                             }}
                           >
-                            {53}
+                            {air}
                           </Typography>
                         </div>
 

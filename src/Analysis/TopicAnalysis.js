@@ -83,7 +83,7 @@ function TopicAnalysis() {
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByTopperInThisTopic}
+                    {item.markObtainedByTopperInThisTopic ? item.markObtainedByTopperInThisTopic : 0 }
                   </StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {item.markLoseByIncorrectAttempt}
