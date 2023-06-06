@@ -102,7 +102,7 @@ export default function ViewSolution() {
         console.log("flow2");
         const questionId = state.question_id;
         setLoading(true);
-        const res = await fetchViewSolution(attemptId);
+        const res = await fetchViewSolution(attemptId, mockId);
         if (res?.status == 200) {
           setData(res.data);
           res.data?.varc.map((item, index) => {
@@ -148,7 +148,7 @@ export default function ViewSolution() {
     const getData = async () => {
       setLoading(true);
       try {
-        const res = await fetchViewSolution(attemptId);
+        const res = await fetchViewSolution(attemptId, mockId);
         if (res?.status == 200) {
           setData(res.data);
           setShow(res.data.varc);

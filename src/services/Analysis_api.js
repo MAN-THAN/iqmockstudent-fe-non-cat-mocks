@@ -53,11 +53,11 @@ export const fetchOverallAcross = async (uid, attemptId) => {
   }
 };
 
-export const fetchViewSolution = async (attemptId) => {
+export const fetchViewSolution = async (attemptId, mockId) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/view/${attemptId}`,
+      url: `/api/student/v1/leaderboard/view/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
