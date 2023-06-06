@@ -85,6 +85,7 @@ function AnalysisMain() {
     title,
     air = "TBD",
     targetPercentile,
+    overallScore,
   } = basicData;
 
   const options = {
@@ -171,6 +172,8 @@ function AnalysisMain() {
       title: "Overall Precentage",
     },
   ];
+
+  console.log("Basic data", basicData);
 
   return (
     <>
@@ -348,7 +351,7 @@ function AnalysisMain() {
                             fontSize: "19.22px",
                           }}
                         >
-                          99
+                          {overallScore}
                         </Typography>
                         <Typography
                           sx={{

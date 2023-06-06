@@ -6,8 +6,8 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Zoom from "@mui/material/Zoom";
 import MenuItem from "@mui/material/MenuItem";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Paper, Popover } from "@mui/material";
+import { motion } from "framer-motion";
+import { Paper, Popover, Card } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Latex from "react-latex-next";
@@ -22,7 +22,7 @@ import { LogoButton } from "../Common-comp/Buttons";
 import { TempCompo } from "../Components/tempCompo";
 import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
-
+import { BsChevronDoubleRight } from "react-icons/bs";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
 import Select from "@mui/material/Select";
@@ -388,7 +388,10 @@ export default function ViewSolution() {
             <HeaderNew />
           </Box>
           {isLoading ? (
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+            <div
+              className="d-flex align-items-center flex-column gap-2 justify-content-center"
+              style={{ width: "100%", height: "80%" }}
+            >
               <div class="loading-container">
                 <div class="loading"></div>
                 <div id="loading-text">Loading...</div>
@@ -436,14 +439,16 @@ export default function ViewSolution() {
                               border: 1,
                               borderColor: "#809EB9",
                             },
-                            "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-                              border: 1,
-                              borderColor: "#809EB9",
-                            },
-                            "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                              border: 2,
-                              borderColor: "#809EB9",
-                            },
+                            "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                              {
+                                border: 1,
+                                borderColor: "#809EB9",
+                              },
+                            "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                              {
+                                border: 2,
+                                borderColor: "#809EB9",
+                              },
                           }}
                         />
                       }
@@ -489,7 +494,10 @@ export default function ViewSolution() {
               {/* Navigation bar end */}
 
               {/* Main center start */}
-              <Box component="div" sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}>
+              <Box
+                component="div"
+                sx={{ display: "flex", gap: 3, height: "61%", mt: "1em" }}
+              >
                 {/* LEFT Main start */}
                 <Box
                   sx={{
@@ -504,7 +512,9 @@ export default function ViewSolution() {
                 >
                   <Box
                     component="div"
-                    display={show && show[index]?.isPara === "Yes" ? "block" : "none"}
+                    display={
+                      show && show[index]?.isPara === "Yes" ? "block" : "none"
+                    }
                     sx={{
                       flexBasis: "60%",
                       textAlign: "justify",
@@ -518,7 +528,8 @@ export default function ViewSolution() {
                   <Box
                     component="div"
                     sx={{
-                      flexBasis: show && show[index]?.isPara === "Yes" ? "40%" : "100%",
+                      flexBasis:
+                        show && show[index]?.isPara === "Yes" ? "40%" : "100%",
                       textAlign: "justify",
                       height: "100%",
                       overflow: "scroll",
@@ -542,9 +553,12 @@ export default function ViewSolution() {
                           {" "}
                           <FormControlLabel
                             checked={
-                              show && show[index]?.options[0] === show[index]?.correctAnswer
+                              show &&
+                              show[index]?.options[0] ===
+                                show[index]?.correctAnswer
                                 ? true
-                                : show[index]?.options[0] === show[index]?.studentAnswer
+                                : show[index]?.options[0] ===
+                                  show[index]?.studentAnswer
                                 ? true
                                 : false
                             }
@@ -552,9 +566,12 @@ export default function ViewSolution() {
                             control={
                               <Radio
                                 color={
-                                  show && show[index]?.options[0] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[0] ===
+                                    show[index]?.correctAnswer
                                     ? "success"
-                                    : show[index]?.options[0] === show[index]?.studentAnswer
+                                    : show[index]?.options[0] ===
+                                      show[index]?.studentAnswer
                                     ? "error"
                                     : "default"
                                 }
@@ -564,23 +581,31 @@ export default function ViewSolution() {
                             label={
                               <Typography
                                 color={
-                                  show && show[index]?.options[0] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[0] ===
+                                    show[index]?.correctAnswer
                                     ? "#63B31E"
-                                    : show[index]?.options[0] === show[index]?.studentAnswer
+                                    : show[index]?.options[0] ===
+                                      show[index]?.studentAnswer
                                     ? "#E94504"
                                     : "black"
                                 }
                                 marginTop={2}
                               >
-                                <Latex>{(show && show[index]?.options[0]) || ""}</Latex>
+                                <Latex>
+                                  {(show && show[index]?.options[0]) || ""}
+                                </Latex>
                               </Typography>
                             }
                           />
                           <FormControlLabel
                             checked={
-                              show && show[index]?.options[1] === show[index]?.correctAnswer
+                              show &&
+                              show[index]?.options[1] ===
+                                show[index]?.correctAnswer
                                 ? true
-                                : show[index]?.options[1] === show[index]?.studentAnswer
+                                : show[index]?.options[1] ===
+                                  show[index]?.studentAnswer
                                 ? true
                                 : false
                             }
@@ -588,9 +613,12 @@ export default function ViewSolution() {
                             control={
                               <Radio
                                 color={
-                                  show && show[index]?.options[1] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[1] ===
+                                    show[index]?.correctAnswer
                                     ? "success"
-                                    : show[index]?.options[1] === show[index]?.studentAnswer
+                                    : show[index]?.options[1] ===
+                                      show[index]?.studentAnswer
                                     ? "error"
                                     : "default"
                                 }
@@ -600,23 +628,31 @@ export default function ViewSolution() {
                             label={
                               <Typography
                                 color={
-                                  show && show[index]?.options[1] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[1] ===
+                                    show[index]?.correctAnswer
                                     ? "#63B31E"
-                                    : show[index]?.options[1] === show[index]?.studentAnswer
+                                    : show[index]?.options[1] ===
+                                      show[index]?.studentAnswer
                                     ? "#E94504"
                                     : "black"
                                 }
                                 marginTop={2}
                               >
-                                <Latex>{(show && show[index]?.options[1]) || ""}</Latex>
+                                <Latex>
+                                  {(show && show[index]?.options[1]) || ""}
+                                </Latex>
                               </Typography>
                             }
                           />
                           <FormControlLabel
                             checked={
-                              show && show[index]?.options[2] === show[index]?.correctAnswer
+                              show &&
+                              show[index]?.options[2] ===
+                                show[index]?.correctAnswer
                                 ? true
-                                : show[index]?.options[2] === show[index]?.studentAnswer
+                                : show[index]?.options[2] ===
+                                  show[index]?.studentAnswer
                                 ? true
                                 : false
                             }
@@ -624,9 +660,12 @@ export default function ViewSolution() {
                             control={
                               <Radio
                                 color={
-                                  show && show[index]?.options[2] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[2] ===
+                                    show[index]?.correctAnswer
                                     ? "success"
-                                    : show[index]?.options[2] === show[index]?.studentAnswer
+                                    : show[index]?.options[2] ===
+                                      show[index]?.studentAnswer
                                     ? "error"
                                     : "default"
                                 }
@@ -636,23 +675,31 @@ export default function ViewSolution() {
                             label={
                               <Typography
                                 color={
-                                  show && show[index]?.options[2] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[2] ===
+                                    show[index]?.correctAnswer
                                     ? "#63B31E"
-                                    : show[index]?.options[2] === show[index]?.studentAnswer
+                                    : show[index]?.options[2] ===
+                                      show[index]?.studentAnswer
                                     ? "#E94504"
                                     : "black"
                                 }
                                 marginTop={2}
                               >
-                                <Latex>{(show && show[index]?.options[2]) || ""}</Latex>
+                                <Latex>
+                                  {(show && show[index]?.options[2]) || ""}
+                                </Latex>
                               </Typography>
                             }
                           />
                           <FormControlLabel
                             checked={
-                              show && show[index]?.options[3] === show[index]?.correctAnswer
+                              show &&
+                              show[index]?.options[3] ===
+                                show[index]?.correctAnswer
                                 ? true
-                                : show[index]?.options[3] === show[index]?.studentAnswer
+                                : show[index]?.options[3] ===
+                                  show[index]?.studentAnswer
                                 ? true
                                 : false
                             }
@@ -660,9 +707,12 @@ export default function ViewSolution() {
                             control={
                               <Radio
                                 color={
-                                  show && show[index]?.options[3] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[3] ===
+                                    show[index]?.correctAnswer
                                     ? "success"
-                                    : show[index]?.options[3] === show[index]?.studentAnswer
+                                    : show[index]?.options[3] ===
+                                      show[index]?.studentAnswer
                                     ? "error"
                                     : "default"
                                 }
@@ -672,15 +722,20 @@ export default function ViewSolution() {
                             label={
                               <Typography
                                 color={
-                                  show && show[index]?.options[3] === show[index]?.correctAnswer
+                                  show &&
+                                  show[index]?.options[3] ===
+                                    show[index]?.correctAnswer
                                     ? "#63B31E"
-                                    : show[index]?.options[3] === show[index]?.studentAnswer
+                                    : show[index]?.options[3] ===
+                                      show[index]?.studentAnswer
                                     ? "#E94504"
                                     : "black"
                                 }
                                 marginTop={2}
                               >
-                                <Latex>{(show && show[index]?.options[3]) || ""}</Latex>
+                                <Latex>
+                                  {(show && show[index]?.options[3]) || ""}
+                                </Latex>
                               </Typography>
                             }
                           />
@@ -690,14 +745,25 @@ export default function ViewSolution() {
                           {" "}
                           <Typography color="black" fontWeight={600}>
                             Your Answer :{" "}
-                            {show && show[index]?.studentAnswer == (null || undefined || "") ? (
+                            {show &&
+                            show[index]?.studentAnswer ==
+                              (null || undefined || "") ? (
                               "NA"
                             ) : (
                               <Latex>{show[index]?.studentAnswer || ""}</Latex>
                             )}
                           </Typography>
-                          <Typography marginTop={2} color="green" fontWeight={600}>
-                            Correct Answer : {<Latex>{(show && show[index]?.correctAnswer) || ""}</Latex>}
+                          <Typography
+                            marginTop={2}
+                            color="green"
+                            fontWeight={600}
+                          >
+                            Correct Answer :{" "}
+                            {
+                              <Latex>
+                                {(show && show[index]?.correctAnswer) || ""}
+                              </Latex>
+                            }
                           </Typography>
                         </>
                       )}
@@ -769,10 +835,22 @@ export default function ViewSolution() {
                             padding: 12,
                           }}
                           sx={{
-                            background: show && show[index]?.isVideo === "No" ? "lightgrey !important" : "var(--blue-new)",
+                            background:
+                              show && show[index]?.isVideo === "No"
+                                ? "lightgrey !important"
+                                : "var(--blue-new)",
                           }}
-                          disabled={show && show[index]?.isVideo === "No" ? true : false}
-                          startIcon={<img src="/playButton.png" alt="" className="img-fluid" width="15px" />}
+                          disabled={
+                            show && show[index]?.isVideo === "No" ? true : false
+                          }
+                          startIcon={
+                            <img
+                              src="/playButton.png"
+                              alt=""
+                              className="img-fluid"
+                              width="15px"
+                            />
+                          }
                         >
                           Video Solution
                         </Button>
@@ -781,7 +859,9 @@ export default function ViewSolution() {
                     {viewSol ? (
                       <Box ref={bottomRef} marginTop="2em">
                         <Typography fontWeight={700}>
-                          <Latex>{(show && show[index]?.explanations) || ""}</Latex>
+                          <Latex>
+                            {(show && show[index]?.explanations) || ""}
+                          </Latex>
                         </Typography>
                       </Box>
                     ) : (
@@ -792,9 +872,18 @@ export default function ViewSolution() {
                 {/* MOdal for video link */}
                 <div>
                   {" "}
-                  <Modal open={open} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                  <Modal
+                    open={open}
+                    onClose={handleCloseModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
                     <Box sx={style}>
-                      <iframe width="100%" height="100%" src={show && show[index]?.videoLink}></iframe>
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={show && show[index]?.videoLink}
+                      ></iframe>
                     </Box>
                   </Modal>
                 </div>
@@ -846,7 +935,11 @@ export default function ViewSolution() {
                     >
                       iQ GPT 1.0{" "}
                       <span>
-                        <img src="/viewTracker.png" className="img-fluid mb-1" alt="" />
+                        <img
+                          src="/viewTracker.png"
+                          className="img-fluid mb-1"
+                          alt=""
+                        />
                       </span>
                     </Typography>
                   </Box>
@@ -878,7 +971,9 @@ export default function ViewSolution() {
                         textAlign: "start",
                       }}
                     >
-                      <FormLabel id="demo-radio-buttons-group-label">{""}</FormLabel>
+                      <FormLabel id="demo-radio-buttons-group-label">
+                        {""}
+                      </FormLabel>
                       <RadioGroup
                         onChange={handleErrorForm}
                         value={errValue}
@@ -887,7 +982,14 @@ export default function ViewSolution() {
                       >
                         {errorOptions &&
                           errorOptions.map((item, _) => {
-                            return <FormControlLabel key={item.id} value={item.value} control={<Radio size="small" />} label={item.value} />;
+                            return (
+                              <FormControlLabel
+                                key={item.id}
+                                value={item.value}
+                                control={<Radio size="small" />}
+                                label={item.value}
+                              />
+                            );
                           })}
                       </RadioGroup>
                     </FormControl>
@@ -907,8 +1009,16 @@ export default function ViewSolution() {
                       onMouseEnter={handlePopoverOpen}
                       onMouseLeave={handlePopoverClose}
                       variant="outlined"
-                      onClick={() => navigate(`/errortracker/${mockId}/${attemptId}`)}
-                      startIcon={<img src="/errorTracker.png" className="img-fluid" width={18} />}
+                      onClick={() =>
+                        navigate(`/errortracker/${mockId}/${attemptId}`)
+                      }
+                      startIcon={
+                        <img
+                          src="/errorTracker.png"
+                          className="img-fluid"
+                          width={18}
+                        />
+                      }
                       sx={{
                         background: "#2a2b2b",
                         p: 1,
@@ -942,7 +1052,10 @@ export default function ViewSolution() {
                       onClose={handlePopoverClose}
                       disableRestoreFocus
                     >
-                      <Typography sx={{ p: 1 }}>Complete Mock Analysis to get the Exact Mock Analysis Report</Typography>
+                      <Typography sx={{ p: 1 }}>
+                        Complete Mock Analysis to get the Exact Mock Analysis
+                        Report
+                      </Typography>
                     </Popover>
                   </div>
                 </Box>
@@ -950,17 +1063,7 @@ export default function ViewSolution() {
               </Box>
               {/* Main center end */}
 
-              {/* Lower cards section start */}
-              <Box component="div" sx={{ height: "15%", py: "1em" }}>
-                <TempCompo
-                  studentAttempted={show && show[index]?.studentsAttempted}
-                  attemptedCorrect={show && show[index]?.attemptedCorrect}
-                  duration={show && show.length && "duration" in show[index] ? show[index].duration : "NA"}
-                  avgTimeSpent={show && show[index]?.averageDuration}
-                  topperDuration={show && show[index]?.durationByTopper}
-                />
-              </Box>
-              {/* Lower cards section end */}
+           
             </>
           )}
         </Box>

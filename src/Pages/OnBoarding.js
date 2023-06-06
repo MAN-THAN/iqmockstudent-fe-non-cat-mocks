@@ -158,12 +158,13 @@ function OnBoarding() {
           width: "100vw",
           height: "100vh",
           background: "url(/onboarding_image.png)",
-          overflowX: "hidden",
-          overflowY: "scroll",
+          // overflowX: "hidden",
+          // overflowY: "scroll",
           position: "relative",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
+
         }}
       >
         <Box>
