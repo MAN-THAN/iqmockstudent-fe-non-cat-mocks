@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { DrawerData } from "../services/DataFiles";
 import { Tooltip } from "@mui/material";
-
+import { typographyStyles } from "../styleSheets/StyleNew";
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -96,45 +96,50 @@ function MenuDrawer() {
         <List>
           {drawer &&
             drawer.map((item, ind) => (
-            <Tooltip title={item.text} key={ind} placement="right" arrow> 
-            <ListItem
-                key={item.text}
-                disablePadding
-                sx={{
-                  display: "block",
-                  background:
-                    location.pathname === item.path ? "#d4d5d6" : "inherit",
-                }}
-              >
-                <ListItemButton
+              <Tooltip title={item.text} key={ind} placement="right" arrow>
+                <ListItem
+                  key={item.text}
+                  disablePadding
                   sx={{
-                    minHeight: 48,
-                    justifyContent: menuBarOpen ? "initial" : "center",
-                    px: 2.5,
-                    mb: 1,
+                    display: "block",
+                    background:
+                      location.pathname === item.path ? "#d4d5d6" : "inherit",
                   }}
-                  onClick={() => navigate(item.path)}
                 >
-                  <ListItemIcon
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: menuBarOpen ? 3 : "auto",
-                      justifyContent: "center",
+                      minHeight: 48,
+                      justifyContent: menuBarOpen ? "initial" : "center",
+                      px: 2.5,
+                      mb: 1,
                     }}
+                    onClick={() => navigate(item.path)}
                   >
-                    <img
-                      src={process.env.PUBLIC_URL + "/" + item.icon}
-                      className="img-fluid"
-                      width={22}
-                      alt=""
-                    />
-                  </ListItemIcon>
-                  <ListItemText sx={{ opacity: menuBarOpen ? 1 : 0 }}>
-                    <Typography fontWeight={500} variant="paragraph">{item.text}</Typography>
-                  </ListItemText>
-                </ListItemButton>
-              </ListItem>
-            </Tooltip>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: menuBarOpen ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/" + item.icon}
+                        className="img-fluid"
+                        width={22}
+                        alt=""
+                      />
+                    </ListItemIcon>
+                    <ListItemText sx={{ opacity: menuBarOpen ? 1 : 0 }}>
+                      <Typography
+                        variant="paragraph"
+                        sx={{ ...typographyStyles.subHeading , fontWeight:700, fontSize:15}}
+                      >
+                        {item.text}
+                      </Typography>
+                    </ListItemText>
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
             ))}
         </List>
         <Divider />
