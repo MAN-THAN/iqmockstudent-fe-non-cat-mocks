@@ -233,7 +233,7 @@ function OnBoarding() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          paddingTop: 5,
+          paddingTop: 4,
           paddingLeft: 6,
           paddingRight: 6,
           width: "100vw",
@@ -460,7 +460,7 @@ function OnBoarding() {
           </Box>
           <Box
             sx={{
-              marginTop: 1,
+              marginTop: 1.5,
               width: "100%",
               display: "flex",
               flexDirection: "row",
@@ -473,7 +473,7 @@ function OnBoarding() {
                 sx={{
                   color: "white",
                   fontWeight: 700,
-                  fontSize: "1.5em",
+                  fontSize: "1.3em",
                 }}
               >
                 Set Your Target
@@ -482,7 +482,7 @@ function OnBoarding() {
                 sx={{
                   color: "#FEBC00",
                   fontWeight: 700,
-                  fontSize: "1.5em",
+                  fontSize: "1.3em",
                   marginTop: -0.7,
                 }}
               >
@@ -492,8 +492,8 @@ function OnBoarding() {
             <Box sx={{ marginTop: 1 }}>
               {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
               <button onClick={handleSubmit} className="custom-btn btn-12">
-                <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
-                <span style={{ fontSize: 20, paddingTop: 5 }} className="startMock">
+                <span style={{ fontSize: 18, paddingTop: 4 }}>Click!</span>
+                <span style={{ fontSize: 18, paddingTop: 4 }} className="startMock">
                   Start Mock
                 </span>
               </button>
