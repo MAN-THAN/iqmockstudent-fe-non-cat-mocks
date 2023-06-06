@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getPredictCollege } from "../services/Mock_api";
 import PrettoSlider from "../Components/Slider";
+import JoyRide from "react-joyride";
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -31,6 +32,8 @@ function OnBoarding() {
   const [expandPtle, setExpandPtle] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [formData, setFormData] = useState();
+  const [isToastDisplayed, setIsToastDisplayed] = useState(false);
+  const [isClickDisabled, setIsClickDisabled] = useState(false);
   console.log(formData);
 
   const cellStyle = {
@@ -93,15 +96,34 @@ function OnBoarding() {
 
   // console.log(percentile);
   const handleSubmit = () => {
-    navigate("/user_authentication", {
-      state: {
-        name: name,
-        email: email,
-        uid: uid,
-        mockId: state.mockId,
-        setId: state.setId,
-      },
-    });
+    if (startMock) {
+      navigate("/user_authentication", {
+        state: {
+          name: name,
+          email: email,
+          uid: uid,
+          mockId: state.mockId,
+          setId: state.setId,
+        },
+      });
+    } else {
+      if (isClickDisabled) return;
+      toast.info("Please Fill The Details First (If already filled, then click the Next button)", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      setIsToastDisplayed(true);
+      setIsClickDisabled(true);
+
+      // Enable the click after a delay (e.g., 2 seconds)
+      setTimeout(() => {
+        setIsClickDisabled(false);
+      }, 2000);
+    }
   };
   const showToastMessage = () => {
     toast.error("Some error occurred! Please try again.", {
@@ -132,21 +154,80 @@ function OnBoarding() {
   };
   console.log("coolr", college);
 
+  // Custom toast content component with a title
+  const CustomToastContent = ({ title }) => (
+    <div>
+      <Typography fontSize={18} color="#4094D2" fontWeight="bold">
+        Warning
+      </Typography>
+      <Typography fontSize={14}>Fill your details first, If its already filled then click the Next button</Typography>
+    </div>
+  );
+
   const handleSlider = () => {
+    if (isClickDisabled) return;
     if (startMock === false) {
-      toast.info("Please Fill The Details First ", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 1000,
-        hideProgressBar: true,
+      toast.info(<CustomToastContent title="Warning" />, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
+        pauseOnHover: true,
+        draggable: true,
+        className: "toast-message",
       });
+      setIsToastDisplayed(true);
+      setIsClickDisabled(true);
     }
+
+    // Enable the click after a delay (e.g., 2 seconds)
+    setTimeout(() => {
+      setIsClickDisabled(false);
+    }, 2000);
   };
+
+  // Tour steps
+  const TOUR_STEPS = [
+    {
+      target: ".login_form",
+      content: "Fill your details first, If its already filled then click the Next button on the form",
+      disableBeacon: true,
+    },
+    {
+      target: ".set_target_ptle",
+      content: "Set your target percentile",
+    },
+    {
+      target: ".college_table",
+      content: "Check colleges you can unlock on the basis of your filled data",
+    },
+    {
+      target: ".startMock",
+      content: "Now check your preparation, try CAT Mock",
+    },
+  ];
   return (
     <>
       <ToastContainer />
+      <JoyRide
+        steps={TOUR_STEPS}
+        continuous={true}
+        showSkipButton={true}
+        showProgress={true}
+        styles={{
+          tooltipContainer: {
+            textAlign: "left",
+          },
+          buttonNext: {
+            backgroundColor: "green",
+            outline: "none",
+          },
+          buttonBack: {
+            marginRight: 10,
+            color: "gray",
+          },
+        }}
+      />
       <Box
         component="main"
         sx={{
@@ -178,7 +259,7 @@ function OnBoarding() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: 4,
+            padding: 2,
           }}
         >
           {" "}
@@ -190,8 +271,9 @@ function OnBoarding() {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ width: "40%" }}>
+            <Box sx={{ width: "40%", position: "relative" }} className="login_form">
               <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
+              {/* <Box sx={{ position: "absolute", top: 40, left: "50%" }} className="login_form"></Box> */}
             </Box>
             <Box sx={{ width: "58%" }}>
               {startMock ? (
@@ -335,6 +417,7 @@ function OnBoarding() {
                       display: "flex",
                       flexDirection: "column",
                     }}
+                    className="college_table"
                   >
                     <Box>
                       <Typography
@@ -368,7 +451,7 @@ function OnBoarding() {
                           paddingLeft: 1,
                         }}
                       >
-                        B-Schools you unlock.
+                        B-Schools you can unlock.
                       </Typography>
                     </Box>
                   </Box>
@@ -407,17 +490,15 @@ function OnBoarding() {
                 Percentile{" "}
               </Typography>
             </Box>
-            {startMock ? (
-              <Box sx={{ marginTop: 1 }}>
-                {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
-                <button onClick={handleSubmit} className="custom-btn btn-12">
-                  <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
-                  <span style={{ fontSize: 20, paddingTop: 5 }}>Start Mock</span>
-                </button>
-              </Box>
-            ) : (
-              <></>
-            )}
+            <Box sx={{ marginTop: 1 }}>
+              {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
+              <button onClick={handleSubmit} className="custom-btn btn-12">
+                <span style={{ fontSize: 20, paddingTop: 5 }}>Click!</span>
+                <span style={{ fontSize: 20, paddingTop: 5 }} className="startMock">
+                  Start Mock
+                </span>
+              </button>
+            </Box>
           </Box>
           <Box onClick={handleSlider} sx={{ marginTop: 0, width: "85%" }}>
             {/* <Slider
@@ -430,10 +511,11 @@ function OnBoarding() {
               step={0.1}
             /> */}
             <PrettoSlider
+              className="set_target_ptle"
               step={0.1}
               disabled={disabled}
               onChange={(e) => setTimeout(() => handlePercentile(e), 200)}
-              valueLabelDisplay="on"
+              valueLabelDisplay={ startMock ? "on" : "off"}
               aria-label="pretto slider"
               defaultValue={percentile}
               setPercentile={setPercentile}
