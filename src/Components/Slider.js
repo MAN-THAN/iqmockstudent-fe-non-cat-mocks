@@ -7,7 +7,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 
 function ValueLabelComponent(props) {
-    const { children, value } = props;
+    const { children, value, handleSlider } = props;
   return (
     <Tooltip enterTouchDelay={0} placement="top" title={value}>
       {children}

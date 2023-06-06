@@ -419,3 +419,12 @@ body {
 }
 
 /* Transitions */
+
+/* // toast message styles */
+.toast-message {
+    background: darkblue;
+    color: #fff;
+    font-size: 20px;
+    /* width: 20em; */
+    /* padding: 30px 20px; */
+}
