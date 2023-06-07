@@ -86,9 +86,9 @@ export default function ViewSolution() {
     });
     return (ref.current.style.display = "none");
   };
-  console.log(data);
-  console.log(open);
-  console.log(index);
+  console.log("data",data);
+  console.log("open",open);
+  console.log("index",index);
 
   // console.log(data);
   // console.log(open);
@@ -496,7 +496,16 @@ export default function ViewSolution() {
               {/* Navigation bar end */}
 
               {/* Main center start */}
-              <Box component="div" sx={{ display: "flex", gap: 1, height: "75vh", mt: "1em", pb: 1 }}>
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  height: "75vh",
+                  mt: "1em",
+                  pb: 1,
+                }}
+              >
                 {/* LEFT Main start */}
                 <div
                   className="flex-column gap-3 "
@@ -925,7 +934,11 @@ export default function ViewSolution() {
                     <div>
                       <ModifyButton
                         variant="outlined"
-                        onClick={() => navigate(`/errortracker/${mockId}/${attemptId}`)}
+                        onClick={() => {
+                          if (index < show.length) {
+                            setIndex((prevIndex) => prevIndex + 1);
+                          }
+                        }}
                         endIcon={<BsChevronDoubleRight />}
                         sx={{
                           background: "#2a2b2b",
