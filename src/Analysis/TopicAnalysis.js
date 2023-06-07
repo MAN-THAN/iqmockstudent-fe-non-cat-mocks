@@ -6,34 +6,31 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material";
-import {
-  StyledTableCell,
-  StyledTable,
-  StyledTableRow,
-} from "../styleSheets/Style";
+import { StyledTableCell, StyledTable, StyledTableRow } from "../styleSheets/Style";
 import { Typography } from "@mui/material";
-
 
 function TopicAnalysis() {
   const [data, setData] = useState([]);
-  const { topicWiseAnalysis } = useAuth();
-  
-  useEffect(() => {
-    if (topicWiseAnalysis) {
-     setData(topicWiseAnalysis.topicWiseAnalysis); 
-    } 
-  }, [topicWiseAnalysis]);
+  const { topicWiseAnalysis, topperData } = useAuth();
+  const [topper_data, setTopperData] = useState();
 
+  useEffect(() => {
+    if (topicWiseAnalysis && topperData) {
+      setData(topicWiseAnalysis.topicWiseAnalysis);
+      setTopperData(topperData.topperAnalysis[0].data[3].topicWiseAnalysis);
+    }
+  }, [topicWiseAnalysis, topperData]);
+  console.log(topperData);
   const headings = [
     "Number",
     "Topic",
-    "Number of Questions",
-    "Number of Attempted Questions",
-    "Number of Correct Attempts",
-    "Number of Incorrect Attempts",
+    "Total Questions",
+    "Attempted Questions",
+    "Correct Attempts",
+    "Incorrect Attempts",
     "Mark obtained by correct questions",
-    "Overall score in the topic ",
-    "Mark Obtained by Topper in this topic",
+    "Overall score",
+    "Mark obtained by Topper",
     "Mark lose by Incorrect Attempt",
   ];
   return (
@@ -52,7 +49,7 @@ function TopicAnalysis() {
           <TableRow sx={{ background: "white", width: "10%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell align="left" key={ind} className="fw-bold">
+                <StyledTableCell align="left" key={ind} className="fw-bold" sx={{ fontSize: "16px" }}>
                   {heading}
                 </StyledTableCell>
               );
@@ -78,16 +75,15 @@ function TopicAnalysis() {
                   <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
                   <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
                   <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByCorrectQuestion}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByTopperInThisTopic ? item.markObtainedByTopperInThisTopic : 0 }
+                    {topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
+                    topper_data[index + 1].markObtainedByTopperInThisTopic == undefined
+                      ? "N/A"
+                      : topper_data[index + 1].markObtainedByTopperInThisTopic}
                   </StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markLoseByIncorrectAttempt}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>
               );
             })}
