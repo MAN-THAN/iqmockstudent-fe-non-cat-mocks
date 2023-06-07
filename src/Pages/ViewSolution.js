@@ -511,7 +511,13 @@ export default function ViewSolution() {
               {/* Main center start */}
               <Box
                 component="div"
-                sx={{ display: "flex", gap: 1, height: "75vh", mt: "1em", pb:1}}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  height: "75vh",
+                  mt: "1em",
+                  pb: 1,
+                }}
               >
                 {/* LEFT Main start */}
                 <div
@@ -523,7 +529,6 @@ export default function ViewSolution() {
                     border: "none",
                     borderRadius: 5,
                     height: "100%",
-                   
                   }}
                 >
                   <Box
@@ -1051,9 +1056,7 @@ export default function ViewSolution() {
                     <div>
                       <ModifyButton
                         variant="outlined"
-                        onClick={() =>
-                          navigate(`/errortracker/${mockId}/${attemptId}`)
-                        }
+                        onClick={() => setIndex((prevIndex) => prevIndex + 1)}
                         endIcon={<BsChevronDoubleRight />}
                         sx={{
                           background: "#2a2b2b",
