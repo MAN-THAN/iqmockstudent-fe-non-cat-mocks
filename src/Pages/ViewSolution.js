@@ -96,9 +96,9 @@ export default function ViewSolution() {
     );
     return (ref.current.style.display = "none");
   };
-  console.log(data);
-  console.log(open);
-  console.log(index);
+  console.log("data",data);
+  console.log("open",open);
+  console.log("index",index);
 
   // console.log(data);
   // console.log(open);
@@ -1056,7 +1056,11 @@ export default function ViewSolution() {
                     <div>
                       <ModifyButton
                         variant="outlined"
-                        onClick={() => setIndex((prevIndex) => prevIndex + 1)}
+                        onClick={() => {
+                          if (index < show.length) {
+                            setIndex((prevIndex) => prevIndex + 1);
+                          }
+                        }}
                         endIcon={<BsChevronDoubleRight />}
                         sx={{
                           background: "#2a2b2b",
