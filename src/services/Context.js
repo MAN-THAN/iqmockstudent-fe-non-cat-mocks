@@ -23,9 +23,10 @@ export const ContextProvider = ({ children }) => {
   console.log(isWindowClosed);
 
   const analysisDataApi = async (attemptId, mockId) => {
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     try {
       const response = await fetchAnalysisData(attemptId);
-      const response2 = await fetchMockStatus(mockId);
+      const response2 = await fetchMockStatus(mockId, uid);
       console.log(response);
       console.log(response2);
       if (response?.status == 200) {
