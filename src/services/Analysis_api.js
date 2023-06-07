@@ -188,11 +188,11 @@ export const getMarketPlace = async () => {
 
 // api for checking mock status
 
-export const fetchMockStatus = async (mockId, uid) => {
+export const fetchMockStatus = async (mockId, attemptId) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/mockstatus/${mockId}/${uid}`,
+      url: `/api/student/v1/leaderboard/mockstatus/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
