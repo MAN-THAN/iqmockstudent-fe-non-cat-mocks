@@ -11,7 +11,7 @@ const InfoCard = ({ iconPath, label, value, infoIconPath, background }) => {
   return (
     <Card
       sx={{
-        width: "14.146em",
+        width: "12.146em",
         boxShadow: 3,
         display: "flex",
         alignItems: "center",
@@ -43,7 +43,7 @@ const InfoCard = ({ iconPath, label, value, infoIconPath, background }) => {
 export const TempCompo = ({ studentAttempted, attemptedCorrect, duration, avgTimeSpent, topperDuration }) => {
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: "1em", alignItems: "center", justifyContent: "space-around", width: "80%" }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: "1em", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
         <InfoCard iconPath="/click 1.svg" label="Student Attempted" value={`${studentAttempted}%`} infoIconPath="/info1.svg" />
         <InfoCard iconPath="/checked 1.svg" label="Attempted Correct" value={`${attemptedCorrect}%`} infoIconPath="/info1.svg" />
         <InfoCard iconPath={duration < avgTimeSpent ? "/CardsIcons/thumbUp.png" : "/CardsIcons/thumbDown.png"} label="Time spent by you" value={duration} infoIconPath="/info1.svg" />
