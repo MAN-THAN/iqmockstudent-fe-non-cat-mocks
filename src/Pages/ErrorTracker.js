@@ -9,7 +9,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { IoIosArrowForward } from "react-icons/io";
 import Button from "@mui/material/Button";
-import BarGraph from "../Components/BarGraphErrorTracker";
+import PieGraph from "../Components/BarGraphErrorTracker";
 import { useAuth } from "../services/Context";
 import { fetchErrorTracker } from "../services/Analysis_api";
 import { useNavigate, useParams } from "react-router-dom";
@@ -350,7 +350,7 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <BarGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
+                    <PieGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
                   </Box>
                   <Box sx={{ mt: 2 }}>{<GraphComp colorDetailing={colorDetailing} />}</Box>
                 </Box>
