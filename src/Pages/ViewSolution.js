@@ -427,7 +427,7 @@ export default function ViewSolution() {
                   flexWrap: "wrap",
                 }}
               >
-                <div >
+                <div>
                   {/* <MultipleSelect options={Subjects} setType={setSelected} /> */}
                   <FormControl
                     sx={{
@@ -511,7 +511,7 @@ export default function ViewSolution() {
               {/* Main center start */}
               <Box
                 component="div"
-                sx={{ display: "flex", gap: 1, height: "75vh", mt: "1em" }}
+                sx={{ display: "flex", gap: 1, height: "75vh", mt: "1em", pb:1}}
               >
                 {/* LEFT Main start */}
                 <div
@@ -523,6 +523,7 @@ export default function ViewSolution() {
                     border: "none",
                     borderRadius: 5,
                     height: "100%",
+                   
                   }}
                 >
                   <Box
@@ -532,7 +533,7 @@ export default function ViewSolution() {
                       boxShadow: 3,
                       border: "none",
                       borderRadius: 5,
-                      height: "81%",
+                      height: "78%",
                     }}
                     component={Paper}
                   >
@@ -907,7 +908,7 @@ export default function ViewSolution() {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                      height: "auto",
+                      // height: "auto",
                     }}
                   >
                     <TempCompo
@@ -1057,7 +1058,7 @@ export default function ViewSolution() {
                         sx={{
                           background: "#2a2b2b",
                           p: 1,
-                          mb:1,
+                          mb: 1,
                           width: "100%",
                           color: "white",
                           fontWeight: "bold",
@@ -1068,7 +1069,7 @@ export default function ViewSolution() {
                           },
                         }}
                       >
-                       Go to Next Question
+                        Go to Next Question
                       </ModifyButton>
 
                       <ModifyButton
