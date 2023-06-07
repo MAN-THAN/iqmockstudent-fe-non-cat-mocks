@@ -140,7 +140,7 @@ function AnalysisMain() {
   console.log(isErr);
   useEffect(() => {
     if (isErr) {
-      showToastMessage();
+      // showToastMessage();
     }
   }, [isErr]);
 

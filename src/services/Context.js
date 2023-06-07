@@ -20,7 +20,7 @@ export const ContextProvider = ({ children }) => {
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
   const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
-  console.log(isWindowClosed)
+  console.log(isWindowClosed);
 
   const analysisDataApi = async (attemptId, mockId) => {
     try {
@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
         setAnalysisData(response.data.data);
       } else {
         console.log("--> Error in analysis data fetching");
-        // showToastMessage();
+        showToastMessage();
         setErr(true);
       }
       if (response2?.status == 200) {
@@ -42,12 +42,12 @@ export const ContextProvider = ({ children }) => {
         setLoading(false);
       } else {
         console.log("--> Error in mock status fetching");
-        // showToastMessage();
+        showToastMessage();
         setErr(true);
       }
-    } catch (err) { 
+    } catch (err) {
       console.log(err);
-      // showToastMessage();
+      showToastMessage(err?.response?.data?.message);
       setErr(true);
     }
   };
@@ -94,11 +94,10 @@ export const ContextProvider = ({ children }) => {
     color: "#fff",
   }));
 
-  const showToastMessage = () => {
-    toast.error("Some error occurred! Please reload the page.", {
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
       position: toast.POSITION.TOP_CENTER,
     });
-    return setLoading(false);
   };
 
   console.log("isloading", isLoading);
@@ -129,7 +128,7 @@ export const ContextProvider = ({ children }) => {
           Backdrop,
           showToastMessage,
           setLoading,
-          topperData
+          topperData,
         }}
       >
         {children}
