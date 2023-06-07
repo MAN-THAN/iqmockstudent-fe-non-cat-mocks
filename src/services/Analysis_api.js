@@ -53,6 +53,7 @@ export const fetchOverallAcross = async (uid, attemptId) => {
   }
 };
 
+
 export const fetchViewSolution = async (attemptId, mockId) => {
   const token = localStorage.getItem("auth_token");
   try {

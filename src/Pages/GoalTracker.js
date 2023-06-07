@@ -148,20 +148,29 @@ export default function GoalTracker() {
       >
         {/* Header */}
         <Box component="header">
-          <HeaderNew />
+          <HeaderNew
+            logoPath={"/iQuantaWhite.png"}
+            style={{ color: "white" }}
+          />
         </Box>
 
         {/* Header end  */}
         {/* main Section start */}
         {isLoading ? (
-          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+          <div
+            className="d-flex align-items-center flex-column gap-2 justify-content-center"
+            style={{ width: "100%", height: "80%" }}
+          >
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
           </div>
         ) : (
-          <Box component="main" sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+          <Box
+            component="main"
+            sx={{ display: "flex", flexDirection: "column", mt: 2 }}
+          >
             {/* Two div */}
             <Box component="div" sx={{ display: "flex", gap: 2 }}>
               <Box
@@ -191,7 +200,7 @@ export default function GoalTracker() {
                   background: "white",
                   zIndex: 99,
                   p: 1,
-                  overflowX : "hidden"
+                  overflowX: "hidden",
                 }}
               >
                 <DetailCards
@@ -213,7 +222,13 @@ export default function GoalTracker() {
                               }}
                               align="left"
                             >
-                              <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  gap: 1,
+                                }}
+                              >
                                 {" "}
                                 <Typography
                                   sx={{
@@ -224,7 +239,11 @@ export default function GoalTracker() {
                                 >
                                   Ranking
                                 </Typography>
-                                <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                                <img
+                                  src="/onboarding_arrow.svg"
+                                  alt="no image"
+                                  width="10px"
+                                ></img>
                               </Box>
                               {/* <Box sx={{ width: "1.7em" }}></Box> */}
                             </TableCell>
@@ -260,13 +279,34 @@ export default function GoalTracker() {
                                     borderBottom: "1px solid #E1E1E1",
                                   }}
                                 >
-                                  <TableCell sx={{ ...cellStyle, paddingRight: 5, fontWeight: 600, paddingTop: "0 !important" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      ...cellStyle,
+                                      paddingRight: 5,
+                                      fontWeight: 600,
+                                      paddingTop: "0 !important",
+                                    }}
+                                    align="left"
+                                  >
                                     {ind + 1}
                                   </TableCell>
-                                  <TableCell sx={{ cellStyle, fontWeight: 600, width: "40% !important" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      cellStyle,
+                                      fontWeight: 600,
+                                      width: "40% !important",
+                                    }}
+                                    align="left"
+                                  >
                                     {item.name}
                                   </TableCell>
-                                  <TableCell sx={{ ...cellStyle, paddingTop: "0 !important" }} align="left">
+                                  <TableCell
+                                    sx={{
+                                      ...cellStyle,
+                                      paddingTop: "0 !important",
+                                    }}
+                                    align="left"
+                                  >
                                     {item.avgSalary + " LPA" || "tbd"}
                                   </TableCell>
                                 </TableRow>
@@ -344,14 +384,16 @@ export default function GoalTracker() {
               <div
                 style={{
                   ...infoStyle.divStyle,
-                  background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+                  background:
+                    "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Current Mock</Typography>
               <div
                 style={{
                   ...infoStyle.divStyle,
-                  background: "linear-gradient(360deg,#BA27D2 0%, #9533F7 100%)",
+                  background:
+                    "linear-gradient(360deg,#BA27D2 0%, #9533F7 100%)",
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
@@ -400,14 +442,16 @@ export default function GoalTracker() {
                             border: 1,
                             borderColor: "#809EB9",
                           },
-                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-                            border: 1,
-                            borderColor: "#809EB9",
-                          },
-                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            border: 2,
-                            borderColor: "#809EB9",
-                          },
+                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                            {
+                              border: 1,
+                              borderColor: "#809EB9",
+                            },
+                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                            {
+                              border: 2,
+                              borderColor: "#809EB9",
+                            },
                         }}
                       />
                     }
