@@ -13,7 +13,7 @@ function HeaderNew({ style, logoPath }) {
           <img src={logoPath || "/iQuanta.png"} alt="iquanta_logo" className="img-fluid iquanta_logo" />
         </div>
 
-        <div className="d-flex gap-3 ">
+        <div className="d-flex gap-2 ">
           <div className="text-end">
             <Typography
               style={{

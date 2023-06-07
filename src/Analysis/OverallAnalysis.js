@@ -22,7 +22,7 @@ function OverallAnalysis() {
     minutes = minutes < 10 ? +minutes : minutes;
     extraSeconds = extraSeconds < 10 ? +extraSeconds : extraSeconds;
     console.log(minutes, extraSeconds);
-    return `${minutes + "min" + " " + extraSeconds + "sec"}`;
+    return `${minutes + "." + extraSeconds + " min"}`;
   };
   convertStoMs(70);
   console.log(data);

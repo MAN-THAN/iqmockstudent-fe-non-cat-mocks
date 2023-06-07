@@ -36,6 +36,7 @@ function AnalysisMain() {
     setMenuBarOpen,
     Backdrop,
     openDesktopView,
+    fetchMockStatus
   } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
@@ -66,7 +67,8 @@ function AnalysisMain() {
     window.localStorage.removeItem("my-counter-sec");
     window.localStorage.removeItem("my-counter-min");
     window.localStorage.removeItem("questionStatus");
-    analysisDataApi(attemptId); //call analysis data api and send attempt id to api function also!
+    analysisDataApi(attemptId, mockId); //call analysis data api and send attempt id to api function also!
+    // fetchMockStatus(mockId);
   }, []);
 
   useEffect(() => {

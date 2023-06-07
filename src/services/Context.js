@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { fetchMockStatus } from "./Analysis_api";
 
 export const Context = React.createContext();
 
@@ -13,35 +14,40 @@ export function useAuth() {
 }
 
 export const ContextProvider = ({ children }) => {
-  
   const [analysisData, setAnalysisData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
- 
-  const analysisDataApi = async (attemptId) => {
-    const response = await fetchAnalysisData(attemptId);
-    console.log(response);
-    if (response?.status === 200) {
-      setAnalysisData(response.data.data);
-      setLoading(false);
-    } else {
-      console.log("--> Error in analysis data fetching");
-      return setErr(true);
-    }
-  };
+  const [isWindowClosed, setWindowClosed] = useState();
+  const [topperData, setTopperData] = useState();
+  console.log(isWindowClosed)
 
-  //Function for getting a response from domain and convert to http
-
-  const [content, setContent] = useState("");
-
-  const fetchData = async (url) => {
+  const analysisDataApi = async (attemptId, mockId) => {
     try {
-      const response = await fetch(url);
-      const data = await response.text();
-      setContent(data);
-    } catch (error) {
-      console.error(error);
+      const response = await fetchAnalysisData(attemptId);
+      const response2 = await fetchMockStatus(mockId);
+      console.log(response);
+      console.log(response2);
+      if (response?.status == 200) {
+        setAnalysisData(response.data.data);
+      } else {
+        console.log("--> Error in analysis data fetching");
+        // showToastMessage();
+        setErr(true);
+      }
+      if (response2?.status == 200) {
+        setWindowClosed(response2.data.isWindowClosed);
+        setTopperData(response2.data.mockData);
+        setLoading(false);
+      } else {
+        console.log("--> Error in mock status fetching");
+        // showToastMessage();
+        setErr(true);
+      }
+    } catch (err) { 
+      console.log(err);
+      // showToastMessage();
+      setErr(true);
     }
   };
 
@@ -60,8 +66,6 @@ export const ContextProvider = ({ children }) => {
   //     window.location.href = url;
   //   }
   // };
-
-
 
   // function  for disable the right click and inspect panel from keyboard
 
@@ -117,7 +121,6 @@ export const ContextProvider = ({ children }) => {
           difficulty,
           analysisDataApi,
           isLoading,
-          fetchData,
           isErr,
           setMenuBarOpen,
           menuBarOpen,
@@ -125,7 +128,7 @@ export const ContextProvider = ({ children }) => {
           Backdrop,
           showToastMessage,
           setLoading,
-     
+          topperData
         }}
       >
         {children}
