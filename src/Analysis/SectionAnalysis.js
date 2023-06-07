@@ -3,44 +3,55 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  StyledTableCell,
-  StyledTable,
-  StyledTableRow,
-} from "../styleSheets/Style";
+import { StyledTableCell, StyledTable, StyledTableRow } from "../styleSheets/Style";
 import { useAuth } from "../services/Context";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FcCheckmark } from "react-icons/fc";
+import { Typography } from "@mui/material";
 
 function SectionAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
-  const { sectionWiseAnalysis } = useAuth();
+  const { sectionWiseAnalysis, topperData } = useAuth();
+  const [topper_Data, setTopper_Data] = useState();
 
   useEffect(() => {
-    if (sectionWiseAnalysis) {
+    if (sectionWiseAnalysis && topperData) {
       if (params.subject == "varc") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
+        setTopper_Data(topperData.allMocksCalculation[2].varc);
       } else if (params.subject === "lrdi") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.lrdi);
+        setTopper_Data(topperData.allMocksCalculation[1].lrdi);
       } else if (params.subject === "quants") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.quants);
+        setTopper_Data(topperData.allMocksCalculation[0].quants);
       }
     }
-  },[params, sectionWiseAnalysis]);
+  }, [params, sectionWiseAnalysis, topperData]);
+  console.log(data);
+  console.log(topper_Data);
 
   const headings = [
     "Serial no.",
     "Topic",
     "Subtopic",
-    "Correct or Incorrect",
+    "Correct / Incorrect",
     "Difficulty",
-    "%student got this answer correct",
-    "Time spent on this Question",
-    "Time spent by mock topper on this Question ",
+    "Your's Time",
+    "Answer correct",
+    "Topper's Time",
   ];
+  const convertStoMs = (seconds) => {
+    let minutes = Math.floor(seconds / 60);
+    let extraSeconds = seconds % 60;
+    minutes = minutes < 10 ? +minutes : minutes;
+    extraSeconds = extraSeconds < 10 ? +extraSeconds : extraSeconds;
+    //  console.log(minutes, extraSeconds);
+    return `${minutes + "." + extraSeconds + " min"}`;
+  };
 
   return (
     <>
@@ -59,7 +70,7 @@ function SectionAnalysis() {
             <TableRow sx={{ background: "white", width: "100%" }}>
               {headings.map((heading, ind) => {
                 return (
-                  <StyledTableCell align="left" key={ind} className="fw-bold ">
+                  <StyledTableCell align="left" key={ind} className="fw-bold" sx={{ fontSize: "16px" }}>
                     {heading}
                   </StyledTableCell>
                 );
@@ -69,7 +80,7 @@ function SectionAnalysis() {
 
           <TableBody>
             {data.length > 0 &&
-              data.map((item,ind) => {
+              data.map((item, ind) => {
                 return (
                   <StyledTableRow
                     key={ind}
@@ -80,10 +91,16 @@ function SectionAnalysis() {
                       cursor: "pointer",
                     }}
                   >
-                    <StyledTableCell align="left">{ind + 1}</StyledTableCell>
-                    <StyledTableCell align="left">{item.topic}</StyledTableCell>
-                    <StyledTableCell align="left" style={{ fontSize: "15px" }}>
-                      {item.subtopic}
+                    <StyledTableCell align="left">
+                      <Typography fontSize="14px" fontWeight={"bold"}>
+                        {ind + 1}
+                      </Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography fontSize="14px">{item.topic}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography fontSize="14px"> {item.subtopic[0] + " | " + item.subtopic[1]}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       {item.studentAnswer !== undefined ? (
@@ -93,17 +110,22 @@ function SectionAnalysis() {
                           <RxCross2 color="red" />
                         )
                       ) : (
-                        "N/A"
+                        <Typography fontSize="14px"> {"N/A"}</Typography>
                       )}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.difficulty}
+                      <Typography fontSize="14px"> {item.difficulty}</Typography>
                     </StyledTableCell>
-                    <StyledTableCell align="left">{item.score}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography fontSize="14px"> {item.duration ? convertStoMs(Number(item.duration)) : "N/A"}</Typography>
+                    </StyledTableCell>
                     <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                      {item.duration}
+                      <Typography fontSize="14px"> {topper_Data[ind]?.attemptedCorrect + " %"}</Typography>
                     </StyledTableCell>
-                    <StyledTableCell align="left"></StyledTableCell>
+
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                      <Typography fontSize="14px"> {convertStoMs(Number(topper_Data[ind]?.durationByTopper))}</Typography>
+                    </StyledTableCell>
                   </StyledTableRow>
                 );
               })}

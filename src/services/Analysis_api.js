@@ -184,3 +184,22 @@ export const getMarketPlace = async () => {
     return err;
   }
 };
+
+// api for checking mock status
+
+export const fetchMockStatus = async (mockId) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `/api/student/v1/leaderboard/mockstatus/${mockId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
