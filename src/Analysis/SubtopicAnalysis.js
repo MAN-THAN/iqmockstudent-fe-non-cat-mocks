@@ -26,13 +26,13 @@ function SubtopicAnalysis() {
   useEffect(() => {
     if (params.subject == "varc") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.varc);
-      setTopperData(topperData.topperAnalysis[0].data[6].subtopicWiseAnalysis.varc);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.varc);
     } else if (params.subject === "lrdi") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.lrdi);
-      setTopperData(topperData.topperAnalysis[0].data[6].subtopicWiseAnalysis.lrdi);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.lrdi);
     } else if (params.subject === "quants") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.quants);
-      setTopperData(topperData.topperAnalysis[0].data[6].subtopicWiseAnalysis.quants);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.quants);
     }
   }, [params, subtopicWiseAnalysis, topperData]);
   // console.log("section", data);
@@ -99,10 +99,10 @@ function SubtopicAnalysis() {
                   <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheSubtopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {topper_data[index + 1].markObtainedByTopperInThisSubtopic == null ||
+                    {topper_data ? topper_data[index + 1].markObtainedByTopperInThisSubtopic == null ||
                     topper_data[index + 1].markObtainedByTopperInThisSubtopic == undefined
                       ? "N/A"
-                      : topper_data[index + 1].markObtainedByTopperInThisSubtopic}
+                      : topper_data[index + 1].markObtainedByTopperInThisSubtopic : "TBD"}
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>

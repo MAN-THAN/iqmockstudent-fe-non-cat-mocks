@@ -18,16 +18,16 @@ function SectionAnalysis() {
   const [topper_Data, setTopper_Data] = useState();
 
   useEffect(() => {
-    if (sectionWiseAnalysis && topperData) {
+    if (sectionWiseAnalysis) {
       if (params.subject == "varc") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
-        setTopper_Data(topperData.allMocksCalculation[2].varc);
+        setTopper_Data(topperData?.allMocksCalculation[2].varc);
       } else if (params.subject === "lrdi") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.lrdi);
-        setTopper_Data(topperData.allMocksCalculation[1].lrdi);
+        setTopper_Data(topperData?.allMocksCalculation[1].lrdi);
       } else if (params.subject === "quants") {
         setData(sectionWiseAnalysis.sectionWiseAnalysis.quants);
-        setTopper_Data(topperData.allMocksCalculation[0].quants);
+        setTopper_Data(topperData?.allMocksCalculation[0].quants);
       }
     }
   }, [params, sectionWiseAnalysis, topperData]);
@@ -120,11 +120,10 @@ function SectionAnalysis() {
                       <Typography fontSize="14px"> {item.duration ? convertStoMs(Number(item.duration)) : "N/A"}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                      <Typography fontSize="14px"> {topper_Data[ind]?.attemptedCorrect + " %"}</Typography>
+                      <Typography fontSize="14px"> {topper_Data ? (topper_Data?.[ind]?.attemptedCorrect + " %") : "TBD"}</Typography>
                     </StyledTableCell>
-
                     <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                      <Typography fontSize="14px"> {convertStoMs(Number(topper_Data[ind]?.durationByTopper))}</Typography>
+                      <Typography fontSize="14px"> {topper_Data ? (convertStoMs(Number(topper_Data?.[ind]?.durationByTopper))) : "TBD"}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 );

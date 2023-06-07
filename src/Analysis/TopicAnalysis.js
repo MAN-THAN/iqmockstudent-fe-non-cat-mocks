@@ -15,12 +15,12 @@ function TopicAnalysis() {
   const [topper_data, setTopperData] = useState();
 
   useEffect(() => {
-    if (topicWiseAnalysis && topperData) {
+    if (topicWiseAnalysis) {
       setData(topicWiseAnalysis.topicWiseAnalysis);
-      setTopperData(topperData.topperAnalysis[0].data[3].topicWiseAnalysis);
+      setTopperData(topperData?.topperAnalysis[0].data[3].topicWiseAnalysis);
     }
   }, [topicWiseAnalysis, topperData]);
-  console.log(topperData);
+  // console.log(topperData);
   const headings = [
     "Number",
     "Topic",
@@ -78,10 +78,10 @@ function TopicAnalysis() {
                   <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
+                    {topper_data ? topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
                     topper_data[index + 1].markObtainedByTopperInThisTopic == undefined
                       ? "N/A"
-                      : topper_data[index + 1].markObtainedByTopperInThisTopic}
+                      : topper_data[index + 1].markObtainedByTopperInThisTopic : "TBD"}
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>
