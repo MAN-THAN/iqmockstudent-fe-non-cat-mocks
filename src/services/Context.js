@@ -37,6 +37,7 @@ export const ContextProvider = ({ children }) => {
       }
       if (response2?.status == 200) {
         setWindowClosed(response2.data.isWindowClosed);
+        window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
         setTopperData(response2.data.mockData);
         setLoading(false);
       } else {

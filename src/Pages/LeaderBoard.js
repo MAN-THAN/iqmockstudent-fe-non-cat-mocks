@@ -9,7 +9,6 @@ import HeaderNew from "../Components/HeaderNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import { ToastContainer, toast } from "react-toastify";
 
-
 import { useAuth } from "../services/Context";
 
 function LeaderBoard() {
@@ -55,17 +54,22 @@ function LeaderBoard() {
         showToastMessage(err?.response?.data?.msg);
       }
     }
-
-    fetchLeaderBoard(attemptId);
+    const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+    console.log(isWindow);
+    if (isWindow) {
+      showToastMessage("window is open");
+    } else {
+      fetchLeaderBoard(attemptId);
+    }
   }, [filter]);
 
   console.log(filter, "fiilll");
-    const showToastMessage = (msg) => {
-      toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      return (ref.current.style.display = "none");
-    };
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return (ref.current.style.display = "none");
+  };
 
   return (
     <>

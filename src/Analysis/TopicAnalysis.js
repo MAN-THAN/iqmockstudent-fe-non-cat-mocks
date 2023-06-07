@@ -28,10 +28,10 @@ function TopicAnalysis() {
     "Attempted Questions",
     "Correct Attempts",
     "Incorrect Attempts",
-    "Mark obtained by correct questions",
+    "Marks gained",
     "Overall score",
-    "Mark obtained by Topper",
-    "Mark lose by Incorrect Attempt",
+    "Marks obtained by Topper",
+    "Marks deducted",
   ];
   return (
     <TableContainer
@@ -49,9 +49,11 @@ function TopicAnalysis() {
           <TableRow sx={{ background: "white", width: "10%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell align="left" key={ind} className="fw-bold" sx={{ fontSize: "16px" }}>
-                  {heading}
-                </StyledTableCell>
+                <>
+                  <StyledTableCell align="left" key={ind} className="fw-bold" sx={{ fontSize: "16px"}}>
+                    {heading}
+                  </StyledTableCell>
+                </>
               );
             })}
           </TableRow>
@@ -78,10 +80,12 @@ function TopicAnalysis() {
                   <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {topper_data ? topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
-                    topper_data[index + 1].markObtainedByTopperInThisTopic == undefined
-                      ? "N/A"
-                      : topper_data[index + 1].markObtainedByTopperInThisTopic : "TBD"}
+                    {topper_data
+                      ? topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
+                        topper_data[index + 1].markObtainedByTopperInThisTopic == undefined
+                        ? "N/A"
+                        : topper_data[index + 1].markObtainedByTopperInThisTopic
+                      : "TBD"}
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>
