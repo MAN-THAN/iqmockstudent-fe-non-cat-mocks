@@ -53,7 +53,8 @@ export const fetchOverallAcross = async (uid, attemptId) => {
   }
 };
 
-export const fetchViewSolution = async (attemptId,mockId) => {
+
+export const fetchViewSolution = async (attemptId, mockId) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -173,6 +174,25 @@ export const getMarketPlace = async () => {
   try {
     const res = request({
       url: `/api/student/v1/marketplace`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for checking mock status
+
+export const fetchMockStatus = async (mockId) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `/api/student/v1/leaderboard/mockstatus/${mockId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
