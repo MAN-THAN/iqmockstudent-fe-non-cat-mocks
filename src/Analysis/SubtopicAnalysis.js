@@ -3,11 +3,7 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  StyledTableCell,
-  StyledTable,
-  StyledTableRow,
-} from "../styleSheets/Style";
+import { StyledTableCell, StyledTable, StyledTableRow } from "../styleSheets/Style";
 import { useAuth } from "../services/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -15,44 +11,47 @@ import { useState, useEffect } from "react";
 function SubtopicAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
-  const { subtopicWiseAnalysis } = useAuth();
+  const { subtopicWiseAnalysis, topperData } = useAuth();
+  const [topper_data, setTopperData] = useState();
   const navigate = useNavigate();
 
-
   function getStyles(MockId, mockid, theme) {
-  return {
-    fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
-    backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
-    color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
-
-  };
-}
+    return {
+      fontWeight: MockId === mockid ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular,
+      backgroundColor: MockId === mockid ? theme.palette.primary.main : "inherit",
+      color: MockId === mockid ? theme.palette.primary.contrastText : "inherit",
+    };
+  }
 
   useEffect(() => {
     if (params.subject == "varc") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.varc);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.varc);
     } else if (params.subject === "lrdi") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.lrdi);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.lrdi);
     } else if (params.subject === "quants") {
       setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.quants);
+      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.quants);
     }
-  }, [params, subtopicWiseAnalysis]);
-  console.log("section", data);
+  }, [params, subtopicWiseAnalysis, topperData]);
+  // console.log("section", data);
 
-  console.log("manthan tyagi")
+  // console.log("manthan tyagi")
+  console.log(topper_data);
 
-   const headings = [
-     "Number",
-     "Subtopic",
-     "Number of Questions",
-     "Number of Attempted Questions",
-     "Number of Correct Attempts",
-     "Number of Incorrect Attempts",
-     "Mark obtained by correct questions",
-     "Overall score in the Subtopic ",
-     "Mark Obtained by Topper in this Subtopic",
-     "Mark lose by Incorrect Attempt",
-   ];
+  const headings = [
+    "Number",
+    "Subtopic",
+    "Total Questions",
+    "Attempted Questions",
+    "Correct Attempts",
+    "Incorrect Attempts",
+    "Mark obtained by correct questions",
+    "Overall score in the Subtopic ",
+    "Mark obtained by Topper",
+    "Mark lose by Incorrect Attempt",
+  ];
 
   return (
     <TableContainer
@@ -70,11 +69,7 @@ function SubtopicAnalysis() {
           <TableRow sx={{ background: "white", width: "100%" }}>
             {headings.map((heading, ind) => {
               return (
-                <StyledTableCell
-                  align="left"
-                  key={ind}
-                  className="fw-bold "
-                >
+                <StyledTableCell align="left" key={ind} className="fw-bold" sx={{ fontSize: "16px" }}>
                   {heading}
                 </StyledTableCell>
               );
@@ -101,16 +96,15 @@ function SubtopicAnalysis() {
                   <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
                   <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
                   <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByCorrectQuestion}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheSubtopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markObtainedByTopperInThisSubtopic ? item.markObtainedByTopperInThisSubtopic : 0}
+                    {topper_data ? topper_data[index + 1].markObtainedByTopperInThisSubtopic == null ||
+                    topper_data[index + 1].markObtainedByTopperInThisSubtopic == undefined
+                      ? "N/A"
+                      : topper_data[index + 1].markObtainedByTopperInThisSubtopic : "TBD"}
                   </StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {item.markLoseByIncorrectAttempt}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>
               );
             })}

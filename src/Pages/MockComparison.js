@@ -75,7 +75,13 @@ function MockComparison() {
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
 
   useEffect(() => {
-    getData();
+     const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+     console.log(isWindow);
+     if (isWindow) {
+       showToastMessage("window is open");
+     } else {
+       getData();
+     }
   }, []);
   const { mockId, attemptId } = useParams();
   const [result, setResult] = useState();
