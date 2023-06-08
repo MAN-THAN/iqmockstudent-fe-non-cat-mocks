@@ -17,13 +17,8 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
 import Latex from "react-latex-next";
-import {
-  IncorrectDetailing,
-  CorrectDetailing,
-  SkippedDetailing,
-} from "../services/DataFiles";
+import { IncorrectDetailing, CorrectDetailing, SkippedDetailing } from "../services/DataFiles";
 import { ToastContainer, toast } from "react-toastify";
-
 
 const disableStyle = {
   ":disabled": {
@@ -61,9 +56,8 @@ const priorities = [
 ];
 
 function ErrorTracker() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
-    useAuth();
-  const { attemptId } = useParams();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } = useAuth();
+  const { attemptId, mockId } = useParams();
   const [graphData, setGraphData] = useState([]);
   const [colorDetail, setColorDetail] = useState(null);
   const [priorty, setPriorty] = useState(null);
@@ -77,12 +71,9 @@ function ErrorTracker() {
 
   const [show, setShow] = useState([]); // changeable state come from filter`
 
-  const [topicList, setTopicList] = useState([
-    { name: "All Topics", value: "all topics" },
-  ]);
+  const [topicList, setTopicList] = useState([{ name: "All Topics", value: "all topics" }]);
 
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
-  const params = useParams();
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -91,31 +82,32 @@ function ErrorTracker() {
     const getData = async () => {
       try {
         const res = await fetchErrorTracker(attemptId);
+        console.log(res);
         setLoading(true);
         if (res?.status === 200) {
           setData(res.data);
           setLoading(false);
         } else if (res?.status === 201) {
-          console.log("error tracker report is not made");
+          showToastMessage("Review your solution and fill the error tracker to generate your error report");
+          setTimeout(() => navigate(`/viewsolutions/${mockId}/${attemptId}`), 3500)
           setLoading(false);
         } else {
           console.log("Error in fetching data: ", res);
           setLoading(false);
         }
-      } catch (err) { 
+      } catch (err) {
         console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }
     };
-     const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
-     console.log(isWindow);
-     if (isWindow) {
-       showToastMessage("window is open");
-     } else {
-       getData();
-     }
-    
+    const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+    console.log(isWindow);
+    if (isWindow) {
+      showToastMessage("window is open");
+    } else {
+      getData();
+    }
   }, []);
 
   // set correction
@@ -203,9 +195,7 @@ function ErrorTracker() {
     let filteredData = arr;
 
     if (correction && correction !== "all") {
-      filteredData = filteredData.filter(
-        (item) => item.isCorrect === correction
-      );
+      filteredData = filteredData.filter((item) => item.isCorrect === correction);
     }
 
     if (section) {
@@ -221,21 +211,15 @@ function ErrorTracker() {
         filteredData = filteredData.filter((item) => item);
         break;
       case "Easy":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       case "Moderate":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       case "Hard":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       default:
@@ -268,7 +252,7 @@ function ErrorTracker() {
   console.log(graphData, "graohData");
 
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
       position: toast.POSITION.TOP_CENTER,
     });
     return (ref.current.style.display = "none");
@@ -282,7 +266,7 @@ function ErrorTracker() {
 
         <Box
           sx={{
-            p:2,
+            p: 2,
             position: "absolute",
             left: "65px",
             width: "calc(100% - 70px)",
@@ -528,7 +512,7 @@ function ErrorTracker() {
                                     sx={{ background: "#3A36DB", float: "end" }}
                                     variant="contained"
                                     onClick={() =>
-                                      navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
+                                      navigate(`/viewsolutions/${mockId}/${attemptId}`, {
                                         state: {
                                           question_id: item.question_id,
                                         },
