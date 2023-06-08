@@ -100,7 +100,9 @@ function SectionAnalysis() {
                       <Typography fontSize="14px">{item.topic}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      <Typography fontSize="14px"> {item.subtopic[0] + " | " + item.subtopic[1]}</Typography>
+                      <Typography fontSize="14px"> {item.subtopic.map((e, i) => { 
+                        return ((i === 0 ? "" : " | ") + e)
+                      })}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       {item.studentAnswer !== undefined ? (
