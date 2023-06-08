@@ -129,6 +129,25 @@ export const getMockComparison = async (mockId, attemptId) => {
   }
 };
 
+// api for getting particular prev mock data
+
+export const getPrevMockData = async (attemptId) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/getAttempts/${attemptId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
 // api for across mock analysis
 
 export const getMockAcrossAnalysis = async (uid) => {
@@ -167,7 +186,7 @@ export const getGoalTrackerData = async (attemptId) => {
   }
 };
 
-// api for goal tracker
+// api for market place
 
 export const getMarketPlace = async () => {
   const token = localStorage.getItem("auth_token");
