@@ -95,8 +95,11 @@ function ErrorTracker() {
         if (res?.status === 200) {
           setData(res.data);
           setLoading(false);
+        } else if (res?.status === 201) {
+          console.log("error tracker report is not made");
+          setLoading(false);
         } else {
-          console.log("Error fetching data: ", res);
+          console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) { 
