@@ -2,7 +2,7 @@ import request from "./Request";
 
 // api for fetching analysis data
 
-export const fetchAnalysisData = async (attempt_id) => {
+export const fetchAnalysisData = async (attempt_id, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = await request({
@@ -10,6 +10,7 @@ export const fetchAnalysisData = async (attempt_id) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid : uid
       },
     });
     return res;
