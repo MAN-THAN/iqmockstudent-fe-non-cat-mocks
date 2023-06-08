@@ -42,7 +42,7 @@ function OverallAnalysis() {
             <TableRow sx={{ background: "white", width: "10%" }}>
               {headings.map((heading, ind) => {
                 return (
-                  <StyledTableCell align="left" key={ind} className="fw-bold py-4">
+                  <StyledTableCell align="left" key={ind} className="fw-bold py-4" sx={{ fontSize: "16px" }}>
                     {heading}
                   </StyledTableCell>
                 );
@@ -60,22 +60,37 @@ function OverallAnalysis() {
                       background: "white",
                       border: "none",
                       color: "black",
+                      fontWeight: 700,
                     }}
                   >
                     <StyledTableCell align="left" className="fw-bold">
-                      {item.name}
+                      <Typography sx={{ fontSize: "14px" }} fontWeight="700">
+                        {item.name}
+                      </Typography>
                     </StyledTableCell>
-                    <StyledTableCell align="left">{item.question}</StyledTableCell>
-                    <StyledTableCell align="left">{item.attempted}</StyledTableCell>
-                    <StyledTableCell align="left">{item.correct}</StyledTableCell>
-                    <StyledTableCell align="left">{item.incorrect}</StyledTableCell>
-                    <StyledTableCell align="left">{item.score}</StyledTableCell>
-                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                      {item.accuracy}
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{item.question}</Typography>
                     </StyledTableCell>
-                    <StyledTableCell align="left">{+item.perScore < 0 ? 0 : +item.perScore}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{item.attempted}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{item.correct}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{item.incorrect}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{item.score}</Typography>
+                    </StyledTableCell>
                     <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                      {item.percentile}
+                      <Typography sx={{ fontSize: "14px" }}>{item.accuracy}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Typography sx={{ fontSize: "14px" }}>{+item.perScore < 0 ? 0 : +item.perScore}</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                      <Typography sx={{ fontSize: "14px" }}>{item.percentile}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 );
@@ -88,13 +103,19 @@ function OverallAnalysis() {
           <TableHead>
             <TableRow sx={{ background: "white", borderBottom: "none" }}>
               <StyledTableCell className="fw-bold py-4" align="left ">
-                Correct
+                <Typography fontWeight={700} fontSize="16px">
+                  Correct
+                </Typography>
               </StyledTableCell>
               <StyledTableCell className="fw-bold py-4" align="left">
-                Incorrect
+                <Typography fontWeight={700} fontSize="16px">
+                  Incorrect
+                </Typography>
               </StyledTableCell>
               <StyledTableCell className="fw-bold py-4" align="left">
-                Skipped
+                <Typography fontWeight={700} fontSize="16px">
+                  Skipped
+                </Typography>
               </StyledTableCell>
             </TableRow>
           </TableHead>
@@ -111,15 +132,15 @@ function OverallAnalysis() {
                     }}
                   >
                     <StyledTableCell align="left">
-                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeCorrect)}</Typography>
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500, color: "#0C58B6" }}>{convertStoMs(item.timeCorrect)}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       {" "}
-                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeInCorrect)}</Typography>
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500, color: "#0C58B6" }}>{convertStoMs(item.timeInCorrect)}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       {" "}
-                      <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>{convertStoMs(item.timeSkipped)}</Typography>
+                      <Typography sx={{ fontSize: "14px", fontWeight: 500, color: "#0C58B6" }}>{convertStoMs(item.timeSkipped)}</Typography>
                     </StyledTableCell>
                   </StyledTableRow>
                 );
