@@ -262,7 +262,7 @@ function ErrorTracker() {
   console.log("data  mmmmm", data);
   console.log("show", show);
   console.log("Sections", section);
-  console.log(graphData, "graohData");
+  // console.log(graphData && graphData[0], "graohData");
 
   const showToastMessage = (msg) => {
     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
@@ -279,7 +279,7 @@ function ErrorTracker() {
 
         <Box
           sx={{
-            p:2,
+            p: 2,
             position: "absolute",
             left: "65px",
             width: "calc(100% - 70px)",
@@ -293,7 +293,10 @@ function ErrorTracker() {
           </Box>
 
           {isLoading ? (
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+            <div
+              className="d-flex align-items-center flex-column gap-2 justify-content-center"
+              style={{ width: "100%", height: "80%" }}
+            >
               <div class="loading-container">
                 <div class="loading"></div>
                 <div id="loading-text">Loading...</div>
@@ -301,7 +304,15 @@ function ErrorTracker() {
             </div>
           ) : (
             <>
-              <Box component="div" sx={{ display: "flex", flexDirection: "row", gap: "30%", mt: 4 }}>
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "30%",
+                  mt: 4,
+                }}
+              >
                 {" "}
                 <MultipleSelect options={filter1} setType={setCorrection} />
                 <Box
@@ -332,7 +343,10 @@ function ErrorTracker() {
                 Error Tracker
               </Typography>
 
-              <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
+              <Box
+                component="main"
+                sx={{ display: "flex", width: "100%", height: "76Vh" }}
+              >
                 <Backdrop
                   sx={{
                     zIndex: (theme) => theme.zIndex.drawer - 1,
@@ -357,9 +371,24 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <PieGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
+                    <PieGraph
+                      Data={graphData && graphData[0]}
+                      width={"97%"}
+                      legend={false}
+                    />
                   </Box>
-                  <Box sx={{ mt: 2 }}>{<GraphComp colorDetailing={colorDetailing} />}</Box>
+                  <Box sx={{ mt: 2 }}>
+                    <h3 className="ms-3">{`${
+                      correction
+                        ? correction.charAt(0).toUpperCase() +
+                          correction.slice(1)
+                        : ""
+                    } Questions: ${graphData && Object
+                      .values(graphData[0])
+                      .reduce((acc, curr) => acc + curr, 0)}`}</h3>
+
+                    {<GraphComp colorDetailing={colorDetailing} />}
+                  </Box>
                 </Box>
                 {/* Graph side div end */}
 
@@ -409,12 +438,19 @@ function ErrorTracker() {
                                   style={{
                                     background: item.color,
                                     width: colorDetail === item.value ? 29 : 26,
-                                    height: colorDetail === item.value ? 29 : 26,
+                                    height:
+                                      colorDetail === item.value ? 29 : 26,
                                     borderRadius: "50%",
                                     cursor: "pointer",
                                     transition: "all 0.2s ease-in-out",
-                                    boxShadow: colorDetail === item.value ? "0 0 10px rgba(0, 0, 0, 0.5)" : "none",
-                                    border: colorDetail === item.value ? "0px solid #333" : "none",
+                                    boxShadow:
+                                      colorDetail === item.value
+                                        ? "0 0 10px rgba(0, 0, 0, 0.5)"
+                                        : "none",
+                                    border:
+                                      colorDetail === item.value
+                                        ? "0px solid #333"
+                                        : "none",
                                   }}
                                 />
                               </Tooltip>
@@ -425,9 +461,13 @@ function ErrorTracker() {
                   </div>
                   {show
                     ? show.map((item, index) => {
-                        const colorObj = colorDetailing.find((detail) => item.error === detail.value);
+                        const colorObj = colorDetailing.find(
+                          (detail) => item.error === detail.value
+                        );
 
-                        const borderColor = colorObj ? colorObj.color : "transparent";
+                        const borderColor = colorObj
+                          ? colorObj.color
+                          : "transparent";
 
                         return (
                           <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
@@ -460,7 +500,9 @@ function ErrorTracker() {
                                   <Latex>{item.question}</Latex>
                                 </div>
                               </CardContent>
-                              <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
+                              <CardActions
+                                sx={{ justifyContent: "space-between", px: 3 }}
+                              >
                                 <Box
                                   sx={{
                                     display: "flex",
@@ -480,7 +522,11 @@ function ErrorTracker() {
                                       },
                                       "& > span": {
                                         color:
-                                          item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
+                                          item.difficulty === "Easy"
+                                            ? "#00C838 !important"
+                                            : item.difficulty === "Moderate"
+                                            ? "#FF6238"
+                                            : "#FF0000",
                                       },
                                     }}
                                   >
@@ -515,7 +561,8 @@ function ErrorTracker() {
                                     }}
                                     variant="contained"
                                   >
-                                    Avg Time : <span>{item.averageDuration}</span>
+                                    Avg Time :{" "}
+                                    <span>{item.averageDuration}</span>
                                   </Button>
                                 </Box>
                                 <div>
@@ -525,11 +572,14 @@ function ErrorTracker() {
                                     sx={{ background: "#3A36DB", float: "end" }}
                                     variant="contained"
                                     onClick={() =>
-                                      navigate(`/viewsolutions/${params.mockId}/${params.attemptId}`, {
-                                        state: {
-                                          question_id: item.question_id,
-                                        },
-                                      })
+                                      navigate(
+                                        `/viewsolutions/${params.mockId}/${params.attemptId}`,
+                                        {
+                                          state: {
+                                            question_id: item.question_id,
+                                          },
+                                        }
+                                      )
                                     }
                                   >
                                     Solution
@@ -555,6 +605,7 @@ function ErrorTracker() {
 const GraphComp = ({ colorDetailing }) => {
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
+     
       {colorDetailing &&
         colorDetailing.slice(1).map((item, _) => {
           return (
