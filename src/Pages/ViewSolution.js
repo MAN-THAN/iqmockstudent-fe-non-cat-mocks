@@ -172,7 +172,7 @@ export default function ViewSolution() {
       const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
       console.log(isWindow);
       if (isWindow) {
-        showToastMessage("yeuwbf");
+        showToastMessage("Window is open");
       } else {
         getData();
       }

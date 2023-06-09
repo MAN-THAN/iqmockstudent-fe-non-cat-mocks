@@ -40,7 +40,9 @@ export const ContextProvider = ({ children }) => {
         setWindowClosed(response2.data.isWindowClosed);
         window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
         setTopperData(response2.data.mockData);
-        set_air(response2.data.air);
+        if (response2?.data.air) {
+          set_air(response2.data.air);
+        }
         setLoading(false);
       } else {
         console.log("--> Error in mock status fetching");
@@ -131,7 +133,7 @@ export const ContextProvider = ({ children }) => {
           showToastMessage,
           setLoading,
           topperData,
-          air
+          air,
         }}
       >
         {children}
