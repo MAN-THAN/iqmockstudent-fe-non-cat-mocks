@@ -168,17 +168,16 @@ const PieGraph = ({ Data, title, width, legend }) => {
   ];
 
   console.log("dataGraph", Data);
-  const [activeIndex, setActiveIndex] = useState(0);
+ 
 
-  const onPieEnter = (_, index) => {
-    setActiveIndex(index);
-  };
+ 
 
   const pieData =
     Data &&
     Object.keys(Data).length > 0 &&
     Object.keys(Data)
       .map((e) => {
+        console.log(Data[e],"hj")
         const resObject = AllDetails.find((item) => item.value === e);
         return {
           name: e,
