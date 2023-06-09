@@ -81,10 +81,10 @@ function TopicAnalysis() {
                   <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
                     {topper_data
-                      ? topper_data[index + 1].markObtainedByTopperInThisTopic == null ||
-                        topper_data[index + 1].markObtainedByTopperInThisTopic == undefined
+                      ? topper_data[index + 1].markObtainedByCorrectQuestion == null ||
+                        topper_data[index + 1].markObtainedByCorrectQuestion == undefined
                         ? "N/A"
-                        : topper_data[index + 1].markObtainedByTopperInThisTopic
+                        : topper_data[index + 1].markObtainedByCorrectQuestion
                       : "TBD"}
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>

@@ -13,6 +13,7 @@ import { getMockComparison } from "../services/Analysis_api";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { getPrevMockData } from "../services/Analysis_api";
 
 import { PuffLoader } from "react-spinners";
 
@@ -62,7 +63,7 @@ function MockComparison() {
   const [MockName, setMockName] = React.useState([]);
   const ref = useRef(null);
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const {
       target: { value },
     } = event;
@@ -70,35 +71,50 @@ function MockComparison() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
+    console.log(value)
+      try {
+        const res = await getPrevMockData(value);
+        console.log(res);
+        if (res?.status == 200) {
+          setPrevMock(res?.data.data)
+        }
+      } catch (err) {
+        console.log(err);
+      }
   };
 
   const { menuBarOpen, setMenuBarOpen, Backdrop, isLoading, setLoading } = useAuth();
 
   useEffect(() => {
-     const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
-     console.log(isWindow);
-     if (isWindow) {
-       showToastMessage("window is open");
-     } else {
-       getData();
-     }
+    const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+    console.log(isWindow);
+    if (isWindow) {
+      showToastMessage("window is open");
+    } else {
+      getData();
+    }
   }, []);
   const { mockId, attemptId } = useParams();
   const [result, setResult] = useState();
-  const [prevMocks, setPrevMocks] = useState();
+  const [prevMock, setPrevMock] = useState();
   const [topper, setTopper] = useState();
+  const [prevMockList, setPrevMockList] = useState();
+
   const [compMock, setCompMock] = useState();
 
   const getData = async () => {
     setLoading(true);
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+
     try {
-      const res = await getMockComparison(mockId, attemptId);
+      const res = await getMockComparison(mockId, attemptId, uid);
       if (res?.status == 200) {
         console.log(res.data);
         setResult(res.data?.result);
         setTopper(res.data?.topperResult);
-        setPrevMocks(res.data?.previousMocks);
-        setCompMock(res.data?.previousMocks[0]);
+        setPrevMock(res.data?.preresult);
+        setPrevMockList(res.data?.previousMocks);
+        // setCompMock(res.data?.previousMocks[0]);
         setLoading(false);
       } else {
         setLoading(false);
@@ -110,8 +126,8 @@ function MockComparison() {
       showToastMessage(err?.response?.data?.msg);
     }
   };
-  console.log(result, topper, prevMocks);
-  console.log(compMock);
+  console.log(result, topper, prevMock);
+  // console.log(compMock);
   const showToastMessage = (msg) => {
     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
       position: toast.POSITION.TOP_CENTER,
@@ -216,23 +232,23 @@ function MockComparison() {
                   style={OuterCardStyle}
                 />
                 <OuterCard
-                  data={compMock}
+                  data={prevMock}
                   icon={"/click 1.svg"}
                   miniCard={
                     <LogoCard
                       cardTitle={
                         <>
                           <Typography variant="h4" sx={{ fontSize: 17 }} color={"black"}>
-                            {compMock?.percentile}
+                            {prevMock?.percentile}
                             <span style={{ fontSize: "15px" }}>%ile</span>
                           </Typography>
-                          <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{compMock?.title}</Typography>
+                          <Typography sx={{ color: "#809FB8", fontSize: 15 }}>{prevMock?.title}</Typography>
                         </>
                       }
                       style={{ ...innerCardStyle }}
                       icon={"/click 1.svg"}
                       infoIcon={"/circle-info-solid.svg"}
-                      select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMocks} setCompMock={setCompMock} />}
+                      select={<SelectBox onSelect={handleChange} mockName={MockName} options={prevMockList} getPrevMockData={getPrevMockData} />}
                     />
                   }
                   style={OuterCardStyle}
@@ -296,7 +312,7 @@ const OuterCard = ({ style, miniCard, data }) => {
   );
 };
 
-const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
+const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
   const theme = useTheme();
   return (
     <div>
@@ -308,13 +324,13 @@ const SelectBox = ({ onSelect, mockName, options, setCompMock }) => {
           onChange={onSelect}
           sx={{ height: "30px" }}
           MenuProps={MenuProps}
-          displayEmpty={true}
+          displayEmpty={true}  
         >
           <MenuItem value="" disabled>
             Select Mock
           </MenuItem>
           {options?.map((item, index) => (
-            <MenuItem onClick={() => setCompMock(options[index])} key={index} value={item._id} style={getStyles(item._id, mockName, theme)}>
+            <MenuItem key={index} value={item.attemptId} style={getStyles(item._id, mockName, theme)}>
               {item.title}
             </MenuItem>
           ))}

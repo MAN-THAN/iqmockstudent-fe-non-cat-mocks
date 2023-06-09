@@ -99,10 +99,12 @@ function SubtopicAnalysis() {
                   <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
                   <StyledTableCell align="left">{item.overallScoreInTheSubtopic}</StyledTableCell>
                   <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
-                    {topper_data ? topper_data[index + 1].markObtainedByTopperInThisSubtopic == null ||
-                    topper_data[index + 1].markObtainedByTopperInThisSubtopic == undefined
-                      ? "N/A"
-                      : topper_data[index + 1].markObtainedByTopperInThisSubtopic : "TBD"}
+                    {topper_data
+                      ? topper_data[index + 1].markObtainedByCorrectQuestion == null ||
+                        topper_data[index + 1].markObtainedByCorrectQuestion == undefined
+                        ? "N/A"
+                        : topper_data[index + 1].markObtainedByCorrectQuestion
+                      : "TBD"}
                   </StyledTableCell>
                   <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
                 </StyledTableRow>

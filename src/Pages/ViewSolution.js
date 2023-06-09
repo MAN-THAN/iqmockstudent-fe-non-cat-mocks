@@ -149,7 +149,8 @@ export default function ViewSolution() {
     const getData = async () => {
       setLoading(true);
       try {
-        const res = await fetchViewSolution(attemptId, mockId);
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+        const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
           setShow(res.data.varc);
@@ -172,7 +173,7 @@ export default function ViewSolution() {
       const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
       console.log(isWindow);
       if (isWindow) {
-        showToastMessage("yeuwbf");
+        showToastMessage("Window is open");
       } else {
         getData();
       }

@@ -358,7 +358,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="class_10th_result"
               name="class_10th_result"
               label="Class 10th Result(%)"
-              type="number"
+              type="float"
               value={values.class_10th_result}
               onChange={handleChange}
               error={touched.class_10th_result && Boolean(errors.class_10th_result)}
@@ -381,7 +381,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="class_12th_result"
               name="class_12th_result"
               label="Class 12th Result(%)"
-              type="number"
+              type="float"
               value={values.class_12th_result}
               onChange={handleChange}
               error={touched.class_12th_result && Boolean(errors.class_12th_result)}
@@ -404,7 +404,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="graduation_marks"
               name="graduation_marks"
               label="Graduation Marks(%)"
-              type="number"
+              type="float"
               value={values.graduation_marks}
               onChange={handleChange}
               error={touched.graduation_marks && Boolean(errors.graduation_marks)}
