@@ -20,34 +20,38 @@ export const ContextProvider = ({ children }) => {
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
   const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
-  console.log(isWindowClosed)
+  const [air, set_air] = useState("TBD");
+  console.log(isWindowClosed);
 
-  const analysisDataApi = async (attemptId, mockId) => {
+  const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
-      const response = await fetchAnalysisData(attemptId);
-      const response2 = await fetchMockStatus(mockId);
+      const response = await fetchAnalysisData(attemptId, uid);
+      const response2 = await fetchMockStatus(mockId, attemptId, uid);
       console.log(response);
       console.log(response2);
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
       } else {
         console.log("--> Error in analysis data fetching");
-        // showToastMessage();
+        showToastMessage();
         setErr(true);
       }
       if (response2?.status == 200) {
         setWindowClosed(response2.data.isWindowClosed);
         window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
         setTopperData(response2.data.mockData);
+        if (response2?.data.air) {
+          set_air(response2.data.air);
+        }
         setLoading(false);
       } else {
         console.log("--> Error in mock status fetching");
-        // showToastMessage();
+        showToastMessage();
         setErr(true);
       }
-    } catch (err) { 
+    } catch (err) {
       console.log(err);
-      // showToastMessage();
+      showToastMessage(err?.response?.data?.message);
       setErr(true);
     }
   };
@@ -94,11 +98,10 @@ export const ContextProvider = ({ children }) => {
     color: "#fff",
   }));
 
-  const showToastMessage = () => {
-    toast.error("Some error occurred! Please reload the page.", {
+  const showToastMessage = (msg) => {
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
       position: toast.POSITION.TOP_CENTER,
     });
-    return setLoading(false);
   };
 
   console.log("isloading", isLoading);
@@ -129,7 +132,8 @@ export const ContextProvider = ({ children }) => {
           Backdrop,
           showToastMessage,
           setLoading,
-          topperData
+          topperData,
+          air,
         }}
       >
         {children}

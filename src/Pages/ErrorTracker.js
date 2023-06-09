@@ -17,11 +17,7 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
 import Latex from "react-latex-next";
-import {
-  IncorrectDetailing,
-  CorrectDetailing,
-  SkippedDetailing,
-} from "../services/DataFiles";
+import { IncorrectDetailing, CorrectDetailing, SkippedDetailing } from "../services/DataFiles";
 import { ToastContainer, toast } from "react-toastify";
 
 const disableStyle = {
@@ -60,9 +56,8 @@ const priorities = [
 ];
 
 function ErrorTracker() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
-    useAuth();
-  const { attemptId } = useParams();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } = useAuth();
+  const { attemptId, mockId } = useParams();
   const [graphData, setGraphData] = useState([]);
   const [colorDetail, setColorDetail] = useState(null);
   const [priorty, setPriorty] = useState(null);
@@ -76,12 +71,9 @@ function ErrorTracker() {
 
   const [show, setShow] = useState([]); // changeable state come from filter`
 
-  const [topicList, setTopicList] = useState([
-    { name: "All Topics", value: "all topics" },
-  ]);
+  const [topicList, setTopicList] = useState([{ name: "All Topics", value: "all topics" }]);
 
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
-  const params = useParams();
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -89,13 +81,19 @@ function ErrorTracker() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetchErrorTracker(attemptId);
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+        const res = await fetchErrorTracker(attemptId, uid);
+        console.log(res);
         setLoading(true);
         if (res?.status === 200) {
           setData(res.data);
           setLoading(false);
+        } else if (res?.status === 201) {
+          showToastMessage("Review your solution and fill the error tracker to generate your error report");
+          setTimeout(() => navigate(`/viewsolutions/${mockId}/${attemptId}`), 3500);
+          setLoading(false);
         } else {
-          console.log("Error fetching data: ", res);
+          console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) {
@@ -198,9 +196,7 @@ function ErrorTracker() {
     let filteredData = arr;
 
     if (correction && correction !== "all") {
-      filteredData = filteredData.filter(
-        (item) => item.isCorrect === correction
-      );
+      filteredData = filteredData.filter((item) => item.isCorrect === correction);
     }
 
     if (section) {
@@ -216,21 +212,15 @@ function ErrorTracker() {
         filteredData = filteredData.filter((item) => item);
         break;
       case "Easy":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       case "Moderate":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       case "Hard":
-        filteredData = filteredData.filter(
-          (item) => item.difficulty === priorty
-        );
+        filteredData = filteredData.filter((item) => item.difficulty === priorty);
         break;
 
       default:
@@ -263,14 +253,10 @@ function ErrorTracker() {
   // console.log(graphData && graphData[0], "graohData");
 
   const showToastMessage = (msg) => {
-    toast.error(
-      msg == undefined
-        ? "Some error occurred! Please reload the page."
-        : msg.toUpperCase(),
-      {
-        position: toast.POSITION.TOP_CENTER,
-      }
-    );
+
+    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
+      position: toast.POSITION.TOP_CENTER,
+    });
     return (ref.current.style.display = "none");
   };
 
@@ -296,10 +282,7 @@ function ErrorTracker() {
           </Box>
 
           {isLoading ? (
-            <div
-              className="d-flex align-items-center flex-column gap-2 justify-content-center"
-              style={{ width: "100%", height: "80%" }}
-            >
+            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
               <div class="loading-container">
                 <div class="loading"></div>
                 <div id="loading-text">Loading...</div>
@@ -346,10 +329,7 @@ function ErrorTracker() {
                 Error Tracker
               </Typography>
 
-              <Box
-                component="main"
-                sx={{ display: "flex", width: "100%", height: "76Vh" }}
-              >
+              <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
                 <Backdrop
                   sx={{
                     zIndex: (theme) => theme.zIndex.drawer - 1,
@@ -374,11 +354,7 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <PieGraph
-                      Data={graphData && graphData[0]}
-                      width={"97%"}
-                      legend={false}
-                    />
+                    <PieGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
                   </Box>
                   <Box sx={{ mt: 2 }}>
                     <Typography
@@ -457,19 +433,12 @@ function ErrorTracker() {
                                   style={{
                                     background: item.color,
                                     width: colorDetail === item.value ? 29 : 26,
-                                    height:
-                                      colorDetail === item.value ? 29 : 26,
+                                    height: colorDetail === item.value ? 29 : 26,
                                     borderRadius: "50%",
                                     cursor: "pointer",
                                     transition: "all 0.2s ease-in-out",
-                                    boxShadow:
-                                      colorDetail === item.value
-                                        ? "0 0 10px rgba(0, 0, 0, 0.5)"
-                                        : "none",
-                                    border:
-                                      colorDetail === item.value
-                                        ? "0px solid #333"
-                                        : "none",
+                                    boxShadow: colorDetail === item.value ? "0 0 10px rgba(0, 0, 0, 0.5)" : "none",
+                                    border: colorDetail === item.value ? "0px solid #333" : "none",
                                   }}
                                 />
                               </Tooltip>
@@ -480,13 +449,9 @@ function ErrorTracker() {
                   </div>
                   {show
                     ? show.map((item, index) => {
-                        const colorObj = colorDetailing.find(
-                          (detail) => item.error === detail.value
-                        );
+                        const colorObj = colorDetailing.find((detail) => item.error === detail.value);
 
-                        const borderColor = colorObj
-                          ? colorObj.color
-                          : "transparent";
+                        const borderColor = colorObj ? colorObj.color : "transparent";
 
                         return (
                           <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
@@ -519,9 +484,7 @@ function ErrorTracker() {
                                   <Latex>{item.question}</Latex>
                                 </div>
                               </CardContent>
-                              <CardActions
-                                sx={{ justifyContent: "space-between", px: 3 }}
-                              >
+                              <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
                                 <Box
                                   sx={{
                                     display: "flex",
@@ -541,11 +504,7 @@ function ErrorTracker() {
                                       },
                                       "& > span": {
                                         color:
-                                          item.difficulty === "Easy"
-                                            ? "#00C838 !important"
-                                            : item.difficulty === "Moderate"
-                                            ? "#FF6238"
-                                            : "#FF0000",
+                                          item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
                                       },
                                     }}
                                   >
@@ -580,8 +539,7 @@ function ErrorTracker() {
                                     }}
                                     variant="contained"
                                   >
-                                    Avg Time :{" "}
-                                    <span>{item.averageDuration}</span>
+                                    Avg Time : <span>{item.averageDuration}</span>
                                   </Button>
                                 </Box>
                                 <div>
@@ -591,14 +549,11 @@ function ErrorTracker() {
                                     sx={{ background: "#3A36DB", float: "end" }}
                                     variant="contained"
                                     onClick={() =>
-                                      navigate(
-                                        `/viewsolutions/${params.mockId}/${params.attemptId}`,
-                                        {
-                                          state: {
-                                            question_id: item.question_id,
-                                          },
-                                        }
-                                      )
+                                      navigate(`/viewsolutions/${mockId}/${attemptId}`, {
+                                        state: {
+                                          question_id: item.question_id,
+                                        },
+                                      })
                                     }
                                   >
                                     Solution

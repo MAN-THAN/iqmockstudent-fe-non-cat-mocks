@@ -106,7 +106,8 @@ export default function GoalTracker() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await getGoalTrackerData(attemptId);
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+    const res = await getGoalTrackerData(attemptId, uid);
     console.log(res);
     if (res?.status == 200) {
       setMockList(res.data.mockWise);
@@ -148,29 +149,20 @@ export default function GoalTracker() {
       >
         {/* Header */}
         <Box component="header">
-          <HeaderNew
-            logoPath={"/iQuantaWhite.png"}
-            style={{ color: "white" }}
-          />
+          <HeaderNew logoPath={"/iQuantaWhite.png"} style={{ color: "white" }} />
         </Box>
 
         {/* Header end  */}
         {/* main Section start */}
         {isLoading ? (
-          <div
-            className="d-flex align-items-center flex-column gap-2 justify-content-center"
-            style={{ width: "100%", height: "80%" }}
-          >
+          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
             </div>
           </div>
         ) : (
-          <Box
-            component="main"
-            sx={{ display: "flex", flexDirection: "column", mt: 2 }}
-          >
+          <Box component="main" sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
             {/* Two div */}
             <Box component="div" sx={{ display: "flex", gap: 2 }}>
               <Box
@@ -239,11 +231,7 @@ export default function GoalTracker() {
                                 >
                                   Ranking
                                 </Typography>
-                                <img
-                                  src="/onboarding_arrow.svg"
-                                  alt="no image"
-                                  width="10px"
-                                ></img>
+                                <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
                               </Box>
                               {/* <Box sx={{ width: "1.7em" }}></Box> */}
                             </TableCell>
@@ -384,16 +372,14 @@ export default function GoalTracker() {
               <div
                 style={{
                   ...infoStyle.divStyle,
-                  background:
-                    "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
+                  background: "linear-gradient(360deg, #6427D2 0%, #336CF7 100%)",
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Current Mock</Typography>
               <div
                 style={{
                   ...infoStyle.divStyle,
-                  background:
-                    "linear-gradient(360deg,#BA27D2 0%, #9533F7 100%)",
+                  background: "linear-gradient(360deg,#BA27D2 0%, #9533F7 100%)",
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
@@ -442,16 +428,14 @@ export default function GoalTracker() {
                             border: 1,
                             borderColor: "#809EB9",
                           },
-                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                            {
-                              border: 1,
-                              borderColor: "#809EB9",
-                            },
-                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                            {
-                              border: 2,
-                              borderColor: "#809EB9",
-                            },
+                          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+                            border: 1,
+                            borderColor: "#809EB9",
+                          },
+                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: 2,
+                            borderColor: "#809EB9",
+                          },
                         }}
                       />
                     }

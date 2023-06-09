@@ -2,7 +2,7 @@ import request from "./Request";
 
 // api for fetching analysis data
 
-export const fetchAnalysisData = async (attempt_id) => {
+export const fetchAnalysisData = async (attempt_id, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = await request({
@@ -10,6 +10,8 @@ export const fetchAnalysisData = async (attempt_id) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attempt_id
       },
     });
     return res;
@@ -27,6 +29,8 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -44,6 +48,8 @@ export const fetchOverallAcross = async (uid, attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -54,7 +60,7 @@ export const fetchOverallAcross = async (uid, attemptId) => {
 };
 
 
-export const fetchViewSolution = async (attemptId, mockId) => {
+export const fetchViewSolution = async (attemptId, mockId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -62,6 +68,8 @@ export const fetchViewSolution = async (attemptId, mockId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -72,7 +80,7 @@ export const fetchViewSolution = async (attemptId, mockId) => {
 };
 
 //GET ERROR TRACKER
-export const fetchErrorTracker = async (attemptId) => {
+export const fetchErrorTracker = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -80,6 +88,8 @@ export const fetchErrorTracker = async (attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -112,11 +122,32 @@ export const postToErrorTracker = async (attemptId, type, payload) => {
 
 // api for mock comparison
 
-export const getMockComparison = async (mockId, attemptId) => {
+export const getMockComparison = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
       url: `/api/student/v1/analyse/compare/${mockId}/${attemptId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// api for getting particular prev mock data
+
+export const getPrevMockData = async (attemptId) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `/api/student/v1/analyse/getAttempts/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -139,7 +170,7 @@ export const getMockAcrossAnalysis = async (uid) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
-      },
+        uid: uid      },
     });
     return res;
   } catch (err) {
@@ -150,7 +181,7 @@ export const getMockAcrossAnalysis = async (uid) => {
 
 // api for goal tracker
 
-export const getGoalTrackerData = async (attemptId) => {
+export const getGoalTrackerData = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -158,6 +189,8 @@ export const getGoalTrackerData = async (attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -167,7 +200,7 @@ export const getGoalTrackerData = async (attemptId) => {
   }
 };
 
-// api for goal tracker
+// api for market place
 
 export const getMarketPlace = async () => {
   const token = localStorage.getItem("auth_token");
@@ -188,14 +221,16 @@ export const getMarketPlace = async () => {
 
 // api for checking mock status
 
-export const fetchMockStatus = async (mockId) => {
+export const fetchMockStatus = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/mockstatus/${mockId}`,
+      url: `/api/student/v1/leaderboard/mockstatus/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
