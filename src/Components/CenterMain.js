@@ -681,6 +681,7 @@ function CenterMain() {
                                   key={index}
                                   value={index}
                                   control={<Radio />}
+                                  sx={{marginTop : 2}}
                                   label={
                                     <div>
                                       <small>
