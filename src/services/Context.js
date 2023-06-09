@@ -26,7 +26,7 @@ export const ContextProvider = ({ children }) => {
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
       const response = await fetchAnalysisData(attemptId, uid);
-      const response2 = await fetchMockStatus(mockId, attemptId);
+      const response2 = await fetchMockStatus(mockId, attemptId, uid);
       console.log(response);
       console.log(response2);
       if (response?.status == 200) {

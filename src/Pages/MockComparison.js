@@ -104,8 +104,10 @@ function MockComparison() {
 
   const getData = async () => {
     setLoading(true);
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+
     try {
-      const res = await getMockComparison(mockId, attemptId);
+      const res = await getMockComparison(mockId, attemptId, uid);
       if (res?.status == 200) {
         console.log(res.data);
         setResult(res.data?.result);

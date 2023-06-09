@@ -10,7 +10,8 @@ export const fetchAnalysisData = async (attempt_id, uid) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
-        uid : uid
+        uid: uid,
+        attemptId : attempt_id
       },
     });
     return res;
@@ -28,6 +29,8 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -45,6 +48,8 @@ export const fetchOverallAcross = async (uid, attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -55,7 +60,7 @@ export const fetchOverallAcross = async (uid, attemptId) => {
 };
 
 
-export const fetchViewSolution = async (attemptId, mockId) => {
+export const fetchViewSolution = async (attemptId, mockId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -63,6 +68,8 @@ export const fetchViewSolution = async (attemptId, mockId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -73,7 +80,7 @@ export const fetchViewSolution = async (attemptId, mockId) => {
 };
 
 //GET ERROR TRACKER
-export const fetchErrorTracker = async (attemptId) => {
+export const fetchErrorTracker = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -81,6 +88,8 @@ export const fetchErrorTracker = async (attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -113,7 +122,7 @@ export const postToErrorTracker = async (attemptId, type, payload) => {
 
 // api for mock comparison
 
-export const getMockComparison = async (mockId, attemptId) => {
+export const getMockComparison = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -121,6 +130,8 @@ export const getMockComparison = async (mockId, attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -159,7 +170,7 @@ export const getMockAcrossAnalysis = async (uid) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
-      },
+        uid: uid      },
     });
     return res;
   } catch (err) {
@@ -170,7 +181,7 @@ export const getMockAcrossAnalysis = async (uid) => {
 
 // api for goal tracker
 
-export const getGoalTrackerData = async (attemptId) => {
+export const getGoalTrackerData = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -178,6 +189,8 @@ export const getGoalTrackerData = async (attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
@@ -208,7 +221,7 @@ export const getMarketPlace = async () => {
 
 // api for checking mock status
 
-export const fetchMockStatus = async (mockId, attemptId) => {
+export const fetchMockStatus = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -216,6 +229,8 @@ export const fetchMockStatus = async (mockId, attemptId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
       },
     });
     return res;
