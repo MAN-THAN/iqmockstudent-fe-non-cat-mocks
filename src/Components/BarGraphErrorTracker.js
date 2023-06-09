@@ -177,14 +177,17 @@ const PieGraph = ({ Data, title, width, legend }) => {
   const pieData =
     Data &&
     Object.keys(Data).length > 0 &&
-    Object.keys(Data).map((e) => {
-      const resObject = AllDetails.find((item) => item.value === e);
-      return {
-        name: e,
-        value: Data[e],
-        fill: resObject && resObject.color,
-      };
-    });
+    Object.keys(Data)
+      .map((e) => {
+        const resObject = AllDetails.find((item) => item.value === e);
+        return {
+          name: e,
+          value: Data[e],
+          fill: resObject && resObject.color,
+        };
+      })
+      .filter((data) => data.value > 0);
+
    const activeIndices = pieData ? pieData.map((_, index) => index) : [];
   return (
     <ResponsiveContainer width="100%" height={300}>

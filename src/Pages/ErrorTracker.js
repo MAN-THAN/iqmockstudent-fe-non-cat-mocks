@@ -253,6 +253,7 @@ function ErrorTracker() {
   // console.log(graphData && graphData[0], "graohData");
 
   const showToastMessage = (msg) => {
+
     toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
       position: toast.POSITION.TOP_CENTER,
     });
@@ -356,9 +357,30 @@ function ErrorTracker() {
                     <PieGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
                   </Box>
                   <Box sx={{ mt: 2 }}>
-                    <h3 className="ms-3">{`${correction ? correction.charAt(0).toUpperCase() + correction.slice(1) : ""} Questions: ${
-                      graphData && Object.values(graphData[0]).reduce((acc, curr) => acc + curr, 0)
-                    }`}</h3>
+                    <Typography
+                      sx={{
+                        ...typographyStyles.subHeading,
+                        ml: 2,
+                        mb: 1,
+                        fontWeight: "700",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {`(${
+                        correction &&
+                        correction.charAt(0).toUpperCase() + correction.slice(1)
+                          ? correction.charAt(0).toUpperCase() +
+                            correction.slice(1)
+                          : ""
+                      } Questions: ${
+                        graphData &&
+                        graphData[0] &&
+                        Object.values(graphData[0]).reduce(
+                          (acc, curr) => acc + curr,
+                          0
+                        )
+                      })`}
+                    </Typography>
 
                     {<GraphComp colorDetailing={colorDetailing} />}
                   </Box>
