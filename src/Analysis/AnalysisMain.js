@@ -605,7 +605,7 @@ function AnalysisMain() {
 
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
-                <div style={{ flexBasis: "70%" }} className=" d-flex gap-3 ps-2">
+                <div style={{ flexBasis: "75%" }} className=" d-flex gap-3 ps-2">
                   <NavLink to="overall" activeclassname="active" className="link flex-item">
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
@@ -749,7 +749,7 @@ function AnalysisMain() {
                 </div>
 
                 <div
-                  style={{ flexBasis: "30%" }}
+                  style={{ flexBasis: "25%" }}
                   className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item " : "d-none"}
                 >
                   <Box
