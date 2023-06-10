@@ -20,13 +20,12 @@ export const ContextProvider = ({ children }) => {
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
   const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
-  const [air, set_air] = useState("TBD");
   console.log(isWindowClosed);
 
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
       const response = await fetchAnalysisData(attemptId, uid);
-      const response2 = await fetchMockStatus(mockId, attemptId, uid);
+      const response2 = await fetchMockStatus(mockId, attemptId);
       console.log(response);
       console.log(response2);
       if (response?.status == 200) {
@@ -40,9 +39,6 @@ export const ContextProvider = ({ children }) => {
         setWindowClosed(response2.data.isWindowClosed);
         window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
         setTopperData(response2.data.mockData);
-        if (response2?.data.air) {
-          set_air(response2.data.air);
-        }
         setLoading(false);
       } else {
         console.log("--> Error in mock status fetching");
@@ -133,7 +129,6 @@ export const ContextProvider = ({ children }) => {
           showToastMessage,
           setLoading,
           topperData,
-          air,
         }}
       >
         {children}
