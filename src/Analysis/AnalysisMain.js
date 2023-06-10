@@ -640,10 +640,6 @@ function AnalysisMain() {
 
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
-<<<<<<< HEAD
-                <div style={{ flexBasis: "75%" }} className=" d-flex gap-3 ps-2">
-                  <NavLink to="overall" activeclassname="active" className="link flex-item">
-=======
                 <div
                   style={{ flexBasis: "70%" }}
                   className=" d-flex gap-3 ps-2"
@@ -653,7 +649,6 @@ function AnalysisMain() {
                     activeclassname="active"
                     className="link flex-item"
                   >
->>>>>>> d81e2f2a0dcc35e635c55b84fb859e744fa4ef89
                     <ModifyButton variant="filled" className="nav-button">
                       Score Card
                     </ModifyButton>
@@ -818,10 +813,6 @@ function AnalysisMain() {
                 </div>
 
                 <div
-<<<<<<< HEAD
-                  style={{ flexBasis: "25%" }}
-                  className={location.pathname === `/analysis/${mockId}/${attemptId}/overall` ? "flex-item " : "d-none"}
-=======
                   style={{ flexBasis: "30%" }}
                   className={
                     location.pathname ===
@@ -829,7 +820,6 @@ function AnalysisMain() {
                       ? "flex-item "
                       : "d-none"
                   }
->>>>>>> d81e2f2a0dcc35e635c55b84fb859e744fa4ef89
                 >
                   <Box
                     component="span"
