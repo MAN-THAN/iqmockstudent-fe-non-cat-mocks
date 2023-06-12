@@ -402,7 +402,7 @@ function CenterMain() {
                     {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
-                        <Timer type={state.type} mockId={state.mockId} initMinute={10} initSeconds={0} studentAnswersData={questionStatus} />
+                        <Timer type={state.type} mockId={state.mockId} initMinute={1} initSeconds={0} studentAnswersData={questionStatus} />
                       </>
                     }
                   </div>
@@ -681,7 +681,7 @@ function CenterMain() {
                                   key={index}
                                   value={index}
                                   control={<Radio />}
-                                  sx={{marginTop : 2}}
+                                  sx={{ marginTop: 2 }}
                                   label={
                                     <div>
                                       <small>

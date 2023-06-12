@@ -95,6 +95,8 @@ const MainUserAuth = () => {
 
   const eraseQuestionData = () => { 
     localStorage.clear();
+    setModal(false);
+    setLoader(true);
     startVerification();
     // api call
   }
@@ -173,12 +175,12 @@ const MainUserAuth = () => {
               src="/ModalImage.png"
             />
           </div>
-          <div className="d-flex justify-content-center">
-            <SubHeading style={{ color: "#494949", fontWeight: "550", fontSize: "16px" }} className="ps-5">
-              You have not completed your previous mock, press continue to resume or discard to erase your data.
+          <div className="d-flex justify-content-center p-4">
+            <SubHeading style={{ color: "red", fontWeight: "700", fontSize: "16px" }} >
+              You have not completed your previous mock, press continue to resume or press discard.
             </SubHeading>
           </div>
-          <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
+          <div className="d-flex justify-content-evenly">
             <MyButton
               variant="contained"
               sx={{
