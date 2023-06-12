@@ -160,7 +160,10 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                     background: " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
                     borderRadius: "30px",
                   }}
-                  onClick={() => navigate(`/analysis/${mockId}/${attemptID}/overall`)}
+                  onClick={() => {
+                    window.localStorage.removeItem("questionStatus");
+                    navigate(`/analysis/${mockId}/${attemptID}/overall`);
+                  }}
                 >
                   DONE
                 </MyButton>

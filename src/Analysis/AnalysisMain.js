@@ -68,7 +68,7 @@ function AnalysisMain() {
     // localStorage.clear();
     window.localStorage.removeItem("my-counter-sec");
     window.localStorage.removeItem("my-counter-min");
-    window.localStorage.removeItem("questionStatus");
+    // window.localStorage.removeItem("questionStatus");
     analysisDataApi(attemptId, mockId, uid); //call analysis data api and send attempt id to api function also!
     // fetchMockStatus(mockId);
   }, []);

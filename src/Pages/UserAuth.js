@@ -40,6 +40,7 @@ const UserAuth = () => {
       console.log(response);
       if (response?.status === 200) {
         localStorage.setItem("attemptId", JSON.stringify(response.data.attemptId));
+        localStorage.setItem("currMockId", JSON.stringify(state.mockId));
         // userAuthCheck();
         navigate(`/instructions`, {
           state: {

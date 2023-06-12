@@ -21,7 +21,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
 
-  const attemptID = JSON.parse(window.localStorage.getItem("attemptId"))
+  const attemptID = JSON.parse(window.localStorage.getItem("attemptId"));
 
   // taking the local storage value of timer
   useEffect(() => {
@@ -48,8 +48,8 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
           navigate(`/main`, {
             state: {
               mockId: mockId,
-              type : "lrdi"
-            }
+              type: "lrdi",
+            },
           });
         } else if (subject === "lrdi") {
           console.log("lrdi submitted");
@@ -60,6 +60,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
             },
           });
         } else if (subject === "quants") {
+          window.localStorage.removeItem("questionStatus");
           console.log("Your mock is submitted!!!");
           navigate(`/analysis/${mockId}/${attemptID}/overall`);
         }
