@@ -259,11 +259,10 @@ export const StyledMenu = styled((props) => (
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.gray,
-
     color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: "17.76px",
+    fontSize: "14px",
   },
 }));
 

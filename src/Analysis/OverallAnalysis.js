@@ -99,7 +99,7 @@ function OverallAnalysis() {
         </StyledTable>
         {/* 2nd table  side table */}
 
-        <StyledTable sx={{ maxWidth: "30%", ml: 2 }} aria-label="customized table">
+        <StyledTable sx={{ maxWidth: "25%", ml: 2 }} aria-label="customized table">
           <TableHead>
             <TableRow sx={{ background: "white", borderBottom: "none" }}>
               <StyledTableCell className="fw-bold py-4" align="left ">

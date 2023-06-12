@@ -59,7 +59,7 @@ function TopicAnalysis() {
           </TableRow>
         </TableHead>
 
-        <TableBody>
+        <TableBody >
           {data.length > 0 &&
             data.slice(1).map((item, index) => {
               return (
@@ -71,23 +71,47 @@ function TopicAnalysis() {
                     color: "black",
                   }}
                 >
-                  <StyledTableCell align="left">{item.number}</StyledTableCell>
-                  <StyledTableCell align="left">{item.topic}</StyledTableCell>
-                  <StyledTableCell align="left">{item.numberOfQuestions}</StyledTableCell>
-                  <StyledTableCell align="left">{item.numberOfAttemptedQuestions}</StyledTableCell>
-                  <StyledTableCell align="left">{item.numberOfCorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="left">{item.numberOfIncorrectAttempt}</StyledTableCell>
-                  <StyledTableCell align="left">{item.markObtainedByCorrectQuestion}</StyledTableCell>
-                  <StyledTableCell align="left">{item.overallScoreInTheTopic}</StyledTableCell>
-                  <StyledTableCell align="left" sx={{ color: "#0C58B6" }}>
+                  <StyledTableCell align="left" >
+                    {item.number}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.topic}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.numberOfQuestions}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.numberOfAttemptedQuestions}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.numberOfCorrectAttempt}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.numberOfIncorrectAttempt}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.markObtainedByCorrectQuestion}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.overallScoreInTheTopic}
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="left"
+                  
+                    sx={{ color: "#0C58B6", fontSize: "14px" }}
+                  >
                     {topper_data
-                      ? topper_data[index + 1].markObtainedByCorrectQuestion == null ||
-                        topper_data[index + 1].markObtainedByCorrectQuestion == undefined
+                      ? topper_data[index + 1].markObtainedByCorrectQuestion ==
+                          null ||
+                        topper_data[index + 1].markObtainedByCorrectQuestion ==
+                          undefined
                         ? "N/A"
                         : topper_data[index + 1].markObtainedByCorrectQuestion
                       : "TBD"}
                   </StyledTableCell>
-                  <StyledTableCell align="left">{item.markLoseByIncorrectAttempt}</StyledTableCell>
+                  <StyledTableCell align="left" >
+                    {item.markLoseByIncorrectAttempt}
+                  </StyledTableCell>
                 </StyledTableRow>
               );
             })}
