@@ -321,7 +321,7 @@ export default function GoalTracker() {
                               }}
                               align="left"
                             >
-                              Avg. Package
+                              Average Package
                             </TableCell>
                           </TableRow>
 
@@ -448,7 +448,7 @@ export default function GoalTracker() {
                               }}
                               align="left"
                             >
-                              Avg. Package
+                              Average Package
                             </TableCell>
                           </TableRow>
 
