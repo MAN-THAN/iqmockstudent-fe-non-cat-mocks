@@ -110,6 +110,7 @@ export default function GoalTracker() {
   const [yourData, setYourData] = useState([]);
   const [weakTopics, setWeakTopics] = useState();
   const [bschool, setBschool] = useState([]);
+  const [missedBschool, setMissedBschool] = useState([]);
 
   const getData = async () => {
     setLoading(true);
@@ -122,6 +123,7 @@ export default function GoalTracker() {
       setGoalData(res.data.goalData);
       setWeakTopics(res.data.weakTopics[0]);
       setBschool(res.data.bschools);
+      setMissedBschool(res.data.missedBSchools);
       setDefVal(res.data.mockWise[0].title);
       setMockData(res.data.mockWise[0]);
       setLoading(false);
@@ -450,8 +452,8 @@ export default function GoalTracker() {
                             </TableCell>
                           </TableRow>
 
-                          {bschool &&
-                            bschool.map((item, ind) => {
+                          {missedBschool &&
+                            missedBschool.map((item, ind) => {
                               return (
                                 <TableRow
                                   key={ind}
@@ -530,12 +532,12 @@ export default function GoalTracker() {
                   marginTop: 20,
                 }}
               >
-                <BarChart width={730} height={380} data={mockData?.scoreData}>
+                <BarChart width={680} height={380} data={mockData?.scoreData}>
                   {/* <CartesianGrid strokeDasharray="3 3" /> */}
                   <XAxis dataKey="name" tick={{ fill: "white" }} />
                   <YAxis domain={[0, 100]} tick={{ fill: "white" }} />
                   <Tooltip />
-                  <Legend />
+                    <Legend margin={{ top : 20}} />
                   <Bar barSize={60} dataKey="TargetScore" fill="#641CFF" />
                   <Bar barSize={60} dataKey="YourScore" fill="#59DE66" />
                 </BarChart>
