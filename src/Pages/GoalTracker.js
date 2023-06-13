@@ -252,15 +252,15 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: "40vw",
-                  height: 560,
-                  borderRadius: "25px",
+                  height: 500,
+                  borderRadius: "17px",
                   background: "white",
                   zIndex: 99,
                   p: 1,
                   overflowX: "hidden",
                   position: "absolute",
                   bottom: 50,
-                  right: 20,
+                  right: 50,
                 }}
               >
                 <DetailCards
@@ -379,15 +379,15 @@ export default function GoalTracker() {
                 component="div"
                 sx={{
                   width: "40vw",
-                  height: 560,
-                  borderRadius: "25px",
+                  height: 500,
+                  borderRadius: "17px",
                   background: "white",
                   zIndex: 99,
                   p: 1,
                   overflowX: "hidden",
                   position: "absolute",
                   bottom: "-93vh",
-                  right: 20,
+                  right: 50,
                 }}
               >
                 <DetailCards
@@ -529,10 +529,10 @@ export default function GoalTracker() {
                 sx={{
                   position: "absolute",
                   top: "110vh",
-                  marginTop: 20,
+                  marginTop: 25,
                 }}
               >
-                <BarChart width={680} height={380} data={mockData?.scoreData}>
+                <BarChart width={600} height={380} data={mockData?.scoreData}>
                   {/* <CartesianGrid strokeDasharray="3 3" /> */}
                   <XAxis dataKey="name" tick={{ fill: "white" }} />
                   <YAxis domain={[0, 100]} tick={{ fill: "white" }} />
@@ -666,7 +666,7 @@ export default function GoalTracker() {
                   </Select>
                 </FormControl>
               </Box>
-              <Typography sx={{ marginTop: 10, letterSpacing: 1 }} fontSize={16} color="white">
+              <Typography sx={{ marginTop: 12, letterSpacing: 1 }} fontSize={16} color="white">
                 Percentile Map : Targeted vs Scored
               </Typography>
               <Typography sx={{ marginTop: "99vh", letterSpacing: 1 }} fontSize={16} color="white">
