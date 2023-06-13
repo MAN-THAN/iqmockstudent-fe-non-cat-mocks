@@ -264,9 +264,9 @@ function AnalysisMain() {
                     <div className="d-flex justify-content-start mt-4 gap-2 ">
                       <ModifyButton
                         variant="filled"
-                        // onClick={() =>
-                        //   navigate(`/viewsolutions/${attemptId}/varc`)
-                        // }
+                        onClick={() =>
+                          navigate(`/scorevsprecentile/${mockId}/${attemptId}`)
+                        }
                         sx={{
                           border: "2px solid var( --blue-new)",
                           backgroundColor: "var( --blue-new)",

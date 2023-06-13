@@ -24,6 +24,7 @@ import MainUserAuth from "./Pages/MainUserAuth";
 import MobileTemp from "./Pages/MobileTemp";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import ScoreVsPrecentile from "./Pages/ScoreVsPrecentile";
 
 function App() {
   const navigate = useNavigate();
@@ -72,7 +73,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/:email/:otp/:setId/:mockId" element={<MainUserAuth />} />
+          <Route
+            path="/:email/:otp/:setId/:mockId"
+            element={<MainUserAuth />}
+          />
           <Route path="/instructions" element={<Instructions />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/user_authentication" element={<UserAuth />} />
@@ -80,21 +84,49 @@ function App() {
 
           <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
-            <Route path="subtopicwise/:subject" element={<SubtopicAnalysis />} />
+            <Route
+              path="subtopicwise/:subject"
+              element={<SubtopicAnalysis />}
+            />
             <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>
-          <Route path="/leaderboard/:mockId/:attemptId" element={<LeaderBoard />} />
-          <Route path="/viewsolutions/:mockId/:attemptId" element={<ViewSolution />} />
+          <Route
+            path="/leaderboard/:mockId/:attemptId"
+            element={<LeaderBoard />}
+          />
+          <Route
+            path="/viewsolutions/:mockId/:attemptId"
+            element={<ViewSolution />}
+          />
           <Route path="/main" element={<Protected Comp={Main} />} />
 
-          <Route path="/analysisacross/:mockId/:attemptId" element={<AnalysisAcross />} />
-          <Route path="/errortracker/:mockId/:attemptId" element={<ErrorTracker />} />
-          <Route path="/goaltracker/:mockId/:attemptId" element={<GoalTracker />} />
-          <Route path="/marketplace/:mockId/:attemptId" element={<MarketPlace />} />
-          <Route path="/mockcomparison/:mockId/:attemptId" element={<MockComparison />} />
+          <Route
+            path="/analysisacross/:mockId/:attemptId"
+            element={<AnalysisAcross />}
+          />
+          <Route
+            path="/errortracker/:mockId/:attemptId"
+            element={<ErrorTracker />}
+          />
+          <Route
+            path="/goaltracker/:mockId/:attemptId"
+            element={<GoalTracker />}
+          />
+          <Route
+            path="/marketplace/:mockId/:attemptId"
+            element={<MarketPlace />}
+          />
+          <Route
+            path="/mockcomparison/:mockId/:attemptId"
+            element={<MockComparison />}
+          />
           <Route path="/onboarding" element={<OnBoarding />} />
+          <Route
+            path="/scorevsprecentile/:mockId/:attemptId"
+            element={<ScoreVsPrecentile />}
+          />
         </Routes>
       </ThemeProvider>
     </QueryClientProvider>
