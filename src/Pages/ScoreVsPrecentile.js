@@ -14,21 +14,29 @@ import { ToastContainer, toast } from "react-toastify";
 import Table from "../Common-comp/Table";
 import { fetchScoreVsPrecentile } from "../services/Analysis_api";
 
-const filter1 = [
-  { name: "Incorrect", value: "incorrect" },
-  { name: "Correct", value: "correct" },
-  { name: "Skipped", value: "skipped" },
-];
-
-const filter2 = [
-  { name: "All Sections", value: "allsections" },
+const Sections = [
+  { name: "Overall", value: "overall" },
   { name: "VARC", value: "varc" },
   { name: "LRDI", value: "lrdi" },
   { name: "Quants", value: "quants" },
 ];
 
-const tableHeading = ["%ile", "Overall", "QA", "VA", "lrdi"];
-const bodyData = ["%ile", "Overall", "QA", "VA", "lrdi"];
+const tableHeading = [
+  { value: "tablePrecentile", name: "%ile" },
+  { value: "overall", name: "Overall" },
+  { value: "quants", name: "QA" },
+  { value: "varc", name: "VA" },
+  { value: "lrdi", name: "lrdi" },
+];
+
+const tableRow = [
+  100, 99.9, 99.8, 99.7, 99.6, 99.5, 99, 98, 97, 96, 95, 90, 85, 80, 70, 60, 50,
+];
+
+const tablePrecentile = tableRow.map((value) => ({ percentile: value }));
+
+console.log(tablePrecentile);
+
 const LineGraphData = [
   {
     name: "Page A",
@@ -74,7 +82,6 @@ const LineGraphData = [
   },
 ];
 
-
 function ScoreVsPrecentile() {
   const {
     menuBarOpen,
@@ -86,20 +93,28 @@ function ScoreVsPrecentile() {
   } = useAuth();
   const { attemptId, mockId } = useParams();
 
-const { mocks, setMocks } = useState([]);
-const { sections, setSections } = useState([]);
-const { data, setData } = useState([]);
+  const [mocks, setMock] = useState([]); // state for set the particular mock from title in select box
+  const [data, setData] = useState([]); // set the main data from api
+  const [section, setSections] = useState([]); //set the sections varc ,lrdi , quants and overall
+  const [titleList, setTitleList] = useState(null); //state for setting the all title list from data
+  const [tableData, setTableData] = useState({
+
+    head: null,
+    body: null,
+  });
+  const [graphData, setGraphData] = useState([]);
 
   //  calling api
   useEffect(() => {
     const getData = async () => {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-        const res = await fetchScoreVsPrecentile(mockId,attemptId,uid);
+        const res = await fetchScoreVsPrecentile(mockId, attemptId, uid);
         console.log(res);
         setLoading(true);
         if (res?.status === 200) {
-          setData(res.data);
+          const updatedData = { ...res.data, tableHeading };
+          setData(updatedData);
           setLoading(false);
         } else {
           console.log("Error in fetching data: ", res);
@@ -118,9 +133,51 @@ const { data, setData } = useState([]);
     } else {
       getData();
     }
-  },[]);
+  }, []);
 
-  console.log("svsprec",data)
+  // set the title list from api to set titleList state
+  useEffect(() => {
+    const setTitle = () => {
+      if (Object.keys(data).length > 0) {
+        const updatedMockList = data.allMocklist.map((e) => ({
+          name: e.title,
+          value: e.mockId,
+        }));
+
+        console.log("updated list", updatedMockList);
+        setTitleList(updatedMockList);
+      }
+    };
+
+    setTitle();
+    //call table data function
+    const bodyData = { ...data.table, tablePrecentile };
+    updateTableData(data.tableHeading, bodyData);
+  }, [data]);
+
+  const updateTableData = (newHeadData, newBodyData) => {
+    const bodyArray = [];
+
+    Object.entries(newBodyData).forEach(([key,value]) => {
+      bodyArray.push({[key]:value})
+    })
+
+    setTableData({
+      head: newHeadData,
+      body: bodyArray,
+    });
+  };
+
+  //Set graph data
+  useEffect(() => {
+    const updatedData = data.graph?.[section];
+    setGraphData({ ...updatedData, tablePrecentile });
+  }, [section, data]);
+
+  console.log("graphData", graphData);
+  console.log("titleList", titleList);
+  console.log("svsprec", data);
+  console.log("TableData", tableData);
 
   return (
     <>
@@ -168,8 +225,10 @@ const { data, setData } = useState([]);
                   </div>
 
                   <div className="d-flex gap-3 mt-3">
-                    {/* <MultipleSelect options={filter2} setType={setSection} />
-                    <MultipleSelect options={topicList} setType={setTopic} /> */}
+                    {titleList && (
+                      <MultipleSelect options={titleList} setType={setMock} />
+                    )}
+                    <MultipleSelect options={Sections} setType={setSections} />
                   </div>
                 </div>
                 <div className="flex-item flex-fill p-2 pe-0">
@@ -221,8 +280,8 @@ const { data, setData } = useState([]);
                     >
                       <LineGraph
                         Data={LineGraphData}
-                        xkey={"name"}
-                        ykey={"uv"}
+                        xkey={"score"}
+                        ykey={"percentile"}
                       />
                     </motion.div>
                   </Box>
@@ -240,7 +299,9 @@ const { data, setData } = useState([]);
                   }}
                   component={Paper}
                 >
-                  <Table data={{ headings: tableHeading, body: bodyData }} />
+                 { tableData && <Table
+                    data={{ headings: tableData.head, body: tableData.body }}
+                  />}
                 </Box>
                 {/*Question side box end*/}
               </Box>
@@ -251,38 +312,5 @@ const { data, setData } = useState([]);
     </>
   );
 }
-
-const GraphComp = ({ colorDetailing }) => {
-  return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
-      {colorDetailing &&
-        colorDetailing.slice(1).map((item, _) => {
-          return (
-            <Box
-              component="item"
-              sx={{
-                display: "flex",
-
-                p: 1,
-                flexBasis: "50%",
-                textAlign: "left",
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: item.color,
-                  borderRadius: "50%",
-                  marginRight: "5px",
-                  width: "21px",
-                  height: "21px",
-                }}
-              ></Box>
-              <Typography variant="paragraph">{item.value}</Typography>
-            </Box>
-          );
-        })}
-    </Box>
-  );
-};
 
 export default ScoreVsPrecentile;

@@ -14,6 +14,8 @@ import { Typography } from "@mui/material";
 
 function Table({ data }) {
   const { headings, body } = data;
+
+  console.log("body data from table", body);
   return (
     <TableContainer
       sx={{
@@ -35,33 +37,45 @@ function Table({ data }) {
                 return (
                   <StyledTableCell className="fw-bold py-4" align="left ">
                     <Typography fontWeight={700} fontSize="16px">
-                      {item}
+                      {item.name}
                     </Typography>
                   </StyledTableCell>
                 );
               })}
           </TableRow>
         </TableHead>
-
         <TableBody>
-          {body && body.map((item, index) => {
-            return (
-              <StyledTableRow
-                key={index}
-                sx={{
-                  background: "white",
-                  border: "none",
-                }}
-              >
-                {headings.map((heading, cellIndex) => (
-                  <StyledTableCell align="left" key={cellIndex}>
-                    <Typography sx={{ fontSize: "14px", fontWeight: 500 }}>
-                      {2}
-                    </Typography>
-                  </StyledTableCell>
-                ))}
-              </StyledTableRow>
+          {body.map((item, index) => {
+            console.log("Item:", item);
+            console.log("Index:", index);
+
+            const targetPercentileKey = Object.keys(item).find(
+              (key) => key.toLowerCase() === "tableprecentile"
             );
+
+            if (targetPercentileKey) {
+              const targetPercentileValues = item[targetPercentileKey];
+
+              return targetPercentileValues.map((value, valueIndex) => (
+                <StyledTableRow
+                  key={`${index}-${valueIndex}`}
+                  sx={{
+                    background: "white",
+                    border: "none",
+                    color: "black",
+                  }}
+                >
+                  {Object.keys(value).map((key) => (
+                    <StyledTableCell key={key} align="left">
+                      {value[key]}
+                    </StyledTableCell>
+                    
+                  ))}
+                </StyledTableRow>
+              ));
+            }
+
+            return null;
           })}
         </TableBody>
       </StyledTable>
