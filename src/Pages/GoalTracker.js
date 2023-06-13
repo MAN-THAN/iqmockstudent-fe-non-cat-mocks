@@ -75,6 +75,9 @@ export default function GoalTracker() {
   const ITEM_HEIGHT = "48";
   const ITEM_PADDING_TOP = 3;
   const MenuProps = {
+    MenuListProps: {
+      autoFocusItem: true,
+    },
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -134,7 +137,7 @@ export default function GoalTracker() {
   console.log(defVal);
   // console.log(weakTopics);
   console.log(mockIndex);
-  console.log(mockData)
+  console.log(mockData);
 
   const data = [
     {
@@ -154,25 +157,41 @@ export default function GoalTracker() {
       A: 99,
       B: 100,
       fullMark: 100,
-    }
+    },
   ];
- const data2 = [
-   {
-     name: "Page A",
-     uv: 80,
-     pv: 20,
-   },
-   {
-     name: "Page B",
-     uv: 90,
-     pv: 30,
-   },
-   {
-     name: "Page C",
-     uv: 65,
-     pv: 60,
-   }
- ];
+  const data2 = [
+    {
+      name: "Page A",
+      uv: 80,
+      pv: 20,
+    },
+    {
+      name: "Page B",
+      uv: 90,
+      pv: 30,
+    },
+    {
+      name: "Page C",
+      uv: 65,
+      pv: 60,
+    },
+  ];
+
+  const renderCustomBarShape = (props) => {
+    const { x, y, width, height, fill } = props;
+
+    // Customize the shape of the bar
+    const radius = 8;
+    const path = `M${x},${y + radius}
+                  A${radius},${radius},0,0,1,${x + radius},${y}
+                  L${x + width - radius},${y}
+                  A${radius},${radius},0,0,1,${x + width},${y + radius}
+                  L${x + width},${y + height}
+                  L${x},${y + height}
+                  Z`;
+
+    return <path d={path} fill={fill} />;
+  };
 
   return (
     <Box sx={{ width: "100vw", height: "200vh" }}>
@@ -199,7 +218,7 @@ export default function GoalTracker() {
         {/* Header end  */}
         {/* main Section start */}
         {isLoading ? (
-          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+          <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80vh" }}>
             <div class="loading-container">
               <div class="loading"></div>
               <div id="loading-text">Loading...</div>
@@ -365,7 +384,7 @@ export default function GoalTracker() {
                   p: 1,
                   overflowX: "hidden",
                   position: "absolute",
-                  bottom: "-95vh",
+                  bottom: "-93vh",
                   right: 20,
                 }}
               >
@@ -489,34 +508,36 @@ export default function GoalTracker() {
               <Box
                 sx={{
                   position: "absolute",
-                  marginTop: 20,
+                  marginTop: 15,
                 }}
               >
-                <RadarChart outerRadius={200} width={700} height={440} data={mockData?.data} legendType="plain">
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="name" />
-                  {/* <PolarRadiusAxis angle={30} domain={[0, 100]} /> */}
-                  <Radar name="Targeted %ile" dataKey="targetPercentile" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                  <Radar name="Scored %ile" dataKey="scorePercentile" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-                  <Tooltip />
-                  <Legend />
-                </RadarChart>
+                <ResponsiveContainer width={700} height={480}>
+                  <RadarChart outerRadius={220} data={mockData?.data} legendType="plain">
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey="name" tick={{ fill: "white" }} />
+                    {/* <PolarRadiusAxis angle={30} domain={[0, 100]} /> */}
+                    <Radar name="Targeted %ile" dataKey="targetPercentile" stroke="#641CFF" fill="#641CFF" fillOpacity={0.6} />
+                    <Radar name="Scored %ile" dataKey="scorePercentile" stroke="#59DE66" fill="#59DE66" fillOpacity={0.6} />
+                    <Tooltip />
+                    <Legend />
+                  </RadarChart>
+                </ResponsiveContainer>
               </Box>
               <Box
-                  sx={{
-                  position : "absolute",
+                sx={{
+                  position: "absolute",
                   top: "110vh",
                   marginTop: 20,
                 }}
               >
-                <BarChart width={730} height={380} data={data2}>
+                <BarChart width={730} height={380} data={mockData?.scoreData}>
                   {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} />
+                  <XAxis dataKey="name" tick={{ fill: "white" }} />
+                  <YAxis domain={[0, 100]} tick={{ fill: "white" }} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="pv" fill="#8884d8" />
-                  <Bar dataKey="uv" fill="#82ca9d" />
+                  <Bar barSize={60} dataKey="TargetScore" fill="#641CFF" />
+                  <Bar barSize={60} dataKey="YourScore" fill="#59DE66" />
                 </BarChart>
               </Box>
             </Box>
