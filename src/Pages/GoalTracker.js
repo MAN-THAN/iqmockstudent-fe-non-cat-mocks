@@ -537,7 +537,7 @@ export default function GoalTracker() {
                   <XAxis dataKey="name" tick={{ fill: "white" }} />
                   <YAxis domain={[0, 100]} tick={{ fill: "white" }} />
                   <Tooltip />
-                    <Legend margin={{ top : 20}} />
+                  <Legend margin={{ top: 20 }} />
                   <Bar barSize={60} dataKey="TargetScore" fill="#641CFF" />
                   <Bar barSize={60} dataKey="YourScore" fill="#59DE66" />
                 </BarChart>
@@ -666,6 +666,12 @@ export default function GoalTracker() {
                   </Select>
                 </FormControl>
               </Box>
+              <Typography sx={{ marginTop: 10, letterSpacing: 1 }} fontSize={16} color="white">
+                Percentile Map : Targeted vs Scored
+              </Typography>
+              <Typography sx={{ marginTop: "99vh", letterSpacing: 1 }} fontSize={16} color="white">
+                Score Map : Targeted vs Scored
+              </Typography>
             </Box>
           </Box>
         )}
