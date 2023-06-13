@@ -26,6 +26,10 @@ import MultipleSelect from "../Common-comp/SelectField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts";
+import { BarChart, CartesianGrid, XAxis, YAxis, Bar } from "recharts";
+import { ResponsiveContainer } from "recharts";
+import { Tooltip } from "recharts";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -128,11 +132,50 @@ export default function GoalTracker() {
   // console.log(mockList);
   console.log(mockList);
   console.log(defVal);
-  console.log(weakTopics);
+  // console.log(weakTopics);
   console.log(mockIndex);
+  console.log(mockData)
+
+  const data = [
+    {
+      subject: "Math",
+      A: 120,
+      B: 110,
+      fullMark: 150,
+    },
+    {
+      subject: "English",
+      A: 86,
+      B: 130,
+      fullMark: 100,
+    },
+    {
+      subject: "Geography",
+      A: 99,
+      B: 100,
+      fullMark: 100,
+    }
+  ];
+ const data2 = [
+   {
+     name: "Page A",
+     uv: 80,
+     pv: 20,
+   },
+   {
+     name: "Page B",
+     uv: 90,
+     pv: 30,
+   },
+   {
+     name: "Page C",
+     uv: 65,
+     pv: 60,
+   }
+ ];
 
   return (
-    <Box sx={{ width: "100vw", height: "100vh" }}>
+    <Box sx={{ width: "100vw", height: "200vh" }}>
       <Box>
         <MenuDrawer />
       </Box>
@@ -142,9 +185,10 @@ export default function GoalTracker() {
           ml: "65px",
           background: isLoading ? "" : "url(/GoalTrackerBackground.jpg)",
           backgroundSize: "cover",
-          height: "100vh",
+          height: "200vh",
           p: 2,
           backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
         }}
       >
         {/* Header */}
@@ -165,7 +209,7 @@ export default function GoalTracker() {
           <Box component="main" sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
             {/* Two div */}
             <Box component="div" sx={{ display: "flex", gap: 2 }}>
-              <Box
+              {/* <Box
                 component="div"
                 sx={{
                   width: 532,
@@ -181,18 +225,21 @@ export default function GoalTracker() {
                   heading={"Where you went wrong?"}
                   logoPath={"/CardsIcons/idea1.png"}
                 />
-              </Box>
+              </Box> */}
 
               <Box
                 component="div"
                 sx={{
-                  width: 460,
-                  height: 170,
+                  width: "40vw",
+                  height: 560,
                   borderRadius: "25px",
                   background: "white",
                   zIndex: 99,
                   p: 1,
                   overflowX: "hidden",
+                  position: "absolute",
+                  bottom: 50,
+                  right: 20,
                 }}
               >
                 <DetailCards
@@ -307,52 +354,177 @@ export default function GoalTracker() {
                   heading={"B-Schools You Can Crack"}
                 />
               </Box>
+              <Box
+                component="div"
+                sx={{
+                  width: "40vw",
+                  height: 560,
+                  borderRadius: "25px",
+                  background: "white",
+                  zIndex: 99,
+                  p: 1,
+                  overflowX: "hidden",
+                  position: "absolute",
+                  bottom: "-95vh",
+                  right: 20,
+                }}
+              >
+                <DetailCards
+                  logoPath={"/goalSchool.png"}
+                  cardContent={
+                    <TableContainer>
+                      <Table sx={{ border: "none" }} aria-label="simple table">
+                        <TableHead>
+                          <TableRow
+                            sx={{
+                              fontWeight: 900,
+                              lineHeight: "unset",
+                            }}
+                          >
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 16.5,
+                              }}
+                              align="left"
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  gap: 1,
+                                }}
+                              >
+                                {" "}
+                                <Typography
+                                  sx={{
+                                    fontWeight: "bold",
+                                    fontSize: 15,
+                                    color: "#676767",
+                                  }}
+                                >
+                                  Ranking
+                                </Typography>
+                                <img src="/onboarding_arrow.svg" alt="no image" width="10px"></img>
+                              </Box>
+                              {/* <Box sx={{ width: "1.7em" }}></Box> */}
+                            </TableCell>
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 15,
+                                color: "#676767",
+                              }}
+                              align="left"
+                            >
+                              Name
+                            </TableCell>
+                            <TableCell
+                              sx={{
+                                fontWeight: "bold",
+                                fontSize: 15,
+                                color: "#676767",
+                              }}
+                              align="left"
+                            >
+                              Avg. Package
+                            </TableCell>
+                          </TableRow>
+
+                          {bschool &&
+                            bschool.map((item, ind) => {
+                              return (
+                                <TableRow
+                                  key={ind}
+                                  sx={{
+                                    lineHeight: "unset",
+                                    borderBottom: "1px solid #E1E1E1",
+                                  }}
+                                >
+                                  <TableCell
+                                    sx={{
+                                      ...cellStyle,
+                                      paddingRight: 5,
+                                      fontWeight: 600,
+                                      paddingTop: "0 !important",
+                                    }}
+                                    align="left"
+                                  >
+                                    {ind + 1}
+                                  </TableCell>
+                                  <TableCell
+                                    sx={{
+                                      cellStyle,
+                                      fontWeight: 600,
+                                      width: "40% !important",
+                                    }}
+                                    align="left"
+                                  >
+                                    {item.name}
+                                  </TableCell>
+                                  <TableCell
+                                    sx={{
+                                      ...cellStyle,
+                                      paddingTop: "0 !important",
+                                    }}
+                                    align="left"
+                                  >
+                                    {item.avgSalary + " LPA" || "tbd"}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
+                  }
+                  heading={"B-Schools You Missed"}
+                />
+              </Box>
             </Box>
 
-            {/* Graph start */}
+            {/* Graphs start */}
             <Box>
               {" "}
               <Box
                 sx={{
-                  width: "85%",
-                  height: "60%",
                   position: "absolute",
-                  bottom: 0,
                   marginTop: 20,
                 }}
               >
-                {/* YourTargetGraph  */}
-                <LineGraph2 percentile={yourData && yourData[0]?.percentile} />
+                <RadarChart outerRadius={200} width={700} height={440} data={mockData?.data} legendType="plain">
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="name" />
+                  {/* <PolarRadiusAxis angle={30} domain={[0, 100]} /> */}
+                  <Radar name="Targeted %ile" dataKey="targetPercentile" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                  <Radar name="Scored %ile" dataKey="scorePercentile" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+                  <Tooltip />
+                  <Legend />
+                </RadarChart>
               </Box>
               <Box
-                sx={{
-                  width: "85%",
-                  height: "60%",
-                  position: "absolute",
-                  bottom: 0,
-                  zIndex: 1000,
+                  sx={{
+                  position : "absolute",
+                  top: "110vh",
+                  marginTop: 20,
                 }}
               >
-                {/* <YourActualGraph> */}
-                <LineGraph3 data={goalData} />
-              </Box>
-              <Box
-                sx={{
-                  width: "85%",
-                  height: "60%",
-                  position: "absolute",
-                  bottom: 0,
-                }}
-              >
-                {/* <otherMocksGraph> */}
-                <LineGraph4 data={mockData?.data} />
+                <BarChart width={730} height={380} data={data2}>
+                  {/* <CartesianGrid strokeDasharray="3 3" /> */}
+                  <XAxis dataKey="name" />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pv" fill="#8884d8" />
+                  <Bar dataKey="uv" fill="#82ca9d" />
+                </BarChart>
               </Box>
             </Box>
 
             {/* Graph end */}
             {/* bottom instuction Card */}
             {/* Add the select field */}
-            <Box
+            {/* <Box
               component={Paper}
               sx={{
                 width: 350,
@@ -383,16 +555,14 @@ export default function GoalTracker() {
                 }}
               ></div>
               <Typography sx={infoStyle.textstyle}>Selected Mock</Typography>
-            </Box>
+            </Box> */}
             <Box>
               {" "}
               <Box
                 sx={{
-                  width: 150,
+                  width: 200,
                   height: 41,
                   position: "absolute",
-                  bottom: 20,
-                  right: 420,
                   borderRadius: "15px ",
                   display: "flex",
                   justifyContent: "space-around",
@@ -400,6 +570,7 @@ export default function GoalTracker() {
                   p: 1,
                   backgroundColor: "white",
                   zIndex: 2000,
+                  marginTop: 2,
                 }}
               >
                 {" "}
@@ -417,24 +588,24 @@ export default function GoalTracker() {
                     input={
                       <OutlinedInput
                         sx={{
-                          width: 127,
+                          width: "100%",
                           borderRadius: 2,
-                          height: 32,
+                          height: "100%",
                           fontSize: "12px",
                           fontWeight: 700,
                           fontFamily: "var(--font-inter)",
 
                           ".MuiOutlinedInput-notchedOutline": {
                             border: 1,
-                            borderColor: "#809EB9",
+                            borderColor: "transparent",
                           },
                           "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
                             border: 1,
-                            borderColor: "#809EB9",
+                            borderColor: "transparent",
                           },
                           "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
                             border: 2,
-                            borderColor: "#809EB9",
+                            borderColor: "transparent",
                           },
                         }}
                       />
