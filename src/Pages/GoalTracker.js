@@ -69,8 +69,8 @@ export default function GoalTracker() {
 
   const cellStyle = {
     borderBottom: "none",
-    pb: 0,
-    lineHeight: "unset",
+    fontSize: 13,
+    paddingBottom : 2
   };
   const ITEM_HEIGHT = "48";
   const ITEM_PADDING_TOP = 3;
@@ -340,7 +340,6 @@ export default function GoalTracker() {
                                       ...cellStyle,
                                       paddingRight: 5,
                                       fontWeight: 600,
-                                      paddingTop: "0 !important",
                                     }}
                                     align="left"
                                   >
@@ -348,7 +347,7 @@ export default function GoalTracker() {
                                   </TableCell>
                                   <TableCell
                                     sx={{
-                                      cellStyle,
+                                      ...cellStyle,
                                       fontWeight: 600,
                                       width: "40% !important",
                                     }}
@@ -359,7 +358,7 @@ export default function GoalTracker() {
                                   <TableCell
                                     sx={{
                                       ...cellStyle,
-                                      paddingTop: "0 !important",
+                                      fontWeight: 600,
                                     }}
                                     align="left"
                                   >
@@ -467,7 +466,6 @@ export default function GoalTracker() {
                                       ...cellStyle,
                                       paddingRight: 5,
                                       fontWeight: 600,
-                                      paddingTop: "0 !important",
                                     }}
                                     align="left"
                                   >
@@ -475,7 +473,7 @@ export default function GoalTracker() {
                                   </TableCell>
                                   <TableCell
                                     sx={{
-                                      cellStyle,
+                                      ...cellStyle,
                                       fontWeight: 600,
                                       width: "40% !important",
                                     }}
@@ -486,7 +484,7 @@ export default function GoalTracker() {
                                   <TableCell
                                     sx={{
                                       ...cellStyle,
-                                      paddingTop: "0 !important",
+                                      fontWeight : 600
                                     }}
                                     align="left"
                                   >
