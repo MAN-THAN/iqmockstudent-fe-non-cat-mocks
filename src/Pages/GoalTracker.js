@@ -70,7 +70,7 @@ export default function GoalTracker() {
   const cellStyle = {
     borderBottom: "none",
     fontSize: 13,
-    paddingBottom : 2
+    paddingBottom: 2,
   };
   const ITEM_HEIGHT = "48";
   const ITEM_PADDING_TOP = 3;
@@ -259,7 +259,7 @@ export default function GoalTracker() {
                   p: 1,
                   overflowX: "hidden",
                   position: "absolute",
-                  bottom: 50,
+                  bottom: 90,
                   right: 50,
                 }}
               >
@@ -385,7 +385,7 @@ export default function GoalTracker() {
                   p: 1,
                   overflowX: "hidden",
                   position: "absolute",
-                  bottom: "-93vh",
+                  bottom: "-85vh",
                   right: 50,
                 }}
               >
@@ -484,7 +484,7 @@ export default function GoalTracker() {
                                   <TableCell
                                     sx={{
                                       ...cellStyle,
-                                      fontWeight : 600
+                                      fontWeight: 600,
                                     }}
                                     align="left"
                                   >
@@ -519,14 +519,14 @@ export default function GoalTracker() {
                     <Radar name="Targeted %ile" dataKey="targetPercentile" stroke="#641CFF" fill="#641CFF" fillOpacity={0.6} />
                     <Radar name="Scored %ile" dataKey="scorePercentile" stroke="#59DE66" fill="#59DE66" fillOpacity={0.6} />
                     <Tooltip />
-                    <Legend />
+                    <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ marginBottom: 75 }} />
                   </RadarChart>
                 </ResponsiveContainer>
               </Box>
               <Box
                 sx={{
                   position: "absolute",
-                  top: "110vh",
+                  top: "100vh",
                   marginTop: 25,
                 }}
               >
@@ -535,7 +535,7 @@ export default function GoalTracker() {
                   <XAxis dataKey="name" tick={{ fill: "white" }} />
                   <YAxis domain={[0, 100]} tick={{ fill: "white" }} />
                   <Tooltip />
-                  <Legend margin={{ top: 20 }} />
+                  <Legend  />
                   <Bar barSize={60} dataKey="TargetScore" fill="#641CFF" />
                   <Bar barSize={60} dataKey="YourScore" fill="#59DE66" />
                 </BarChart>
@@ -667,7 +667,7 @@ export default function GoalTracker() {
               <Typography sx={{ marginTop: 12, letterSpacing: 1 }} fontSize={16} color="white">
                 Percentile Map : Targeted vs Scored
               </Typography>
-              <Typography sx={{ marginTop: "99vh", letterSpacing: 1 }} fontSize={16} color="white">
+              <Typography sx={{ marginTop: "90vh", letterSpacing: 1 }} fontSize={16} color="white">
                 Score Map : Targeted vs Scored
               </Typography>
             </Box>
