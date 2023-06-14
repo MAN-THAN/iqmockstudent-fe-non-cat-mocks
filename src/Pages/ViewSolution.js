@@ -419,7 +419,7 @@ export default function ViewSolution() {
               >
                 <div>
                   {/* <MultipleSelect options={Subjects} setType={setSelected} /> */}
-                  <FormControl
+                  {/* <FormControl
                     sx={{
                       display: "flex",
                       flexDirection: "row",
@@ -483,7 +483,7 @@ export default function ViewSolution() {
                           </MenuItem>
                         ))}
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
 
                 <NavigationAvatar

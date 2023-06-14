@@ -97,7 +97,7 @@ function Terms() {
             }}
             onClick={() => navigate(`/main`, {
               state: {
-                mockId: state.mockId,
+                mockId: "regergregrege",
                 type : "varc"
             }})}
           >

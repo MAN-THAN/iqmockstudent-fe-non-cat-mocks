@@ -20,6 +20,7 @@ import MenuDrawer from "../Components/MenuDrawer";
 import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
 import { motion } from "framer-motion";
+import { Rotate90DegreesCcw } from "@mui/icons-material";
 
 function AnalysisMain() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function AnalysisMain() {
     setMenuBarOpen,
     Backdrop,
     openDesktopView,
-    fetchMockStatus
+    fetchMockStatus,
   } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
@@ -44,7 +45,6 @@ function AnalysisMain() {
 
   const userData = JSON.parse(localStorage.getItem("userData"));
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-
 
   // useEffect(() => {
   //   setPDfStyle(false);
@@ -69,7 +69,7 @@ function AnalysisMain() {
     window.localStorage.removeItem("my-counter-sec");
     window.localStorage.removeItem("my-counter-min");
     // window.localStorage.removeItem("questionStatus");
-    analysisDataApi(attemptId, mockId, uid); //call analysis data api and send attempt id to api function also!
+    // analysisDataApi(attemptId, mockId, uid); //call analysis data api and send attempt id to api function also!
     // fetchMockStatus(mockId);
   }, []);
 
@@ -184,7 +184,7 @@ function AnalysisMain() {
       <ToastContainer />
       {isErr ? (
         <div>Error occured</div>
-      ) : isLoading ? (
+      ) : false ? (
         <div
           style={{
             display: "flex",
@@ -241,11 +241,12 @@ function AnalysisMain() {
               <div
                 className={
                   pdfStyle
-                    ? " d-flex  flex-wrap  justify-content-center align-items-center"
-                    : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap justify-content-bewteen my-3 gap-3"
+                    ? " d-flex  flex-wrap justify-content-center align-items-center"
+                    : " d-flex  flex-sm-wrap flex-md-nowrap flex-lg-nowrap  my-3 gap-3"
                 }
+                style={{ justifyContent: "space-between" }}
               >
-                <div className="flex-item  " style={{ flexBasis: "27%" }}>
+                <div className="flex-item ">
                   <div>
                     <Typography
                       variant="h4"
@@ -314,9 +315,67 @@ function AnalysisMain() {
                     </div>
                   </div>
                 </div>
-
-                <div className="flex-item   " style={{ flexBasis: "23%" }}>
-                  <Card sx={{ width: "100%", height: 348, borderRadius: 4 }}>
+                <div
+                  style={{
+                    backgroundColor: "blue",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    width: "50px",
+                    height: "310px",
+                    position: "absolute",
+                    right: "18rem",
+                    borderRadius: 4,
+                    zIndex: 100,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{
+                      color: "white",
+                      transform: "rotate(270deg)",
+                      whiteSpace: "nowrap",
+                      fontWeight: 700,
+                      fontSize: "20px",
+                    }}
+                  >
+                    <span>Your Result</span>
+                  </Typography>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "orange",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    width: "50px",
+                    height: "280px",
+                    position: "absolute",
+                    right: "20.5rem",
+                    borderRadius: 4,
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{
+                      color: "white",
+                      transform: "rotate(270deg)",
+                      fontWeight: 700,
+                      fontSize: "20px",
+                    }}
+                  >
+                    Hooray!
+                  </Typography>
+                </div>
+                <div className="flex-item " style={{ zIndex: 1000 }}>
+                  <Card
+                    sx={{
+                      width: "100%",
+                      height: 348,
+                      borderTopRightRadius: 4,
+                      borderBottomRightRadius: 4,
+                    }}
+                  >
                     <CardContent>
                       <Typography
                         sx={{
@@ -431,9 +490,10 @@ function AnalysisMain() {
                   </Card>
                 </div>
 
+                {/* ////////////////////////////Remove Card section//////////////// */}
                 {/* Cards sections */}
 
-                <div
+                {/* <div
                   className="d-flex flex-column gap-3"
                   style={{ flexBasis: "50%" }}
                 >
@@ -476,7 +536,8 @@ function AnalysisMain() {
                         </div>
                       </CardContent>
                     </Card>
-                    {/*Marks detail */}
+
+                    ////////Mark details///////
                     <Card
                       sx={{
                         width: "70%",
@@ -542,7 +603,7 @@ function AnalysisMain() {
                     </Card>
                   </div>
 
-                  {/* Graph Card main */}
+                  /////// Graph Card main /////////
                   <div className="GraphCards">
                     <Card
                       sx={{
@@ -633,7 +694,7 @@ function AnalysisMain() {
                         })}
                     </Card>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Detailing section End */}
@@ -653,7 +714,9 @@ function AnalysisMain() {
                       Score Card
                     </ModifyButton>
                   </NavLink>
-                  <NavLink activeclassname="active" className="link flex-item">
+
+                  {/* Remove choosing category and add dynamic button for category */}
+                  {/* <NavLink activeclassname="active" className="link flex-item">
                     <ModifyButton
                       variant="filled"
                       style={{
@@ -677,8 +740,8 @@ function AnalysisMain() {
                     >
                       Section-wise
                     </ModifyButton>
-                  </NavLink>
-
+                  </NavLink> */}
+                  {/* 
                   <StyledMenu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -720,8 +783,18 @@ function AnalysisMain() {
                       <IoBookSharp className="me-2" />
                       QUANTS
                     </MenuItem>
-                  </StyledMenu>
+                  </StyledMenu> */}
 
+                  <NavLink
+                    to="#"
+                    activeclassname="active "
+                    className="link flex-item"
+                  >
+                    <ModifyButton variant="filled" className="nav-button">
+                      {/* change it dynamically */}
+                      VARC
+                    </ModifyButton>
+                  </NavLink>
                   <NavLink
                     to="topicwise"
                     activeclassname="active "
@@ -752,13 +825,13 @@ function AnalysisMain() {
                       aria-expanded={open2 ? "true" : undefined}
                       disableElevation
                       onClick={handleClick2}
-                      endIcon={<KeyboardArrowDownIcon />}
+                      
                     >
                       Subtopic-wise
                     </ModifyButton>
                   </NavLink>
 
-                  <StyledMenu
+                  {/* <StyledMenu
                     id="basic-menu"
                     anchorEl={anchorEl2}
                     open={open2}
@@ -799,7 +872,7 @@ function AnalysisMain() {
                       <IoBookSharp className="me-2" />
                       QUANTS
                     </MenuItem>
-                  </StyledMenu>
+                  </StyledMenu> */}
 
                   <NavLink
                     to="difficulty"

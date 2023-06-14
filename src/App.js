@@ -110,10 +110,10 @@ function App() {
             path="/errortracker/:mockId/:attemptId"
             element={<ErrorTracker />}
           />
-          <Route
+          {/* <Route
             path="/goaltracker/:mockId/:attemptId"
             element={<GoalTracker />}
-          />
+          /> */}
           <Route
             path="/marketplace/:mockId/:attemptId"
             element={<MarketPlace />}

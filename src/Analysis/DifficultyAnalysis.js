@@ -43,6 +43,7 @@ function DifficultyAnalysis() {
           flexDirection: "row",
           gap: "3em",
           marginTop: "2em",
+         
         }}
       >
         <ModifyButton
@@ -61,9 +62,9 @@ function DifficultyAnalysis() {
           }}
           autoFocus={true}
         >
-          Overall
+          VARC
         </ModifyButton>
-        <ModifyButton
+        {/* <ModifyButton
           variant="outlined"
           onClick={() => handleClick("VARC")}
           className={`${activeButton === "VARC" ? "active" : ""}`}
@@ -111,7 +112,7 @@ function DifficultyAnalysis() {
           }}
         >
           Quants
-        </ModifyButton>
+        </ModifyButton> */}
       </div>
 
       <div className="d-flex flex-column justify-content-center mt-5 py-5">

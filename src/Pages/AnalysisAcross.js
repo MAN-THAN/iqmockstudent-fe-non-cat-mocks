@@ -274,7 +274,7 @@ function AnalysisAcross() {
             <>
               {/* Select box */}
               <Box component="div" sx={{ mt: 4 }}>
-                <MultipleSelect options={Subjects} setType={setType} />
+                {/* <MultipleSelect options={Subjects} setType={setType} /> */}
                 <div className="d-flex justify-content-between align-items-center">
                   <Typography
                     sx={{
