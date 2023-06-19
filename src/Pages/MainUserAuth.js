@@ -113,7 +113,7 @@ const MainUserAuth = () => {
         const arr_length = response?.data?.attemptList?.length;
         if (arr_length == 0) {
           console.log("New user");
-          navigate(`/onboarding`, {
+          navigate(`/instructions`, {
             state: {
               mockId: mockId,
               setId: setId,
