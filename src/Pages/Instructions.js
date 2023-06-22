@@ -236,6 +236,7 @@ function Instructions() {
               navigate(`/terms`, {
                 state: {
                   mockId: state.mockId,
+                  setId: state.setId
                 },
               })
             }

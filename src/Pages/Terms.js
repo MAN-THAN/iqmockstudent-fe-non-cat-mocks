@@ -1,15 +1,16 @@
 import { Link, Typography } from "@mui/material";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { BootstrapButton, SubHeading } from "../styleSheets/Style";
-import { useLocation, useNavigate,useParams } from "react-router-dom";
-
-
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function Terms() {
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
   const { state } = useLocation();
- 
+  const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+  const name = JSON.parse(localStorage.getItem("userData"))?.name;
+  const email = JSON.parse(localStorage.getItem("userData"))?.email;
+
   // console.log(params)
   return (
     <div className="container overflow-hidden d-flex-col justify-content-center align-content-center">
@@ -18,7 +19,7 @@ function Terms() {
       </div>
 
       <div className="container mt-3 p-2 text-center">
-        <SubHeading className="text-center"> Terms & conditions</SubHeading>
+        <SubHeading className="text-center">Terms & conditions</SubHeading>
         <div
           className="container m-2 p-4 mx-auto overflow-auto text-start"
           style={{
@@ -95,11 +96,17 @@ function Terms() {
               background: agree ? "" : "#d2d4d6",
               borderRadius: "30px",
             }}
-            onClick={() => navigate(`/main`, {
-              state: {
-                mockId: "regergregrege",
-                type : "varc"
-            }})}
+            onClick={() =>
+              navigate("/user_authentication", {
+                state: {
+                  name: name,
+                  email: email,
+                  uid: uid,
+                  mockId: state.mockId,
+                  setId: state.setId,
+                },
+              })
+            }
           >
             Start Test
           </BootstrapButton>

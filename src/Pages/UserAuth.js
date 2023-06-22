@@ -42,9 +42,10 @@ const UserAuth = () => {
         localStorage.setItem("attemptId", JSON.stringify(response.data.attemptId));
         localStorage.setItem("currMockId", JSON.stringify(state.mockId));
         // userAuthCheck();
-        navigate(`/instructions`, {
+        navigate(`/main`, {
           state: {
             mockId: state.mockId,
+            attemptId: response.data.attemptId,
           },
         });
       } else {

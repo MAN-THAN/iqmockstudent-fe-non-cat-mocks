@@ -122,7 +122,7 @@ function App() {
             path="/mockcomparison/:mockId/:attemptId"
             element={<MockComparison />}
           />
-          <Route path="/onboarding" element={<OnBoarding />} />
+          {/* <Route path="/onboarding" element={<OnBoarding />} /> */}
           <Route
             path="/scorevsprecentile/:mockId/:attemptId"
             element={<ScoreVsPrecentile />}

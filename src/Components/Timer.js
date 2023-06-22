@@ -36,8 +36,9 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
   const submitSectionFunc = async (subject) => {
     console.log("working");
     console.log(studentAnswersData);
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     try {
-      const response = await submitSection(attemptID, subject, studentAnswersData);
+      const response = await submitSection(attemptID, studentAnswersData, uid);
       console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);

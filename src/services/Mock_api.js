@@ -15,6 +15,7 @@ export const getAttemptId = async (name, email, uid, mockId, setId) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid : uid
       },
       data: JSON.stringify(jsonData),
     });
@@ -29,14 +30,16 @@ export const getAttemptId = async (name, email, uid, mockId, setId) => {
 
 // api for fetching main data
 
-export const fetchQuestions = async (mockid, subject_type) => {
+export const fetchQuestions = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/quizs/${mockid}/${subject_type}`,
+      url: `/api/student/v1/quizs/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
       },
     });
     return res;
@@ -48,16 +51,18 @@ export const fetchQuestions = async (mockid, subject_type) => {
 
 // api for submit student answers(section-wise)
 
-export const submitSection = async (attempt_id, subject_type, payload) => {
+export const submitSection = async (attempt_id, payload, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/mocks/submitAnswer/${subject_type}/${attempt_id}`,
+      url: `/api/student/v1/quizs/${attempt_id}`,
       type: "POST",
       data: { answers: payload },
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        attemptId: attempt_id,
+        uid : uid
       },
     });
     return res;
@@ -90,7 +95,7 @@ export const getVerified = async (email, otp, mockId) => {
     const res = request({
       url: `/api/student/v1/verify/user`,
       type: "POST",
-      data: { email: email, otp: otp, mockId : mockId },
+      data: { email: email, otp: otp, mockId : mockId, type : "section" },
       headers: { "Content-Type": "application/json" },
     });
     return res;

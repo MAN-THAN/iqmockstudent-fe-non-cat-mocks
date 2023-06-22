@@ -808,7 +808,7 @@ export default function ViewSolution() {
                       </Box>
                       {viewSol && (
                         <Box ref={bottomRef} marginTop="2em">
-                          <Typography fontWeight={700}>
+                          <Typography>
                             <Latex>{(show && show[index]?.explanations) || ""}</Latex>
                           </Typography>
                         </Box>
