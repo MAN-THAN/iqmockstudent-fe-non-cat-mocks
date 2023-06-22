@@ -218,11 +218,13 @@ function CenterMain() {
   const showPreviousValue = () => {
     console.log("currentQueIndex", selectedQuestionIndex);
     if (questionStatus?.length > 0) {
-      if ("studentAnswerIndex" in questionStatus[selectedQuestionIndex]) {
-        if (questionStatus[selectedQuestionIndex].options === null) {
+      if ("studentAnswer" in questionStatus[selectedQuestionIndex]) {
+        if (questionStatus[selectedQuestionIndex].type === 0) {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
         }
-        setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+        if (questionStatus[selectedQuestionIndex].type === 1) {
+           setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+        }
       } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
       } else {

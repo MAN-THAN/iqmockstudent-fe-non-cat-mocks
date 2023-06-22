@@ -183,7 +183,7 @@ function AnalysisMain() {
     <>
       <ToastContainer />
       {isErr ? (
-        <div>Error occured</div>
+        <div>Error occured, Try to reload the page</div>
       ) : false ? (
         <div
           style={{
