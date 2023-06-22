@@ -38,33 +38,14 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
     console.log(studentAnswersData);
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     try {
-      const response = await submitSection(attemptID, studentAnswersData, uid);
+      const response = await submitSection(attemptID, studentAnswersData, uid, type);
       console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);
         window.localStorage.removeItem(COUNTER_KEY_SEC);
         window.localStorage.removeItem("questionStatus");
-        if (subject === "varc") {
-          console.log("varc submitted");
-          navigate(`/main`, {
-            state: {
-              mockId: mockId,
-              type: "lrdi",
-            },
-          });
-        } else if (subject === "lrdi") {
-          console.log("lrdi submitted");
-          navigate(`/main`, {
-            state: {
-              mockId: mockId,
-              type: "quants",
-            },
-          });
-        } else if (subject === "quants") {
-          window.localStorage.removeItem("questionStatus");
-          console.log("Your mock is submitted!!!");
-          navigate(`/analysis/${mockId}/${attemptID}/overall`);
-        }
+        console.log("Your mock is submitted!!!");
+        navigate(`/analysis/${mockId}/${attemptID}/overall`);
         return true;
       }
     } catch (err) {

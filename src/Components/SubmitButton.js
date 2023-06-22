@@ -46,7 +46,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const submitSectionFunc = async (subject) => {
     setState(1);
     try {
-      const response = await submitSection(attemptID, studentAnswersData, uid);
+      const response = await submitSection(attemptID, studentAnswersData, uid, type);
       console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem("my-counter-sec");

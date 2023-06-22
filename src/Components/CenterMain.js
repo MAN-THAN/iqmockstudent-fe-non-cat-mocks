@@ -426,7 +426,7 @@ function CenterMain() {
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
                         {sectionTime && (
                           <Timer
-                            type={state.type}
+                            type={sectionName}
                             mockId={state.mockId}
                             initMinute={sectionTime / 60}
                             initSeconds={0}
@@ -840,7 +840,7 @@ function CenterMain() {
                 <QuestionPaper question_paper={questionStatus} />
                 <InstructionButton />
               </div>
-              <ButtonSubmit type={state.type} mockId={state.mockId} studentAnswersData={questionStatus} />
+              <ButtonSubmit type={sectionName} mockId={state.mockId} studentAnswersData={questionStatus} />
             </div>
 
             <div className=" flex-item flex-fill  p-3 mt-3 markingNotation align-self-bottom">

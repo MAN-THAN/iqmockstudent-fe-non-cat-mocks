@@ -51,13 +51,15 @@ export const fetchQuestions = async (attemptId, uid) => {
 
 // api for submit student answers(section-wise)
 
-export const submitSection = async (attempt_id, payload, uid) => {
+export const submitSection = async (attempt_id, payload, uid, type) => {
   const token = localStorage.getItem("auth_token");
+  let data = {};
+  data[type] = payload;
   try {
     const res = request({
       url: `/api/student/v1/quizs/${attempt_id}`,
       type: "POST",
-      data: { answers: payload },
+      data: [{data}],
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
