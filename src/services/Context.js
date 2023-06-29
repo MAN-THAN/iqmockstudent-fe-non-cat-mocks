@@ -20,6 +20,7 @@ export const ContextProvider = ({ children }) => {
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
   const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
+  const [sectionName, setSectionName] = useState(null);
   console.log(isWindowClosed);
 
   const analysisDataApi = async (attemptId, mockId, uid) => {
@@ -30,6 +31,7 @@ export const ContextProvider = ({ children }) => {
       console.log(response2);
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
+        setSectionName(response.data.sectionName)
       } else {
         console.log("--> Error in analysis data fetching");
         showToastMessage();
@@ -129,6 +131,7 @@ export const ContextProvider = ({ children }) => {
           showToastMessage,
           setLoading,
           topperData,
+          sectionName
         }}
       >
         {children}

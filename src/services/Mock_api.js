@@ -59,7 +59,7 @@ export const submitSection = async (attempt_id, payload, uid, type) => {
     const res = request({
       url: `/api/student/v1/quizs/${attempt_id}`,
       type: "POST",
-      data: [{data}],
+      data: [data],
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

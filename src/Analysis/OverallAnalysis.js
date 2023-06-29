@@ -65,7 +65,7 @@ function OverallAnalysis() {
                   >
                     <StyledTableCell align="left" className="fw-bold">
                       <Typography sx={{ fontSize: "14px" }} fontWeight="700">
-                        {item.name}
+                        {item.name === "quants" ? "QA" : item.name.toUpperCase()}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">

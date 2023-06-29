@@ -14,23 +14,14 @@ import { Typography } from "@mui/material";
 function SectionAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
-  const { sectionWiseAnalysis, topperData } = useAuth();
+  const { sectionWiseAnalysis, topperData, sectionName } = useAuth();
   const [topper_Data, setTopper_Data] = useState();
 
   useEffect(() => {
     if (sectionWiseAnalysis) {
-      if (params.subject == "varc") {
-        setData(sectionWiseAnalysis.sectionWiseAnalysis.varc);
-        setTopper_Data(topperData?.allMocksCalculation[2].varc);
-      } else if (params.subject === "lrdi") {
-        setData(sectionWiseAnalysis.sectionWiseAnalysis.lrdi);
-        setTopper_Data(topperData?.allMocksCalculation[1].lrdi);
-      } else if (params.subject === "quants") {
-        setData(sectionWiseAnalysis.sectionWiseAnalysis.quants);
-        setTopper_Data(topperData?.allMocksCalculation[0].quants);
-      }
+      setData(sectionWiseAnalysis.sectionWiseAnalysis[sectionName]);
     }
-  }, [params, sectionWiseAnalysis, topperData]);
+  }, [sectionWiseAnalysis, topperData]);
   console.log(data);
   console.log(topper_Data);
 
