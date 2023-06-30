@@ -18,10 +18,8 @@ export const ContextProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
-  const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
   const [sectionName, setSectionName] = useState(null);
-  console.log(isWindowClosed);
 
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
@@ -38,8 +36,6 @@ export const ContextProvider = ({ children }) => {
         setErr(true);
       }
       if (response2?.status == 200) {
-        setWindowClosed(response2.data.isWindowClosed);
-        window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
         setTopperData(response2.data.mockData);
         setLoading(false);
       } else {
@@ -59,37 +55,6 @@ export const ContextProvider = ({ children }) => {
       setMenuBarOpen(false);
     }
   };
-
-  // const openDesktopView = () => {
-  //   const isChrome =
-  //     /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-  //   if (isChrome) {
-  //     navigate(previousLocation);
-  //     const url = window.location.href.replace("m.", "");
-  //     window.location.href = url;
-  //   }
-  // };
-
-  // function  for disable the right click and inspect panel from keyboard
-
-  //   function handleContextMenu(event) {
-  //   event.preventDefault();
-  // }
-
-  // function handleKeyDown(event) {
-  //   if (event.ctrlKey && event.shiftKey && event.key === 'I') {
-  //     event.preventDefault();
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   document.addEventListener('keydown', handleKeyDown);
-  //   document.addEventListener('contextmenu', handleContextMenu);
-  //   return () => {
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //     document.removeEventListener('contextmenu', handleContextMenu);
-  //   };
-  // }, []);
 
   const Backdrop = styled(MuiBackdrop)(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,

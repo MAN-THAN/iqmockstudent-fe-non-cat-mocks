@@ -260,3 +260,24 @@ export const fetchScoreVsPrecentile = async (mockId,attemptId,uid) => {
     return err;
   }
 };
+
+// Getting score vs precentile By Mock Id
+
+export const fetchScoreVsPrecentileByMockId = async (mockId,attemptId,uid) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `api/student/v1/analyse/scorevsById/${mockId}/${attemptId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};

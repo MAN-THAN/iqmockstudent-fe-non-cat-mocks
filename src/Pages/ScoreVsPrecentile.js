@@ -13,12 +13,16 @@ import { BsSortDown } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import Table from "../Common-comp/Table";
 import { fetchScoreVsPrecentile } from "../services/Analysis_api";
+import ApexLineChart from "../Common-comp/ApexLineChart";
+import { fetchScoreVsPrecentileByMockId } from "../services/Analysis_api";
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 const Sections = [
   { name: "Overall", value: "overall" },
   { name: "VARC", value: "varc" },
   { name: "LRDI", value: "lrdi" },
-  { name: "Quants", value: "quants" },
+  { name: "QA", value: "quants" },
 ];
 
 const tableHeading = [
@@ -38,49 +42,34 @@ const tablePrecentile = tableRow.map((value) => ({ percentile: value }));
 console.log(tablePrecentile);
 
 const LineGraphData = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
+  { score: 10, percentile: 20 },
+  { score: 15, percentile: 30 },
+  { score: 20, percentile: 40 },
+  { yourscore: 20, yourpercentile: 40 },
+  { score: 25, percentile: 50 },
+
+  // Add more data points as needed
 ];
+function getStyles(name, MockName, theme) {
+  return {
+    fontWeight:
+      MockName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+const ITEM_HEIGHT = 28;
+const ITEM_PADDING_TOP = 3;
+const MenuProps = {
+  disableScrollLock: true,
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 100,
+    },
+  },
+};
 
 function ScoreVsPrecentile() {
   const {
@@ -90,31 +79,48 @@ function ScoreVsPrecentile() {
     setLoading,
     isLoading,
     showToastMessage,
+    sectionName
   } = useAuth();
   const { attemptId, mockId } = useParams();
-
-  const [mocks, setMock] = useState([]); // state for set the particular mock from title in select box
+  const [mock, setMock] = useState([]); // state for set the particular mock from title in select box
   const [data, setData] = useState([]); // set the main data from api
-  const [section, setSections] = useState([]); //set the sections varc ,lrdi , quants and overall
+  const [section, setSections] = useState(); //set the sections varc ,lrdi , quants and overall
   const [titleList, setTitleList] = useState(null); //state for setting the all title list from data
-  const [tableData, setTableData] = useState({
-
-    head: null,
-    body: null,
-  });
+  const [tableHeading, setTableHeading] = useState([
+    { name: "% ile" },
+    { name: "Overall" },
+    { name: "VARC" },
+    { name: "LRDI" },
+    { name: "QA" },
+  ]);
+  const [tableData, setTableData] = useState([]);
   const [graphData, setGraphData] = useState([]);
+  const [showGraph, setShowGraph] = useState([]);
+  const [studentGraph, setStudentGraph] = useState([]);
+  const [MockName, setMockName] = useState([]);
+  const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+  const [section_Name, setSection_Name] = useState();
+  console.log(graphData);
+  console.log(mock);
+  console.log(titleList);
+  console.log(sectionName)
 
   //  calling api
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await fetchScoreVsPrecentile(mockId, attemptId, uid);
         console.log(res);
-        setLoading(true);
+
         if (res?.status === 200) {
           const updatedData = { ...res.data, tableHeading };
           setData(updatedData);
+          setGraphData(res.data.graph?.[res.data.sectionName]);
+          setStudentGraph(res.data.studentGraph?.[res.data.sectionName]);
+          setTableData(res.data.table.reverse());
+          setSection_Name(res.data.sectionName);
           setLoading(false);
         } else {
           console.log("Error in fetching data: ", res);
@@ -126,20 +132,15 @@ function ScoreVsPrecentile() {
         showToastMessage(err?.response?.data?.msg);
       }
     };
-    const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+    getData();
     console.log(isWindow);
-    if (isWindow) {
-      showToastMessage("window is open");
-    } else {
-      getData();
-    }
   }, []);
 
   // set the title list from api to set titleList state
   useEffect(() => {
     const setTitle = () => {
       if (Object.keys(data).length > 0) {
-        const updatedMockList = data.allMocklist.map((e) => ({
+        const updatedMockList = data?.allMocklist?.map((e) => ({
           name: e.title,
           value: e.mockId,
         }));
@@ -148,36 +149,61 @@ function ScoreVsPrecentile() {
         setTitleList(updatedMockList);
       }
     };
-
     setTitle();
     //call table data function
     const bodyData = { ...data.table, tablePrecentile };
-    updateTableData(data.tableHeading, bodyData);
+    // updateTableData(data.tableHeading, bodyData);
   }, [data]);
 
-  const updateTableData = (newHeadData, newBodyData) => {
-    const bodyArray = [];
+  // Set graph data
+  useEffect(() => {
+    const updatedData = data?.graph?.[section];
+    const studentupdatedData = data?.studentGraph?.[section];
+    setGraphData(updatedData);
+    setStudentGraph(studentupdatedData);
+  }, [section]);
 
-    Object.entries(newBodyData).forEach(([key,value]) => {
-      bodyArray.push({[key]:value})
-    })
+  // getting score vs percentile data on the basis of mockId
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setMockName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+    console.log(value);
+    const getDataById = async () => {
+      // setLoading(true);
+      try {
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+        const res = await fetchScoreVsPrecentileByMockId(value, attemptId, uid);
+        console.log(res);
 
-    setTableData({
-      head: newHeadData,
-      body: bodyArray,
-    });
+        if (res?.status === 200) {
+          const updatedData = { ...res.data, tableHeading };
+          // setData(updatedData);
+          setGraphData(res.data.graph?.[res.data.sectionName]);
+          setStudentGraph(res.data.studentGraph?.[res.data.sectionName]);
+          // setLoading(false);
+        } else {
+          console.log("Error in fetching data: ", res);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+        showToastMessage(err?.response?.data?.msg);
+      }
+    };
+    getDataById();
   };
 
-  //Set graph data
-  useEffect(() => {
-    const updatedData = data.graph?.[section];
-    setGraphData({ ...updatedData, tablePrecentile });
-  }, [section, data]);
-
   console.log("graphData", graphData);
-  console.log("titleList", titleList);
+  console.log(section);
+  // console.log("titleList", titleList);
   console.log("svsprec", data);
-  console.log("TableData", tableData);
+  // console.log("TableData", tableData);
 
   return (
     <>
@@ -226,9 +252,13 @@ function ScoreVsPrecentile() {
 
                   <div className="d-flex gap-3 mt-3">
                     {titleList && (
-                      <MultipleSelect options={titleList} setType={setMock} />
+                      <SelectBox
+                        onSelect={handleChange}
+                        mockName={MockName}
+                        options={titleList}
+                      />
                     )}
-                    <MultipleSelect options={Sections} setType={setSections} />
+                    {/* <MultipleSelect options={Sections} setType={setSections} /> */}
                   </div>
                 </div>
                 <div className="flex-item flex-fill p-2 pe-0">
@@ -270,19 +300,27 @@ function ScoreVsPrecentile() {
                       display: "flex",
                       justifyContent: "flex-start",
                       width: "35rem",
+                      height: "100%",
                     }}
                   >
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.0 }}
-                      style={{ width: "100vw", height: "25em" }}
+                      style={{ width: "100vw", height: "100%" }}
                     >
-                      <LineGraph
-                        Data={LineGraphData}
-                        xkey={"score"}
-                        ykey={"percentile"}
+                      {/* <LineGraph Data={graphData} xkey={"x"} ykey={"y"} /> */}
+                      <ApexLineChart
+                        graphData={graphData}
+                        studentGraphData={studentGraph}
                       />
+                      <Box sx={{ marginLeft: 7 }}>
+                        <img
+                          src="/Group 316 (1).svg"
+                          alt="img"
+                          height={15}
+                        ></img>
+                      </Box>
                     </motion.div>
                   </Box>
                 </Box>
@@ -290,18 +328,18 @@ function ScoreVsPrecentile() {
 
                 {/*table side box start*/}
                 <Box
+                  component={Paper}
                   sx={{
                     flexBasis: "50%",
-                    px: 3,
-                    overflow: "scroll",
-                    height: "100%",
-                    boxShadow: 3,
+                    p: 1,
+                    height: "90%",
+                    boxShadow: 10,
+                    borderRadius: 5,
                   }}
-                  component={Paper}
                 >
-                 { tableData && <Table
-                    data={{ headings: tableData.head, body: tableData.body }}
-                  />}
+                  {tableData && (
+                    <Table data={{ headings: tableHeading, body: tableData, sectionName:section_Name }} />
+                  )}
                 </Box>
                 {/*Question side box end*/}
               </Box>
@@ -312,5 +350,62 @@ function ScoreVsPrecentile() {
     </>
   );
 }
+const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
+  const theme = useTheme();
+  return (
+    <div>
+      <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
+        <Select
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          value={mockName}
+          onChange={onSelect}
+          sx={{ height: "32px", borderRadius: 2 }}
+          MenuProps={MenuProps}
+          displayEmpty={true}
+          input={
+            <OutlinedInput
+              sx={{
+                width: 127,
+                borderRadius: 2,
+                height: 32,
+                fontSize: "12px",
+                fontWeight: 800,
+                fontFamily: "var(--font-inter)",
+                ".MuiOutlinedInput-notchedOutline": {
+                  border: 1,
+                  borderColor: "#809EB9",
+                },
+                "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 1,
+                    borderColor: "#809EB9",
+                  },
+                "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    border: 2,
+                    borderColor: "#809EB9",
+                  },
+              }}
+            />
+          }
+        >
+          <MenuItem value="" disabled>
+            Select Mock
+          </MenuItem>
+          {options?.map((item, index) => (
+            <MenuItem
+              key={index}
+              value={item.value}
+              style={getStyles(item.value, mockName, theme)}
+            >
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+};
 
 export default ScoreVsPrecentile;
