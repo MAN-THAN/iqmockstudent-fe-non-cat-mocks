@@ -180,6 +180,8 @@ function AnalysisMain() {
 
   console.log("Basic data", basicData);
 
+  console.log("location", location)
+
   return (
     <>
       <ToastContainer />
