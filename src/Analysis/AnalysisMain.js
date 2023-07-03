@@ -92,6 +92,8 @@ function AnalysisMain() {
     overallScore,
   } = basicData;
 
+
+  console.log("percentile", percentile)
   const options = {
     margin: [0, 0, 0, 0],
     filename: "example.pdf",
@@ -178,6 +180,8 @@ function AnalysisMain() {
 
   console.log("Basic data", basicData);
 
+  console.log("location", location)
+
   return (
     <>
       <ToastContainer />
@@ -214,6 +218,7 @@ function AnalysisMain() {
               position: "absolute",
               left: "65px",
               padding: "15px",
+              width:"calc(100% - 65px)"
             }}
           >
             <MenuDrawer />
