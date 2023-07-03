@@ -164,7 +164,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                   }}
                   onClick={() => {
                     window.localStorage.removeItem("questionStatus");
-                    navigate(`/analysis/${mockId}/${attemptID}/overall`,{state: { id: 7, color: 'green'}});
+                    navigate(`/analysis/${mockId}/${attemptID}/overall`,{state: { mockType: type}});
                   }}
                 >
                   DONE
