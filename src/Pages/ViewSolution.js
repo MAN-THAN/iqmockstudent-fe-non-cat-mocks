@@ -595,7 +595,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[0]) || ""}
@@ -642,7 +641,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[1]) || ""}
@@ -689,7 +687,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[2]) || ""}
@@ -736,7 +733,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[3]) || ""}
