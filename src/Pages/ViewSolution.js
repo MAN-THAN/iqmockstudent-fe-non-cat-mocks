@@ -108,7 +108,7 @@ export default function ViewSolution() {
     const func = async () => {
       if (state !== null) {
         console.log("flow2");
-        const questionId = state.question_id;
+        const questionId = state._id;
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
         const res = await fetchViewSolution(attemptId, mockId, uid);
@@ -249,7 +249,7 @@ export default function ViewSolution() {
     console.log("slwlwlwlwl", selectedObj);
 
     const payload = {
-      question_id: selectedObj.question_id,
+      question_id: selectedObj._id,
       question: selectedObj.question,
       difficulty: selectedObj.difficulty,
       topic: selectedObj.topic,
@@ -266,13 +266,13 @@ export default function ViewSolution() {
           ? "skipped"
           : "incorrect",
     };
-
+    console.log(payload);
     const res = await postToErrorTracker(attemptId, sectionName, payload);
     console.log(res);
     if (res?.status == 200) {
       console.log(index);
       const tempObj = {
-        question_id: selectedObj.question_id,
+        question_id: selectedObj._id,
         question: selectedObj.question,
         error: e.target.value,
       };
