@@ -150,10 +150,10 @@ export default function LeaderTable({
                     <StyledTableCell align="left">{item.name}</StyledTableCell>
 
                     <StyledTableCell align="left">
-                      {item.overallPercentile}
+                      {item.percentile}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.overallScore}
+                      {item.score}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

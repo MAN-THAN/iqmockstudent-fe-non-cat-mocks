@@ -57,7 +57,7 @@ export default function ViewSolution() {
   const [defVal, setDefVal] = useState("varc");
   const [isVideo, setVideo] = useState();
   const ref = useRef(null);
-
+  const [sectionName, setSectionName] = useState();
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -111,8 +111,9 @@ export default function ViewSolution() {
       if (state !== null) {
         console.log("flow2");
         const questionId = state.question_id;
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
-        const res = await fetchViewSolution(attemptId, mockId);
+        const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
           res.data?.varc.map((item, index) => {
@@ -153,6 +154,7 @@ export default function ViewSolution() {
     func();
   }, []);
   console.log(data);
+  console.log(sectionName)
 
   // function getting data on mounting
   useEffect(() => {
@@ -163,7 +165,8 @@ export default function ViewSolution() {
         const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
-          setShow(res.data.varc);
+          setShow(res.data.quants); // need to be chANGED later
+          setSectionName(res.data.sectionName);
           setTrackerVA(res.data.errorData?.varc);
           setTrackerLR(res.data.errorData?.lrdi);
           setTrackerQU(res.data.errorData?.quants);
@@ -265,7 +268,7 @@ export default function ViewSolution() {
           : "incorrect",
     };
 
-    const res = await postToErrorTracker(attemptId, type, payload);
+    const res = await postToErrorTracker(attemptId, sectionName, payload);
     console.log(res);
     if (res?.status == 200) {
       console.log(index);
