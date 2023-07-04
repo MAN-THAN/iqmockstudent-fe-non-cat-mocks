@@ -12,6 +12,7 @@ import { typographyStyles } from "../styleSheets/StyleNew";
 import { useAuth } from "../services/Context";
 import { getMarketPlace } from "../services/Analysis_api";
 import { useEffect } from "react";
+import { useParams } from "react-router";
 // Inspired by blueprintjs
 const options = [
   {
@@ -42,6 +43,7 @@ function MarketPlace() {
   const [radioValue, setRadioValue] = React.useState("coursesWithMocks");
   const [selectedValue, setSelectedValue] = React.useState({});
   const [data, setData] = React.useState([]);
+  const { attemptId } = useParams();
 
   function handleSelectChange(selectedValues) {
     setSelectedValue(selectedValues);
@@ -58,7 +60,8 @@ function MarketPlace() {
 
   const getData = async () => {
     setLoading(true);
-    const res = await getMarketPlace();
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+    const res = await getMarketPlace(attemptId, uid);
     if (res?.status == 200) {
       console.log(res);
       setData(res.data.item);
@@ -124,7 +127,7 @@ function MarketPlace() {
                   className="d-flex justify-content-between align-items-center align-content-center"
                   style={{ width: "calc(100% - 50px)" }}
                 >
-                  <div className="flex-item">
+                  {/* <div className="flex-item">
                     <FormControl>
                       <RadioGroup
                         row
@@ -158,15 +161,15 @@ function MarketPlace() {
                         />
                       </RadioGroup>
                     </FormControl>
-                  </div>
+                  </div> */}
 
-                  <div className="flex-item">
+                  {/* <div className="flex-item">
                     <MultipleSelect
                       options={options}
                       onSelectChange={handleSelectChange}
                       setType={() => {}}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </Box>
 

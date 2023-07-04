@@ -25,7 +25,7 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
    const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/all/${mockId}/${attemptId}/${uid}`,
+      url: `/api/student/v1/view/${mockId}/${attemptId}/${uid}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -64,7 +64,7 @@ export const fetchViewSolution = async (attemptId, mockId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/view/${mockId}/${attemptId}`,
+      url: `/api/student/v1/view/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -202,14 +202,16 @@ export const getGoalTrackerData = async (attemptId, uid) => {
 
 // api for market place
 
-export const getMarketPlace = async () => {
+export const getMarketPlace = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/marketplace`,
+      url: `${"https://devapi.iqmock.iquanta.in"}/api/student/v1/marketplace`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        attemptId: attemptId,
+        uid : uid
       },
     });
     return res;
@@ -247,6 +249,27 @@ export const fetchScoreVsPrecentile = async (mockId,attemptId,uid) => {
   try {
     const res = request({
       url: `api/student/v1/analyse/scorevs/${uid}/${mockId}/${attemptId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId: attemptId,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+// Getting score vs precentile By Mock Id
+
+export const fetchScoreVsPrecentileByMockId = async (mockId,attemptId,uid) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `api/student/v1/analyse/scorevsById/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

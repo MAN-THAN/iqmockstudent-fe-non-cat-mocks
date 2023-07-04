@@ -102,13 +102,7 @@ function ErrorTracker() {
         showToastMessage(err?.response?.data?.msg);
       }
     };
-    const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
-    console.log(isWindow);
-    if (isWindow) {
-      showToastMessage("window is open");
-    } else {
       getData();
-    }
   }, []);
 
   // set correction

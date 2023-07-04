@@ -38,6 +38,7 @@ function AnalysisMain() {
     Backdrop,
     openDesktopView,
     fetchMockStatus,
+    sectionName,
   } = useAuth();
   const [basicData, setBasicData] = useState({});
   const [pdfStyle, setPDfStyle] = useState(false);
@@ -69,8 +70,7 @@ function AnalysisMain() {
     window.localStorage.removeItem("my-counter-sec");
     window.localStorage.removeItem("my-counter-min");
     // window.localStorage.removeItem("questionStatus");
-    // analysisDataApi(attemptId, mockId, uid); //call analysis data api and send attempt id to api function also!
-    // fetchMockStatus(mockId);
+    analysisDataApi(attemptId, mockId, uid); //call analysis data api and send attempt id to api function also!
   }, []);
 
   useEffect(() => {
@@ -92,6 +92,8 @@ function AnalysisMain() {
     overallScore,
   } = basicData;
 
+
+  console.log("percentile", percentile)
   const options = {
     margin: [0, 0, 0, 0],
     filename: "example.pdf",
@@ -122,8 +124,7 @@ function AnalysisMain() {
     console.log("working");
     setAnchorEl(null);
     setSelected(sub);
-
-    navigate(`sectionwise/${sub}`);
+    navigate(`sectionwise/${"quants"}`);
   };
 
   const handleCloseSubTopic = (sub) => {
@@ -179,6 +180,8 @@ function AnalysisMain() {
 
   console.log("Basic data", basicData);
 
+  console.log("location", location)
+
   return (
     <>
       <ToastContainer />
@@ -215,6 +218,7 @@ function AnalysisMain() {
               position: "absolute",
               left: "65px",
               padding: "15px",
+              width:"calc(100% - 65px)"
             }}
           >
             <MenuDrawer />
@@ -384,7 +388,7 @@ function AnalysisMain() {
                           color: "var(--font-grey)",
                         }}
                       >
-                        Overall Score
+                        {sectionName?.toUpperCase()}
                       </Typography>
                       {/* Graph */}
 
@@ -427,7 +431,12 @@ function AnalysisMain() {
                           Your score
                         </Typography>
                       </div>
-                      <Stack direction="column" fontSize={11} gap={1}>
+                      <Stack
+                        direction="column"
+                        fontSize={11}
+                        gap={1}
+                        marginTop={2}
+                      >
                         <div className="d-flex justify-content-between">
                           <Typography
                             sx={{
@@ -435,26 +444,7 @@ function AnalysisMain() {
                               fontSize: "14px",
                             }}
                           >
-                            Targeted Percentile
-                          </Typography>
-                          <Typography
-                            sx={{
-                              ...typographyStyles.subHeading,
-                              fontSize: "14px",
-                              color: "#4149FF",
-                            }}
-                          >
-                            {targetPercentile}
-                          </Typography>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <Typography
-                            sx={{
-                              ...typographyStyles.subHeading,
-                              fontSize: "14px",
-                            }}
-                          >
-                            Result Percentile
+                            Result Percentile:
                           </Typography>
                           <Typography
                             sx={{
@@ -464,25 +454,6 @@ function AnalysisMain() {
                             }}
                           >
                             {percentile}
-                          </Typography>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <Typography
-                            sx={{
-                              ...typographyStyles.subHeading,
-                              fontSize: "14px",
-                            }}
-                          >
-                            Left To Achieve Your Target
-                          </Typography>
-                          <Typography
-                            sx={{
-                              ...typographyStyles.subHeading,
-                              fontSize: "14px",
-                              color: "#4149FF",
-                            }}
-                          >
-                            {eval(targetPercentile - percentile)}
                           </Typography>
                         </div>
                       </Stack>
@@ -786,13 +757,12 @@ function AnalysisMain() {
                   </StyledMenu> */}
 
                   <NavLink
-                    to="#"
+                    to="sectionwise"
                     activeclassname="active "
                     className="link flex-item"
                   >
                     <ModifyButton variant="filled" className="nav-button">
-                      {/* change it dynamically */}
-                      VARC
+                      Question-wise
                     </ModifyButton>
                   </NavLink>
                   <NavLink
@@ -805,28 +775,12 @@ function AnalysisMain() {
                     </ModifyButton>
                   </NavLink>
 
-                  <NavLink activeclassname="active" className="link flex-item">
-                    <ModifyButton
-                      variant="filled"
-                      style={{
-                        background:
-                          location.pathname ===
-                          `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}`
-                            ? "var( --blue-new)"
-                            : "",
-                        color:
-                          location.pathname ===
-                            `/analysis/${mockId}/${attemptId}/subtopicwise/${subject}` &&
-                          "white",
-                      }}
-                      id="demo-customized-button"
-                      aria-controls={open2 ? "demo-customized-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open2 ? "true" : undefined}
-                      disableElevation
-                      onClick={handleClick2}
-                      
-                    >
+                  <NavLink
+                    to="subtopicwise"
+                    activeclassname="active "
+                    className="link flex-item"
+                  >
+                    <ModifyButton variant="filled" className="nav-button">
                       Subtopic-wise
                     </ModifyButton>
                   </NavLink>

@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 function SubtopicAnalysis() {
   const params = useParams();
   const [data, setData] = useState([]);
-  const { subtopicWiseAnalysis, topperData } = useAuth();
+  const { subtopicWiseAnalysis, topperData, sectionName } = useAuth();
   const [topper_data, setTopperData] = useState();
   const navigate = useNavigate();
 
@@ -24,17 +24,9 @@ function SubtopicAnalysis() {
   }
 
   useEffect(() => {
-    if (params.subject == "varc") {
-      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.varc);
-      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.varc);
-    } else if (params.subject === "lrdi") {
-      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.lrdi);
-      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.lrdi);
-    } else if (params.subject === "quants") {
-      setData(subtopicWiseAnalysis.subtopicWiseAnalysis?.quants);
-      setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis.quants);
-    }
-  }, [params, subtopicWiseAnalysis, topperData]);
+    setData(subtopicWiseAnalysis.subtopicWiseAnalysis[sectionName]);
+
+  }, [subtopicWiseAnalysis, topperData]);
   // console.log("section", data);
 
   // console.log("manthan tyagi")

@@ -9,12 +9,11 @@ import {
   StyledTable,
   StyledTableRow,
 } from "../styleSheets/Style";
-
 import { Typography } from "@mui/material";
 
 function Table({ data }) {
-  const { headings, body } = data;
-
+  const { headings, body, sectionName } = data;
+  console.log(body);
   console.log("body data from table", body);
   return (
     <TableContainer
@@ -22,20 +21,26 @@ function Table({ data }) {
         display: "flex",
         justifyContent: "center",
         alignContent: "center",
-        p: 1,
         flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
+        maxHeight : "100%", 
+        maxWidth : "100%",
+        overflowY : "scroll"
       }}
     >
       <StyledTable
-        sx={{ maxWidth: "100%", ml: 2 }}
+        sx={{ml: 2}}
         aria-label="customized table"
       >
         <TableHead>
-          <TableRow sx={{ background: "white", borderBottom: "none" }}>
+          <TableRow sx={{ background: "white", position : "sticky", top : 0 }}>
             {headings &&
               headings.map((item, _) => {
                 return (
-                  <StyledTableCell className="fw-bold py-4" align="left ">
+                  <StyledTableCell
+                    sx={{ position: "sticky", top: 0, border : "none" }}
+                    className="fw-bold"
+                    align="left "
+                  >
                     <Typography fontWeight={700} fontSize="16px">
                       {item.name}
                     </Typography>
@@ -45,37 +50,32 @@ function Table({ data }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {body.map((item, index) => {
+          {body?.map((item, index) => {
             console.log("Item:", item);
             console.log("Index:", index);
 
-            const targetPercentileKey = Object.keys(item).find(
-              (key) => key.toLowerCase() === "tableprecentile"
+            return (
+              <StyledTableRow
+                key={index}
+                sx={{
+                  background: "white",
+                  border: "none",
+                  color: "black",
+                }}
+              >
+                <StyledTableCell>
+                  <Typography fontWeight={700} fontSize={14} paddingBottom={1}>
+                    {item.percentile}
+                  </Typography>
+                </StyledTableCell>
+                <StyledTableCell>
+                  {" "}
+                  <Typography fontSize={14} paddingBottom={1}>
+                    {item.score}
+                  </Typography>
+                </StyledTableCell>
+              </StyledTableRow>
             );
-
-            if (targetPercentileKey) {
-              const targetPercentileValues = item[targetPercentileKey];
-
-              return targetPercentileValues.map((value, valueIndex) => (
-                <StyledTableRow
-                  key={`${index}-${valueIndex}`}
-                  sx={{
-                    background: "white",
-                    border: "none",
-                    color: "black",
-                  }}
-                >
-                  {Object.keys(value).map((key) => (
-                    <StyledTableCell key={key} align="left">
-                      {value[key]}
-                    </StyledTableCell>
-                    
-                  ))}
-                </StyledTableRow>
-              ));
-            }
-
-            return null;
           })}
         </TableBody>
       </StyledTable>

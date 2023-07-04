@@ -85,10 +85,10 @@ function App() {
           <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
             <Route path="topicwise" element={<TopicAnalysis />} />
             <Route
-              path="subtopicwise/:subject"
+              path="subtopicwise"
               element={<SubtopicAnalysis />}
             />
-            <Route path="sectionwise/:subject" element={<SectionAnalysis />} />
+            <Route path="sectionwise" element={<SectionAnalysis />} />
             <Route path="overall" element={<OverallAnalysis />} />
             <Route path="difficulty" element={<DifficultyAnalysis />} />
           </Route>

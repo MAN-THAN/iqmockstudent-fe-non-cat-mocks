@@ -18,33 +18,31 @@ export const ContextProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   const [isErr, setErr] = useState(false);
   const [menuBarOpen, setMenuBarOpen] = useState(false); //Globally state for menu bar
-  const [isWindowClosed, setWindowClosed] = useState();
   const [topperData, setTopperData] = useState();
-  console.log(isWindowClosed);
+  const [sectionName, setSectionName] = useState(null);
 
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
       const response = await fetchAnalysisData(attemptId, uid);
-      const response2 = await fetchMockStatus(mockId, attemptId);
+      // const response2 = await fetchMockStatus(mockId, attemptId);
       console.log(response);
-      console.log(response2);
+      // console.log(response2);
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
+        setSectionName(response.data.sectionName)
       } else {
         console.log("--> Error in analysis data fetching");
         showToastMessage();
         setErr(true);
       }
-      if (response2?.status == 200) {
-        setWindowClosed(response2.data.isWindowClosed);
-        window.localStorage.setItem("__wodniw", !response2.data.isWindowClosed);
-        setTopperData(response2.data.mockData);
-        setLoading(false);
-      } else {
-        console.log("--> Error in mock status fetching");
-        showToastMessage();
-        setErr(true);
-      }
+      // if (response2?.status == 200) {
+      //   setTopperData(response2.data.mockData);
+      //   setLoading(false);
+      // } else {
+      //   console.log("--> Error in mock status fetching");
+      //   showToastMessage();
+      //   setErr(true);
+      // }
     } catch (err) {
       console.log(err);
       showToastMessage(err?.response?.data?.message);
@@ -57,37 +55,6 @@ export const ContextProvider = ({ children }) => {
       setMenuBarOpen(false);
     }
   };
-
-  // const openDesktopView = () => {
-  //   const isChrome =
-  //     /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-  //   if (isChrome) {
-  //     navigate(previousLocation);
-  //     const url = window.location.href.replace("m.", "");
-  //     window.location.href = url;
-  //   }
-  // };
-
-  // function  for disable the right click and inspect panel from keyboard
-
-  //   function handleContextMenu(event) {
-  //   event.preventDefault();
-  // }
-
-  // function handleKeyDown(event) {
-  //   if (event.ctrlKey && event.shiftKey && event.key === 'I') {
-  //     event.preventDefault();
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   document.addEventListener('keydown', handleKeyDown);
-  //   document.addEventListener('contextmenu', handleContextMenu);
-  //   return () => {
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //     document.removeEventListener('contextmenu', handleContextMenu);
-  //   };
-  // }, []);
 
   const Backdrop = styled(MuiBackdrop)(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,
@@ -129,6 +96,7 @@ export const ContextProvider = ({ children }) => {
           showToastMessage,
           setLoading,
           topperData,
+          sectionName
         }}
       >
         {children}

@@ -43,7 +43,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const attemptID = JSON.parse(localStorage.getItem("attemptId"));
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
 
-  const submitSectionFunc = async (subject) => {
+  const submitSectionFunc = async () => {
     setState(1);
     try {
       const response = await submitSection(attemptID, studentAnswersData, uid, type);
@@ -108,7 +108,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                 >
                   Have a doubt? Back to test
                 </MyButton>
-                <MyButton variant="contained" style={buttonStyle} onClick={() => submitSectionFunc("quants")}>
+                <MyButton variant="contained" style={buttonStyle} onClick={() => submitSectionFunc()}>
                   Submit
                 </MyButton>
               </div>
@@ -164,7 +164,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                   }}
                   onClick={() => {
                     window.localStorage.removeItem("questionStatus");
-                    navigate(`/analysis/${mockId}/${attemptID}/overall`);
+                    navigate(`/analysis/${mockId}/${attemptID}/overall`,{state: { mockType: type}});
                   }}
                 >
                   DONE
