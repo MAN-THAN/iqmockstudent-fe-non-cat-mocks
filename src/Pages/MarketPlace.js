@@ -12,8 +12,7 @@ import { typographyStyles } from "../styleSheets/StyleNew";
 import { useAuth } from "../services/Context";
 import { getMarketPlace } from "../services/Analysis_api";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams } from "react-router";
 // Inspired by blueprintjs
 const options = [
   {
@@ -45,7 +44,6 @@ function MarketPlace() {
   const [selectedValue, setSelectedValue] = React.useState({});
   const [data, setData] = React.useState([]);
   const { attemptId } = useParams();
-
 
   function handleSelectChange(selectedValues) {
     setSelectedValue(selectedValues);
@@ -129,7 +127,7 @@ function MarketPlace() {
                   className="d-flex justify-content-between align-items-center align-content-center"
                   style={{ width: "calc(100% - 50px)" }}
                 >
-                  <div className="flex-item">
+                  {/* <div className="flex-item">
                     <FormControl>
                       <RadioGroup
                         row
@@ -163,15 +161,15 @@ function MarketPlace() {
                         />
                       </RadioGroup>
                     </FormControl>
-                  </div>
+                  </div> */}
 
-                  <div className="flex-item">
+                  {/* <div className="flex-item">
                     <MultipleSelect
                       options={options}
                       onSelectChange={handleSelectChange}
                       setType={() => {}}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </Box>
 
