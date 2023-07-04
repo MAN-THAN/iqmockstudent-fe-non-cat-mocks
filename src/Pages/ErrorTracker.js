@@ -110,16 +110,16 @@ function ErrorTracker() {
     let graphData;
     if (correction === "correct") {
       setColorDetailing(CorrectDetailing);
-      graphData = data.correctGraph;
+      graphData = data.sectionsCorrectGraph;
     } else if (correction === "incorrect") {
       setColorDetailing(IncorrectDetailing);
-      graphData = data.incorrectGraph;
+      graphData = data.sectionsIncorrectGraph;
     } else if (correction === "skipped") {
       setColorDetailing(SkippedDetailing);
-      graphData = data.skippedGraph;
+      graphData = data.sectionsSkippedGraph;
     }
     if (section !== "allsections") {
-      graphData = data[section + correction + "Graph"];
+      graphData = data["sections"+section + correction + "Graph"];
     }
     setGraphData(graphData);
   }, [correction, show, section, data]);
@@ -225,7 +225,7 @@ function ErrorTracker() {
     setShow(filteredData);
   }
 
-  useEffect(filterData, [correction, section, topic, arr, priorty]);
+  useEffect(filterData, [correction, topic, arr, priorty]);
 
   const handleColorDetail = (val) => {
     setColorDetail(val);
@@ -304,7 +304,7 @@ function ErrorTracker() {
                   }}
                 >
                   <div className="d-flex gap-3">
-                    <MultipleSelect options={filter2} setType={setSection} />
+                    {/* <MultipleSelect options={filter2} setType={setSection} /> */}
                     <MultipleSelect options={topicList} setType={setTopic} />
                   </div>
                   <div>

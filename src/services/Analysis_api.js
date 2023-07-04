@@ -105,7 +105,7 @@ export const postToErrorTracker = async (attemptId, type, payload) => {
    const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/errortracker/${attemptId}/${type}`,
+      url: `/api/student/v1/errortracker/${attemptId}`,
       type: "POST",
       data: payload,
       headers: {

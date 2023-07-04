@@ -49,9 +49,7 @@ export default function ViewSolution() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const [viewSol, setViewSoln] = useState(false);
-  const [errTrackerVA, setTrackerVA] = useState([]);
-  const [errTrackerLR, setTrackerLR] = useState([]);
-  const [errTrackerQU, setTrackerQU] = useState([]);
+  const [errTracker, setTracker] = useState([]);
   const [errValue, setErrValue] = useState("");
   const { state } = useLocation();
   const [defVal, setDefVal] = useState("varc");
@@ -110,7 +108,7 @@ export default function ViewSolution() {
     const func = async () => {
       if (state !== null) {
         console.log("flow2");
-        const questionId = state.question_id;
+        const questionId = state._id;
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
         const res = await fetchViewSolution(attemptId, mockId, uid);
@@ -144,9 +142,9 @@ export default function ViewSolution() {
             }
           });
           // setShow(res.data[selected])
-          setTrackerVA(res.data.errorData?.varc);
-          setTrackerLR(res.data.errorData?.lrdi);
-          setTrackerQU(res.data.errorData?.quants);
+          // setTrackerVA(res.data.errorData?.varc);
+          // setTrackerLR(res.data.errorData?.lrdi);
+          // setTrackerQU(res.data.errorData?.quants);
         }
       }
     };
@@ -165,11 +163,12 @@ export default function ViewSolution() {
         const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
-          setShow(res.data.quants); // need to be chANGED later
+          setShow(res.data[res.data.sectionName]); // need to be chANGED later
           setSectionName(res.data.sectionName);
-          setTrackerVA(res.data.errorData?.varc);
-          setTrackerLR(res.data.errorData?.lrdi);
-          setTrackerQU(res.data.errorData?.quants);
+          setTracker(res.data.errorData?.sections)
+          // setTrackerVA(res.data.errorData?.varc);
+          // setTrackerLR(res.data.errorData?.lrdi);
+          // setTrackerQU(res.data.errorData?.quants);
           setLoading(false);
         } else {
           setLoading(false);
@@ -239,18 +238,18 @@ export default function ViewSolution() {
     console.log(e.target.value);
     setErrValue(e.target.value);
     let type;
-    if (selected === "varc") {
-      type = "varc";
-    } else if (selected === "lrdi") {
-      type = "lrdi";
-    } else if (selected === "quants") {
-      type = "quants";
-    }
+    // if (selected === "varc") {
+    //   type = "varc";
+    // } else if (selected === "lrdi") {
+    //   type = "lrdi";
+    // } else if (selected === "quants") {
+    //   type = "quants";
+    // }
     const selectedObj = show[index];
     console.log("slwlwlwlwl", selectedObj);
 
     const payload = {
-      question_id: selectedObj.question_id,
+      question_id: selectedObj._id,
       question: selectedObj.question,
       difficulty: selectedObj.difficulty,
       topic: selectedObj.topic,
@@ -267,63 +266,30 @@ export default function ViewSolution() {
           ? "skipped"
           : "incorrect",
     };
-
+    console.log(payload);
     const res = await postToErrorTracker(attemptId, sectionName, payload);
     console.log(res);
     if (res?.status == 200) {
       console.log(index);
-      if (type == "varc") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerVA];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerVA(arr);
-        // sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
+      const tempObj = {
+        question_id: selectedObj._id,
+        question: selectedObj.question,
+        error: e.target.value,
+      };
+      let arr = [...errTracker];
+      if (index < arr.length) {
+        arr.splice(index, 1, tempObj);
+      } else {
+        arr[index] = tempObj;
       }
-      if (type == "lrdi") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerLR];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerLR(arr);
-        // sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
-      }
-      if (type == "quants") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerQU];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerQU(arr);
-        // sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
-      }
+      setTracker(arr);
     }
   };
 
   // making state empty after question change
   useEffect(() => {
     if (selected === "varc") {
-      const tempObj = errTrackerVA?.[index];
+      const tempObj = errTracker?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
@@ -331,7 +297,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     } else if (selected === "lrdi") {
-      const tempObj = errTrackerLR?.[index];
+      const tempObj = errTracker?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
@@ -339,7 +305,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     } else if (selected === "quants") {
-      const tempObj = errTrackerQU?.[index];
+      const tempObj = errTracker?.[index];
       console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
@@ -347,7 +313,7 @@ export default function ViewSolution() {
         setErrValue("");
       }
     }
-  }, [index, errTrackerVA, errTrackerLR, errTrackerQU, selected]);
+  }, [index, errTracker, selected]);
 
   // setting into local
 
@@ -359,7 +325,7 @@ export default function ViewSolution() {
   //   localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
   //   localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
   // }, [index]);
-  console.log(errTrackerVA, errTrackerLR, errTrackerQU);
+  console.log(errTracker);
 
   // console.log(errValue);
   // console.log(show);
