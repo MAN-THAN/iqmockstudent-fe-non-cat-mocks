@@ -71,7 +71,7 @@ function SectionAnalysis() {
 
           <TableBody>
             {data.length > 0 &&
-              data.map((item, ind) => {
+              data?.map((item, ind) => {
                 return (
                   <StyledTableRow
                     key={ind}
@@ -91,7 +91,7 @@ function SectionAnalysis() {
                       <Typography fontSize="14px">{item.topic}</Typography>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      <Typography fontSize="14px"> {item.subtopic.map((e, i) => { 
+                      <Typography fontSize="14px"> {item.subtopic?.map((e, i) => { 
                         return ((i === 0 ? "" : " | ") + e)
                       })}</Typography>
                     </StyledTableCell>
