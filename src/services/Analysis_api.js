@@ -25,7 +25,7 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
    const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/all/${mockId}/${attemptId}/${uid}`,
+      url: `/api/student/v1/view/${mockId}/${attemptId}/${uid}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -206,7 +206,7 @@ export const getMarketPlace = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/marketplace`,
+      url: `${"https://devapi.iqmock.iquanta.in"}/api/student/v1/marketplace`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

@@ -32,7 +32,7 @@ export default function LeaderTable({
   studentData,
   studentRank,
 }) {
-  // // console.log(studentData);
+  console.log(data);
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: '100vw' }} aria-label="simple table">
@@ -87,35 +87,14 @@ export default function LeaderTable({
                   align="left"
                   sx={{ fontSize: 16 }}
                 >
-                  {data[0] && data[0].result[0]?.qaPercentile}
+                  {data[0] && data[0].result[0]?.sectionalPercentile}
                 </StyledTableCell>
                 <StyledTableCell
                   className="fw-bold"
                   align="left"
                   sx={{ fontSize: 16 }}
                 >
-                  {data[0] && data[0].result[0]?.lrdiPercentile}
-                </StyledTableCell>
-                <StyledTableCell
-                  className="fw-bold"
-                  align="left"
-                  sx={{ fontSize: 16 }}
-                >
-                  {data[0] && data[0].result[0]?.varcPercentile}
-                </StyledTableCell>
-                <StyledTableCell
-                  className="fw-bold"
-                  align="left"
-                  sx={{ fontSize: 16 }}
-                >
-                  {data[0] && data[0].result[0]?.overallPercentile}
-                </StyledTableCell>
-                <StyledTableCell
-                  className="fw-bold"
-                  align="left"
-                  sx={{ fontSize: 16 }}
-                >
-                  {data[0] && data[0].result[0]?.overallScore}
+                  {data[0] && data[0].result[0]?.sectionalScore}
                 </StyledTableCell>
               </>
             )}
@@ -150,10 +129,10 @@ export default function LeaderTable({
                     <StyledTableCell align="left">{item.name}</StyledTableCell>
 
                     <StyledTableCell align="left">
-                      {item.percentile}
+                      {item.sectionalPercentile}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.score}
+                      {item.sectionalScore}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
