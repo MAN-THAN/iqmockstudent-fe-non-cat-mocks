@@ -2,21 +2,24 @@ import Box from "@mui/material/Box";
 import "../styleSheets/Calculator.css";
 import React from "react";
 import { RxCross1 } from "react-icons/rx";
-import Calculator from "awesome-react-calculator";
 import { SubHeading } from "./../styleSheets/Style";
 import { PaperComponent } from "./PaperCompo";
 import { Dialog } from "@mui/material";
+import CatExamCalculator from "../Common-comp/newCalculator";
 
 const style = {
-  cursor : "move",
-  width: 360,
+  cursor: "move",
+  width: "auto",
   textAlign: "center",
-  height: 420,
-  bgcolor: "white",
-  borderRadius: "10px ",
+  height: "auto",
+  background:"none",
+  borderRadius: 3,
   boxShadow: 24,
-  p: 2,
+  display: "flex",
+  justifyContent: "center",
   zIndex: 1000,
+ 
+ 
 };
 
 export default function Calc() {
@@ -26,7 +29,14 @@ export default function Calc() {
 
   return (
     <span>
-      <img src={require("../images/Icon.png")} width="70" role="button" className="img-fluid p-2" alt="arrow-icon" onClick={handleOpen} />
+      <img
+        src={require("../images/Icon.png")}
+        width="70"
+        role="button"
+        className="img-fluid p-2"
+        alt="arrow-icon"
+        onClick={handleOpen}
+      />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -37,13 +47,12 @@ export default function Calc() {
         aria-labelledby="draggable-dialog-title"
       >
         <Box sx={style} id="draggable-dialog-title">
-          <div className="d-flex justify-content-between">
-            <SubHeading className="m-0 p-0">Calculator </SubHeading>
-            <RxCross1 role="button" onClick={handleClose} />
-          </div>
+       
 
-          <div className="container calcContainer">
-            <Calculator />
+          <div>
+            <CatExamCalculator
+              Comp={<RxCross1 role="button" onClick={handleClose} />}
+            />
           </div>
         </Box>
       </Dialog>
