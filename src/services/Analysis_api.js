@@ -40,11 +40,11 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
   }
 };
 
-export const fetchOverallAcross = async (uid, attemptId) => {
+export const fetchOverallAcross = async (uid, attemptId,secType) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `api/student/v1/analyse/across/${uid}/${attemptId} `,
+      url: `api/student/v1/analyse/across/${uid}/${attemptId}/${secType} `,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
