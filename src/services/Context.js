@@ -30,6 +30,7 @@ export const ContextProvider = ({ children }) => {
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
         setSectionName(response.data.sectionName)
+        localStorage.setItem("sectionType", response.data.sectionName);
       } else {
         console.log("--> Error in analysis data fetching");
         showToastMessage();
