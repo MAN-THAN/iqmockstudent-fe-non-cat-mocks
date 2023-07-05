@@ -218,7 +218,7 @@ function AnalysisMain() {
               position: "absolute",
               left: "65px",
               padding: "15px",
-              width:"calc(100% - 65px)"
+              width: "calc(100% - 65px)",
             }}
           >
             <MenuDrawer />
@@ -395,7 +395,7 @@ function AnalysisMain() {
                       <div className="graph d-flex align-items-center justify-content-center">
                         <ApexChart
                           show={{ name: true, value: true }}
-                          series={[percentile]}
+                          series={[basicData?.[sectionName]?.percentile]}
                           title={"Percentile"}
                           style={{
                             height: 180,
@@ -673,7 +673,7 @@ function AnalysisMain() {
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
                 <div
-                  style={{ flexBasis: "70%" }}
+                  style={{ flexBasis: "75%" }}
                   className=" d-flex gap-3 ps-2"
                 >
                   <NavLink
@@ -840,7 +840,7 @@ function AnalysisMain() {
                 </div>
 
                 <div
-                  style={{ flexBasis: "30%" }}
+                  style={{ flexBasis: "25%" }}
                   className={
                     location.pathname ===
                     `/analysis/${mockId}/${attemptId}/overall`
