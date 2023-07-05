@@ -103,7 +103,7 @@ const DataTable = ({ data }) => {
               <TableCell align="left">
                 {row.attempted || row.numberOfAttemptedQuestions}
               </TableCell>
-              <TableCell align="left" sx={{color:"green"}}>
+              <TableCell align="left" sx={{ color: "green" }}>
                 {row.correct || row.numberOfCorrectAttempt}
               </TableCell>
               <TableCell align="left">
@@ -127,16 +127,16 @@ const CardStyle = {
   display: "flex",
   flexDirection: "row-reverse",
   justifyContent: "flex-end",
-  columnGap:10,
+  columnGap: 10,
   alignItems: "center",
-  alignContent:'center',
+  alignContent: "center",
 };
 
 const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState(null); // this state for the type of section
+  const [type, setType] = useState("varc"); // this state for the type of section
   const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
   const [index, setIndex] = useState(0); // state for setting the index
   const [show, setShow] = useState([]); // this state for table data has been showing
@@ -156,7 +156,10 @@ function AnalysisAcross() {
     setLoading,
     isLoading,
     showToastMessage,
+    sectionName,
   } = useAuth();
+
+  console.log("SectionNAme", sectionName);
 
   const scrollableDivRef = useRef(null);
 
@@ -169,6 +172,7 @@ function AnalysisAcross() {
 
   useEffect(() => {
     if (response) {
+      setType(response.sectionName);
       const topicWiseData = response?.[topicsType] || [];
       setMocksList(topicWiseData);
     }
@@ -178,7 +182,7 @@ function AnalysisAcross() {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (uid, attemptId) => {
       setLoading(true);
-      const response = await fetchOverallAcross(uid, attemptId);
+      const response = await fetchOverallAcross(uid, attemptId, type);
       console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
@@ -199,7 +203,7 @@ function AnalysisAcross() {
     if (response.analysismetrics && type !== null) {
       const newTopics = { weak: [], moderate: [], strong: [] };
 
-      response.analysismetrics[0]?.["overall"].forEach((e) => {
+      response.analysismetrics[0]?.[response.sectionName].forEach((e) => {
         if (e.accuracy <= 30) {
           newTopics.weak.push({
             title: "Weak",
@@ -235,7 +239,7 @@ function AnalysisAcross() {
 
   console.log("Mock List", mocksList);
   console.log("show", show);
-  console.log("type", type);
+  console.log("response", response);
 
   return (
     <>
