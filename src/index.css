@@ -1,25 +1,54 @@
 @import url("https://fonts.googleapis.com/css2?family=Inder&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   overflow: hidden;
   overflow-y: scroll;
 }
+
 .edit_container {
   overflow: hidden !important;
   height: 100vh !important;
 }
+
 .loader_title {
   font-size: 20px;
   background: -webkit-linear-gradient(#0f0c29, #302b63, #24243e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.pushable {
+  background: hsl(50, 100%, 32%);
+  border-radius: 12px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+
+.front {
+  display: block;
+  padding: 12px 10px;
+  border-radius: 12px;
+  font-size: 14;
+  background: hsl(59, 100%, 47%);
+  color: black;
+  transform: translateY(-6px);
+  font-weight: 700;
+}
+
+.pushable:active .front {
+  transform: translateY(-2px);
 }
 
 :root {
@@ -35,15 +64,19 @@ body {
   --blue-new: #0090ff;
   --font-grey: #5F5F5F;
 }
+
 .img-wrapper {
   overflow: hidden;
 }
+
 img.hover-zoom:hover {
   transform: scale(1.03);
 }
+
 .css-t1fmnr-MuiFormControlLabel-root .MuiFormControlLabel-label {
   width: "100%" !important;
 }
+
 /* // Changing MUI textfield label size */
 .MuiInputLabel-root {
   font-size: 15px !important;
@@ -87,6 +120,7 @@ img.hover-zoom:hover {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -108,6 +142,7 @@ img.hover-zoom:hover {
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
+
 .btn-12 {
   position: relative;
   right: 75px;
@@ -120,6 +155,7 @@ img.hover-zoom:hover {
   -webkit-perspective: 230px;
   perspective: 230px;
 }
+
 .btn-12 span {
   background: linear-gradient(to right, rgb(2, 36, 172) 0%, rgb(1, 117, 232) 100%);
   display: block;
@@ -136,6 +172,7 @@ img.hover-zoom:hover {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
+
 .btn-12 span:nth-child(1) {
   box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9, 7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
   -webkit-transform: rotateX(90deg);
@@ -145,6 +182,7 @@ img.hover-zoom:hover {
   -moz-transform-origin: 50% 50% -20px;
   transform-origin: 50% 50% -20px;
 }
+
 .btn-12 span:nth-child(2) {
   -webkit-transform: rotateX(0deg);
   -moz-transform: rotateX(0deg);
@@ -153,12 +191,14 @@ img.hover-zoom:hover {
   -moz-transform-origin: 50% 50% -20px;
   transform-origin: 50% 50% -20px;
 }
+
 .btn-12:hover span:nth-child(1) {
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   -webkit-transform: rotateX(0deg);
   -moz-transform: rotateX(0deg);
   transform: rotateX(0deg);
 }
+
 .btn-12:hover span:nth-child(2) {
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   color: transparent;
@@ -171,6 +211,7 @@ img.hover-zoom:hover {
 body {
   background: #ffffff;
 }
+
 @keyframes rotate-loading {
   0% {
     transform: rotate(0deg);
@@ -179,6 +220,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -196,6 +238,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -213,6 +256,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -230,6 +274,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -247,6 +292,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -264,6 +310,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -281,6 +328,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -298,6 +346,7 @@ body {
     -o-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
     -ms-transform: rotate(360deg);
@@ -311,12 +360,15 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -326,12 +378,15 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -341,12 +396,15 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -356,16 +414,20 @@ body {
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
+
 .loading-container,
 .loading {
   height: 100px;
@@ -422,9 +484,78 @@ body {
 
 /* // toast message styles */
 .toast-message {
-    background: darkblue;
-    color: #fff;
-    font-size: 20px;
-    /* width: 20em; */
-    /* padding: 30px 20px; */
+  background: darkblue;
+  color: #fff;
+  font-size: 20px;
+  /* width: 20em; */
+  /* padding: 30px 20px; */
+}
+
+
+.button-85 {
+  padding: 0 1.3em;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-85:before {
+  content: "";
+  background: linear-gradient(45deg,
+      #ff0000,
+      #ff7300,
+      #fffb00,
+      #48ff00,
+      #00ffd5,
+      #002bff,
+      #7a00ff,
+      #ff00c8,
+      #ff0000);
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 25px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 25px;
 }
