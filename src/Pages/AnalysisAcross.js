@@ -155,9 +155,7 @@ function AnalysisAcross() {
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
-    // if (g) {
-    //   setGraph();
-    // }
+   
     setShow(mocksList[index]?.data?.[type]);
   }, [index, type, mocksList, graph]);
 
@@ -231,7 +229,7 @@ function AnalysisAcross() {
 
   console.log("Mock List", mocksList);
   console.log("show", show);
-  console.log("response", response);
+  console.log("graph", graph);
 
   return (
     <>
@@ -365,7 +363,6 @@ function AnalysisAcross() {
 
                   {view === "Table" ? (
                     <>
-                  
                       <Stack
                         justifyContent={"center"}
                         my={5}
@@ -378,13 +375,17 @@ function AnalysisAcross() {
                           transition={{ duration: 1.0 }}
                           style={{ width: "80vw", height: "20em" }}
                         >
-                          {graph ? (
+                          {graph && graph.length > 0 ? (
                             <LineGraph
                               Data={graph}
                               xKey={"name"}
                               ykey={"percentile"}
                             />
-                          ):"Graph not available"}
+                          ) : (
+                            <div className="text-center">
+                              Graph Data Not Available
+                            </div>
+                          )}
                         </motion.div>
                       </Stack>
                       <hr />
@@ -544,7 +545,6 @@ function AnalysisAcross() {
                                               borderRadius: "15px",
                                             }}
                                           />
-                                         
                                         </>
                                       )}
                                     </CardContent>
@@ -648,7 +648,7 @@ function AnalysisAcross() {
                             {topicsType &&
                               topicsType.charAt(0).toUpperCase() +
                                 topicsType.slice(1).toLowerCase()}{" "}
-                              data not Available
+                            data not Available
                           </h6>
                         </div>
                       )}
