@@ -531,7 +531,7 @@ function AnalysisAcross() {
                                         <>
                                           {" "}
                                           <LogoCard
-                                            cardTitle={"No Topic Available"}
+                                            cardTitle={"No Topic"}
                                             // icon={"/Acc.png"}
                                             style={{
                                               ...CardStyle,
