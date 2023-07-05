@@ -754,7 +754,9 @@ export default function ViewSolution() {
                                 "NA"
                               ) : (
                                 <Latex>
+
                                   {show[index]?.studentAnswer || ""}
+                                  
                                 </Latex>
                               )}
                             </Typography>
