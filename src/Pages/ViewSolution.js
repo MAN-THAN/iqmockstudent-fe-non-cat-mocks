@@ -737,7 +737,9 @@ export default function ViewSolution() {
                                   }
                                 >
                                   <Latex>
+                                    
                                     {(show && show[index]?.options[3]) || ""}
+
                                   </Latex>
                                 </Typography>
                               }
