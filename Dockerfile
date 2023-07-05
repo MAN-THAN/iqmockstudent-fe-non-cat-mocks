@@ -6,12 +6,6 @@ WORKDIR /usr/local/iqmockstudent-fe-sec-dev
 COPY . /usr/local/iqmockstudent-fe-sec-dev
 
 # Install all the dependencies
-#RUN npm install -g @angular/cli
-#RUN npm install -g npm@9.6.7
-#RUN rm -f package-lock.json
-#RUN npm install @material-ui/core
-RUN node --version
-RUN npm --version
 RUN npm install -g npm@9.6.7
 RUN npm install --save react react-dom react-scripts
 #RUN npm install
@@ -29,4 +23,3 @@ RUN chown -R nginx:nginx /usr/share/nginx/html/build/
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./iqmockstudent-fe-sec-dev.conf /etc/nginx/conf.d/
 EXPOSE 80
-

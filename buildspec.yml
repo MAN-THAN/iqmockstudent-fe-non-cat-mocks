@@ -1,6 +1,6 @@
 version: 0.2
 #run-as: root
-proxy:
+proxy: 
   logs: yes
 phases:
   pre_build:
@@ -9,7 +9,7 @@ phases:
     commands:
       - echo Logging into ECR...
       - docker --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 059407755516.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 059407755516.dkr.ecr.ap-south-1.amazonaws.com    
   build:
 #    run-as: root
     on-failure: ABORT
@@ -25,8 +25,3 @@ phases:
       - echo Entered the post_build phase....
       - echo Pushing iqmockstudent-fe-dev Docker Image to ECR
       - docker push 059407755516.dkr.ecr.ap-south-1.amazonaws.com/iqmockstudent-fe-dev:latest
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                 
