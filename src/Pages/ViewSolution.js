@@ -737,9 +737,7 @@ export default function ViewSolution() {
                                   }
                                 >
                                   <Latex>
-                                    
                                     {(show && show[index]?.options[3]) || ""}
-
                                   </Latex>
                                 </Typography>
                               }
@@ -835,34 +833,36 @@ export default function ViewSolution() {
                         </Box>
                         <Box>
                           {" "}
-                          <Button
-                            onClick={handleOpenModal}
-                            style={{
-                              ...buttonStyle,
-                              padding: 12,
-                            }}
-                            sx={{
-                              background:
-                                show && show[index]?.isVideo === "No"
-                                  ? "lightgrey !important"
-                                  : "var(--blue-new)",
-                            }}
-                            disabled={
-                              show && show[index]?.isVideo === "No"
-                                ? true
-                                : false
-                            }
-                            startIcon={
-                              <img
-                                src="/playButton.png"
-                                alt=""
-                                className="img-fluid"
-                                width="15px"
-                              />
-                            }
-                          >
-                            Video Solution
-                          </Button>
+                          {show && show[index]?.isVideo === "Yes" && (
+                            <Button
+                              onClick={handleOpenModal}
+                              style={{
+                                ...buttonStyle,
+                                padding: 12,
+                              }}
+                              sx={{
+                                background:
+                                  show && show[index]?.isVideo === "No"
+                                    ? "lightgrey !important"
+                                    : "var(--blue-new)",
+                              }}
+                              // disabled={
+                              //   show && show[index]?.isVideo === "No"
+                              //     ? true
+                              //     : false
+                              // }
+                              startIcon={
+                                <img
+                                  src="/playButton.png"
+                                  alt=""
+                                  className="img-fluid"
+                                  width="15px"
+                                />
+                              }
+                            >
+                              Video Solution
+                            </Button>
+                          )}
                         </Box>
                       </Box>
                       {viewSol && (
