@@ -130,7 +130,7 @@ const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState("varc"); // this state for the type of section
+  const [type, setType] = useState(localStorage.getItem("sectionType")); // this state for the type of section
   const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
   const [index, setIndex] = useState(0); // state for setting the index
   const [show, setShow] = useState([]); // this state for table data has been showing

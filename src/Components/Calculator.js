@@ -12,14 +12,12 @@ const style = {
   width: "auto",
   textAlign: "center",
   height: "auto",
-  background:"none",
+  background: "none",
   borderRadius: 3,
   boxShadow: 24,
   display: "flex",
   justifyContent: "center",
   zIndex: 1000,
- 
- 
 };
 
 export default function Calc() {
@@ -47,8 +45,6 @@ export default function Calc() {
         aria-labelledby="draggable-dialog-title"
       >
         <Box sx={style} id="draggable-dialog-title">
-       
-
           <div>
             <CatExamCalculator
               Comp={<RxCross1 role="button" onClick={handleClose} />}
