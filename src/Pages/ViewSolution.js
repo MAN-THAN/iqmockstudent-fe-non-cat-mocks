@@ -57,6 +57,8 @@ export default function ViewSolution() {
   const ref = useRef(null);
   const [sectionName, setSectionName] = useState();
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
+  const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
@@ -267,7 +269,7 @@ export default function ViewSolution() {
           : "incorrect",
     };
     console.log(payload);
-    const res = await postToErrorTracker(attemptId, sectionName, payload);
+    const res = await postToErrorTracker(attemptId, sectionName, payload, uid);
     console.log(res);
     if (res?.status == 200) {
       console.log(index);
@@ -754,7 +756,7 @@ export default function ViewSolution() {
                                 <Latex>
 
                                   {show[index]?.studentAnswer || ""}
-                                  
+
                                 </Latex>
                               )}
                             </Typography>
