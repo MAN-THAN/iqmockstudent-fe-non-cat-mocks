@@ -40,11 +40,11 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
   }
 };
 
-export const fetchOverallAcross = async (uid, attemptId) => {
+export const fetchOverallAcross = async (uid, attemptId,secType) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `api/student/v1/analyse/across/${uid}/${attemptId} `,
+      url: `api/student/v1/analyse/across/${uid}/${attemptId}/${secType} `,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -101,7 +101,7 @@ export const fetchErrorTracker = async (attemptId, uid) => {
 
 // POST ERROR TRACKER
 
-export const postToErrorTracker = async (attemptId, type, payload) => {
+export const postToErrorTracker = async (attemptId, type, payload, uid) => {
    const token = localStorage.getItem("auth_token");
   try {
     const res = request({
@@ -111,6 +111,8 @@ export const postToErrorTracker = async (attemptId, type, payload) => {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        attemptId : attemptId,
+        uid : uid
       },
     });
     return res;

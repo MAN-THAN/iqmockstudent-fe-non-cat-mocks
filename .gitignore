@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# docker-file & other
+
+/Dockerfile
+/buildspec.yml
+/iqmockstudent-fe-sec-dev.conf
