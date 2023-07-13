@@ -6,7 +6,7 @@ env:
     AWS_ACCESS_KEY_ID: AKIAQ3VH2ND6GMDXCZ74
     AWS_DEFAULT_REGION: ap-south-1
     AWS_SECRET_ACCESS_KEY: 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
-    namespace: iqmock-dev
+    namespace: iqmock-prod
     deployment: iqstudent-fe-sec-prod
 phases:
   install:
