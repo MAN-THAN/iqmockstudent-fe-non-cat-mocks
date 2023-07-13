@@ -346,7 +346,7 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      <div className="row p-3 pe-1" style={{ height: "100%" }}>
+      <div className="row p-3 pe-1" style={{ height: "100%", userSelect:'none' }}>
         {/* Left main container */}
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">

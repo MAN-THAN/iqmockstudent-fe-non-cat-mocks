@@ -106,3 +106,25 @@ export const getVerified = async (email, otp, mockId) => {
     return err;
   }
 };
+
+// discard button api(Resume mock)
+
+export const discardMock = async (attemptId, uid) => {
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = request({
+      url: `/api/student/v1/mocks/discard/${attemptId}`,
+      type: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attemptId
+      },
+    });
+    return res;
+  } catch (err) {
+    //console.log(err);
+    return err;
+  }
+};
