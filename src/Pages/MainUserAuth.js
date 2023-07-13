@@ -15,12 +15,19 @@ import { Image } from "react-bootstrap";
 import { submitSection } from "../services/Mock_api";
 import { Button } from "antd";
 import Box from "@mui/material/Box";
+import { discardMock } from "../services/Mock_api";
+import { Last } from "react-bootstrap/esm/PageItem";
 
 const MainUserAuth = () => {
   const navigate = useNavigate();
-  const { email, otp, mockId, setId } = useParams();
+  const { email, otp, mockId, setId } = useParams(); // send DATA TO VERIFICATION API FOR
   const [loader, setLoader] = useState(true);
-  const temp = { email: "john@example.com", otp: "49858", setId: "xyx", mockId: "6430e9e837185e086ad69368" };
+  const temp = {
+    email: "john@example.com",
+    otp: "49858",
+    setId: "xyx",
+    mockId: "6430e9e837185e086ad69368",
+  };
   const [openModal, setModal] = useState(false);
   const style = {
     position: "absolute",
@@ -43,28 +50,40 @@ const MainUserAuth = () => {
     borderRadius: "20px",
   };
 
-  // Checking mobile or desktop view
-
   useEffect(() => {
     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
-    console.log(isMobileOrTablet);
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
     if (isMobileOrTablet) {
       navigate("/mobileErrorPage");
-    } else {
-      const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    } else if (userData && userData?.email === email) {
+      const storedQuestionStatus = JSON.parse(
+        localStorage.getItem("questionStatus")
+      );
       if (storedQuestionStatus) {
-        console.log(storedQuestionStatus);
         setModal(true);
       } else {
-        startVerification();
+        
+        startVerification(); // ?doubtfu;!!!!!!!
       }
+    } else if (userData && userData?.email !== email) {
+      // cross user(User trying to log in with different account)
+      showToastMessage("New Login Detected!");
+      // //alert("maNTHAN")
+      startVerification();
+    } else {
+      startVerification();
     }
   }, []);
 
-  //  resume mock(if question data is present)
+  //resume mock(if question data is present)
+
   const resumeMock = () => {
-    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
-    const prevMockId = JSON.parse(localStorage.getItem("currMockId"));
+    //alert("resume mock")
+    const storedQuestionStatus = JSON.parse(
+      localStorage.getItem("questionStatus")
+    );
+    const prevMockId = localStorage.getItem("currMockId");
     const type = storedQuestionStatus[0].section;
     console.log(type);
     if (type === "VARC") {
@@ -93,26 +112,42 @@ const MainUserAuth = () => {
 
   // Removing question data
 
-  const eraseQuestionData = () => { 
-    localStorage.clear();
+  const eraseQuestionData = async () => {
+    const prevAttemptId = localStorage.getItem("attemptId");
+    const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+    // localStorage.clear();
     setModal(false);
     setLoader(true);
-    startVerification();
-    // api call
-  }
+    try {
+      const res = await discardMock(prevAttemptId, uid);
+      if (res?.status == 200) {
+        localStorage.clear();
+        setLoader(false);
+        showToastMessageForDiscard();
+        setTimeout(() => {
+        window.location.href = "https://www.iquanta.in/cat-mock-test";
+      }, 2000);
+      }
+    } catch (err) {
+      showToastMessage(err?.response?.data?.message);
+      //console.log(err);
+    }
+  };
 
   // Function for VERIFICATION
   const startVerification = async () => {
-    console.log("verifying");
+    //console.log("verifying");
     try {
+      await localStorage.clear();
       const response = await getVerified(email, otp, mockId);
-      console.log(response);
+      // console.log("start verification", response);
       if (response?.status == 200) {
         localStorage.setItem("auth_token", response?.data?.accessToken);
         localStorage.setItem("userData", JSON.stringify(response?.data?.data));
         const arr_length = response?.data?.attemptList?.length;
+        console.log(arr_length);
         if (arr_length == 0) {
-          console.log("New user");
+          //console.log("New user");
           navigate(`/instructions`, {
             state: {
               mockId: mockId,
@@ -120,41 +155,103 @@ const MainUserAuth = () => {
             },
           });
         } else {
-          console.log("already attempted");
-          showToastMessageForAnalysis();
-          const Last_attempt_id = response?.data.attemptList[0];
-          setTimeout(() => {
-            navigate(`/analysis/${mockId}/${Last_attempt_id}/overall`);
-          }, 4000);
+          //console.log("already attempted");
+          //alert('!!')
+          const Last_attempt_id_Obj =
+            response.data.attemptList.length > 0 &&
+            response?.data?.attemptList[0];
+          const isVarcSubmitted = Last_attempt_id_Obj.isVarc;
+          const isLrdiSubmitted = Last_attempt_id_Obj.isLrdi;
+          const isQuantSubmitted = Last_attempt_id_Obj.isQuants;
+          if (isVarcSubmitted && isLrdiSubmitted && isQuantSubmitted) {
+            showToastMessageForAnalysis();
+            setTimeout(() => {
+              navigate(
+                `/analysis/${mockId}/${Last_attempt_id_Obj.attemptId}/overall`
+              );
+            }, 2000);
+          } else {
+            // setting mock data from api to localstorage
+            const mockData = Last_attempt_id_Obj.mockData;
+            if (mockData) {
+              localStorage.setItem("questionStatus", JSON.stringify(mockData));
+              localStorage.setItem("currMockId", mockId);
+              localStorage.setItem("attemptId", Last_attempt_id_Obj.attemptId);
+              localStorage.setItem(
+                "my-counter-min",
+                Last_attempt_id_Obj?.timer.minutes
+              );
+              localStorage.setItem(
+                "my-counter-sec",
+                Last_attempt_id_Obj?.timer.seconds
+              );
+              setModal(true);
+            } else {
+              localStorage.clear();
+              // //alert("1223")
+                window.location.href = "https://www.iquanta.in/cat-mock-test";
+            }
+          }
         }
       }
     } catch (err) {
+      console.log(err, "231");
+      //alert('!!!!')
       showToastMessage(err?.response?.data?.message);
       console.log(err);
+      setTimeout(() => {
+        localStorage.clear();
+        window.location.href = "https://www.iquanta.in/cat-mock-test";
+      }, 2000);
     }
   };
+
   const showToastMessageForAnalysis = () => {
-    toast.info("You have already attempted this mock, redirecting to your Analysis", {
-      position: toast.POSITION.TOP_CENTER,
-    });
+    toast.info(
+      "You have already attempted this mock, redirecting to your Analysis",
+      {
+        position: toast.POSITION.TOP_CENTER,
+      }
+    );
     return null;
   };
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
+    toast.error(msg == undefined ? "Some error occurred!" : msg, {
       position: toast.POSITION.TOP_CENTER,
     });
+
     return setLoader(false);
+  };
+  const showToastMessageForDiscard = () => {
+    toast.info(
+      "Your Mock has been Discarded",
+      {
+        position: toast.POSITION.TOP_CENTER,
+      }
+    );
   };
 
   return (
     <React.Fragment>
-      <ToastContainer />
-      <div style={{ display: "flex", flexDirection: "column", width: "100vw", height: "95vh", justifyContent: "center", alignItems: "center" }}>
+      <ToastContainer autoClose={1500} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100vw",
+          height: "95vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {loader ? (
           <>
             {" "}
             <RingLoader color="var(--orange)" size="150px" />
-            <h5 className="loader_title" style={{ textAlign: "center", marginTop: "1em" }}>
+            <h5
+              className="loader_title"
+              style={{ textAlign: "center", marginTop: "1em" }}
+            >
               Authenticating..... Please wait!
             </h5>
           </>
@@ -162,7 +259,11 @@ const MainUserAuth = () => {
           <div></div>
         )}
       </div>
-      <Modal open={openModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={openModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <div className="d-flex justify-content-center">
             <Box
@@ -176,8 +277,11 @@ const MainUserAuth = () => {
             />
           </div>
           <div className="d-flex justify-content-center p-4">
-            <SubHeading style={{ color: "red", fontWeight: "700", fontSize: "16px" }} >
-              You have not completed your previous mock, press continue to resume or press discard.
+            <SubHeading
+              style={{ color: "red", fontWeight: "700", fontSize: "16px" }}
+            >
+              You have not completed your previous mock, press continue to
+              resume or press discard.
             </SubHeading>
           </div>
           <div className="d-flex justify-content-evenly">
@@ -194,7 +298,11 @@ const MainUserAuth = () => {
             >
               Discard
             </MyButton>
-            <MyButton variant="contained" style={buttonStyle} onClick={() => resumeMock()}>
+            <MyButton
+              variant="contained"
+              style={buttonStyle}
+              onClick={() => resumeMock()}
+            >
               Continue
             </MyButton>
           </div>
