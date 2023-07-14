@@ -21,7 +21,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
 
-  const attemptID = JSON.parse(window.localStorage.getItem("attemptId"));
+  const attemptID = window.localStorage.getItem("attemptId");
 
   // taking the local storage value of timer
   useEffect(() => {

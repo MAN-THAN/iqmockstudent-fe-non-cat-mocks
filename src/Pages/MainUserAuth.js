@@ -84,30 +84,14 @@ const MainUserAuth = () => {
       localStorage.getItem("questionStatus")
     );
     const prevMockId = localStorage.getItem("currMockId");
+    const prevAttemptId = localStorage.getItem("attemptId");
     const type = storedQuestionStatus[0].section;
     console.log(type);
-    if (type === "VARC") {
-      navigate(`/main`, {
-        state: {
-          mockId: prevMockId,
-          type: "varc",
-        },
-      });
-    } else if (type === "LRDI") {
-      navigate(`/main`, {
-        state: {
-          mockId: prevMockId,
-          type: "lrdi",
-        },
-      });
-    } else if (type === "QUANTS") {
-      navigate(`/main`, {
-        state: {
-          mockId: prevMockId,
-          type: "quants",
-        },
-      });
-    }
+    navigate(`/main`, {
+      state: {
+        mockId: prevMockId,
+        attemptId: prevAttemptId,}
+      })
   };
 
   // Removing question data
@@ -160,8 +144,8 @@ const MainUserAuth = () => {
           const Last_attempt_id_Obj =
             response.data.attemptList.length > 0 &&
             response?.data?.attemptList[0];
-          const isSectionSubmitted = Last_attempt_id_Obj?.isSection; //used later
-          if (true) {
+          const isSectionSubmitted = Last_attempt_id_Obj?.isSubmitted;
+          if (isSectionSubmitted) {
             showToastMessageForAnalysis();
             setTimeout(() => {
               navigate(
@@ -197,10 +181,10 @@ const MainUserAuth = () => {
       //alert('!!!!')
       showToastMessage(err?.response?.data?.message);
       console.log(err);
-      setTimeout(() => {
-        localStorage.clear();
-        window.location.href = "https://www.iquanta.in/cat-mock-test";
-      }, 2000);
+      // setTimeout(() => {
+      //   localStorage.clear();
+      //   window.location.href = "https://www.iquanta.in/cat-mock-test";
+      // }, 2000);
     }
   };
 

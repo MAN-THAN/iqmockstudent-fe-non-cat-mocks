@@ -128,3 +128,28 @@ export const discardMock = async (attemptId, uid) => {
     return err;
   }
 };
+
+// api to save student response on tab closure or cache clear
+
+export const saveStudentProgress = async (attempt_id,type,payload,uid,timer)=>{
+  const token = localStorage.getItem("auth_token");
+  let data = {};
+  data[type] = payload;
+  try {
+    const res = request({
+      url: `/api/student/v1/quizs/submitStudentResponse/${attempt_id}`,
+      type: "POST",
+      data: {answer : data, timer : timer},
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        uid: uid,
+        attemptId : attempt_id
+      },
+    });
+    return res;
+  } catch (err) {
+    //console.log(err);
+    return err;
+  }
+}
