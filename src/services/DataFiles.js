@@ -24,11 +24,6 @@ export const DrawerData = (mockId, attemptId) => {
       path: `/leaderboard/${mockId}/${attemptId}`,
     },
     {
-      text: "Goal Tracker",
-      icon: "goal1.png",
-      path: `/goaltracker/${mockId}/${attemptId}`,
-    },
-    {
       text: "Market Place",
       icon: "shopping-bag.png",
       path: `/marketplace/${mockId}/${attemptId}`,

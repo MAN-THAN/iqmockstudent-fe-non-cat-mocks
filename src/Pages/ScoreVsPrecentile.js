@@ -316,7 +316,7 @@ function ScoreVsPrecentile() {
                       />
                       <Box sx={{ marginLeft: 7 }}>
                         <img
-                          src="/Group 316 (1).svg"
+                          src="/Group316(1).svg"
                           alt="img"
                           height={15}
                         ></img>
