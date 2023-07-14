@@ -138,7 +138,7 @@ const MainUserAuth = () => {
   const startVerification = async () => {
     //console.log("verifying");
     try {
-      await localStorage.clear();
+      localStorage.clear();
       const response = await getVerified(email, otp, mockId);
       // console.log("start verification", response);
       if (response?.status == 200) {
@@ -160,10 +160,8 @@ const MainUserAuth = () => {
           const Last_attempt_id_Obj =
             response.data.attemptList.length > 0 &&
             response?.data?.attemptList[0];
-          const isVarcSubmitted = Last_attempt_id_Obj.isVarc;
-          const isLrdiSubmitted = Last_attempt_id_Obj.isLrdi;
-          const isQuantSubmitted = Last_attempt_id_Obj.isQuants;
-          if (isVarcSubmitted && isLrdiSubmitted && isQuantSubmitted) {
+          const isSectionSubmitted = Last_attempt_id_Obj?.isSection; //used later
+          if (true) {
             showToastMessageForAnalysis();
             setTimeout(() => {
               navigate(
@@ -189,7 +187,7 @@ const MainUserAuth = () => {
             } else {
               localStorage.clear();
               // //alert("1223")
-                window.location.href = "https://www.iquanta.in/cat-mock-test";
+                // window.location.href = "https://www.iquanta.in/cat-mock-test";
             }
           }
         }
