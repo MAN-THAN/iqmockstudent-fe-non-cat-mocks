@@ -791,7 +791,6 @@ function CenterMain() {
                 QUESTION PALETTE
               </SubHeading>
             </div>
-
             {/* Question pallete */}
             <div className="flex-item mt-2 flex-fill ">
               <div className=" container keyboard ">

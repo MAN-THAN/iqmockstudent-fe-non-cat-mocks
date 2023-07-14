@@ -40,7 +40,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const [state, setState] = useState(0);
   const params = useParams();
   const navigate = useNavigate();
-  const attemptID = JSON.parse(localStorage.getItem("attemptId"));
+  const attemptID = localStorage.getItem("attemptId");
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
 
   const submitSectionFunc = async () => {
