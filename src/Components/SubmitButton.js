@@ -46,7 +46,12 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const submitSectionFunc = async () => {
     setState(1);
     try {
-      const response = await submitSection(attemptID, studentAnswersData, uid, type);
+      const response = await submitSection(
+        attemptID,
+        studentAnswersData,
+        uid,
+        type
+      );
       console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem("my-counter-sec");
@@ -66,16 +71,24 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
         sx={{
           width: "96%",
           marginTop: "1em",
-          background: type === "varc" || type === "lrdi" ? "#EBEBEB" : "",
+          backgroundColor: "#EBEBEB",
+          ":disabled": {
+            background: "#D9D9D9",
+            color:"white"
+          },
         }}
-        disabled={type === "varc" || type === "lrdi" ? true : false}
+        disabled={openConfirm}
         variant="contained"
         onClick={() => setOpenConfirm(true)}
       >
         Submit
       </SubmitButton>
       {/* Confirm modal */}
-      <Modal open={openConfirm} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        open={openConfirm}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           {state === 0 ? (
             <>
@@ -91,11 +104,17 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                 />
               </div>
               <div className="d-flex justify-content-center">
-                <SubHeading style={{ color: "#494949", fontWeight: "700" }} className="ps-3">
+                <SubHeading
+                  style={{ color: "#494949", fontWeight: "700" }}
+                  className="ps-3"
+                >
                   Are you sure to submit your test?{" "}
                 </SubHeading>
               </div>
-              <div className="d-flex justify-content-evenly" style={{ marginTop: "1.8em" }}>
+              <div
+                className="d-flex justify-content-evenly"
+                style={{ marginTop: "1.8em" }}
+              >
                 <MyButton
                   variant="contained"
                   sx={{
@@ -108,7 +127,11 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                 >
                   Have a doubt? Back to test
                 </MyButton>
-                <MyButton variant="contained" style={buttonStyle} onClick={() => submitSectionFunc()}>
+                <MyButton
+                  variant="contained"
+                  style={buttonStyle}
+                  onClick={() => submitSectionFunc()}
+                >
                   Submit
                 </MyButton>
               </div>
@@ -116,10 +139,18 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
           ) : state === 1 ? (
             <>
               {" "}
-              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                <SubHeading className="m-4 ps-3">Submitting Test... </SubHeading>
+              <div
+                style={{ marginTop: "3em" }}
+                className="d-flex justify-content-center"
+              >
+                <SubHeading className="m-4 ps-3">
+                  Submitting Test...{" "}
+                </SubHeading>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
                 <div style={{ marginLeft: "12px" }}>
                   {" "}
                   <InfinitySpin color="blue" />
@@ -132,7 +163,10 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
           ) : state === 2 ? (
             <>
               {" "}
-              <div className="d-flex justify-content-center" style={{ height: "50%", width: "100%" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ height: "50%", width: "100%" }}
+              >
                 <div
                   style={{
                     height: "100%",
@@ -143,7 +177,12 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                   }}
                   className="d-flex justify-content-center align-items-center"
                 >
-                  <Image className="img-fluid text-center ps-4 " src="/Group103.png" alt="no IMage" width={300}></Image>
+                  <Image
+                    className="img-fluid text-center ps-4 "
+                    src="/Group103.png"
+                    alt="no IMage"
+                    width={300}
+                  ></Image>
                 </div>
               </div>
               <div className="d-flex justify-content-center ">
@@ -152,19 +191,27 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                 </SubHeading>
               </div>
               <div className="d-flex justify-content-center text-muted">
-                <Typography fontWeight={700}>Congrats! You have completed the Mock test</Typography>
+                <Typography fontWeight={700}>
+                  Congrats! You have completed the Mock test
+                </Typography>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
                 <MyButton
                   variant="contained"
                   sx={{
                     ...buttonStyle,
-                    background: " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
+                    background:
+                      " linear-gradient(90.38deg, #2400FF 5.86%, #725BFF 99.82%)",
                     borderRadius: "30px",
                   }}
                   onClick={() => {
                     window.localStorage.removeItem("questionStatus");
-                    navigate(`/analysis/${mockId}/${attemptID}/overall`,{state: { mockType: type}});
+                    navigate(`/analysis/${mockId}/${attemptID}/overall`, {
+                      state: { mockType: type },
+                    });
                   }}
                 >
                   DONE
@@ -173,10 +220,18 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
             </>
           ) : state === 3 ? (
             <>
-              <div style={{ marginTop: "3em" }} className="d-flex justify-content-center">
-                <SubHeading className="m-4 ps-3">Section Submitting... </SubHeading>
+              <div
+                style={{ marginTop: "3em" }}
+                className="d-flex justify-content-center"
+              >
+                <SubHeading className="m-4 ps-3">
+                  Section Submitting...{" "}
+                </SubHeading>
               </div>
-              <div className="d-flex justify-content-center" style={{ marginTop: "1em" }}>
+              <div
+                className="d-flex justify-content-center"
+                style={{ marginTop: "1em" }}
+              >
                 <div style={{ marginLeft: "12px" }}>
                   {" "}
                   <SubHeading style={{ color: "red" }} className="m-4 ps-3">
@@ -185,7 +240,9 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                 </div>
               </div>
               <div className="d-flex justify-content-center mt-4 ">
-                <Button onClick={() => window.location.reload()}>Try Again</Button>
+                <Button onClick={() => window.location.reload()}>
+                  Try Again
+                </Button>
               </div>
             </>
           ) : (
