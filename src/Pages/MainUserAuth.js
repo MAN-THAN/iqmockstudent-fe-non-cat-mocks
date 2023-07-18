@@ -53,7 +53,6 @@ const MainUserAuth = () => {
   useEffect(() => {
     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
     const userData = JSON.parse(localStorage.getItem("userData"));
-
     if (isMobileOrTablet) {
       navigate("/mobileErrorPage");
     } else if (userData && userData?.email === email) {
@@ -63,7 +62,6 @@ const MainUserAuth = () => {
       if (storedQuestionStatus) {
         setModal(true);
       } else {
-        
         startVerification(); // ?doubtfu;!!!!!!!
       }
     } else if (userData && userData?.email !== email) {

@@ -19,6 +19,7 @@ import ButtonSubmit from "./SubmitButton";
 import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
 import ImageButton from "./ImageButton";
+import NewTimer from "./TimerNew";
 
 function CenterMain() {
   const params = useParams();
@@ -93,6 +94,8 @@ function CenterMain() {
         setData(response.data.data[0][response.data.sectionsName]);
         setSectionName(response.data.sectionsName[0]);
         setSectionTime(response.data.sectionsTime[0]);
+        localStorage.setItem('my-counter-min',(response.data.sectionsTime[0])/60);
+        localStorage.setItem('my-counter-sec',0);
         setLoading(false);
         prevQuestionIndex.current = null;
       } else {
@@ -427,7 +430,7 @@ function CenterMain() {
                       <>
                         <div style={{ color: "black", fontSize: "14px" }}>Time Left</div>
                         {sectionTime && (
-                          <Timer
+                          <NewTimer
                             type={sectionName}
                             mockId={state.mockId}
                             initMinute={sectionTime / 60}

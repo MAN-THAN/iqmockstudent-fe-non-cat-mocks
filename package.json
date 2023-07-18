@@ -49,6 +49,7 @@
         "react-scripts": "5.0.1",
         "react-spinners": "^0.13.8",
         "react-textfit": "^1.1.1",
+        "react-timer-hook": "^3.0.6",
         "react-toastify": "^9.1.2",
         "recharts": "^2.5.0",
         "styled-components": "^5.3.9",
