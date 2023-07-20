@@ -240,7 +240,7 @@ function CenterMain() {
   useEffect(() => {
     showPreviousValue();
     setCount(0);
-  }, [selectedQuestionIndex]);
+  }, [selectedQuestionIndex, questionStatus]);
 
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
   useEffect(() => {
