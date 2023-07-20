@@ -1,13 +1,13 @@
 version: 0.2
 env:
-  variables:
-    docker_registry: 059407755516.dkr.ecr.ap-south-1.amazonaws.com
-    image_tag: iqmockstudent-fe-sec-dev
-    AWS_ACCESS_KEY_ID: AKIAQ3VH2ND6GMDXCZ74
-    AWS_DEFAULT_REGION: ap-south-1
-    AWS_SECRET_ACCESS_KEY: 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
-    namespace: iqmock-dev
-    deployment: iqstudent-fe-sec-dev
+  parameter-store:
+    container_registry: "/iqmock/aws/docker_registry"
+    image_tag: "/iqmockstudent/fe/sec/dev/image_tag"
+    aws_region: "/iqmock/aws/region"
+    access_key: "/iqmock/aws/access-key"
+    secret_key: "/iqmock/aws/secret-key"
+    namespace: "/iqmock/dev/namespace"
+    deployment: "/iqmockstudent/fe/sec/dev/deployment"
 phases:
   install:
     run-as: root
@@ -20,9 +20,9 @@ phases:
     finally:
       - docker --version
       - kubectl version --client
-      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID 
-      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY 
-      - aws configure set region $AWS_DEFAULT_REGION
+      - aws configure set aws_access_key_id $access_key 
+      - aws configure set aws_secret_access_key $secret_key 
+      - aws configure set region $aws_region
       - aws configure get region
       - echo This always runs even if the update or install command fails 
   pre_build:
@@ -30,8 +30,8 @@ phases:
     on-failure: ABORT
     commands:
       - echo Entered the pre_build phase...
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 059407755516.dkr.ecr.ap-south-1.amazonaws.com
-      - aws eks update-kubeconfig --region ap-south-1 --name iquanta-eks-01
+      - aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $container_registry
+      - aws eks update-kubeconfig --region $aws_region --name iquanta-eks-01
       - kubectl get nodes
     finally:
       - echo This always runs even if the login command fails
@@ -41,9 +41,9 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - docker build -t $docker_registry/$image_tag .
+      - docker build -t $container_registry/$image_tag .
       - docker images
-      - docker push $docker_registry/$image_tag
+      - docker push $container_registry/$image_tag
     finally:
       - echo Build successfully completed
   post_build:
