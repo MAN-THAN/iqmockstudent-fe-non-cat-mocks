@@ -41,6 +41,7 @@ const UserAuth = () => {
       if (response?.status === 200) {
         localStorage.setItem("attemptId", response.data.attemptId);
         localStorage.setItem("currMockId", state.mockId);
+        localStorage.setItem("mockName", response.data.title)
         // userAuthCheck();
         navigate(`/main`, {
           state: {

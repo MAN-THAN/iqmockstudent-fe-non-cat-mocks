@@ -86,13 +86,6 @@ function ScoreVsPrecentile() {
   const [data, setData] = useState([]); // set the main data from api
   const [section, setSections] = useState(); //set the sections varc ,lrdi , quants and overall
   const [titleList, setTitleList] = useState(null); //state for setting the all title list from data
-  const [tableHeading, setTableHeading] = useState([
-    { name: "% ile" },
-    { name: "Overall" },
-    { name: "VARC" },
-    { name: "LRDI" },
-    { name: "QA" },
-  ]);
   const [tableData, setTableData] = useState([]);
   const [graphData, setGraphData] = useState([]);
   const [showGraph, setShowGraph] = useState([]);
@@ -100,6 +93,11 @@ function ScoreVsPrecentile() {
   const [MockName, setMockName] = useState([]);
   const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
   const [section_Name, setSection_Name] = useState();
+  const [tableHeading, setTableHeading] = useState([
+    { name: "% ile" },
+    { name: "Score" },
+   
+  ]);
   console.log(graphData);
   console.log(mock);
   console.log(titleList);
@@ -330,7 +328,7 @@ function ScoreVsPrecentile() {
                 <Box
                   component={Paper}
                   sx={{
-                    flexBasis: "50%",
+                    flexBasis: "40%",
                     p: 1,
                     height: "90%",
                     boxShadow: 10,
