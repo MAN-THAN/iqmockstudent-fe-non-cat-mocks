@@ -191,10 +191,10 @@ const MainUserAuth = () => {
       //alert('!!!!')
       showToastMessage(err?.response?.data?.message);
       //console.log(err);
-      setTimeout(() => {
-        localStorage.clear();
-        window.location.href = "https://www.iquanta.in/cat-mock-test";
-      }, 2000);
+      // setTimeout(() => {
+      //   localStorage.clear();
+      //   window.location.href = "https://www.iquanta.in/cat-mock-test";
+      // }, 2000);
     }
   };
 

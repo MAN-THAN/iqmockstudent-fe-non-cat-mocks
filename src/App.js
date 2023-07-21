@@ -27,16 +27,18 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import ScoreVsPrecentile from "./Pages/ScoreVsPrecentile";
 import CacheBuster from "react-cache-buster";
 import version from "../package.json";
+import ErrorPage from "./Pages/ErrorPage";
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [previousLocation, setPreviousLocation] = useState(null);
+  const [isUserAuth,setIsUserAuth]= useState(false);
   //  create query client
   const queryClient = new QueryClient();
   const isProduction =
     process.env.REACT_APP_BASE_URL === "https://devapi.iqmock.iquanta.in";
-
+    
   useEffect(() => {
     function handleResize() {
       const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
@@ -71,6 +73,18 @@ function App() {
     };
   }, [navigate, previousLocation, location]);
 
+  useEffect(()=>{
+    const access_token = localStorage.getItem("access_token");
+    if(access_token=="undefined"||access_token=="null"||access_token==null||access_token==undefined||access_token=="")
+    {
+        setIsUserAuth(false);
+    }
+    else{
+      setIsUserAuth(true);
+    }
+
+  },[]);
+
   // Rest of the component code...
 
   return (
@@ -94,7 +108,7 @@ function App() {
 
             <Route
               path="/analysis/:mockId/:attemptId"
-              element={<AnalysisMain />}
+              element={isUserAuth==true?<AnalysisMain />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             >
               <Route path="topicwise" element={<TopicAnalysis />} />
               <Route path="subtopicwise" element={<SubtopicAnalysis />} />
@@ -104,21 +118,21 @@ function App() {
             </Route>
             <Route
               path="/leaderboard/:mockId/:attemptId"
-              element={<LeaderBoard />}
+              element={isUserAuth==true?<LeaderBoard />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             <Route
               path="/viewsolutions/:mockId/:attemptId"
-              element={<ViewSolution />}
+              element={isUserAuth==true?<ViewSolution />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             <Route path="/main" element={<Protected Comp={Main} />} />
 
             <Route
               path="/analysisacross/:mockId/:attemptId"
-              element={<AnalysisAcross />}
+              element={isUserAuth==true?<AnalysisAcross />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             <Route
               path="/errortracker/:mockId/:attemptId"
-              element={<ErrorTracker />}
+              element={isUserAuth==true?<ErrorTracker />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             {/* <Route
             path="/goaltracker/:mockId/:attemptId"
@@ -126,16 +140,16 @@ function App() {
           /> */}
             <Route
               path="/marketplace/:mockId/:attemptId"
-              element={<MarketPlace />}
+              element={isUserAuth==true?<MarketPlace />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             <Route
               path="/mockcomparison/:mockId/:attemptId"
-              element={<MockComparison />}
+              element={isUserAuth==true?<MockComparison />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
             {/* <Route path="/onboarding" element={<OnBoarding />} /> */}
             <Route
               path="/scorevsprecentile/:mockId/:attemptId"
-              element={<ScoreVsPrecentile />}
+              element={isUserAuth==true?<ScoreVsPrecentile />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
           </Routes>
         </ThemeProvider>
