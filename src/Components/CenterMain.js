@@ -85,17 +85,29 @@ function CenterMain() {
   // fetching main data
   useEffect(() => {
     setLoading(true);
-    setSelectedQuestionIndex(0);
+
+    let question = localStorage.getItem("lastAttemptedQuestionIndex");
+    console.log("question:", question);
+    if (question == "undefined" || question == "null") {
+
+      setSelectedQuestionIndex(0);
+    }
+    else {
+
+      setSelectedQuestionIndex(Number(localStorage.getItem("lastAttemptedQuestionIndex")));
+    }
+
     const fetchDataFromApi = async () => {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
       const response = await fetchQuestions(state.attemptId, uid);
       console.log(response);
       if (response?.status === 200) {
+        localStorage.setItem("sectionType", response.data.sectionsName[0]);
         setData(response.data.data[0][response.data.sectionsName]);
         setSectionName(response.data.sectionsName[0]);
         setSectionTime(response.data.sectionsTime[0]);
-        localStorage.setItem('my-counter-min',(response.data.sectionsTime[0])/60);
-        localStorage.setItem('my-counter-sec',0);
+        localStorage.setItem('my-counter-min', (response.data.sectionsTime[0]) / 60);
+        localStorage.setItem('my-counter-sec', 0);
         setLoading(false);
         prevQuestionIndex.current = null;
       } else {
@@ -226,7 +238,7 @@ function CenterMain() {
           setInputVal(questionStatus[selectedQuestionIndex].studentAnswer);
         }
         if (questionStatus[selectedQuestionIndex].type === 1) {
-           setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
+          setSelectedAnswer(questionStatus[selectedQuestionIndex].studentAnswerIndex);
         }
       } else if (questionStatus[selectedQuestionIndex].studentAnswerIndex === null) {
         setSelectedAnswer(null);
@@ -349,7 +361,7 @@ function CenterMain() {
     </div>
   ) : (
     <div className="container-fluid bg-white">
-      <div className="row p-3 pe-1" style={{ height: "100%", userSelect:'none' }}>
+      <div className="row p-3 pe-1" style={{ height: "100%", userSelect: 'none' }}>
         {/* Left main container */}
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
@@ -467,10 +479,10 @@ function CenterMain() {
                       }
                       image={
                         questionStatus?.length > 0 && // Check if Data array has at least one element
-                        questionStatus[selectedQuestionIndex]?.image
+                          questionStatus[selectedQuestionIndex]?.image
                           ? questionStatus[selectedQuestionIndex]?.image.map((item) => {
-                              return <ImageButton src={item} />;
-                            })
+                            return <ImageButton src={item} />;
+                          })
                           : null
                       }
                     />
@@ -812,17 +824,16 @@ function CenterMain() {
                               p: 2,
                               height: "45px",
                               cursor: "pointer",
-                              backgroundImage: `url(${
-                                item.stage === 0
+                              backgroundImage: `url(${item.stage === 0
                                   ? "/BL.png"
                                   : item.stage === 1
-                                  ? "/answered.png"
-                                  : item.stage === 2
-                                  ? "/NotAnswered.png"
-                                  : item.stage === 3
-                                  ? "/MarkedforReview.png"
-                                  : "/Answered&MarkedReview.png"
-                              })`,
+                                    ? "/answered.png"
+                                    : item.stage === 2
+                                      ? "/NotAnswered.png"
+                                      : item.stage === 3
+                                        ? "/MarkedforReview.png"
+                                        : "/Answered&MarkedReview.png"
+                                })`,
                               backgroundSize: "cover",
                               objectFit: "cover",
                               fontWeight: "bold",
@@ -860,7 +871,7 @@ function CenterMain() {
                   <img src={require("../images/Ellipse 12.png")} className="img-fluid" width="20" alt="" /> <b>Marked for Review</b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "50%" }}>
-                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited {} </b>
+                  <img src="/BL.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Not Visited { } </b>
                 </div>
                 <div className="flex-item " style={{ flexBasis: "100%" }}>
                   <img src="/Answered&MarkedReview.png" className="img-fluid shadow-lg" width="20" alt="" /> <b> Answered & Marked for review </b>

@@ -8,23 +8,21 @@ function Protected(props) {
   const navigate = useNavigate();
   const { Comp } = props;
 
-  if (location.state) {
-    localStorage.setItem("sectionType", encode(location.state.type));
-  } else if (!location.state) {
-    //alert("else executed");
-    const secType = decode(localStorage.getItem("sectionType"));
-    const mockId = decode(localStorage.getItem("currMockId"));
-    location.state = { type: secType, mockId: mockId };
+  if (!location.state) {
+  
+    const attemptId = localStorage.getItem("attemptId");
+    const mockId = localStorage.getItem("currMockId");
+    location.state = { attemptId: attemptId, mockId: mockId };
   }
 
  // console.log("Location", location);
-
+ console.log("Location" , location)
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
 
   const handleBeforeUnload = (event) => {
     
     event.preventDefault();
-    alert('!!');
+    
     const confirmationMessage =
       "Changes that you made may not be saved. Are you sure you want to leave this page?";
 
@@ -44,19 +42,21 @@ function Protected(props) {
       navigate("/");
     }
 
-    const handleBeforeUnloadEvent = (event) => {
+    const handleBeforeUnloadEvent =async (event) => {
       
       if (!confirmedNavigation) {
         event.preventDefault();
         event.returnValue = ""; // For Chrome
-        let attempt_id=decode(localStorage.getItem('attemptId'));
-        let type = decode(localStorage.getItem('sectionType'));
-        let uid = JSON.parse(decode(localStorage.getItem("userData"))).uid;
+        let attempt_id=localStorage.getItem('attemptId');
+        let type = localStorage.getItem("sectionType");
+        let uid = JSON.parse(localStorage.getItem("userData")).uid;
         
-        let payload = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem("questionStatus"))));
+        //let payload = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem("questionStatus"))));
+        let payload = JSON.parse(localStorage.getItem("questionStatus"));
         let timer = {minutes:Number(localStorage.getItem("my-counter-min")),seconds:Number(localStorage.getItem("my-counter-sec"))}
-
-        saveStudentProgress(attempt_id,type,payload,uid,timer);
+        console.log(attempt_id,"attempt_id");
+        await saveStudentProgress(attempt_id,type,payload,uid,timer);
+        localStorage.clear();
       }
     };
 

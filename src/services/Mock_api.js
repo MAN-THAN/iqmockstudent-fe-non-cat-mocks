@@ -122,6 +122,10 @@ export const discardMock = async (attemptId, uid) => {
         attemptId : attemptId
       },
     });
+    if(res){
+      localStorage.clear();
+    }
+    
     return res;
   } catch (err) {
     //console.log(err);
@@ -133,11 +137,12 @@ export const discardMock = async (attemptId, uid) => {
 
 export const saveStudentProgress = async (attempt_id,type,payload,uid,timer)=>{
   const token = localStorage.getItem("auth_token");
+  console.log("type:",type);
   let data = {};
   data[type] = payload;
   try {
     const res = request({
-      url: `/api/student/v1/quizs/submitStudentResponse/${attempt_id}`,
+      url: `/api/student/v1/quizs/submitStudentResponse/${type}/${attempt_id}`,
       type: "POST",
       data: {answer : data, timer : timer},
       headers: {

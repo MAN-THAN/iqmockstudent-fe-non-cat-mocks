@@ -53,9 +53,11 @@ const MainUserAuth = () => {
   useEffect(() => {
     const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
     const userData = JSON.parse(localStorage.getItem("userData"));
+    
     if (isMobileOrTablet) {
       navigate("/mobileErrorPage");
-    } else if (userData && userData?.email === email) {
+    } 
+    else if (userData && userData?.email === email) {
       const storedQuestionStatus = JSON.parse(
         localStorage.getItem("questionStatus")
       );
@@ -73,6 +75,8 @@ const MainUserAuth = () => {
       startVerification();
     }
   }, []);
+
+
 
   //resume mock(if question data is present)
 
@@ -120,9 +124,10 @@ const MainUserAuth = () => {
   const startVerification = async () => {
     //console.log("verifying");
     try {
+      alert('start called');
       localStorage.clear();
       const response = await getVerified(email, otp, mockId);
-      // console.log("start verification", response);
+      console.log("start verification", response);
       if (response?.status == 200) {
         localStorage.setItem("auth_token", response?.data?.accessToken);
         localStorage.setItem("userData", JSON.stringify(response?.data?.data));
@@ -142,7 +147,8 @@ const MainUserAuth = () => {
           const Last_attempt_id_Obj =
             response.data.attemptList.length > 0 &&
             response?.data?.attemptList[0];
-          const isSectionSubmitted = Last_attempt_id_Obj?.isSubmitted;
+            const sectionType = Last_attempt_id_Obj.sectionName
+            const isSectionSubmitted = Last_attempt_id_Obj?.isSubmitted;
           if (isSectionSubmitted) {
             showToastMessageForAnalysis();
             setTimeout(() => {
@@ -153,10 +159,13 @@ const MainUserAuth = () => {
           } else {
             // setting mock data from api to localstorage
             const mockData = Last_attempt_id_Obj.mockData;
+            
             if (mockData) {
               localStorage.setItem("questionStatus", JSON.stringify(mockData));
               localStorage.setItem("currMockId", mockId);
               localStorage.setItem("attemptId", Last_attempt_id_Obj.attemptId);
+              localStorage.setItem("sectionType",sectionType);
+              localStorage.setItem("lastAttemptedQuestionIndex",Last_attempt_id_Obj.lastAttemptedQuestionIndex);
               localStorage.setItem(
                 "my-counter-min",
                 Last_attempt_id_Obj?.timer.minutes
@@ -168,7 +177,7 @@ const MainUserAuth = () => {
               setModal(true);
             } else {
               localStorage.clear();
-              // //alert("1223")
+              
                 // window.location.href = "https://www.iquanta.in/cat-mock-test";
             }
           }

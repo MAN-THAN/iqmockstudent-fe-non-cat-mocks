@@ -28,7 +28,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [program, setProgram] = useState("");
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
-  const userData = JSON.parse(decode(localStorage.getItem("userData")));
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   console.log("userDAta", userData);
   const {
@@ -100,7 +100,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     // values.dob = dob;
   }, [category, gender, program]);
 
-  const storedValues = JSON.parse(decode(localStorage.getItem("userData")));
+  const storedValues = JSON.parse(localStorage.getItem("userData"));
   // const { name, email, phone, class_10th_result } = storedValues || {};
 
   useEffect(() => {
@@ -206,7 +206,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
       setFormData(obj);
       setLoading(true);
       try {
-        const uid = JSON.parse(decode(localStorage.getItem("userData")))?._id;
+        const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await getPredictCollege(uid, obj);
         //console.log(res);
         if (res?.status == 200) {

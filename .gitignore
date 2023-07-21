@@ -30,3 +30,4 @@ yarn-error.log*
 /iqmockstudent-fe-sec-stg.conf
 /iqmockstudent-fe-sec-prod.conf
 /.env
+/src/setupProxy.js

@@ -42,7 +42,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
   const navigate = useNavigate();
   const attemptID = localStorage.getItem("attemptId");
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-
+  const [done,setDone]=useState(false);
   const submitSectionFunc = async () => {
     setState(1);
     try {
@@ -208,11 +208,14 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
                     borderRadius: "30px",
                   }}
                   onClick={() => {
+                    setDone(true)
                     window.localStorage.removeItem("questionStatus");
-                    navigate(`/analysis/${mockId}/${attemptID}/overall`, {
-                      state: { mockType: type },
-                    });
+                    setTimeout(()=>{
+                      navigate(`/analysis/${mockId}/${attemptID}/overall`, {
+                        state: { mockType: type },
+                    })},3000)
                   }}
+                  disabled={done}
                 >
                   DONE
                 </MyButton>
