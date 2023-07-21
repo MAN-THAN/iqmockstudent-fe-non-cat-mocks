@@ -124,7 +124,7 @@ const MainUserAuth = () => {
   const startVerification = async () => {
     //console.log("verifying");
     try {
-      alert('start called');
+     // alert('start called');
       localStorage.clear();
       const response = await getVerified(email, otp, mockId);
       console.log("start verification", response);
@@ -177,7 +177,10 @@ const MainUserAuth = () => {
               setModal(true);
             } else {
               localStorage.clear();
-              
+              setTimeout(() => {
+                localStorage.clear();
+                window.location.href = "https://www.iquanta.in/cat-mock-test";
+              }, 2000);
                 // window.location.href = "https://www.iquanta.in/cat-mock-test";
             }
           }
@@ -187,11 +190,11 @@ const MainUserAuth = () => {
       console.log(err, "231");
       //alert('!!!!')
       showToastMessage(err?.response?.data?.message);
-      console.log(err);
-      // setTimeout(() => {
-      //   localStorage.clear();
-      //   window.location.href = "https://www.iquanta.in/cat-mock-test";
-      // }, 2000);
+      //console.log(err);
+      setTimeout(() => {
+        localStorage.clear();
+        window.location.href = "https://www.iquanta.in/cat-mock-test";
+      }, 2000);
     }
   };
 

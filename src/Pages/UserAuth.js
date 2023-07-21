@@ -34,13 +34,14 @@ const UserAuth = () => {
   //   }
   // Function for creating attempt id
   const createAttemptId = async () => {
-    console.log("creating attemptid");
+    //console.log("creating attemptid");
     try {
       const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
       console.log(response);
       if (response?.status === 200) {
         localStorage.setItem("attemptId", response.data.attemptId);
         localStorage.setItem("currMockId", state.mockId);
+        localStorage.setItem("mockName", response.data.title)
         // userAuthCheck();
         navigate(`/main`, {
           state: {

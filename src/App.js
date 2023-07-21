@@ -25,6 +25,8 @@ import MobileTemp from "./Pages/MobileTemp";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ScoreVsPrecentile from "./Pages/ScoreVsPrecentile";
+import CacheBuster from "react-cache-buster";
+import version from "../package.json";
 
 function App() {
   const navigate = useNavigate();
@@ -32,6 +34,8 @@ function App() {
   const [previousLocation, setPreviousLocation] = useState(null);
   //  create query client
   const queryClient = new QueryClient();
+  const isProduction =
+    process.env.REACT_APP_BASE_URL === "https://devapi.iqmock.iquanta.in";
 
   useEffect(() => {
     function handleResize() {
@@ -70,66 +74,73 @@ function App() {
   // Rest of the component code...
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route
-            path="/:email/:otp/:setId/:mockId"
-            element={<MainUserAuth />}
-          />
-          <Route path="/instructions" element={<Instructions />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/user_authentication" element={<UserAuth />} />
-          <Route path="/mobileErrorPage" element={<MobileTemp />} />
-
-          <Route path="/analysis/:mockId/:attemptId" element={<AnalysisMain />}>
-            <Route path="topicwise" element={<TopicAnalysis />} />
+    <CacheBuster
+      currentVersion={version}
+      isEnabled={true} //If false, the library is disabled.
+      isVerboseMode={false} //If true, the library writes verbose logs to console.
+      metaFileDirectory={"."} //If public assets are hosted somewhere other than root on your server.
+    >
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <Routes>
             <Route
-              path="subtopicwise"
-              element={<SubtopicAnalysis />}
+              path="/:email/:otp/:setId/:mockId"
+              element={<MainUserAuth />}
             />
-            <Route path="sectionwise" element={<SectionAnalysis />} />
-            <Route path="overall" element={<OverallAnalysis />} />
-            <Route path="difficulty" element={<DifficultyAnalysis />} />
-          </Route>
-          <Route
-            path="/leaderboard/:mockId/:attemptId"
-            element={<LeaderBoard />}
-          />
-          <Route
-            path="/viewsolutions/:mockId/:attemptId"
-            element={<ViewSolution />}
-          />
-          <Route path="/main" element={<Protected Comp={Main} />} />
+            <Route path="/instructions" element={<Instructions />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/user_authentication" element={<UserAuth />} />
+            <Route path="/mobileErrorPage" element={<MobileTemp />} />
 
-          <Route
-            path="/analysisacross/:mockId/:attemptId"
-            element={<AnalysisAcross />}
-          />
-          <Route
-            path="/errortracker/:mockId/:attemptId"
-            element={<ErrorTracker />}
-          />
-          {/* <Route
+            <Route
+              path="/analysis/:mockId/:attemptId"
+              element={<AnalysisMain />}
+            >
+              <Route path="topicwise" element={<TopicAnalysis />} />
+              <Route path="subtopicwise" element={<SubtopicAnalysis />} />
+              <Route path="sectionwise" element={<SectionAnalysis />} />
+              <Route path="overall" element={<OverallAnalysis />} />
+              <Route path="difficulty" element={<DifficultyAnalysis />} />
+            </Route>
+            <Route
+              path="/leaderboard/:mockId/:attemptId"
+              element={<LeaderBoard />}
+            />
+            <Route
+              path="/viewsolutions/:mockId/:attemptId"
+              element={<ViewSolution />}
+            />
+            <Route path="/main" element={<Protected Comp={Main} />} />
+
+            <Route
+              path="/analysisacross/:mockId/:attemptId"
+              element={<AnalysisAcross />}
+            />
+            <Route
+              path="/errortracker/:mockId/:attemptId"
+              element={<ErrorTracker />}
+            />
+            {/* <Route
             path="/goaltracker/:mockId/:attemptId"
             element={<GoalTracker />}
           /> */}
-          <Route
-            path="/marketplace/:mockId/:attemptId"
-            element={<MarketPlace />}
-          />
-          <Route
-            path="/mockcomparison/:mockId/:attemptId"
-            element={<MockComparison />}
-          />
-          {/* <Route path="/onboarding" element={<OnBoarding />} /> */}
-          <Route
-            path="/scorevsprecentile/:mockId/:attemptId"
-            element={<ScoreVsPrecentile />}
-          />
-        </Routes>
-      </ThemeProvider>
-    </QueryClientProvider>
+            <Route
+              path="/marketplace/:mockId/:attemptId"
+              element={<MarketPlace />}
+            />
+            <Route
+              path="/mockcomparison/:mockId/:attemptId"
+              element={<MockComparison />}
+            />
+            {/* <Route path="/onboarding" element={<OnBoarding />} /> */}
+            <Route
+              path="/scorevsprecentile/:mockId/:attemptId"
+              element={<ScoreVsPrecentile />}
+            />
+          </Routes>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </CacheBuster>
   );
 }
 
