@@ -37,7 +37,7 @@ function App() {
   //  create query client
   const queryClient = new QueryClient();
   const isProduction =
-    process.env.REACT_APP_BASE_URL === "https://devapi.iqmock.iquanta.in";
+    process.env.REACT_APP_BASE_URL === "https://devsecapi.iqmock.iquanta.in";
     
   useEffect(() => {
     function handleResize() {
@@ -74,7 +74,7 @@ function App() {
   }, [navigate, previousLocation, location]);
 
   useEffect(()=>{
-    const access_token = localStorage.getItem("access_token");
+    const access_token = localStorage.getItem("auth_token");
     if(access_token=="undefined"||access_token=="null"||access_token==null||access_token==undefined||access_token=="")
     {
         setIsUserAuth(false);
