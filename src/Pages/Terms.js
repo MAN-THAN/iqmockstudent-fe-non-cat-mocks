@@ -11,7 +11,7 @@ function Terms() {
   const name = JSON.parse(localStorage.getItem("userData"))?.name;
   const email = JSON.parse(localStorage.getItem("userData"))?.email;
 
-  // console.log(params)
+  // //console.log(params)
   return (
     <div className="container overflow-hidden d-flex-col justify-content-center align-content-center">
       <div className="logo container text-center my-4">

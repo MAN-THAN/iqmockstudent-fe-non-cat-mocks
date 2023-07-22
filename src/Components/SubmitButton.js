@@ -52,7 +52,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
         uid,
         type
       );
-      console.log(response);
+      //console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem("my-counter-sec");
         window.localStorage.removeItem("my-counter-min");
@@ -60,7 +60,7 @@ export default function ButtonSubmit({ studentAnswersData, mockId, type }) {
         setState(2);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setState(3);
     }
   };

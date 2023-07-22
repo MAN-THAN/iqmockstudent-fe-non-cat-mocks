@@ -88,7 +88,7 @@ const MainUserAuth = () => {
     const prevMockId = localStorage.getItem("currMockId");
     const prevAttemptId = localStorage.getItem("attemptId");
     const type = storedQuestionStatus[0].section;
-    console.log(type);
+    //console.log(type);
     navigate(`/main`, {
       state: {
         mockId: prevMockId,
@@ -116,25 +116,25 @@ const MainUserAuth = () => {
       }
     } catch (err) {
       showToastMessage(err?.response?.data?.message);
-      //console.log(err);
+      ////console.log(err);
     }
   };
 
   // Function for VERIFICATION
   const startVerification = async () => {
-    //console.log("verifying");
+    ////console.log("verifying");
     try {
      // alert('start called');
       localStorage.clear();
       const response = await getVerified(email, otp, mockId);
-      console.log("start verification", response);
+      //console.log("start verification", response);
       if (response?.status == 200) {
         localStorage.setItem("auth_token", response?.data?.accessToken);
         localStorage.setItem("userData", JSON.stringify(response?.data?.data));
         const arr_length = response?.data?.attemptList?.length;
-        console.log(arr_length);
+        //console.log(arr_length);
         if (arr_length == 0) {
-          //console.log("New user");
+          ////console.log("New user");
           navigate(`/instructions`, {
             state: {
               mockId: mockId,
@@ -142,7 +142,7 @@ const MainUserAuth = () => {
             },
           });
         } else {
-          //console.log("already attempted");
+          ////console.log("already attempted");
           //alert('!!')
           const Last_attempt_id_Obj =
             response.data.attemptList.length > 0 &&
@@ -187,10 +187,10 @@ const MainUserAuth = () => {
         }
       }
     } catch (err) {
-      console.log(err, "231");
+      //console.log(err, "231");
       //alert('!!!!')
       showToastMessage(err?.response?.data?.message);
-      //console.log(err);
+      ////console.log(err);
       // setTimeout(() => {
       //   localStorage.clear();
       //   window.location.href = "https://www.iquanta.in/cat-mock-test";

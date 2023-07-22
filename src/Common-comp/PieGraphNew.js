@@ -37,7 +37,7 @@ const PieGraphNew = ({ color, data }) => {
   ].filter((data)=>data.value > 0);
 
   // const newData=[data]
-  //     console.log("pie",newData)
+  //     //console.log("pie",newData)
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>

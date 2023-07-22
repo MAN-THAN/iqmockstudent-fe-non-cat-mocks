@@ -30,7 +30,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
 
-  console.log("userDAta", userData);
+  //console.log("userDAta", userData);
   const {
     name: name_,
     email: email_,
@@ -45,10 +45,10 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     graduationStream,
   } = userData;
 
-  //console.log(program);
+  ////console.log(program);
   // Filling details if present
   useEffect(() => {
-    // //console.log(name, gh);
+    // ////console.log(name, gh);
     if (name_ !== undefined) {
       values.name = name_;
     }
@@ -208,19 +208,19 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await getPredictCollege(uid, obj);
-        //console.log(res);
+        ////console.log(res);
         if (res?.status == 200) {
           setLoading(false);
         }
-        //console.log(res);
+        ////console.log(res);
         setCollege(res?.data.bschools);
       } catch (err) {
         showToastMessage();
-        //console.log(err);
+        ////console.log(err);
       }
     },
   });
-  console.log(values);
+  //console.log(values);
 
   return (
     <React.Fragment>

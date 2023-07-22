@@ -41,7 +41,7 @@ function LeaderBoard() {
       try {
         // setLoading(true);
         const res = await getLeaderBoardData(filter, attemptId, _id);
-        console.log(res);
+        //console.log(res);
         if (res?.status == 200) {
           const data = res;
           const mockData = extractMockData(data.data);
@@ -50,7 +50,7 @@ function LeaderBoard() {
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }
@@ -58,7 +58,7 @@ function LeaderBoard() {
       fetchLeaderBoard(attemptId);
   }, [filter]);
 
-  console.log(filter, "fiilll");
+  //console.log(filter, "fiilll");
   const showToastMessage = (msg) => {
     // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
     //   position: toast.POSITION.TOP_CENTER,

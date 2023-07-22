@@ -71,15 +71,15 @@ function MockComparison() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-    console.log(value)
+    //console.log(value)
       try {
         const res = await getPrevMockData(value);
-        console.log(res);
+        //console.log(res);
         if (res?.status == 200) {
           setPrevMock(res?.data.data)
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
   };
 
@@ -104,7 +104,7 @@ function MockComparison() {
     try {
       const res = await getMockComparison(mockId, attemptId, uid);
       if (res?.status == 200) {
-        console.log(res.data);
+        //console.log(res.data);
         setResult(res.data?.result);
         setTopper(res.data?.topperResult);
         setPrevMock(res.data?.preresult);
@@ -113,16 +113,16 @@ function MockComparison() {
         setLoading(false);
       } else {
         setLoading(false);
-        console.log("error", res);
+        //console.log("error", res);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setLoading(false);
       showToastMessage(err?.response?.data?.msg);
     }
   };
-  console.log(result, topper, prevMock);
-  // console.log(compMock);
+  //console.log(result, topper, prevMock);
+  // //console.log(compMock);
   const showToastMessage = (msg) => {
     // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
     //   position: toast.POSITION.TOP_CENTER,

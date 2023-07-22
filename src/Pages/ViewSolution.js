@@ -105,22 +105,22 @@ export default function ViewSolution() {
 
     return (ref.current.style.display = "none");
   };
-  console.log("data", data);
-  console.log("open", open);
-  console.log("index", index);
+  //console.log("data", data);
+  //console.log("open", open);
+  //console.log("index", index);
 
-  // console.log(data);
-  // console.log(open);
-  console.log("show", show[index], index);
+  // //console.log(data);
+  // //console.log(open);
+  //console.log("show", show[index], index);
 
   // getting a specific question on mounting
 
   useEffect(() => {
     const func = async () => {
       if (state !== null) {
-        console.log("flow2");
+        //console.log("flow2");
         const questionId = state._id;
-        console.log(questionId)
+        //console.log(questionId)
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
         const res = await fetchViewSolution(attemptId, mockId, uid);
@@ -129,7 +129,7 @@ export default function ViewSolution() {
           const arr = res.data[res.data.sectionName];
           arr?.map((item, index) => {
             if (item._id === questionId) {
-              console.log(item, index);
+              //console.log(item, index);
               setIndex(index);
               // setDefVal("varc");
               setShow(res.data[res.data.sectionName]);
@@ -148,8 +148,8 @@ export default function ViewSolution() {
 
     func();
   }, []);
-  console.log(data);
-  console.log(sectionName)
+  //console.log(data);
+  //console.log(sectionName)
 
   // function getting data on mounting
   useEffect(() => {
@@ -170,11 +170,11 @@ export default function ViewSolution() {
         } else {
           setLoading(false);
           showToastMessage();
-          console.log("error", res);
+          //console.log("error", res);
         }
       } catch (err) {
         setLoading(false);
-        console.log(err?.response?.data?.msg);
+        //console.log(err?.response?.data?.msg);
         showToastMessage(err?.response?.data?.msg);
       }
     };
@@ -186,7 +186,7 @@ export default function ViewSolution() {
   // Changing sectionwise data
 
   useEffect(() => {
-    console.log(data);
+    //console.log(data);
     if (data !== undefined) {
       if (selected === "varc") {
         setShow(data?.varc);
@@ -200,7 +200,7 @@ export default function ViewSolution() {
     }
 
     return setIndex(0);
-    // console.log(data[selected]);
+    // //console.log(data[selected]);
   }, [selected]);
 
   const buttonStyle = {
@@ -232,7 +232,7 @@ export default function ViewSolution() {
   };
 
   const handleErrorForm = async (e) => {
-    console.log(e.target.value);
+    //console.log(e.target.value);
     setErrValue(e.target.value);
     let type;
     // if (selected === "varc") {
@@ -243,7 +243,7 @@ export default function ViewSolution() {
     //   type = "quants";
     // }
     const selectedObj = show[index];
-    console.log("slwlwlwlwl", selectedObj);
+    //console.log("slwlwlwlwl", selectedObj);
 
     const payload = {
       question_id: selectedObj._id,
@@ -263,11 +263,11 @@ export default function ViewSolution() {
           ? "skipped"
           : "incorrect",
     };
-    console.log(payload);
+    //console.log(payload);
     const res = await postToErrorTracker(attemptId, sectionName, payload, uid);
-    console.log(res);
+    //console.log(res);
     if (res?.status == 200) {
-      console.log(index);
+      //console.log(index);
       const tempObj = {
         question_id: selectedObj._id,
         question: selectedObj.question,
@@ -287,7 +287,7 @@ export default function ViewSolution() {
   useEffect(() => {
     if (selected === "varc") {
       const tempObj = errTracker?.[index];
-      console.log(tempObj);
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
@@ -295,7 +295,7 @@ export default function ViewSolution() {
       }
     } else if (selected === "lrdi") {
       const tempObj = errTracker?.[index];
-      console.log(tempObj);
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
@@ -303,7 +303,7 @@ export default function ViewSolution() {
       }
     } else if (selected === "quants") {
       const tempObj = errTracker?.[index];
-      console.log(tempObj);
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
@@ -317,16 +317,16 @@ export default function ViewSolution() {
   // useEffect(() => {
   //   if (JSON.parse(localStorage.getItem("errTrackerVA")).length > 0) {
   //     localStorage.setItem("errTrackerVA", JSON.stringify(errTrackerVA));
-  //     console.log("fewfewfw");
+  //     //console.log("fewfewfw");
   //   }
   //   localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
   //   localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
   // }, [index]);
-  console.log(errTracker);
+  //console.log(errTracker);
 
-  // console.log(errValue);
-  // console.log(show);
-  // console.log(selected);
+  // //console.log(errValue);
+  // //console.log(show);
+  // //console.log(selected);
   const [errorOptions, setErrorOptions] = useState([]);
 
   //For changing  the options error card
@@ -343,10 +343,10 @@ export default function ViewSolution() {
           : IncorrectDetailing;
       setErrorOptions(options.slice(1));
     }
-    console.log("datatattaftaf", errorOptions);
+    //console.log("datatattaftaf", errorOptions);
   }, [index, show]);
-  console.log(selected);
-  console.log(defVal);
+  //console.log(selected);
+  //console.log(defVal);
   const bottomRef = useRef(null);
 
   useEffect(() => {

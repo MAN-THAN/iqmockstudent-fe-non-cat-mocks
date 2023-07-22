@@ -34,7 +34,7 @@ function OnBoarding() {
   const [formData, setFormData] = useState();
   const [isToastDisplayed, setIsToastDisplayed] = useState(false);
   const [isClickDisabled, setIsClickDisabled] = useState(false);
-  console.log(formData);
+  //console.log(formData);
 
   const cellStyle = {
     borderBottom: "none",
@@ -71,8 +71,8 @@ function OnBoarding() {
       label: <Typography sx={{ color: "white", fontSize: 18 }}>100</Typography>,
     },
   ];
-  console.log(state.mockId, state.setId);
-  console.log("CKG", college);
+  //console.log(state.mockId, state.setId);
+  //console.log("CKG", college);
 
   useEffect(() => {
     if (college !== null) {
@@ -84,7 +84,7 @@ function OnBoarding() {
   }, [college]);
   // set percentile state
   // useEffect(() => {
-  //   console.log(a, d, e);
+  //   //console.log(a, d, e);
   //   // if percentile is 100 then no decimal digits
   //   if (a === "100") {
   //     setD(0);
@@ -94,7 +94,7 @@ function OnBoarding() {
   //   setPercentile(newPtle);
   // }, [a, d, e]);
 
-  // console.log(percentile);
+  // //console.log(percentile);
   const handleSubmit = () => {
     if (startMock) {
       navigate("/user_authentication", {
@@ -132,8 +132,8 @@ function OnBoarding() {
     //  return setLoading(false);
   };
   const handlePercentile = async (e) => {
-    console.log("hdfeuw");
-    console.log(e.target.value);
+    //console.log("hdfeuw");
+    //console.log(e.target.value);
     setPercentile(e.target.value);
     try {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -141,7 +141,7 @@ function OnBoarding() {
         ...formData,
         minPercentile: e.target.value,
       });
-      console.log(res);
+      //console.log(res);
       if (res?.status === 200) {
         let arr = res?.data.bschools;
         const temp_arr = arr;
@@ -149,10 +149,10 @@ function OnBoarding() {
       }
     } catch (err) {
       // showToastMessage();
-      console.log(err);
+      //console.log(err);
     }
   };
-  console.log("coolr", college);
+  //console.log("coolr", college);
 
   // Custom toast content component with a title
   const CustomToastContent = ({ title }) => (

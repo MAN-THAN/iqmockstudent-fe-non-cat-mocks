@@ -13,8 +13,8 @@ import { Typography } from "@mui/material";
 
 function Table({ data }) {
   const { headings, body, sectionName } = data;
-  console.log(headings);
-  console.log("body data from table", body);
+  //console.log(headings);
+  //console.log("body data from table", body);
   return (
     <TableContainer
       sx={{
@@ -48,8 +48,8 @@ function Table({ data }) {
         </TableHead>
         <TableBody>
           {body?.map((item, index) => {
-            console.log("Item:", item);
-            console.log("Index:", index);
+            //console.log("Item:", item);
+            //console.log("Index:", index);
 
             return (
               <StyledTableRow

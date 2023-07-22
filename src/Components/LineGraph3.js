@@ -7,7 +7,7 @@ export default class LineGraph3 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = props.data;
-    console.log(props);
+    //console.log(props);
   }
 
   componentDidUpdate(prevProps) {
@@ -34,7 +34,7 @@ export default class LineGraph3 extends PureComponent {
   renderCustomTooltip({ active, payload, label }) {
     if (active && payload && payload.length) {
       // Customize the tooltip content based on your data and requirements
-      console.log(payload)
+      //console.log(payload)
       return (
         <div
           style={{ background: "#4C08D0", width: "10em", height: "4em", display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -50,7 +50,7 @@ export default class LineGraph3 extends PureComponent {
 
   render() {
     const { minX, minY } = this.getMinValues();
-    console.log(minX, minY, this.props.percentile);
+    //console.log(minX, minY, this.props.percentile);
 
     return (
       <ResponsiveContainer width="100%" height="100%">

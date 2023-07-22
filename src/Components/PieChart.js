@@ -9,7 +9,7 @@ import {
 } from "recharts";
 
 function MyPieChart({ data, type }) {
-  console.log(data)
+  //console.log(data)
   const data01 = [
     { name: "Group A", value: 60 },
     { name: "Group B", value: 10 },

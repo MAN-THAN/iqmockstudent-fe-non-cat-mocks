@@ -14,7 +14,7 @@ function DifficultyAnalysis() {
 
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
-    console.log("data", data);
+    //console.log("data", data);
     setShow(difficulty?.difficultyWiseAnalysis[sectionName]);
     setPieData(difficulty?.difficultyWiseAnalysis[sectionName + "Graph"]);
   }, []);
@@ -24,9 +24,9 @@ function DifficultyAnalysis() {
     setShow(data?.[button.toLowerCase()]);
     setPieData(data[button.toLowerCase() + "Graph"]);
   };
-  console.log(show);
-  console.log(pieData);
-  console.log(activeButton);
+  //console.log(show);
+  //console.log(pieData);
+  //console.log(activeButton);
 
   return (
     <div

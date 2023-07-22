@@ -93,7 +93,7 @@ function AnalysisMain() {
   } = basicData;
 
 
-  console.log("percentile", percentile)
+  //console.log("percentile", percentile)
   const options = {
     margin: [0, 0, 0, 0],
     filename: "example.pdf",
@@ -121,14 +121,14 @@ function AnalysisMain() {
     setAnchorEl2(event.currentTarget);
   };
   const handleClose = (sub) => {
-    console.log("working");
+    //console.log("working");
     setAnchorEl(null);
     setSelected(sub);
     navigate(`sectionwise/${"quants"}`);
   };
 
   const handleCloseSubTopic = (sub) => {
-    console.log("subtopic working");
+    //console.log("subtopic working");
     setAnchorEl2(null);
     setSelected(sub);
 
@@ -178,9 +178,9 @@ function AnalysisMain() {
     },
   ];
 
-  console.log("Basic data", basicData);
+  //console.log("Basic data", basicData);
 
-  console.log("location", location)
+  //console.log("location", location)
 
   return (
     <>
@@ -606,7 +606,7 @@ function AnalysisMain() {
                             title: "QA",
                           },
                         ].map((item) => {
-                          console.log("itemssmm", item);
+                          //console.log("itemssmm", item);
                           const sectionData = basicData[item.name]; // Retrieve the data for the current section
 
                           return (

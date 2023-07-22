@@ -35,13 +35,13 @@ function CenterMain() {
   const [sectionTime, setSectionTime] = useState(null);
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
-  console.log("Question status", questionStatus);
+  //console.log("Question status", questionStatus);
 
   // syncing question status with local
   useEffect(() => {
     if (questionStatus?.length > 0) {
       localStorage.setItem("questionStatus", JSON.stringify(questionStatus));
-      console.log("putting ibnto local");
+      //console.log("putting ibnto local");
     }
   }, [questionStatus]);
 
@@ -80,14 +80,14 @@ function CenterMain() {
     updatedData[selectedQuestionIndex].selectedAnswer = inputVal.slice(0, -1);
     // setData(updatedData);
   };
-  console.log(sectionName, sectionTime);
+  //console.log(sectionName, sectionTime);
 
   // fetching main data
   useEffect(() => {
     setLoading(true);
 
     let question = localStorage.getItem("lastAttemptedQuestionIndex");
-    console.log("question:", question);
+    //console.log("question:", question);
     if (question == "undefined" || question == "null") {
 
       setSelectedQuestionIndex(0);
@@ -100,7 +100,7 @@ function CenterMain() {
     const fetchDataFromApi = async () => {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
       const response = await fetchQuestions(state.attemptId, uid);
-      console.log(response);
+      //console.log(response);
       if (response?.status === 200) {
         localStorage.setItem("sectionType", response.data.sectionsName[0]);
         setData(response.data.data[0][response.data.sectionsName]);
@@ -116,12 +116,12 @@ function CenterMain() {
       }
     };
     const storedQuestionStatus = localStorage.getItem("questionStatus")?JSON.parse(localStorage.getItem("questionStatus")):null;
-    console.log("storedQuestionStatus", storedQuestionStatus);
+    //console.log("storedQuestionStatus", storedQuestionStatus);
     if (storedQuestionStatus === null) {
       fetchDataFromApi();
       setLoading(false);
     } else {
-      console.log("getting data from local storage");
+      //console.log("getting data from local storage");
       setQuestionStatus(storedQuestionStatus);
       setSectionTime(window.localStorage.getItem(COUNTER_KEY_MIN));
       setSectionName(storedQuestionStatus[0]?.section)
@@ -151,8 +151,8 @@ function CenterMain() {
   };
 
   // Function for setting different stages(accrd to student input)
-  // console.log("data", Data);
-  // console.log("questionStatus", questionStatus);
+  // //console.log("data", Data);
+  // //console.log("questionStatus", questionStatus);
   // Stage = 0 --> Not Visited
   // Stage = 1 --> Answered
   // Stage = 2 --> Not Answered
@@ -182,7 +182,7 @@ function CenterMain() {
         studentAnswerIndex,
         duration: count,
       };
-      console.log(newObj);
+      //console.log(newObj);
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -195,7 +195,7 @@ function CenterMain() {
         studentAnswerIndex,
         duration: count,
       };
-      console.log(newObj);
+      //console.log(newObj);
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -208,7 +208,7 @@ function CenterMain() {
         studentAnswerIndex,
         duration: count,
       };
-      console.log(newObj);
+      //console.log(newObj);
       let arr = [...questionStatus];
       arr.splice(selectedQuestionIndex, 1, newObj);
       setQuestionStatus(arr);
@@ -231,7 +231,7 @@ function CenterMain() {
   // Function showing prev value(If any) on question render
 
   const showPreviousValue = () => {
-    console.log("currentQueIndex", selectedQuestionIndex);
+    //console.log("currentQueIndex", selectedQuestionIndex);
     if (questionStatus?.length > 0) {
       if ("studentAnswer" in questionStatus[selectedQuestionIndex]) {
         if (questionStatus[selectedQuestionIndex].type === 0) {
@@ -258,7 +258,7 @@ function CenterMain() {
   useEffect(() => {
     const settingStage2 = () => {
       if (questionStatus?.length > 0) {
-        console.log("prevQueIndex", prevQuestionIndex.current);
+        //console.log("prevQueIndex", prevQuestionIndex.current);
         const preQuestionIndex = prevQuestionIndex.current;
         const obj = questionStatus[preQuestionIndex];
         if (obj?.stage === 0) {
@@ -267,7 +267,7 @@ function CenterMain() {
             stage: 2,
             duration: null,
           };
-          console.log(newObj);
+          //console.log(newObj);
           let arr = [...questionStatus];
           arr.splice(preQuestionIndex, 1, newObj);
           setQuestionStatus(arr);
@@ -277,8 +277,8 @@ function CenterMain() {
     settingStage2();
   }, [selectedQuestionIndex]);
 
-  // console.log("inputVal-->", inputVal);
-  // console.log("selectedAnswer", selectedAnswer);
+  // //console.log("inputVal-->", inputVal);
+  // //console.log("selectedAnswer", selectedAnswer);
   // function for get index
   const handleQuestionClick = (index) => {
     setSelectedQuestionIndex(index);
@@ -296,7 +296,7 @@ function CenterMain() {
   const intervalRef = useRef();
 
   useEffect(() => {
-    console.log("Component rendered");
+    //console.log("Component rendered");
     intervalRef.current = setInterval(() => {
       setCount((prevCount) => prevCount + 1);
     }, 1000);

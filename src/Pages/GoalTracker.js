@@ -53,7 +53,7 @@ export default function GoalTracker() {
   const options = [{ name: "JKD", value: "jkd" }];
   const [mockIndex, setMockIndex] = useState(0);
   const [defVal, setDefVal] = useState("fewf");
-  console.log(userData);
+  //console.log(userData);
 
   useEffect(() => {
     if (mockList?.length) {
@@ -118,7 +118,7 @@ export default function GoalTracker() {
     setLoading(true);
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const res = await getGoalTrackerData(attemptId, uid);
-    console.log(res);
+    //console.log(res);
     if (res?.status == 200) {
       setMockList(res.data.mockWise);
       setYourData(res.data.yourData);
@@ -130,7 +130,7 @@ export default function GoalTracker() {
       setMockData(res.data.mockWise[0]);
       setLoading(false);
     } else {
-      //console.log("error", res);
+      ////console.log("error", res);
       setIsErr(true);
       setErrorMsg("Error While Fetching Data! Please Reload.");
       setLoading(false);

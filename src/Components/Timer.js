@@ -30,33 +30,33 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
     setSeconds(countDownTimeSec);
     setMinutes(countDownTimeMin);
   }, []);
-  // console.log(studentAnswersData);
+  // //console.log(studentAnswersData);
   // memoize submitSectionFunc using useCallback hook
 
   const submitSectionFunc = async (subject) => {
-    console.log("working");
-    console.log(studentAnswersData);
+    //console.log("working");
+    //console.log(studentAnswersData);
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     try {
       const response = await submitSection(attemptID, studentAnswersData, uid, type);
-      console.log(response);
+      //console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);
         window.localStorage.removeItem(COUNTER_KEY_SEC);
         window.localStorage.removeItem("questionStatus");
-        console.log("Your mock is submitted!!!");
+        //console.log("Your mock is submitted!!!");
         navigate(`/analysis/${mockId}/${attemptID}/overall`);
         return true;
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setErr(true);
       return false;
     }
   };
   // [currentSection]
 
-  // console.log(err)
+  // //console.log(err)
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
@@ -69,7 +69,7 @@ const Timer = ({ initMinute, initSeconds, studentAnswersData, mockId, type }) =>
           clearInterval(myInterval);
           setIsLoaded(true);
           submitSectionFunc(currentSection).then((res) => {
-            console.log(res);
+            //console.log(res);
             if (res) {
               setMinutes(initMinute);
               setSeconds(initSeconds);

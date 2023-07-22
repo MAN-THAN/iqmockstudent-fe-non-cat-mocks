@@ -19,11 +19,11 @@ export const getAttemptId = async (name, email, uid, mockId, setId) => {
       },
       data: JSON.stringify(jsonData),
     });
-    // console.log(res);
+    // //console.log(res);
     return res;
   } catch (err) {
     console.error(err);
-    console.log("Error --> attempt id can not be created!!!");
+    //console.log("Error --> attempt id can not be created!!!");
     return err;
   }
 };
@@ -69,7 +69,7 @@ export const submitSection = async (attempt_id, payload, uid, type) => {
     });
     return res;
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     return err;
   }
 };
@@ -102,7 +102,7 @@ export const getVerified = async (email, otp, mockId) => {
     });
     return res;
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     return err;
   }
 };
@@ -128,7 +128,7 @@ export const discardMock = async (attemptId, uid) => {
     
     return res;
   } catch (err) {
-    //console.log(err);
+    ////console.log(err);
     return err;
   }
 };
@@ -137,7 +137,7 @@ export const discardMock = async (attemptId, uid) => {
 
 export const saveStudentProgress = async (attempt_id,type,payload,uid,timer)=>{
   const token = localStorage.getItem("auth_token");
-  console.log("type:",type);
+  //console.log("type:",type);
   let data = {};
   data[type] = payload;
   try {
@@ -154,7 +154,7 @@ export const saveStudentProgress = async (attempt_id,type,payload,uid,timer)=>{
     });
     return res;
   } catch (err) {
-    //console.log(err);
+    ////console.log(err);
     return err;
   }
 }

@@ -15,8 +15,8 @@ function Protected(props) {
     location.state = { attemptId: attemptId, mockId: mockId };
   }
 
- // console.log("Location", location);
- console.log("Location" , location)
+ // //console.log("Location", location);
+ //console.log("Location" , location)
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
 
   const handleBeforeUnload = (event) => {
@@ -54,7 +54,7 @@ function Protected(props) {
         //let payload = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem("questionStatus"))));
         let payload = JSON.parse(localStorage.getItem("questionStatus"));
         let timer = {minutes:Number(localStorage.getItem("my-counter-min")),seconds:Number(localStorage.getItem("my-counter-sec"))}
-        console.log(attempt_id,"attempt_id");
+        //console.log(attempt_id,"attempt_id");
         await saveStudentProgress(attempt_id,type,payload,uid,timer);
         localStorage.clear();
       }

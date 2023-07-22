@@ -150,7 +150,7 @@ function AnalysisAcross() {
     sectionName,
   } = useAuth();
 
-  console.log("SectionNAme", sectionName);
+  //console.log("SectionNAme", sectionName);
 
   const scrollableDivRef = useRef(null);
 
@@ -173,7 +173,7 @@ function AnalysisAcross() {
     const fetchData = async (uid, attemptId) => {
       setLoading(true);
       const response = await fetchOverallAcross(uid, attemptId, type);
-      console.log("Analysis across Data", response);
+      //console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
         const topicWiseData = response.data?.[topicsType] || ["topicWise"];
@@ -227,9 +227,9 @@ function AnalysisAcross() {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log("Mock List", mocksList);
-  console.log("show", show);
-  console.log("graph", graph);
+  //console.log("Mock List", mocksList);
+  //console.log("show", show);
+  //console.log("graph", graph);
 
   return (
     <>
@@ -573,7 +573,7 @@ function AnalysisAcross() {
                       >
                         {show &&
                           show.map((item, ind) => {
-                            console.log(show);
+                            //console.log(show);
                             return (
                               <Box key={ind}>
                                 <Typography

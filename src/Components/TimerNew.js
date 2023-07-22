@@ -54,10 +54,10 @@ const NewTimer = ({
   const attemptID = localStorage.getItem("attemptId");
   useEffect(() => {
     //alert('2!!!!!');
-    // console.log('init::',initMinute,initSeconds);
+    // //console.log('init::',initMinute,initSeconds);
         //  setIsLoaded(true);
           // submitSectionFunc(currentSection).then((res) => {
-          //   //console.log(res);
+          //   ////console.log(res);
           //   if (res) {
           //     setCounterTimeStamp(initMinute*60+initSeconds);
           //     if (currentSection === "varc") {
@@ -80,8 +80,8 @@ const NewTimer = ({
   const submitSectionFunc = async (subject) => {
     setIsLoaded(true);
     // alert('submitSection');
-    //console.log("working");
-    //console.log(studentAnswersData);
+    ////console.log("working");
+    ////console.log(studentAnswersData);
     try {
       const uid = JSON.parse(localStorage.getItem("userData"))?._id;
       const response = await submitSection(
@@ -90,19 +90,19 @@ const NewTimer = ({
         uid,
         subject
       );
-      //console.log(response);
+      ////console.log(response);
       if (response?.status == 200) {
         window.localStorage.removeItem(COUNTER_KEY_MIN);
         window.localStorage.removeItem(COUNTER_KEY_SEC);
         window.localStorage.removeItem("questionStatus");
         window.localStorage.removeItem("lastAttemptedQuestionIndex");
         setState(2);
-        // console.log("Your mock is submitted!!!");
+        // //console.log("Your mock is submitted!!!");
         // navigate(`/analysis/${mockId}/${attemptID}/overall`);
         // return true;
       }
     } catch (err) {
-      //console.log(err);
+      ////console.log(err);
       setState(3);
       //setErr(true);
       return false;

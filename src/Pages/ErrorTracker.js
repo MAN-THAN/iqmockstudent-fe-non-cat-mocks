@@ -88,7 +88,7 @@ function ErrorTracker() {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await fetchErrorTracker(attemptId, uid);
-        console.log(res);
+        //console.log(res);
         setLoading(true);
         if (res?.status === 200) {
           setData(res.data);
@@ -103,11 +103,11 @@ function ErrorTracker() {
           );
           setLoading(false);
         } else {
-          console.log("Error in fetching data: ", res);
+          //console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }
@@ -150,7 +150,7 @@ function ErrorTracker() {
       newArr.push({ name: item, value: item });
     });
 
-    console.log(newArr);
+    //console.log(newArr);
     setTopicList(newArr);
   }, [section, data]);
 
@@ -158,10 +158,10 @@ function ErrorTracker() {
 
   function filterData() {
     // alert("Enter filterdata");
-    // console.log("array filter", arr);
+    // //console.log("array filter", arr);
 
     if (!arr) {
-      console.log("arr is undefined!");
+      //console.log("arr is undefined!");
       return;
     }
     let filteredData = arr;
@@ -223,7 +223,7 @@ function ErrorTracker() {
   };
 
   
-  // console.log(graphData && graphData[0], "graphData");
+  // //console.log(graphData && graphData[0], "graphData");
 
   useEffect(filterData, [arr, correction, section, topic, priorty]);
   const showToastMessage = (msg) => {

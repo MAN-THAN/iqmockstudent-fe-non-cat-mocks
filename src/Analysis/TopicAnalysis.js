@@ -20,7 +20,7 @@ function TopicAnalysis() {
       setTopperData(topperData?.topperAnalysis[0].data[3].topicWiseAnalysis);
     }
   }, [topicWiseAnalysis, topperData]);
-  // console.log(topperData);
+  // //console.log(topperData);
   const headings = [
     "Number",
     "Topic",

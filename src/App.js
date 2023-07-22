@@ -43,11 +43,11 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
   useEffect(() => {
     function handleResize() {
       const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
-      console.log("Is mobile or tablet:", isMobileOrTablet, previousLocation);
+      //console.log("Is mobile or tablet:", isMobileOrTablet, previousLocation);
 
       if (isMobileOrTablet) {
         if (!previousLocation) {
-          console.log("tyagi");
+          //console.log("tyagi");
           setPreviousLocation(location.pathname);
           navigate("/mobileErrorPage");
         }
@@ -56,7 +56,7 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
         // }
       }
       if (!isMobileOrTablet && previousLocation) {
-        console.log("mantha");
+        //console.log("mantha");
         navigate(previousLocation);
         setPreviousLocation(null);
       }

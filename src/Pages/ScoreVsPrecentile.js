@@ -39,7 +39,7 @@ const tableRow = [
 
 const tablePrecentile = tableRow.map((value) => ({ percentile: value }));
 
-console.log(tablePrecentile);
+//console.log(tablePrecentile);
 
 const LineGraphData = [
   { score: 10, percentile: 20 },
@@ -108,7 +108,7 @@ function ScoreVsPrecentile() {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await fetchScoreVsPrecentile(mockId, attemptId, uid);
-        console.log(res);
+        //console.log(res);
 
         if (res?.status === 200) {
           const updatedData = { ...res.data, tableHeading };
@@ -119,11 +119,11 @@ function ScoreVsPrecentile() {
           setSection_Name(res.data.sectionName);
           setLoading(false);
         } else {
-          console.log("Error in fetching data: ", res);
+          //console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         let msg = err?.response?.data?.msg;
         setLoading(false);
         setIsErr(true);
@@ -136,7 +136,7 @@ function ScoreVsPrecentile() {
       }
     };
     getData();
-    console.log(isWindow);
+    //console.log(isWindow);
   }, []);
 
   // set the title list from api to set titleList state
@@ -148,7 +148,7 @@ function ScoreVsPrecentile() {
           value: e.mockId,
         }));
 
-        console.log("updated list", updatedMockList);
+        //console.log("updated list", updatedMockList);
         setTitleList(updatedMockList);
       }
     };
@@ -175,13 +175,13 @@ function ScoreVsPrecentile() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-    console.log(value);
+    //console.log(value);
     const getDataById = async () => {
       // setLoading(true);
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await fetchScoreVsPrecentileByMockId(value, attemptId, uid);
-        console.log(res);
+        //console.log(res);
 
         if (res?.status === 200) {
           const updatedData = { ...res.data, tableHeading };
@@ -190,11 +190,11 @@ function ScoreVsPrecentile() {
           setStudentGraph(res.data.studentGraph?.[res.data.sectionName]);
           // setLoading(false);
         } else {
-          console.log("Error in fetching data: ", res);
+          //console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }

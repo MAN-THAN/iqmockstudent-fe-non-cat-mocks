@@ -10,7 +10,7 @@ const UserAuth = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const { state } = useLocation();
-  console.log(state);
+  //console.log(state);
   useEffect(() => {
     // userAuthCheck();
     createAttemptId();
@@ -19,25 +19,25 @@ const UserAuth = () => {
   // Function for checking authorising user
   // const userAuthCheck = () => {
   //   const attemptID = JSON.parse(localStorage.getItem("userData"))?.attemptId;
-  //   console.log(attemptID);
+  //   //console.log(attemptID);
   //   if (attemptID) {
-  //     console.log("userAttemptID", attemptID);
-  //     console.log("go to m0ck page");
+  //     //console.log("userAttemptID", attemptID);
+  //     //console.log("go to m0ck page");
   //     // navigate(`/main/${state.mockId}/varc`);
   //     navigate(`/instructions`, {
   //       state: {
   //       mockId : state.mockId
   //     } });
   //   } else {
-  //     console.log("you dont have an attempt id");
+  //     //console.log("you dont have an attempt id");
   //     createAttemptId();
   //   }
   // Function for creating attempt id
   const createAttemptId = async () => {
-    //console.log("creating attemptid");
+    ////console.log("creating attemptid");
     try {
       const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
-      console.log(response);
+      //console.log(response);
       if (response?.status === 200) {
         localStorage.setItem("attemptId", response.data.attemptId);
         localStorage.setItem("currMockId", state.mockId);
@@ -54,7 +54,7 @@ const UserAuth = () => {
         return;
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       showToastMessage();
     }
   };

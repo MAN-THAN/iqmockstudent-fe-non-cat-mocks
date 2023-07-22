@@ -32,7 +32,7 @@ export default function LeaderTable({
   studentData,
   studentRank,
 }) {
-  console.log(data);
+  //console.log(data);
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: '100vw' }} aria-label="simple table">

@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import React from "react";
 
 export const ApexChart = ({ series, style, title, show }) => {
-  console.log("series",series)
+  //console.log("series",series)
   const circleGraph = {
     chart: {
       type: "radialBar",
