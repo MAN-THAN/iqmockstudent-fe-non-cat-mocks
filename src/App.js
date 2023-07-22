@@ -34,6 +34,7 @@ function App() {
   const location = useLocation();
   const [previousLocation, setPreviousLocation] = useState(null);
   const [isUserAuth,setIsUserAuth]= useState(false);
+const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
   //  create query client
   const queryClient = new QueryClient();
   const isProduction =
@@ -74,8 +75,8 @@ function App() {
   }, [navigate, previousLocation, location]);
 
   useEffect(()=>{
-    const access_token = localStorage.getItem("auth_token");
-    if(access_token=="undefined"||access_token=="null"||access_token==null||access_token==undefined||access_token=="")
+    
+    if(authToken=="undefined"||authToken=="null"||authToken==null||authToken==undefined||authToken=="")
     {
         setIsUserAuth(false);
     }
@@ -83,7 +84,7 @@ function App() {
       setIsUserAuth(true);
     }
 
-  },[]);
+  },[authToken]);
 
   // Rest of the component code...
 
