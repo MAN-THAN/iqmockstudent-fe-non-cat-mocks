@@ -869,12 +869,19 @@ function AnalysisMain() {
                     Time spent on questions:
                   </Box>
                   <span>
+                  <Tooltip
+                      title={
+                        "This will show total time spent by you on correct questions, incorrect questions and skipped questions"
+                      }
+                      arrow
+                    >
                     <img
                       src="/Group17.svg"
                       className="ms-2"
                       width={20}
                       alt=""
                     />
+                    </Tooltip>
                   </span>
                 </div>
               </div>
