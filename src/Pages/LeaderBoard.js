@@ -23,28 +23,34 @@ function LeaderBoard() {
   const [errorMsg,setErrorMsg] = useState('');
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { _id, name, photoURL } = userData;
-
+  const [currentIndex,setCurrentIndex]=useState(0);
+  const [filterAttempt,setFilterAttempt]=useState(attemptId);
   function extractMockData(data) {
     const arr = [];
     if (data.length > 0) {
       data[0].mocks.forEach((item) => {
         if (!arr.includes(item)) {
-          arr.push({ name: item.title, value: item.mockId });
+          arr.push({ name: item.title, value: item.mockId ,attempt:item.attemptList[0]});
         }
       });
     }
     return arr;
   }
-
+//sort mockArray using attemptID 
+//sendAttemptId on change of mockList
   useEffect(() => {
     async function fetchLeaderBoard(attemptId) {
       try {
         // setLoading(true);
+
         const res = await getLeaderBoardData(filter, attemptId, _id);
         //console.log(res);
         if (res?.status == 200) {
           const data = res;
           const mockData = extractMockData(data.data);
+          console.log(mockData,"##");
+          let currentIndex = mockData.findIndex(it=>it.value==mockId);
+          setCurrentIndex(currentIndex);
           setMock(mockData);
           setData(data.data);
           setLoading(false);
@@ -55,7 +61,8 @@ function LeaderBoard() {
         showToastMessage(err?.response?.data?.msg);
       }
     }
-      fetchLeaderBoard(attemptId);
+      fetchLeaderBoard(filterAttempt);
+     //fetchLeaderBoard();
   }, [filter]);
 
   //console.log(filter, "fiilll");
@@ -140,7 +147,7 @@ function LeaderBoard() {
                 {name}
               </Typography>
             </Box>
-            {mock.length > 0 && <MultipleSelect options={mock} setType={setFilter} />}
+            {mock.length > 0 && <MultipleSelect options={mock} currentIndex={currentIndex} setType={setFilter} setFilterAttempt={setFilterAttempt}/>}
           </Box>
 
           {/* Table start */}
