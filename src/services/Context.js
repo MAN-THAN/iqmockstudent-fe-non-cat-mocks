@@ -24,9 +24,9 @@ export const ContextProvider = ({ children }) => {
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
       const response = await fetchAnalysisData(attemptId, uid);
-      // const response2 = await fetchMockStatus(mockId, attemptId);
+      const response2 = await fetchMockStatus(mockId, attemptId, uid);
       console.log(response);
-      // console.log(response2);
+      console.log(response2);
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
         setSectionName(response.data.sectionName)
@@ -36,14 +36,14 @@ export const ContextProvider = ({ children }) => {
         showToastMessage();
         setErr(true);
       }
-      // if (response2?.status == 200) {
-      //   setTopperData(response2.data.mockData);
-      //   setLoading(false);
-      // } else {
-      //   console.log("--> Error in mock status fetching");
-      //   showToastMessage();
-      //   setErr(true);
-      // }
+      if (response2?.status == 200) {
+        setTopperData(response2.data.mockData);
+        setLoading(false);
+      } else {
+        console.log("--> Error in mock status fetching");
+        showToastMessage();
+        setErr(true);
+      }
     } catch (err) {
       console.log(err);
       showToastMessage(err?.response?.data?.message);
@@ -76,6 +76,7 @@ export const ContextProvider = ({ children }) => {
   const topicWiseAnalysis = analysisData[3];
   const difficulty = analysisData[4];
   const subtopicWiseAnalysis = analysisData[6];
+  console.log(topperData)
 
   return (
     <>

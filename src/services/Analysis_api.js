@@ -229,7 +229,7 @@ export const fetchMockStatus = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/mockstatus/${mockId}/${attemptId}`,
+      url: `/api/student/v1/view/mockstatus/sectional/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

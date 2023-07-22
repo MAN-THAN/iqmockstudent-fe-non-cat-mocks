@@ -20,6 +20,7 @@ function SectionAnalysis() {
   useEffect(() => {
     if (sectionWiseAnalysis) {
       setData(sectionWiseAnalysis.sectionWiseAnalysis[sectionName]);
+      setTopper_Data(topperData?.allMocksCalculation[0][sectionName]);
     }
   }, [sectionWiseAnalysis, topperData]);
   console.log(data);

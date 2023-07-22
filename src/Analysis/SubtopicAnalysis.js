@@ -25,6 +25,7 @@ function SubtopicAnalysis() {
 
   useEffect(() => {
     setData(subtopicWiseAnalysis.subtopicWiseAnalysis[sectionName]);
+    setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis[sectionName]);
 
   }, [subtopicWiseAnalysis, topperData]);
   // console.log("section", data);
