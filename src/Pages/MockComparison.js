@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import { getPrevMockData } from "../services/Analysis_api";
-
+import ErrorPage from "./ErrorPage";
 import { PuffLoader } from "react-spinners";
 
 const ITEM_HEIGHT = 28;
@@ -93,7 +93,8 @@ function MockComparison() {
   const [prevMock, setPrevMock] = useState();
   const [topper, setTopper] = useState();
   const [prevMockList, setPrevMockList] = useState();
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const [compMock, setCompMock] = useState();
 
   const getData = async () => {
@@ -123,10 +124,16 @@ function MockComparison() {
   console.log(result, topper, prevMock);
   // console.log(compMock);
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return (ref.current.style.display = "none");
+    // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+    //   position: toast.POSITION.TOP_CENTER,
+    // });
+    // return (ref.current.style.display = "none");
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
   };
 
   return (
@@ -135,7 +142,7 @@ function MockComparison() {
       <Box component="main">
         <MenuDrawer />
 
-        <Box
+       {isErr==true?<ErrorPage errorMessage={errorMsg}/>: <Box
           sx={{
             position: "absolute",
             left: "65px",
@@ -270,7 +277,7 @@ function MockComparison() {
               </Box>
             </Box>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );

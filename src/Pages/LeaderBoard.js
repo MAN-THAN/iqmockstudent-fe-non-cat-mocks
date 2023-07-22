@@ -8,7 +8,7 @@ import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
 import MultipleSelect from "../Common-comp/SelectField";
 import { ToastContainer, toast } from "react-toastify";
-
+import ErrorPage from "./ErrorPage";
 import { useAuth } from "../services/Context";
 
 function LeaderBoard() {
@@ -19,7 +19,8 @@ function LeaderBoard() {
   const [mock, setMock] = useState([]);
   const [filter, setFilter] = useState(mockId); //Select particaular mock value
   const ref = useRef(null);
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { _id, name, photoURL } = userData;
 
@@ -59,10 +60,16 @@ function LeaderBoard() {
 
   console.log(filter, "fiilll");
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return (ref.current.style.display = "none");
+    // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+    //   position: toast.POSITION.TOP_CENTER,
+    // });
+    // return (ref.current.style.display = "none");
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
   };
 
   return (
@@ -71,7 +78,7 @@ function LeaderBoard() {
       <div style={{ width: "100vw" }}>
         <MenuDrawer open={menuBarOpen} />
 
-        <Box
+        {isErr==true?<ErrorPage errorMessage={errorMsg}/>:<Box
           sx={{
             height: "auto",
             display: "flex",
@@ -141,7 +148,7 @@ function LeaderBoard() {
             <LeaderTable data={Data} isLoading={loading} />
           </div>
           {/* Table end */}
-        </Box>
+        </Box>} 
       </div>
     </>
   );

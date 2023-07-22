@@ -24,7 +24,7 @@ import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 import { BsChevronDoubleRight } from "react-icons/bs";
 import OutlinedInput from "@mui/material/OutlinedInput";
-
+import ErrorPage from "./ErrorPage";
 import Select from "@mui/material/Select";
 import {
   IncorrectDetailing,
@@ -58,7 +58,9 @@ export default function ViewSolution() {
   const [sectionName, setSectionName] = useState();
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
+  
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
@@ -86,14 +88,21 @@ export default function ViewSolution() {
   };
 
   const showToastMessage = (msg) => {
-    toast.error(
-      msg == undefined
-        ? "Some error occurred! Please reload the page."
-        : msg.toUpperCase(),
-      {
-        position: toast.POSITION.TOP_CENTER,
-      }
-    );
+    // toast.error(
+    //   msg == undefined
+    //     ? "Some error occurred! Please reload the page."
+    //     : msg.toUpperCase(),
+    //   {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   }
+    // );
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
+
     return (ref.current.style.display = "none");
   };
   console.log("data", data);
@@ -349,6 +358,7 @@ export default function ViewSolution() {
       <ToastContainer />
       <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
         <MenuDrawer />
+        {isErr==true?<ErrorPage errorMessage={errorMsg}/>:
         <Box component="main" sx={{ ml: "65px", height: "100%" }} ref={ref}>
           <Backdrop
             sx={{
@@ -1098,7 +1108,7 @@ export default function ViewSolution() {
               {/* Main center end */}
             </>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );

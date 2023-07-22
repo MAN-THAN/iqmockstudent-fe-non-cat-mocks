@@ -21,7 +21,7 @@ import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
 import { motion } from "framer-motion";
 import { Rotate90DegreesCcw } from "@mui/icons-material";
-
+import ErrorPage from "../Pages/ErrorPage";
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -140,7 +140,7 @@ function AnalysisMain() {
     });
     return;
   };
-  console.log(isErr);
+  
   useEffect(() => {
     if (isErr) {
       // showToastMessage();
@@ -186,7 +186,8 @@ function AnalysisMain() {
     <>
       <ToastContainer />
       {isErr ? (
-        <div>Error occured, Try to reload the page</div>
+        
+        <ErrorPage errorMessage="Something Went Wrong! Please Reload!"/>
       ) : false ? (
         <div
           style={{

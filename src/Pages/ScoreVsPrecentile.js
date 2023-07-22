@@ -17,7 +17,7 @@ import ApexLineChart from "../Common-comp/ApexLineChart";
 import { fetchScoreVsPrecentileByMockId } from "../services/Analysis_api";
 import { useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
-
+import ErrorPage from "./ErrorPage";
 const Sections = [
   { name: "Overall", value: "overall" },
   { name: "VARC", value: "varc" },
@@ -92,17 +92,15 @@ function ScoreVsPrecentile() {
   const [studentGraph, setStudentGraph] = useState([]);
   const [MockName, setMockName] = useState([]);
   const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const [section_Name, setSection_Name] = useState();
   const [tableHeading, setTableHeading] = useState([
     { name: "% ile" },
     { name: "Score" },
    
   ]);
-  console.log(graphData);
-  console.log(mock);
-  console.log(titleList);
-  console.log(sectionName)
-
+  
   //  calling api
   useEffect(() => {
     const getData = async () => {
@@ -126,8 +124,15 @@ function ScoreVsPrecentile() {
         }
       } catch (err) {
         console.log(err);
+        let msg = err?.response?.data?.msg;
         setLoading(false);
-        showToastMessage(err?.response?.data?.msg);
+        setIsErr(true);
+       if(msg==undefined){
+        setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
+        //showToastMessage(err?.response?.data?.msg);
       }
     };
     getData();
@@ -197,15 +202,11 @@ function ScoreVsPrecentile() {
     getDataById();
   };
 
-  console.log("graphData", graphData);
-  console.log(section);
-  // console.log("titleList", titleList);
-  console.log("svsprec", data);
-  // console.log("TableData", tableData);
-
+ 
   return (
     <>
       <ToastContainer />
+      {isErr==true?<ErrorPage errorMessage={errorMsg}/>:
       <Box component="main" sx={{ height: "100vh" }}>
         <MenuDrawer />
 
@@ -344,7 +345,7 @@ function ScoreVsPrecentile() {
             </>
           )}
         </Box>
-      </Box>
+      </Box>}
     </>
   );
 }

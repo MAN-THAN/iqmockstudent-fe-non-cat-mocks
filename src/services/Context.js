@@ -33,7 +33,7 @@ export const ContextProvider = ({ children }) => {
         localStorage.setItem("sectionType", response.data.sectionName);
       } else {
         console.log("--> Error in analysis data fetching");
-        showToastMessage();
+        //showToastMessage();
         setErr(true);
       }
       if (response2?.status == 200) {
@@ -41,12 +41,12 @@ export const ContextProvider = ({ children }) => {
         setLoading(false);
       } else {
         console.log("--> Error in mock status fetching");
-        showToastMessage();
+        //showToastMessage();
         setErr(true);
       }
     } catch (err) {
       console.log(err);
-      showToastMessage(err?.response?.data?.message);
+     // showToastMessage(err?.response?.data?.message);
       setErr(true);
     }
   };

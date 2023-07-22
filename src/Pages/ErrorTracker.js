@@ -23,6 +23,7 @@ import {
   SkippedDetailing,
 } from "../services/DataFiles";
 import { ToastContainer, toast } from "react-toastify";
+import ErrorPage from "./ErrorPage";
 import { decode } from "base-64";
 
 const disableStyle = {
@@ -69,7 +70,8 @@ function ErrorTracker() {
   const [arr, setArr] = useState([]); //main Data
 
   const [show, setShow] = useState([]); // changeable state come from filter`
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const [topicList, setTopicList] = useState([
     { name: "All Topics", value: "all topics" },
   ]);
@@ -220,21 +222,20 @@ function ErrorTracker() {
     }
   };
 
-  console.log("arr", arr);
-  console.log("data  mmmmm", data);
-  console.log("show", show);
-  console.log("Sections", section);
+  
   // console.log(graphData && graphData[0], "graphData");
 
   useEffect(filterData, [arr, correction, section, topic, priorty]);
   const showToastMessage = (msg) => {
-    toast.error(
-      msg == undefined ? "Some error occurred! Please reload the page." : msg,
-      {
-        position: toast.POSITION.TOP_RIGHT,
-      }
-    );
-    return (ref.current.style.display = "none");
+    // toast.error(
+    //   msg == undefined ? "Some error occurred! Please reload the page." : msg,
+    //   {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   }
+    // );
+    setIsErr(true);
+    setErrorMsg(msg);
+    //return (ref.current.style.display = "none");
   };
 
   return (
@@ -243,7 +244,7 @@ function ErrorTracker() {
       <Box component="main" sx={{ height: "100vh" }}>
         <MenuDrawer />
 
-        <Box
+       {isErr==true?<ErrorPage errorMessage={errorMsg}/>: <Box
           sx={{
             p: 2,
             position: "absolute",
@@ -581,7 +582,7 @@ function ErrorTracker() {
               </Box>
             </>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );

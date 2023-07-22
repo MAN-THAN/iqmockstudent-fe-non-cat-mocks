@@ -102,9 +102,9 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
               path="/:email/:otp/:setId/:mockId"
               element={<MainUserAuth />}
             />
-            <Route path="/instructions" element={<Instructions />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/user_authentication" element={<UserAuth />} />
+            <Route path="/instructions" element={isUserAuth==true?<Instructions />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
+            <Route path="/terms" element={isUserAuth==true?<Terms />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
+            <Route path="/user_authentication" element={isUserAuth==true?<UserAuth />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
             <Route path="/mobileErrorPage" element={<MobileTemp />} />
 
             <Route
@@ -125,7 +125,7 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
               path="/viewsolutions/:mockId/:attemptId"
               element={isUserAuth==true?<ViewSolution />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
-            <Route path="/main" element={<Protected Comp={Main} />} />
+            <Route path="/main" element={isUserAuth==true?<Protected Comp={Main} />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
 
             <Route
               path="/analysisacross/:mockId/:attemptId"
