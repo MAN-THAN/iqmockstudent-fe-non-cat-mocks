@@ -562,7 +562,7 @@ function ErrorTracker() {
                                         `/viewsolutions/${mockId}/${attemptId}`,
                                         {
                                           state: {
-                                            question_id: item.question_id,
+                                            _id: item.question_id,
                                           },
                                         }
                                       )
