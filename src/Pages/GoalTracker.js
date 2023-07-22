@@ -30,6 +30,7 @@ import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend }
 import { BarChart, CartesianGrid, XAxis, YAxis, Bar } from "recharts";
 import { ResponsiveContainer } from "recharts";
 import { Tooltip } from "recharts";
+import ErrorPage from "./ErrorPage";
 
 export default function GoalTracker() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -59,7 +60,7 @@ export default function GoalTracker() {
       setMockData(mockList[mockIndex]);
     }
   }, [mockIndex]);
-  console.log(mockData);
+  useEffect(()=>{},[isErr]);
 
   useEffect(() => {
     if (userData) {
@@ -111,7 +112,8 @@ export default function GoalTracker() {
   const [weakTopics, setWeakTopics] = useState();
   const [bschool, setBschool] = useState([]);
   const [missedBschool, setMissedBschool] = useState([]);
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const getData = async () => {
     setLoading(true);
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -128,19 +130,13 @@ export default function GoalTracker() {
       setMockData(res.data.mockWise[0]);
       setLoading(false);
     } else {
-      console.log("error", res);
+      //console.log("error", res);
+      setIsErr(true);
+      setErrorMsg("Error While Fetching Data! Please Reload.");
       setLoading(false);
     }
   };
-  // console.log(goalData);
-  // console.log(yourData);
-  // console.log(mockList);
-  console.log(mockList);
-  console.log(defVal);
-  // console.log(weakTopics);
-  console.log(mockIndex);
-  console.log(mockData);
-
+  
   const data = [
     {
       subject: "Math",
@@ -201,6 +197,7 @@ export default function GoalTracker() {
         <MenuDrawer />
       </Box>
 
+   {isErr==true?<ErrorPage errorMessage={errorMsg}/>:
       <Box
         sx={{
           ml: "65px",
@@ -675,56 +672,8 @@ export default function GoalTracker() {
         )}
 
         {/* main Section end */}
-      </Box>
+      </Box>}
     </Box>
   );
 }
 
-// const DetailCards = ({ heading, cardContent,logoPath }) => {
-//   const [isEnlarged, setIsEnlarged] = useState(false);
-//   return (
-//     <Card
-//       className={isEnlarged ? "enlarged" : ""}
-//       sx={{
-//         overflow: "scroll",
-//         width: "100%",
-//         height: "100%",
-//         borderRadius: "25px",
-//         boxShadow: "none",
-//       }}
-//       // onClick={() => setIsEnlarged(!isEnlarged)}
-//     >
-//       <CardContent
-//         sx={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           width: "100%",
-//           alignItems: "center",
-//           fontFamily: "var(--font-inter)",
-//         }}
-//       >
-//         <div className="d-flex">
-//           <img
-//             src={logoPath}
-//             className="img-fluid me-2"
-//             alt=""
-//             width={22}
-//           />
-//           <Typography variant="h4" color="black" fontSize={18}>
-//             {heading}
-//           </Typography>
-//         </div>
-
-//         <div>
-//           <img
-//             src="/CardsIcons/zoom.png"
-//             className="img-fluid cursor-pointer"
-//             width={22}
-//           />
-//         </div>
-//       </CardContent>
-
-//       <CardContent sx={{ pt: 0 }}>{cardContent}</CardContent>
-//     </Card>
-//   );
-// };
