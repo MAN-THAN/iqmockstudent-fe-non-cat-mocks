@@ -115,7 +115,7 @@ function CenterMain() {
         setLoading(true);
       }
     };
-    const storedQuestionStatus = JSON.parse(localStorage.getItem("questionStatus"));
+    const storedQuestionStatus = localStorage.getItem("questionStatus")?JSON.parse(localStorage.getItem("questionStatus")):null;
     console.log("storedQuestionStatus", storedQuestionStatus);
     if (storedQuestionStatus === null) {
       fetchDataFromApi();
