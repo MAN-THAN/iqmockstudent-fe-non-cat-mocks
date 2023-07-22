@@ -453,7 +453,7 @@ function AnalysisMain() {
                               color: "#4149FF",
                             }}
                           >
-                            {percentile}
+                            {basicData?.[sectionName]?.percentile}
                           </Typography>
                         </div>
                       </Stack>
