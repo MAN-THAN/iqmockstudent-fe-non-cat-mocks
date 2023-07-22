@@ -231,7 +231,7 @@ function ErrorTracker() {
     toast.error(
       msg == undefined ? "Some error occurred! Please reload the page." : msg,
       {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.TOP_RIGHT,
       }
     );
     return (ref.current.style.display = "none");
@@ -561,7 +561,7 @@ function ErrorTracker() {
                                         `/viewsolutions/${mockId}/${attemptId}`,
                                         {
                                           state: {
-                                            question_id: item.question_id,
+                                            _id: item.question_id,
                                           },
                                         }
                                       )

@@ -104,45 +104,31 @@ export default function ViewSolution() {
   // console.log(open);
   console.log("show", show[index], index);
 
-  // getting a specific question om mounting
+  // getting a specific question on mounting
 
   useEffect(() => {
     const func = async () => {
       if (state !== null) {
         console.log("flow2");
         const questionId = state._id;
+        console.log(questionId)
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
         const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
-          res.data?.varc.map((item, index) => {
-            if (item.question_id === questionId) {
+          const arr = res.data[res.data.sectionName];
+          arr?.map((item, index) => {
+            if (item._id === questionId) {
               console.log(item, index);
               setIndex(index);
-              setDefVal("varc");
-              setShow(res.data.varc);
+              // setDefVal("varc");
+              setShow(res.data[res.data.sectionName]);
+              setSectionName(res.data.sectionName);
               setLoading(false);
             }
           });
-          res.data?.lrdi.map((item, index) => {
-            if (item.question_id === questionId) {
-              console.log(item, index);
-              setIndex(index);
-              setDefVal("lrdi");
-              setShow(res.data.lrdi);
-              setLoading(false);
-            }
-          });
-          res.data?.quants.map((item, index) => {
-            if (item.question_id === questionId) {
-              console.log(item, index);
-              setIndex(index);
-              setDefVal("quants");
-              setShow(res.data.quants);
-              setLoading(false);
-            }
-          });
+
           // setShow(res.data[selected])
           // setTrackerVA(res.data.errorData?.varc);
           // setTrackerLR(res.data.errorData?.lrdi);
