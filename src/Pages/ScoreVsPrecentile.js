@@ -141,15 +141,25 @@ function ScoreVsPrecentile() {
 
   // set the title list from api to set titleList state
   useEffect(() => {
+
     const setTitle = () => {
       if (Object.keys(data).length > 0) {
+        
         const updatedMockList = data?.allMocklist?.map((e) => ({
           name: e.title,
           value: e.mockId,
+          attempt:e.attemptId
         }));
-
-        //console.log("updated list", updatedMockList);
-        setTitleList(updatedMockList);
+        let index  = updatedMockList.findIndex(it=>it.value==mockId);
+        let arr = [];
+      //sorting array
+        arr.push(updatedMockList[index]);
+        updatedMockList.map((it,ind)=>{
+          if(ind!==index){
+          arr.push(it);
+        }})
+        
+        setTitleList(arr);
       }
     };
     setTitle();
@@ -255,6 +265,7 @@ function ScoreVsPrecentile() {
                         onSelect={handleChange}
                         mockName={MockName}
                         options={titleList}
+                        currentIndex={currentIndex}
                       />
                     )}
                     {/* <MultipleSelect options={Sections} setType={setSections} /> */}
@@ -349,8 +360,9 @@ function ScoreVsPrecentile() {
     </>
   );
 }
-const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
+const SelectBox = ({ onSelect, mockName, options, getPrevMockData ,currentIndex}) => {
   const theme = useTheme();
+  let value = options[currentIndex]
   return (
     <div>
       <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
