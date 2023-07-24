@@ -94,7 +94,7 @@ function ScoreVsPrecentile() {
   const isWindow = JSON.parse(window.localStorage.getItem("__wodniw"));
   const [isErr,setIsErr]= useState(false);
   const [errorMsg,setErrorMsg] = useState('');
-  const [section_Name, setSection_Name] = useState();
+  const [section_Name, setSection_Name] = useState(localStorage.getItem('sectionType'));
   const [tableHeading, setTableHeading] = useState([
     { name: "% ile" },
     { name: "Score" },
@@ -155,7 +155,7 @@ function ScoreVsPrecentile() {
       //sorting array
         arr.push(updatedMockList[index]);
         updatedMockList.map((it,ind)=>{
-          if(ind!==index){
+          if(ind!==index && it.name.toLowerCase().includes(section_Name.toLowerCase())){
           arr.push(it);
         }})
         
@@ -190,7 +190,9 @@ function ScoreVsPrecentile() {
       // setLoading(true);
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-        const res = await fetchScoreVsPrecentileByMockId(value, attemptId, uid);
+        //console.log("titleList:",titleList);
+       let attempt = titleList.filter(itm=>itm.value==value)[0]?.attempt;
+        const res = await fetchScoreVsPrecentileByMockId(value, attempt, uid);
         //console.log(res);
 
         if (res?.status === 200) {

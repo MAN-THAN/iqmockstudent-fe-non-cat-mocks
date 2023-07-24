@@ -71,10 +71,10 @@ function MockComparison() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-    //console.log(value)
+    //console.log("val::",value);
       try {
         const res = await getPrevMockData(value);
-        //console.log(res);
+       // console.log("77#",res);
         if (res?.status == 200) {
           setPrevMock(res?.data.data)
         }
@@ -96,7 +96,7 @@ function MockComparison() {
   const [isErr,setIsErr]= useState(false);
   const [errorMsg,setErrorMsg] = useState('');
   const [compMock, setCompMock] = useState();
-
+  const [sectionType,setSectionType] = useState(localStorage.getItem('sectionType'));
   const getData = async () => {
     setLoading(true);
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -108,7 +108,19 @@ function MockComparison() {
         setResult(res.data?.result);
         setTopper(res.data?.topperResult);
         setPrevMock(res.data?.preresult);
-        setPrevMockList(res.data?.previousMocks);
+        let arr =[];
+        if(res?.data?.previousMocks.length>0)
+        {res?.data?.previousMocks.forEach((item) => {
+          console.log("it",item);
+          if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType)==true) {
+            arr.push(item);
+          }
+        });
+        setPrevMockList(arr);
+      }
+      else{
+        setPrevMockList(res.data.previousMocks);
+      }
         // setCompMock(res.data?.previousMocks[0]);
         setLoading(false);
       } else {

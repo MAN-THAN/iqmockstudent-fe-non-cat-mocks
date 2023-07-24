@@ -25,11 +25,13 @@ function LeaderBoard() {
   const { _id, name, photoURL } = userData;
   const [currentIndex,setCurrentIndex]=useState(0);
   const [filterAttempt,setFilterAttempt]=useState(attemptId);
+  const [sectionType,setSectionType] = useState(localStorage.getItem('sectionType'));
   function extractMockData(data) {
     const arr = [];
     if (data.length > 0) {
       data[0].mocks.forEach((item) => {
-        if (!arr.includes(item)) {
+        console.log("it",item);
+        if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType)==true) {
           arr.push({ name: item.title, value: item.mockId ,attempt:item.attemptList[0]});
         }
       });

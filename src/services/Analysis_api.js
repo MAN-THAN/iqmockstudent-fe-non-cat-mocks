@@ -147,12 +147,15 @@ export const getMockComparison = async (mockId, attemptId, uid) => {
 
 export const getPrevMockData = async (attemptId) => {
   const token = localStorage.getItem("auth_token");
+  const uid = JSON.parse(localStorage.getItem("userData"))._id
   try {
     const res = request({
       url: `/api/student/v1/analyse/getAttempts/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid:uid,
+        attemptid:attemptId
       },
     });
     return res;

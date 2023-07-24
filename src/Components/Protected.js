@@ -56,7 +56,7 @@ function Protected(props) {
         let timer = {minutes:Number(localStorage.getItem("my-counter-min")),seconds:Number(localStorage.getItem("my-counter-sec"))}
         //console.log(attempt_id,"attempt_id");
         await saveStudentProgress(attempt_id,type,payload,uid,timer);
-        localStorage.clear();
+        //localStorage.clear();
       }
     };
 

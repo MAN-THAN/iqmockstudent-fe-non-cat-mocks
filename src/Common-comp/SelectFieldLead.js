@@ -22,7 +22,7 @@ export default function MultipleSelectLead({ options,currentIndex, setType ,setF
 
   const [value, setValue] = useState(options[currentIndex]?.value || "");
   const [attempt,setAttempt] = useState(options[currentIndex]?.attempt||"");
-
+  
 
   useEffect(() => {
     setType(value);
