@@ -265,7 +265,7 @@ function ScoreVsPrecentile() {
                         onSelect={handleChange}
                         mockName={MockName}
                         options={titleList}
-                        currentIndex={currentIndex}
+                        
                       />
                     )}
                     {/* <MultipleSelect options={Sections} setType={setSections} /> */}
@@ -360,9 +360,9 @@ function ScoreVsPrecentile() {
     </>
   );
 }
-const SelectBox = ({ onSelect, mockName, options, getPrevMockData ,currentIndex}) => {
+const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
   const theme = useTheme();
-  let value = options[currentIndex]
+
   return (
     <div>
       <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
