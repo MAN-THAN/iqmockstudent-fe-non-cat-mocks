@@ -18,14 +18,16 @@ const MenuProps = {
 };
 
 
-export default function MultipleSelect({ options, setType }) {
+export default function MultipleSelectLead({ options,currentIndex, setType ,setFilterAttempt}) {
 
-  const [value, setValue] = useState(options[0]?.value || "");
-  
+  const [value, setValue] = useState(options[currentIndex]?.value || "");
+  const [attempt,setAttempt] = useState(options[currentIndex]?.attempt||"");
 
 
   useEffect(() => {
     setType(value);
+    setFilterAttempt(options.filter(it=>it.value==value)[0]?.attempt);
+    
     return (() => {
       setType((prev)=> prev)
     })
@@ -45,7 +47,7 @@ export default function MultipleSelect({ options, setType }) {
         <Select
           defaultValue={value}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) =>setValue(e.target.value) }
           input={
             <OutlinedInput
               sx={{

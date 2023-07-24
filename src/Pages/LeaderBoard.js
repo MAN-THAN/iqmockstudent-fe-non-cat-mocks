@@ -6,7 +6,7 @@ import LeaderTable from "../Components/LeaderTable";
 import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
-import MultipleSelect from "../Common-comp/SelectField";
+import MultipleSelectLead from "../Common-comp/SelectFieldLead";
 import { ToastContainer, toast } from "react-toastify";
 import ErrorPage from "./ErrorPage";
 import { useAuth } from "../services/Context";
@@ -147,7 +147,7 @@ function LeaderBoard() {
                 {name}
               </Typography>
             </Box>
-            {mock.length > 0 && <MultipleSelect options={mock} currentIndex={currentIndex} setType={setFilter} setFilterAttempt={setFilterAttempt}/>}
+            {mock.length > 0 && <MultipleSelectLead options={mock} currentIndex={currentIndex} setType={setFilter} setFilterAttempt={setFilterAttempt}/>}
           </Box>
 
           {/* Table start */}

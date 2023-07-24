@@ -147,7 +147,7 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
               path="/mockcomparison/:mockId/:attemptId"
               element={isUserAuth==true?<MockComparison />:<ErrorPage errorMessage={"This link is not authorised."}/>}
             />
-            {/* <Route path="/onboarding" element={<OnBoarding />} /> */}
+             {/* <Route path="/onboarding" element={<OnBoarding />} />  */}
             <Route
               path="/scorevsprecentile/:mockId/:attemptId"
               element={isUserAuth==true?<ScoreVsPrecentile />:<ErrorPage errorMessage={"This link is not authorised."}/>}

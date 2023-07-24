@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import LoginForm from "../Components/LoginForm";
+import LoginFormNew from "../Components/LoginFormNew";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -272,7 +272,7 @@ function OnBoarding() {
             }}
           >
             <Box sx={{ width: "40%", position: "relative" }} className="login_form">
-              <LoginForm setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
+              <LoginFormNew setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
               {/* <Box sx={{ position: "absolute", top: 40, left: "50%" }} className="login_form"></Box> */}
             </Box>
             <Box sx={{ width: "58%" }}>
