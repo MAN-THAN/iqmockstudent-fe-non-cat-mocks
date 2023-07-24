@@ -43,6 +43,11 @@ export const DrawerData = (mockId, attemptId) => {
       icon: "mockCompare.png",
       path: `/mockcomparison/${mockId}/${attemptId}`,
     },
+    {
+      text: "Score vs Percentile",
+      icon: "compare2.png",
+      path: `/scorevsprecentile/${mockId}/${attemptId}`,
+    },
   ];
 };
 
@@ -50,33 +55,28 @@ export const NavigationGalleryData = (mockId, attemptId) => {
   return [
     {
       heading: "View Solution",
-      image: "solutions-card.png",
+      image: "ViewSolCard.png",
       path: `/viewsolutions/${mockId}/${attemptId}`,
     },
     {
       heading: "Error Tracker",
-      image: "Error-card.png",
+      image: "ErrorTrackerCard.png",
       path: `/errortracker/${mockId}/${attemptId}`,
     },
     {
-      heading: "Goal Tracker",
-      image: "GoalCard.png",
-      path: `/goaltracker/${mockId}/${attemptId}`,
-    },
-    {
       heading: "Market Place",
-      image: "marketPlace-card.png",
+      image: "PlaceMaket.png",
       path: `/marketplace/${mockId}/${attemptId}`,
     },
 
     {
       heading: "Overall Across Analysis",
-      image: "AnalysisAcross-card.png",
+      image: "AnalysisAcrossCard.png",
       path: `/analysisacross/${mockId}/${attemptId}`,
     },
     {
       heading: "Mock comparison",
-      image: "comparison-card.png",
+      image: "MockComp.png",
       path: `/mockcomparison/${mockId}/${attemptId}`,
     },
   ];

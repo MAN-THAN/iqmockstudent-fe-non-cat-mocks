@@ -35,7 +35,7 @@ export default function InstructionButton() {
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
   function onResultChange(result) {
-    console.log(result);
+    //console.log(result);
   }
 
   return (

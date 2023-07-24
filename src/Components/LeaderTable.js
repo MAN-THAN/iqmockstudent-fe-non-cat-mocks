@@ -32,7 +32,7 @@ export default function LeaderTable({
   studentData,
   studentRank,
 }) {
-  console.log(data);
+  //console.log(data);
   return (
     <TableContainer component="div">
       <StyledTable sx={{ minWidth: '100vw' }} aria-label="simple table">
@@ -54,7 +54,7 @@ export default function LeaderTable({
               Sectional%
             </StyledTableCell>
             <StyledTableCell align="left" className="fw-bold">
-              Overall Score
+              Sectional Score
             </StyledTableCell>
           </StyledTableRow>
           <StyledTableRow
@@ -87,14 +87,14 @@ export default function LeaderTable({
                   align="left"
                   sx={{ fontSize: 16 }}
                 >
-                  {data[0] && data[0].result[0]?.sectionalPercentile}
+                  {data[0] && data[0].result[0]?.overallPercentile}
                 </StyledTableCell>
                 <StyledTableCell
                   className="fw-bold"
                   align="left"
                   sx={{ fontSize: 16 }}
                 >
-                  {data[0] && data[0].result[0]?.sectionalScore}
+                  {data[0] && data[0].result[0]?.overallScore}
                 </StyledTableCell>
               </>
             )}
@@ -129,10 +129,10 @@ export default function LeaderTable({
                     <StyledTableCell align="left">{item.name}</StyledTableCell>
 
                     <StyledTableCell align="left">
-                      {item.sectionalPercentile}
+                      {item.overallPercentile}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {item.sectionalScore}
+                      {item.overallScore}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

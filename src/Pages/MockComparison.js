@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import { getPrevMockData } from "../services/Analysis_api";
-
+import ErrorPage from "./ErrorPage";
 import { PuffLoader } from "react-spinners";
 
 const ITEM_HEIGHT = 28;
@@ -71,15 +71,15 @@ function MockComparison() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
-    console.log(value)
+    //console.log("val::",value);
       try {
         const res = await getPrevMockData(value);
-        console.log(res);
+       // console.log("77#",res);
         if (res?.status == 200) {
           setPrevMock(res?.data.data)
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
   };
 
@@ -88,14 +88,16 @@ function MockComparison() {
   useEffect(() => {
       getData();
   }, []);
+
   const { mockId, attemptId } = useParams();
   const [result, setResult] = useState();
   const [prevMock, setPrevMock] = useState();
   const [topper, setTopper] = useState();
   const [prevMockList, setPrevMockList] = useState();
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const [compMock, setCompMock] = useState();
-
+  const [sectionType,setSectionType] = useState(localStorage.getItem('sectionType'));
   const getData = async () => {
     setLoading(true);
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
@@ -103,30 +105,48 @@ function MockComparison() {
     try {
       const res = await getMockComparison(mockId, attemptId, uid);
       if (res?.status == 200) {
-        console.log(res.data);
+        //console.log(res.data);
         setResult(res.data?.result);
         setTopper(res.data?.topperResult);
         setPrevMock(res.data?.preresult);
-        setPrevMockList(res.data?.previousMocks);
+        let arr =[];
+        if(res?.data?.previousMocks.length>0)
+        {res?.data?.previousMocks.forEach((item) => {
+          console.log("it",item);
+          if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType=="quants"?"quant":sectionType)==true) {
+            arr.push(item);
+          }
+        });
+        setPrevMockList(arr);
+      }
+      else{
+        setPrevMockList(res.data.previousMocks);
+      }
         // setCompMock(res.data?.previousMocks[0]);
         setLoading(false);
       } else {
         setLoading(false);
-        console.log("error", res);
+        //console.log("error", res);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setLoading(false);
       showToastMessage(err?.response?.data?.msg);
     }
   };
-  console.log(result, topper, prevMock);
-  // console.log(compMock);
+  //console.log(result, topper, prevMock);
+  // //console.log(compMock);
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return (ref.current.style.display = "none");
+    // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+    //   position: toast.POSITION.TOP_CENTER,
+    // });
+    // return (ref.current.style.display = "none");
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
   };
 
   return (
@@ -135,7 +155,7 @@ function MockComparison() {
       <Box component="main">
         <MenuDrawer />
 
-        <Box
+       {isErr==true?<ErrorPage errorMessage={errorMsg}/>: <Box
           sx={{
             position: "absolute",
             left: "65px",
@@ -270,7 +290,7 @@ function MockComparison() {
               </Box>
             </Box>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );
@@ -308,6 +328,9 @@ const OuterCard = ({ style, miniCard, data }) => {
 
 const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
   const theme = useTheme();
+  
+  //console.log(options);
+  
   return (
     <div>
       <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
@@ -315,7 +338,11 @@ const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           value={mockName}
-          onChange={onSelect}
+          onChange={(e) => {
+            onSelect(e);
+            
+          }}
+         // onChange={onSelect}
           sx={{ height: "30px" }}
           MenuProps={MenuProps}
           displayEmpty={true}  

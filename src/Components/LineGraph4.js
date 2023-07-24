@@ -7,11 +7,11 @@ export default class LineGraph4 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {data : this.props.data}
-    // console.log(this.state)
+    // //console.log(this.state)
   }
   
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
+    //console.log(prevProps)
     if (prevProps.data !== this.props.data) {
       const newData = this.props.data;
       this.setState({data : newData});
@@ -19,7 +19,7 @@ export default class LineGraph4 extends PureComponent {
   }
 
   render() {
-    console.log(this.state)
+    //console.log(this.state)
   
     return (
       <ResponsiveContainer width="100%" height="100%">

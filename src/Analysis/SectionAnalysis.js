@@ -20,10 +20,11 @@ function SectionAnalysis() {
   useEffect(() => {
     if (sectionWiseAnalysis) {
       setData(sectionWiseAnalysis.sectionWiseAnalysis[sectionName]);
+      setTopper_Data(topperData?.allMocksCalculation[0][sectionName]);
     }
   }, [sectionWiseAnalysis, topperData]);
-  console.log(data);
-  console.log(topper_Data);
+  //console.log(data);
+  //console.log(topper_Data);
 
   const headings = [
     "Serial no.",
@@ -40,7 +41,7 @@ function SectionAnalysis() {
     let extraSeconds = seconds % 60;
     minutes = minutes < 10 ? +minutes : minutes;
     extraSeconds = extraSeconds < 10 ? +extraSeconds : extraSeconds;
-    //  console.log(minutes, extraSeconds);
+    //  //console.log(minutes, extraSeconds);
     return `${minutes + "." + extraSeconds + " min"}`;
   };
 

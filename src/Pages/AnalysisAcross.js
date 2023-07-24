@@ -130,7 +130,7 @@ const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState("varc"); // this state for the type of section
+  const [type, setType] = useState(localStorage.getItem("sectionType")); // this state for the type of section
   const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
   const [index, setIndex] = useState(0); // state for setting the index
   const [show, setShow] = useState([]); // this state for table data has been showing
@@ -150,14 +150,12 @@ function AnalysisAcross() {
     sectionName,
   } = useAuth();
 
-  console.log("SectionNAme", sectionName);
+  //console.log("SectionNAme", sectionName);
 
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
-    // if (g) {
-    //   setGraph();
-    // }
+   
     setShow(mocksList[index]?.data?.[type]);
   }, [index, type, mocksList, graph]);
 
@@ -175,7 +173,7 @@ function AnalysisAcross() {
     const fetchData = async (uid, attemptId) => {
       setLoading(true);
       const response = await fetchOverallAcross(uid, attemptId, type);
-      console.log("Analysis across Data", response);
+      //console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
         const topicWiseData = response.data?.[topicsType] || ["topicWise"];
@@ -229,9 +227,9 @@ function AnalysisAcross() {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log("Mock List", mocksList);
-  console.log("show", show);
-  console.log("response", response);
+  //console.log("Mock List", mocksList);
+  //console.log("show", show);
+  //console.log("graph", graph);
 
   return (
     <>
@@ -365,7 +363,6 @@ function AnalysisAcross() {
 
                   {view === "Table" ? (
                     <>
-                  
                       <Stack
                         justifyContent={"center"}
                         my={5}
@@ -378,13 +375,17 @@ function AnalysisAcross() {
                           transition={{ duration: 1.0 }}
                           style={{ width: "80vw", height: "20em" }}
                         >
-                          {graph ? (
+                          {graph && graph.length > 0 ? (
                             <LineGraph
                               Data={graph}
                               xKey={"name"}
                               ykey={"percentile"}
                             />
-                          ):"Graph not available"}
+                          ) : (
+                            <div className="text-center">
+                              Graph Data Not Available
+                            </div>
+                          )}
                         </motion.div>
                       </Stack>
                       <hr />
@@ -544,7 +545,6 @@ function AnalysisAcross() {
                                               borderRadius: "15px",
                                             }}
                                           />
-                                         
                                         </>
                                       )}
                                     </CardContent>
@@ -573,7 +573,7 @@ function AnalysisAcross() {
                       >
                         {show &&
                           show.map((item, ind) => {
-                            console.log(show);
+                            //console.log(show);
                             return (
                               <Box key={ind}>
                                 <Typography
@@ -648,7 +648,7 @@ function AnalysisAcross() {
                             {topicsType &&
                               topicsType.charAt(0).toUpperCase() +
                                 topicsType.slice(1).toLowerCase()}{" "}
-                              data not Available
+                            data not Available
                           </h6>
                         </div>
                       )}

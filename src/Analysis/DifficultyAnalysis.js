@@ -6,7 +6,7 @@ import BarGrapgh from "../Components/BarGrapgh";
 import PieChart from "../Components/PieChart";
 
 function DifficultyAnalysis() {
-  const { difficulty } = useAuth();
+  const { difficulty, sectionName } = useAuth();
   const [data, setData] = useState({});
   const [activeButton, setActiveButton] = useState("Overall");
   const [show, setShow] = useState([]);
@@ -14,9 +14,9 @@ function DifficultyAnalysis() {
 
   useEffect(() => {
     setData(difficulty?.difficultyWiseAnalysis);
-    console.log("data", data);
-    setShow(difficulty?.difficultyWiseAnalysis?.overall);
-    setPieData(difficulty?.difficultyWiseAnalysis?.overallGraph);
+    //console.log("data", data);
+    setShow(difficulty?.difficultyWiseAnalysis[sectionName]);
+    setPieData(difficulty?.difficultyWiseAnalysis[sectionName + "Graph"]);
   }, []);
 
   const handleClick = (button) => {
@@ -24,9 +24,9 @@ function DifficultyAnalysis() {
     setShow(data?.[button.toLowerCase()]);
     setPieData(data[button.toLowerCase() + "Graph"]);
   };
-  console.log(show);
-  console.log(pieData);
-  console.log(activeButton);
+  //console.log(show);
+  //console.log(pieData);
+  //console.log(activeButton);
 
   return (
     <div
@@ -35,7 +35,7 @@ function DifficultyAnalysis() {
         padding: "3em",
       }}
     >
-      <h1>Analysis Review,</h1>
+      {/* <h1>Analysis Review,</h1>
       <h6 style={{ marginTop: "0.5em" }}>A Quick Analysis Overview</h6>
       <div
         style={{
@@ -63,7 +63,7 @@ function DifficultyAnalysis() {
           autoFocus={true}
         >
           VARC
-        </ModifyButton>
+        </ModifyButton> */}
         {/* <ModifyButton
           variant="outlined"
           onClick={() => handleClick("VARC")}
@@ -113,7 +113,7 @@ function DifficultyAnalysis() {
         >
           Quants
         </ModifyButton> */}
-      </div>
+      {/* </div> */}
 
       <div className="d-flex flex-column justify-content-center mt-5 py-5">
         <div className="flex-item">
