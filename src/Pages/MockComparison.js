@@ -327,14 +327,28 @@ const OuterCard = ({ style, miniCard, data }) => {
 
 const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
   const theme = useTheme();
+  const { attemptId } = useParams();
+  const [selectedMock, setSelectedMock] = useState(null);
+  //console.log(options);
+  useEffect(() => {
+    let filtered = options.filter((e) => e.attemptId== attemptId );
+    setSelectedMock(filtered[0]?.attemptId);
+  }, [])
   return (
     <div>
       <FormControl sx={{ m: 1, mt: 0, width: "100%" }}>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          value={mockName}
-          onChange={onSelect}
+          //value={mockName}
+          defaultValue={selectedMock && selectedMock}
+          value={selectedMock && selectedMock}
+          onChange={(e) => {
+            onSelect(e);
+            console.log("348",e.target.value);
+            setSelectedMock(e.target.value);
+          }}
+         // onChange={onSelect}
           sx={{ height: "30px" }}
           MenuProps={MenuProps}
           displayEmpty={true}  

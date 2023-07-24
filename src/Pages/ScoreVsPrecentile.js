@@ -364,6 +364,13 @@ function ScoreVsPrecentile() {
 }
 const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
   const theme = useTheme();
+  const { mockId } = useParams();
+  const [selectedMock, setSelectedMock] = useState(null);
+  console.log(mockId);
+  useEffect(() => {
+    let filtered = options.filter((e) => e.value == mockId );
+    setSelectedMock(filtered[0].value);
+  }, [])
 
   return (
     <div>
@@ -371,8 +378,13 @@ const SelectBox = ({ onSelect, mockName, options, getPrevMockData }) => {
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          value={mockName}
-          onChange={onSelect}
+         // value={mockName}
+          defaultValue={selectedMock && selectedMock}
+          value={selectedMock && selectedMock}
+          onChange={(e) => {
+            onSelect(e);
+            setSelectedMock(e.target.value)
+          }}
           sx={{ height: "32px", borderRadius: 2 }}
           MenuProps={MenuProps}
           displayEmpty={true}
