@@ -31,7 +31,8 @@ function LeaderBoard() {
     if (data.length > 0) {
       data[0].mocks.forEach((item) => {
         console.log("it",item);
-        if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType)==true) {
+        
+        if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType=="quants"?"quant":sectionType)==true) {
           arr.push({ name: item.title, value: item.mockId ,attempt:item.attemptList[0]});
         }
       });

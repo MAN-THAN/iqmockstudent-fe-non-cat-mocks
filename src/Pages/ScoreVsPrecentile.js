@@ -155,7 +155,7 @@ function ScoreVsPrecentile() {
       //sorting array
         arr.push(updatedMockList[index]);
         updatedMockList.map((it,ind)=>{
-          if(ind!==index && it.name.toLowerCase().includes(section_Name.toLowerCase())){
+          if(ind!==index && it.name.toLowerCase().includes(section_Name=="quants"?"quant":section_Name)){
           arr.push(it);
         }})
         
