@@ -2,12 +2,12 @@ version: 0.2
 env:
   parameter-store:
     container_registry: "/iqmock/aws/docker_registry"
-    image_tag: "/iqmockstudent/fe/sec/prod/image_tag"
+    image_tag: "/iqmockstudent/fe/sec/dev/image_tag"
     aws_region: "/iqmock/aws/region"
     access_key: "/iqmock/aws/access-key"
     secret_key: "/iqmock/aws/secret-key"
-    namespace: "/iqmock/prod/namespace"
-    deployment: "/iqmockstudent/fe/sec/prod/deployment"
+    namespace: "/iqmock/dev/namespace"
+    deployment: "/iqmockstudent/fe/sec/dev/deployment"
 phases:
   install:
     run-as: root
