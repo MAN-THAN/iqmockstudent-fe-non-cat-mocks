@@ -211,7 +211,7 @@ export const getMarketPlace = async (attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `${"https://devapi.iqmock.iquanta.in"}/api/student/v1/marketplace`,
+      url: `/api/student/v1/marketplace`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
