@@ -120,7 +120,6 @@ export default function LeaderTable({
                           ? "#B53FFD"
                           : "white",
                       color: "black",
-                      display: data[0].rank - 1 === index && "none",
                     }}
                   >
                     <StyledTableCell component="th" scope="row">
