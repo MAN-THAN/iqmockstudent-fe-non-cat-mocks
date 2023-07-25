@@ -31,7 +31,7 @@ export default function MultipleSelect({ options, setType }) {
     })
   }, [value]);
 
-  console.log("Selectfield",value)
+  //console.log("Selectfield",value)
  
   return (
     <div>

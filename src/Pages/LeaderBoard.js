@@ -6,9 +6,9 @@ import LeaderTable from "../Components/LeaderTable";
 import { fetchLeaderBoard as getLeaderBoardData } from "../services/Analysis_api";
 import MenuDrawer from "../Components/MenuDrawer";
 import HeaderNew from "../Components/HeaderNew";
-import MultipleSelect from "../Common-comp/SelectField";
+import MultipleSelectLead from "../Common-comp/SelectFieldLead";
 import { ToastContainer, toast } from "react-toastify";
-
+import ErrorPage from "./ErrorPage";
 import { useAuth } from "../services/Context";
 
 function LeaderBoard() {
@@ -19,50 +19,67 @@ function LeaderBoard() {
   const [mock, setMock] = useState([]);
   const [filter, setFilter] = useState(mockId); //Select particaular mock value
   const ref = useRef(null);
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { _id, name, photoURL } = userData;
-
+  const [currentIndex,setCurrentIndex]=useState(0);
+  const [filterAttempt,setFilterAttempt]=useState(attemptId);
+  const [sectionType,setSectionType] = useState(localStorage.getItem('sectionType'));
   function extractMockData(data) {
     const arr = [];
     if (data.length > 0) {
       data[0].mocks.forEach((item) => {
-        if (!arr.includes(item)) {
-          arr.push({ name: item.title, value: item.mockId });
+        console.log("it",item);
+        
+        if (!arr.includes(item)&& item?.title?.toLowerCase().includes(sectionType=="quants"?"quant":sectionType)==true) {
+          arr.push({ name: item.title, value: item.mockId ,attempt:item.attemptList[0]});
         }
       });
     }
     return arr;
   }
-
+//sort mockArray using attemptID 
+//sendAttemptId on change of mockList
   useEffect(() => {
     async function fetchLeaderBoard(attemptId) {
       try {
         // setLoading(true);
+
         const res = await getLeaderBoardData(filter, attemptId, _id);
-        console.log(res);
+        //console.log(res);
         if (res?.status == 200) {
           const data = res;
           const mockData = extractMockData(data.data);
+          console.log(mockData,"##");
+          let currentIndex = mockData.findIndex(it=>it.value==mockId);
+          setCurrentIndex(currentIndex);
           setMock(mockData);
           setData(data.data);
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }
     }
-      fetchLeaderBoard(attemptId);
+      fetchLeaderBoard(filterAttempt);
+     //fetchLeaderBoard();
   }, [filter]);
 
-  console.log(filter, "fiilll");
+  //console.log(filter, "fiilll");
   const showToastMessage = (msg) => {
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return (ref.current.style.display = "none");
+    // toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg.toUpperCase(), {
+    //   position: toast.POSITION.TOP_CENTER,
+    // });
+    // return (ref.current.style.display = "none");
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
   };
 
   return (
@@ -71,7 +88,7 @@ function LeaderBoard() {
       <div style={{ width: "100vw" }}>
         <MenuDrawer open={menuBarOpen} />
 
-        <Box
+        {isErr==true?<ErrorPage errorMessage={errorMsg}/>:<Box
           sx={{
             height: "auto",
             display: "flex",
@@ -133,7 +150,7 @@ function LeaderBoard() {
                 {name}
               </Typography>
             </Box>
-            {mock.length > 0 && <MultipleSelect options={mock} setType={setFilter} />}
+            {mock.length > 0 && <MultipleSelectLead options={mock} currentIndex={currentIndex} setType={setFilter} setFilterAttempt={setFilterAttempt}/>}
           </Box>
 
           {/* Table start */}
@@ -141,7 +158,7 @@ function LeaderBoard() {
             <LeaderTable data={Data} isLoading={loading} />
           </div>
           {/* Table end */}
-        </Box>
+        </Box>} 
       </div>
     </>
   );

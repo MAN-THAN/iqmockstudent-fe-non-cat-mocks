@@ -9,7 +9,7 @@ import { MyButton } from "../styleSheets/Style";
 import {style} from "../styleSheets/StyleNew"
 export default function ImgMediaCard({ cardData }) {
  
-console.log(cardData)
+//console.log(cardData)
   return (
     <Card sx={{ maxWidth: 259, boxShadow: "none" }}>
       <CardMedia component="img" alt="Market card" height="350" sx={{ borderRadius: 10 }} image={cardData.image} />

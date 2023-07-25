@@ -53,7 +53,7 @@ export default function CustomizedAccordions({ data }) {
   const [expandVarc, setExpandVarc] = React.useState(false);
   const [expandLrdi, setExpandLrdi] = React.useState(false);
   const [expandQuant, setExpandQuant] = React.useState(false);
-  console.log(data);
+  //console.log(data);
 
   // const handleChange = (panel) => (event, newExpanded) => {
   //   setExpanded(newExpanded ? panel : false);

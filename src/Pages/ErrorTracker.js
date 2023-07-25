@@ -17,8 +17,14 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { BsSortDown } from "react-icons/bs";
 import Latex from "react-latex-next";
-import { IncorrectDetailing, CorrectDetailing, SkippedDetailing } from "../services/DataFiles";
+import {
+  IncorrectDetailing,
+  CorrectDetailing,
+  SkippedDetailing,
+} from "../services/DataFiles";
 import { ToastContainer, toast } from "react-toastify";
+import ErrorPage from "./ErrorPage";
+import { decode } from "base-64";
 
 const disableStyle = {
   ":disabled": {
@@ -41,13 +47,6 @@ const filter1 = [
   { name: "Skipped", value: "skipped" },
 ];
 
-const filter2 = [
-  { name: "All Sections", value: "allsections" },
-  { name: "VARC", value: "varc" },
-  { name: "LRDI", value: "lrdi" },
-  { name: "Quants", value: "quants" },
-];
-
 const priorities = [
   { name: "All Questions", value: "All Questions" },
   { name: "Easy", value: "Easy" },
@@ -56,26 +55,32 @@ const priorities = [
 ];
 
 function ErrorTracker() {
-  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } = useAuth();
+  const { menuBarOpen, setMenuBarOpen, Backdrop, setLoading, isLoading } =
+    useAuth();
   const { attemptId, mockId } = useParams();
   const [graphData, setGraphData] = useState([]);
   const [colorDetail, setColorDetail] = useState(null);
   const [priorty, setPriorty] = useState(null);
   const [data, setData] = useState([]); //Main Data store
 
-  const [correction, setCorrection] = useState(); // correct or Inncorect or skipped state
-  const [section, setSection] = useState("allsections"); // Section wise filter
+  const [correction, setCorrection] = useState(); // correct or Incorrect or skipped state
+  const [section, setSection] = useState([]); // Section wise filter
   const [topic, setTopic] = useState({}); // topic wise
 
   const [arr, setArr] = useState([]); //main Data
 
   const [show, setShow] = useState([]); // changeable state come from filter`
-
-  const [topicList, setTopicList] = useState([{ name: "All Topics", value: "all topics" }]);
-
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
+  const [topicList, setTopicList] = useState([
+    { name: "All Topics", value: "all topics" },
+  ]);
+  const sectionType = localStorage.getItem("sectionType");
   const [colorDetailing, setColorDetailing] = useState(IncorrectDetailing);
   const navigate = useNavigate();
   const ref = useRef(null);
+
+  const SectionsList = [{ name: sectionType, value: sectionType }];
 
   //  calling api
   useEffect(() => {
@@ -83,29 +88,34 @@ function ErrorTracker() {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await fetchErrorTracker(attemptId, uid);
-        console.log(res);
+        //console.log(res);
         setLoading(true);
         if (res?.status === 200) {
           setData(res.data);
           setLoading(false);
         } else if (res?.status === 201) {
-          showToastMessage("Review your solution and fill the error tracker to generate your error report");
-          setTimeout(() => navigate(`/viewsolutions/${mockId}/${attemptId}`), 3500);
+          showToastMessage(
+            "Review your solution and fill the error tracker to generate your error report"
+          );
+          setTimeout(
+            () => navigate(`/viewsolutions/${mockId}/${attemptId}`),
+            3500
+          );
           setLoading(false);
         } else {
-          console.log("Error in fetching data: ", res);
+          //console.log("Error in fetching data: ", res);
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         setLoading(false);
         showToastMessage(err?.response?.data?.msg);
       }
     };
-      getData();
+    getData();
   }, []);
 
-  // set correction
+  // set the  subTopics or section:
   useEffect(() => {
     let graphData;
     if (correction === "correct") {
@@ -118,84 +128,52 @@ function ErrorTracker() {
       setColorDetailing(SkippedDetailing);
       graphData = data.sectionsSkippedGraph;
     }
-    if (section !== "allsections") {
-      graphData = data["sections"+section + correction + "Graph"];
-    }
-    setGraphData(graphData);
-  }, [correction, show, section, data]);
 
-  // setting topic list
-  // useEffect(() => {
-  //   console.log(data);
-  //   const arr = data?.[section + "Topic"];
-  //   console.log(arr);
-  //   const newArr = [{ name: "All Topics", value: "all topics" }];
-  //   arr?.map((item, index) => {
-  //     newArr.push({ name: item, value: item });
-  //   });
-  //   // console.log(newArr);
-  //   return setTopicList(newArr);
-  // }, [section, data]);
+    setGraphData(graphData);
+  }, [correction, data]);
 
   useEffect(() => {
     const topicArr = [];
-
-    if (section === "allsections") {
-      filter2.forEach((sec) => {
-        const arr = data?.[sec.value + "Topic"]; //varctopic,lrdiTopic,quantsTopic
-        arr?.forEach((item) => {
-          if (!topicArr.includes(item)) {
-            topicArr.push(item);
-          }
-        });
-      });
-    } else {
-      const arr = data?.[section + "Topic"];
-      arr?.forEach((item) => {
-        if (!topicArr.includes(item)) {
-          topicArr.push(item);
-        }
-      });
+    if (data || data.length > 0) {
+      setArr(data.sections);
     }
+
+    const arr = data?.["sectionsTopic"];
+    arr?.forEach((item) => {
+      if (!topicArr.includes(item)) {
+        topicArr.push(item);
+      }
+    });
 
     const newArr = [{ name: "All Topics", value: "all topics" }];
     topicArr.forEach((item) => {
       newArr.push({ name: item, value: item });
     });
 
-    console.log(newArr);
+    //console.log(newArr);
     setTopicList(newArr);
   }, [section, data]);
-
-  // Set the sections
-  useEffect(() => {
-    if (data || data.length > 0) {
-      //set the all sections array
-      if (section === "allsections") {
-        const mergedArr = [
-          ...(Array.isArray(data.lrdi) ? data.lrdi : []),
-          ...(Array.isArray(data.varc) ? data.varc : []),
-          ...(Array.isArray(data.quants) ? data.quants : []),
-        ];
-        setArr(mergedArr);
-      } else {
-        setArr(data[section]);
-      }
-    }
-  }, [data, section, correction]);
 
   // update the "show" state whenever the filters change
 
   function filterData() {
+    // alert("Enter filterdata");
+    // //console.log("array filter", arr);
+
+    if (!arr) {
+      //console.log("arr is undefined!");
+      return;
+    }
     let filteredData = arr;
-
     if (correction && correction !== "all") {
-      filteredData = filteredData.filter((item) => item.isCorrect === correction);
+      filteredData = filteredData.filter(
+        (item) => item.isCorrect === correction
+      );
     }
 
-    if (section) {
-      filteredData = filteredData.map((item) => item);
-    }
+    // if (section) {
+    //   filteredData = filteredData?.map((item) => item);
+    // }
 
     if (topic && topic !== "all topics") {
       filteredData = filteredData.filter((item) => item.topic === topic);
@@ -206,15 +184,21 @@ function ErrorTracker() {
         filteredData = filteredData.filter((item) => item);
         break;
       case "Easy":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
 
       case "Moderate":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
 
       case "Hard":
-        filteredData = filteredData.filter((item) => item.difficulty === priorty);
+        filteredData = filteredData.filter(
+          (item) => item.difficulty === priorty
+        );
         break;
 
       default:
@@ -224,8 +208,6 @@ function ErrorTracker() {
     handleColorDetail("all");
     setShow(filteredData);
   }
-
-  useEffect(filterData, [correction, topic, arr, priorty]);
 
   const handleColorDetail = (val) => {
     setColorDetail(val);
@@ -240,18 +222,20 @@ function ErrorTracker() {
     }
   };
 
-  console.log("arr", arr);
-  console.log("data  mmmmm", data);
-  console.log("show", show);
-  console.log("Sections", section);
-  // console.log(graphData && graphData[0], "graohData");
+  
+  // //console.log(graphData && graphData[0], "graphData");
 
+  useEffect(filterData, [arr, correction, section, topic, priorty]);
   const showToastMessage = (msg) => {
-
-    toast.error(msg == undefined ? "Some error occurred! Please reload the page." : msg, {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    return (ref.current.style.display = "none");
+    // toast.error(
+    //   msg == undefined ? "Some error occurred! Please reload the page." : msg,
+    //   {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   }
+    // );
+    setIsErr(true);
+    setErrorMsg(msg);
+    //return (ref.current.style.display = "none");
   };
 
   return (
@@ -260,7 +244,7 @@ function ErrorTracker() {
       <Box component="main" sx={{ height: "100vh" }}>
         <MenuDrawer />
 
-        <Box
+       {isErr==true?<ErrorPage errorMessage={errorMsg}/>: <Box
           sx={{
             p: 2,
             position: "absolute",
@@ -276,7 +260,10 @@ function ErrorTracker() {
           </Box>
 
           {isLoading ? (
-            <div className="d-flex align-items-center flex-column gap-2 justify-content-center" style={{ width: "100%", height: "80%" }}>
+            <div
+              className="d-flex align-items-center flex-column gap-2 justify-content-center"
+              style={{ width: "100%", height: "80%" }}
+            >
               <div class="loading-container">
                 <div class="loading"></div>
                 <div id="loading-text">Loading...</div>
@@ -304,7 +291,10 @@ function ErrorTracker() {
                   }}
                 >
                   <div className="d-flex gap-3">
-                    {/* <MultipleSelect options={filter2} setType={setSection} /> */}
+                    <MultipleSelect
+                      options={SectionsList}
+                      setType={setSection}
+                    />
                     <MultipleSelect options={topicList} setType={setTopic} />
                   </div>
                   <div>
@@ -323,7 +313,10 @@ function ErrorTracker() {
                 Error Tracker
               </Typography>
 
-              <Box component="main" sx={{ display: "flex", width: "100%", height: "76Vh" }}>
+              <Box
+                component="main"
+                sx={{ display: "flex", width: "100%", height: "76Vh" }}
+              >
                 <Backdrop
                   sx={{
                     zIndex: (theme) => theme.zIndex.drawer - 1,
@@ -348,7 +341,11 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <PieGraph Data={graphData && graphData[0]} width={"97%"} legend={false} />
+                    <PieGraph
+                      Data={graphData && graphData[0]}
+                      width={"97%"}
+                      legend={false}
+                    />
                   </Box>
                   <Box sx={{ mt: 2 }}>
                     <Typography
@@ -427,12 +424,19 @@ function ErrorTracker() {
                                   style={{
                                     background: item.color,
                                     width: colorDetail === item.value ? 29 : 26,
-                                    height: colorDetail === item.value ? 29 : 26,
+                                    height:
+                                      colorDetail === item.value ? 29 : 26,
                                     borderRadius: "50%",
                                     cursor: "pointer",
                                     transition: "all 0.2s ease-in-out",
-                                    boxShadow: colorDetail === item.value ? "0 0 10px rgba(0, 0, 0, 0.5)" : "none",
-                                    border: colorDetail === item.value ? "0px solid #333" : "none",
+                                    boxShadow:
+                                      colorDetail === item.value
+                                        ? "0 0 10px rgba(0, 0, 0, 0.5)"
+                                        : "none",
+                                    border:
+                                      colorDetail === item.value
+                                        ? "0px solid #333"
+                                        : "none",
                                   }}
                                 />
                               </Tooltip>
@@ -443,9 +447,13 @@ function ErrorTracker() {
                   </div>
                   {show
                     ? show.map((item, index) => {
-                        const colorObj = colorDetailing.find((detail) => item.error === detail.value);
+                        const colorObj = colorDetailing.find(
+                          (detail) => item.error === detail.value
+                        );
 
-                        const borderColor = colorObj ? colorObj.color : "transparent";
+                        const borderColor = colorObj
+                          ? colorObj.color
+                          : "transparent";
 
                         return (
                           <Box sx={{ display: "flex", pt: 3, gap: 2 }}>
@@ -478,7 +486,9 @@ function ErrorTracker() {
                                   <Latex>{item.question}</Latex>
                                 </div>
                               </CardContent>
-                              <CardActions sx={{ justifyContent: "space-between", px: 3 }}>
+                              <CardActions
+                                sx={{ justifyContent: "space-between", px: 3 }}
+                              >
                                 <Box
                                   sx={{
                                     display: "flex",
@@ -498,7 +508,11 @@ function ErrorTracker() {
                                       },
                                       "& > span": {
                                         color:
-                                          item.difficulty === "Easy" ? "#00C838 !important" : item.difficulty === "Moderate" ? "#FF6238" : "#FF0000",
+                                          item.difficulty === "Easy"
+                                            ? "#00C838 !important"
+                                            : item.difficulty === "Moderate"
+                                            ? "#FF6238"
+                                            : "#FF0000",
                                       },
                                     }}
                                   >
@@ -533,7 +547,8 @@ function ErrorTracker() {
                                     }}
                                     variant="contained"
                                   >
-                                    Avg Time : <span>{item.averageDuration}</span>
+                                    Avg Time :{" "}
+                                    <span>{item.averageDuration}</span>
                                   </Button>
                                 </Box>
                                 <div>
@@ -543,11 +558,14 @@ function ErrorTracker() {
                                     sx={{ background: "#3A36DB", float: "end" }}
                                     variant="contained"
                                     onClick={() =>
-                                      navigate(`/viewsolutions/${mockId}/${attemptId}`, {
-                                        state: {
-                                          question_id: item.question_id,
-                                        },
-                                      })
+                                      navigate(
+                                        `/viewsolutions/${mockId}/${attemptId}`,
+                                        {
+                                          state: {
+                                            _id: item.question_id,
+                                          },
+                                        }
+                                      )
                                     }
                                   >
                                     Solution
@@ -564,7 +582,7 @@ function ErrorTracker() {
               </Box>
             </>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );

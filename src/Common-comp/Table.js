@@ -13,8 +13,8 @@ import { Typography } from "@mui/material";
 
 function Table({ data }) {
   const { headings, body, sectionName } = data;
-  console.log(body);
-  console.log("body data from table", body);
+  //console.log(headings);
+  //console.log("body data from table", body);
   return (
     <TableContainer
       sx={{
@@ -22,24 +22,21 @@ function Table({ data }) {
         justifyContent: "center",
         alignContent: "center",
         flexWrap: { sm: "wrap", md: "wrap", lg: "nowrap", xl: "nowrap" },
-        maxHeight : "100%", 
-        maxWidth : "100%",
-        overflowY : "scroll"
+        maxHeight: "100%",
+        maxWidth: "100%",
+        overflowY: "scroll",
       }}
     >
-      <StyledTable
-        sx={{ml: 2}}
-        aria-label="customized table"
-      >
+      <StyledTable sx={{ ml: 2 }} aria-label="customized table">
         <TableHead>
-          <TableRow sx={{ background: "white", position : "sticky", top : 0 }}>
+          <TableRow sx={{ background: "white", position: "sticky", top: 0 }}>
             {headings &&
               headings.map((item, _) => {
                 return (
                   <StyledTableCell
-                    sx={{ position: "sticky", top: 0, border : "none" }}
+                    sx={{ position: "sticky", top: 0, border: "none" }}
                     className="fw-bold"
-                    align="left "
+                    align="center"
                   >
                     <Typography fontWeight={700} fontSize="16px">
                       {item.name}
@@ -51,8 +48,8 @@ function Table({ data }) {
         </TableHead>
         <TableBody>
           {body?.map((item, index) => {
-            console.log("Item:", item);
-            console.log("Index:", index);
+            //console.log("Item:", item);
+            //console.log("Index:", index);
 
             return (
               <StyledTableRow
@@ -63,12 +60,12 @@ function Table({ data }) {
                   color: "black",
                 }}
               >
-                <StyledTableCell>
+                <StyledTableCell align="center">
                   <Typography fontWeight={700} fontSize={14} paddingBottom={1}>
                     {item.percentile}
                   </Typography>
                 </StyledTableCell>
-                <StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   <Typography fontSize={14} paddingBottom={1}>
                     {item.score}

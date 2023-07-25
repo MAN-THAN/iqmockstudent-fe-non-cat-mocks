@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styleSheets/header.css";
 
@@ -7,6 +7,8 @@ function Header() {
   const userName = JSON.parse(localStorage.getItem("userData"))?.name;
   const userID = JSON.parse(localStorage.getItem("userData"))?.mbrId;
   const img_url = JSON.parse(localStorage.getItem("userData"))?.photoURL;
+  const mock_name = localStorage.getItem("mockName");
+  
 
   return (
     <header className="p-0 m-0 text-bg-dark">
@@ -17,7 +19,7 @@ function Header() {
           </div>
           <div className="flex-item pt-1 ms-1 ps-5">
             <Typography variant="h4" sx={{ fontSize: "25px" }}>
-              iCAT 1.O 2023
+              {mock_name ? mock_name : "iCAT 2023"}
             </Typography>
           </div>
 

@@ -24,28 +24,29 @@ export const ContextProvider = ({ children }) => {
   const analysisDataApi = async (attemptId, mockId, uid) => {
     try {
       const response = await fetchAnalysisData(attemptId, uid);
-      // const response2 = await fetchMockStatus(mockId, attemptId);
-      console.log(response);
-      // console.log(response2);
+      const response2 = await fetchMockStatus(mockId, attemptId, uid);
+      //console.log(response);
+      //console.log(response2);
       if (response?.status == 200) {
         setAnalysisData(response.data.data);
         setSectionName(response.data.sectionName)
+        localStorage.setItem("sectionType", response.data.sectionName);
       } else {
-        console.log("--> Error in analysis data fetching");
-        showToastMessage();
+        //console.log("--> Error in analysis data fetching");
+        //showToastMessage();
         setErr(true);
       }
-      // if (response2?.status == 200) {
-      //   setTopperData(response2.data.mockData);
-      //   setLoading(false);
-      // } else {
-      //   console.log("--> Error in mock status fetching");
-      //   showToastMessage();
-      //   setErr(true);
-      // }
+      if (response2?.status == 200) {
+        setTopperData(response2.data.mockData);
+        setLoading(false);
+      } else {
+        //console.log("--> Error in mock status fetching");
+        //showToastMessage();
+        setErr(true);
+      }
     } catch (err) {
-      console.log(err);
-      showToastMessage(err?.response?.data?.message);
+      //console.log(err);
+     // showToastMessage(err?.response?.data?.message);
       setErr(true);
     }
   };
@@ -67,7 +68,7 @@ export const ContextProvider = ({ children }) => {
     });
   };
 
-  console.log("isloading", isLoading);
+  //console.log("isloading", isLoading);
   //Set data to variables according to category that data exports to pages according to need
   const basicAnalysis = analysisData[0];
   const overallAnalysis = analysisData[1];
@@ -75,6 +76,7 @@ export const ContextProvider = ({ children }) => {
   const topicWiseAnalysis = analysisData[3];
   const difficulty = analysisData[4];
   const subtopicWiseAnalysis = analysisData[6];
+  //console.log(topperData)
 
   return (
     <>

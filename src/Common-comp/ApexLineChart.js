@@ -2,7 +2,7 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 
 const ApexLineChart = ({ graphData, studentGraphData }) => {
-  console.log(graphData, studentGraphData);
+  //console.log(graphData, studentGraphData);
   const series = [
     {
       name: "Points",

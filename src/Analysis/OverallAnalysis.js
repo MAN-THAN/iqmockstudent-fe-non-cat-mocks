@@ -12,7 +12,7 @@ import { Typography } from "@mui/material";
 function OverallAnalysis() {
   const { overallAnalysis } = useAuth();
   const [data, setData] = useState([]);
-  console.log("overall", data);
+  //console.log("overall", data);
   useEffect(() => setData(overallAnalysis?.overAllAnalysis), [overallAnalysis]);
 
   const headings = ["Name", "Questions", "Attempted", "Correct", "Incorrect", "Score", "% Accuracy", "% Score", "Percentile"];
@@ -21,11 +21,11 @@ function OverallAnalysis() {
     let extraSeconds = seconds % 60;
     minutes = minutes < 10 ? +minutes : minutes;
     extraSeconds = extraSeconds < 10 ? +extraSeconds : extraSeconds;
-    console.log(minutes, extraSeconds);
+    //console.log(minutes, extraSeconds);
     return `${minutes + "." + extraSeconds + " min"}`;
   };
   convertStoMs(70);
-  console.log(data);
+  //console.log(data);
   return (
     <>
       <TableContainer

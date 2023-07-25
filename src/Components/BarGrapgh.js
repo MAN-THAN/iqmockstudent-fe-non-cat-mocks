@@ -13,7 +13,7 @@ import {
 import { Typography } from "@mui/material";
 
 function BarGrapgh({ Data, title, width, legend }) {
-  console.log(Data, title);
+  //console.log(Data, title);
 
   return (
     <div

@@ -1,32 +1,58 @@
 version: 0.2
-#run-as: root
-proxy:
-  logs: yes
+env:
+  parameter-store:
+    container_registry: "/iqmock/aws/docker_registry"
+    image_tag: "/iqmockstudent/fe/sec/stg/image_tag"
+    aws_region: "/iqmock/aws/region"
+    access_key: "/iqmock/aws/access-key"
+    secret_key: "/iqmock/aws/secret-key"
+    namespace: "/iqmock/stg/namespace"
+    deployment: "/iqmockstudent/fe/sec/stg/deployment"
 phases:
-  pre_build:
-#    run-as: root
+  install:
+    run-as: root
     on-failure: ABORT
     commands:
-      - echo Logging into ECR...
+      - echo Entered the install phase...
+      - yum update
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    finally:
       - docker --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 059407755516.dkr.ecr.ap-south-1.amazonaws.com
+      - kubectl version --client
+      - aws configure set aws_access_key_id $access_key 
+      - aws configure set aws_secret_access_key $secret_key 
+      - aws configure set region $aws_region
+      - aws configure get region
+      - echo This always runs even if the update or install command fails 
+  pre_build:
+    run-as: root
+    on-failure: ABORT
+    commands:
+      - echo Entered the pre_build phase...
+      - aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $container_registry
+      - aws eks update-kubeconfig --region $aws_region --name iquanta-eks-01
+      - kubectl get nodes
+    finally:
+      - echo This always runs even if the login command fails
   build:
-#    run-as: root
+    run-as: root
     on-failure: ABORT
     commands:
       - echo Entered the build phase...
-      - echo Building Flutter Web App Started on `date`
-      - docker build -t iqmockstudent-fe-dev .
-      - docker tag iqmockstudent-fe-dev:latest 059407755516.dkr.ecr.ap-south-1.amazonaws.com/iqmockstudent-fe-dev:latest
+      - echo Build started on `date`
+      - docker build -t $container_registry/$image_tag .
+      - docker images
+      - docker push $container_registry/$image_tag
+    finally:
+      - echo Build successfully completed
   post_build:
-#    run-as: root
+    run-as: root
     on-failure: ABORT
     commands:
-      - echo Entered the post_build phase....
-      - echo Pushing iqmockstudent-fe-dev Docker Image to ECR
-      - docker push 059407755516.dkr.ecr.ap-south-1.amazonaws.com/iqmockstudent-fe-dev:latest
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                                                                                                                             
-~                                                 
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+      - kubectl rollout restart -n $namespace deployment $deployment
+    finally:
+      - echo Kubectl deployment successfully completed...
+      - kubectl get deployments -n $namespace

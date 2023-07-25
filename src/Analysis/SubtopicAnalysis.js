@@ -25,12 +25,13 @@ function SubtopicAnalysis() {
 
   useEffect(() => {
     setData(subtopicWiseAnalysis.subtopicWiseAnalysis[sectionName]);
+    setTopperData(topperData?.topperAnalysis[0].data[6].subtopicWiseAnalysis[sectionName]);
 
   }, [subtopicWiseAnalysis, topperData]);
-  // console.log("section", data);
+  // //console.log("section", data);
 
-  // console.log("manthan tyagi")
-  console.log(topper_data);
+  // //console.log("manthan tyagi")
+  //console.log(topper_data);
 
   const headings = [
     "Number",

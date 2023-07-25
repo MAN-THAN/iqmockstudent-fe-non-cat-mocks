@@ -49,7 +49,7 @@ function MarketPlace() {
     setSelectedValue(selectedValues);
   }
 
-  console.log(selectedValue);
+  //console.log(selectedValue);
 
   // function getting data on mounting
   useEffect(() => {
@@ -63,11 +63,11 @@ function MarketPlace() {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const res = await getMarketPlace(attemptId, uid);
     if (res?.status == 200) {
-      console.log(res);
+      //console.log(res);
       setData(res.data.item);
       setLoading(false);
     } else {
-      console.log("error", res);
+      //console.log("error", res);
       setLoading(false);
     }
   };
