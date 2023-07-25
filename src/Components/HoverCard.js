@@ -11,31 +11,26 @@ function HoverCard({ image, heading, path }) {
   return (
     <>
       <CardWrapper>
-        <Typography style={{fontSize : "20px", fontWeight: 700, margin : 10}}>{heading}</Typography>
+
         <div className="wrapper">
-          <div className="card shadow">
+          <div
+            className="card shadow"
+            style={{ borderRadius: "50px", height: "14em" }}
+          >
             <img
               src={process.env.PUBLIC_URL + "/" + image}
               className="img-fluid"
             />
             <div className="info text-center my-auto">
               {/* {heading} */}
-
-              <MyButton
-                disabled={false}
-                className="MyButton"
-                endIcon={<MdOutlineKeyboardDoubleArrowRight />}
+              <button
+                class="button-85 MyButton"
+                role="button"
                 onClick={() => navigate(`${path}`)}
-                sx={{
-                  width: "164px",
-                  borderRadius: "10px",
-                  ...style.subHeading,
-                  cursor: "pointer",
-                  ml: 0,
-                }}
               >
-                Go here
-              </MyButton>
+                Go here <MdOutlineKeyboardDoubleArrowRight />
+              </button>
+             
             </div>
           </div>
         </div>

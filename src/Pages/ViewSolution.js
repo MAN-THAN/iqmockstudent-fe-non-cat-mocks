@@ -24,7 +24,7 @@ import Modal from "@mui/material/Modal";
 import { postToErrorTracker } from "../services/Analysis_api";
 import { BsChevronDoubleRight } from "react-icons/bs";
 import OutlinedInput from "@mui/material/OutlinedInput";
-
+import ErrorPage from "./ErrorPage";
 import Select from "@mui/material/Select";
 import {
   IncorrectDetailing,
@@ -49,9 +49,7 @@ export default function ViewSolution() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const [viewSol, setViewSoln] = useState(false);
-  const [errTrackerVA, setTrackerVA] = useState([]);
-  const [errTrackerLR, setTrackerLR] = useState([]);
-  const [errTrackerQU, setTrackerQU] = useState([]);
+  const [errTracker, setTracker] = useState([]);
   const [errValue, setErrValue] = useState("");
   const { state } = useLocation();
   const [defVal, setDefVal] = useState("varc");
@@ -59,6 +57,10 @@ export default function ViewSolution() {
   const ref = useRef(null);
   const [sectionName, setSectionName] = useState();
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
+  const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+  const [isErr,setIsErr]= useState(false);
+  const [errorMsg,setErrorMsg] = useState('');
+  
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
@@ -86,75 +88,68 @@ export default function ViewSolution() {
   };
 
   const showToastMessage = (msg) => {
-    toast.error(
-      msg == undefined
-        ? "Some error occurred! Please reload the page."
-        : msg.toUpperCase(),
-      {
-        position: toast.POSITION.TOP_CENTER,
-      }
-    );
+    // toast.error(
+    //   msg == undefined
+    //     ? "Some error occurred! Please reload the page."
+    //     : msg.toUpperCase(),
+    //   {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   }
+    // );
+    setIsErr(true);
+    if(msg==undefined){
+    setErrorMsg("Some error occurred! Please reload the page.")}
+    else{
+      setErrorMsg(msg)
+    }
+
     return (ref.current.style.display = "none");
   };
-  console.log("data", data);
-  console.log("open", open);
-  console.log("index", index);
+  //console.log("data", data);
+  //console.log("open", open);
+  //console.log("index", index);
 
-  // console.log(data);
-  // console.log(open);
-  console.log("show", show[index], index);
+  // //console.log(data);
+  // //console.log(open);
+  //console.log("show", show[index], index);
 
-  // getting a specific question om mounting
+  // getting a specific question on mounting
 
   useEffect(() => {
     const func = async () => {
       if (state !== null) {
-        console.log("flow2");
-        const questionId = state.question_id;
+        //console.log("flow2");
+        const questionId = state._id;
+        //console.log(questionId)
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         setLoading(true);
         const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
-          res.data?.varc.map((item, index) => {
-            if (item.question_id === questionId) {
-              console.log(item, index);
+          const arr = res.data[res.data.sectionName];
+          arr?.map((item, index) => {
+            if (item._id === questionId) {
+              //console.log(item, index);
               setIndex(index);
-              setDefVal("varc");
-              setShow(res.data.varc);
+              // setDefVal("varc");
+              setShow(res.data[res.data.sectionName]);
+              setSectionName(res.data.sectionName);
               setLoading(false);
             }
           });
-          res.data?.lrdi.map((item, index) => {
-            if (item.question_id === questionId) {
-              console.log(item, index);
-              setIndex(index);
-              setDefVal("lrdi");
-              setShow(res.data.lrdi);
-              setLoading(false);
-            }
-          });
-          res.data?.quants.map((item, index) => {
-            if (item.question_id === questionId) {
-              console.log(item, index);
-              setIndex(index);
-              setDefVal("quants");
-              setShow(res.data.quants);
-              setLoading(false);
-            }
-          });
+
           // setShow(res.data[selected])
-          setTrackerVA(res.data.errorData?.varc);
-          setTrackerLR(res.data.errorData?.lrdi);
-          setTrackerQU(res.data.errorData?.quants);
+          // setTrackerVA(res.data.errorData?.varc);
+          // setTrackerLR(res.data.errorData?.lrdi);
+          // setTrackerQU(res.data.errorData?.quants);
         }
       }
     };
 
     func();
   }, []);
-  console.log(data);
-  console.log(sectionName)
+  //console.log(data);
+  //console.log(sectionName)
 
   // function getting data on mounting
   useEffect(() => {
@@ -165,20 +160,21 @@ export default function ViewSolution() {
         const res = await fetchViewSolution(attemptId, mockId, uid);
         if (res?.status == 200) {
           setData(res.data);
-          setShow(res.data.quants); // need to be chANGED later
+          setShow(res.data[res.data.sectionName]); // need to be chANGED later
           setSectionName(res.data.sectionName);
-          setTrackerVA(res.data.errorData?.varc);
-          setTrackerLR(res.data.errorData?.lrdi);
-          setTrackerQU(res.data.errorData?.quants);
+          setTracker(res.data.errorData?.sections)
+          // setTrackerVA(res.data.errorData?.varc);
+          // setTrackerLR(res.data.errorData?.lrdi);
+          // setTrackerQU(res.data.errorData?.quants);
           setLoading(false);
         } else {
           setLoading(false);
           showToastMessage();
-          console.log("error", res);
+          //console.log("error", res);
         }
       } catch (err) {
         setLoading(false);
-        console.log(err?.response?.data?.msg);
+        //console.log(err?.response?.data?.msg);
         showToastMessage(err?.response?.data?.msg);
       }
     };
@@ -190,7 +186,7 @@ export default function ViewSolution() {
   // Changing sectionwise data
 
   useEffect(() => {
-    console.log(data);
+    //console.log(data);
     if (data !== undefined) {
       if (selected === "varc") {
         setShow(data?.varc);
@@ -204,7 +200,7 @@ export default function ViewSolution() {
     }
 
     return setIndex(0);
-    // console.log(data[selected]);
+    // //console.log(data[selected]);
   }, [selected]);
 
   const buttonStyle = {
@@ -236,21 +232,21 @@ export default function ViewSolution() {
   };
 
   const handleErrorForm = async (e) => {
-    console.log(e.target.value);
+    //console.log(e.target.value);
     setErrValue(e.target.value);
     let type;
-    if (selected === "varc") {
-      type = "varc";
-    } else if (selected === "lrdi") {
-      type = "lrdi";
-    } else if (selected === "quants") {
-      type = "quants";
-    }
+    // if (selected === "varc") {
+    //   type = "varc";
+    // } else if (selected === "lrdi") {
+    //   type = "lrdi";
+    // } else if (selected === "quants") {
+    //   type = "quants";
+    // }
     const selectedObj = show[index];
-    console.log("slwlwlwlwl", selectedObj);
+    //console.log("slwlwlwlwl", selectedObj);
 
     const payload = {
-      question_id: selectedObj.question_id,
+      question_id: selectedObj._id,
       question: selectedObj.question,
       difficulty: selectedObj.difficulty,
       topic: selectedObj.topic,
@@ -267,103 +263,70 @@ export default function ViewSolution() {
           ? "skipped"
           : "incorrect",
     };
-
-    const res = await postToErrorTracker(attemptId, sectionName, payload);
-    console.log(res);
+    //console.log(payload);
+    const res = await postToErrorTracker(attemptId, sectionName, payload, uid);
+    //console.log(res);
     if (res?.status == 200) {
-      console.log(index);
-      if (type == "varc") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerVA];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerVA(arr);
-        // sessionStorage.setItem("errTrackerVA", JSON.stringify(arr));
+      //console.log(index);
+      const tempObj = {
+        question_id: selectedObj._id,
+        question: selectedObj.question,
+        error: e.target.value,
+      };
+      let arr = [...errTracker];
+      if (index < arr.length) {
+        arr.splice(index, 1, tempObj);
+      } else {
+        arr[index] = tempObj;
       }
-      if (type == "lrdi") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerLR];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerLR(arr);
-        // sessionStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
-      }
-      if (type == "quants") {
-        const tempObj = {
-          question_id: selectedObj.question_id,
-          question: selectedObj.question,
-          error: e.target.value,
-        };
-        let arr = [...errTrackerQU];
-        if (index < arr.length) {
-          arr.splice(index, 1, tempObj);
-        } else {
-          arr[index] = tempObj;
-        }
-        setTrackerQU(arr);
-        // sessionStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
-      }
+      setTracker(arr);
     }
   };
 
   // making state empty after question change
   useEffect(() => {
     if (selected === "varc") {
-      const tempObj = errTrackerVA?.[index];
-      console.log(tempObj);
+      const tempObj = errTracker?.[index];
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
         setErrValue("");
       }
     } else if (selected === "lrdi") {
-      const tempObj = errTrackerLR?.[index];
-      console.log(tempObj);
+      const tempObj = errTracker?.[index];
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
         setErrValue("");
       }
     } else if (selected === "quants") {
-      const tempObj = errTrackerQU?.[index];
-      console.log(tempObj);
+      const tempObj = errTracker?.[index];
+      //console.log(tempObj);
       if (tempObj?.error !== undefined) {
         setErrValue(tempObj.error);
       } else {
         setErrValue("");
       }
     }
-  }, [index, errTrackerVA, errTrackerLR, errTrackerQU, selected]);
+  }, [index, errTracker, selected]);
 
   // setting into local
 
   // useEffect(() => {
   //   if (JSON.parse(localStorage.getItem("errTrackerVA")).length > 0) {
   //     localStorage.setItem("errTrackerVA", JSON.stringify(errTrackerVA));
-  //     console.log("fewfewfw");
+  //     //console.log("fewfewfw");
   //   }
   //   localStorage.setItem("errTrackerLR", JSON.stringify(errTrackerLR));
   //   localStorage.setItem("errTrackerQU", JSON.stringify(errTrackerQU));
   // }, [index]);
-  console.log(errTrackerVA, errTrackerLR, errTrackerQU);
+  //console.log(errTracker);
 
-  // console.log(errValue);
-  // console.log(show);
-  // console.log(selected);
+  // //console.log(errValue);
+  // //console.log(show);
+  // //console.log(selected);
   const [errorOptions, setErrorOptions] = useState([]);
 
   //For changing  the options error card
@@ -380,10 +343,10 @@ export default function ViewSolution() {
           : IncorrectDetailing;
       setErrorOptions(options.slice(1));
     }
-    console.log("datatattaftaf", errorOptions);
+    //console.log("datatattaftaf", errorOptions);
   }, [index, show]);
-  console.log(selected);
-  console.log(defVal);
+  //console.log(selected);
+  //console.log(defVal);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -395,6 +358,7 @@ export default function ViewSolution() {
       <ToastContainer />
       <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
         <MenuDrawer />
+        {isErr==true?<ErrorPage errorMessage={errorMsg}/>:
         <Box component="main" sx={{ ml: "65px", height: "100%" }} ref={ref}>
           <Backdrop
             sx={{
@@ -629,7 +593,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[0]) || ""}
@@ -676,7 +639,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[1]) || ""}
@@ -723,7 +685,6 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
                                     {(show && show[index]?.options[2]) || ""}
@@ -770,10 +731,11 @@ export default function ViewSolution() {
                                       ? "#E94504"
                                       : "black"
                                   }
-                                  marginTop={2}
                                 >
                                   <Latex>
+                                    
                                     {(show && show[index]?.options[3]) || ""}
+
                                   </Latex>
                                 </Typography>
                               }
@@ -869,34 +831,36 @@ export default function ViewSolution() {
                         </Box>
                         <Box>
                           {" "}
-                          <Button
-                            onClick={handleOpenModal}
-                            style={{
-                              ...buttonStyle,
-                              padding: 12,
-                            }}
-                            sx={{
-                              background:
-                                show && show[index]?.isVideo === "No"
-                                  ? "lightgrey !important"
-                                  : "var(--blue-new)",
-                            }}
-                            disabled={
-                              show && show[index]?.isVideo === "No"
-                                ? true
-                                : false
-                            }
-                            startIcon={
-                              <img
-                                src="/playButton.png"
-                                alt=""
-                                className="img-fluid"
-                                width="15px"
-                              />
-                            }
-                          >
-                            Video Solution
-                          </Button>
+                          {show && show[index]?.isVideo === "Yes" && (
+                            <Button
+                              onClick={handleOpenModal}
+                              style={{
+                                ...buttonStyle,
+                                padding: 12,
+                              }}
+                              sx={{
+                                background:
+                                  show && show[index]?.isVideo === "No"
+                                    ? "lightgrey !important"
+                                    : "var(--blue-new)",
+                              }}
+                              // disabled={
+                              //   show && show[index]?.isVideo === "No"
+                              //     ? true
+                              //     : false
+                              // }
+                              startIcon={
+                                <img
+                                  src="/playButton.png"
+                                  alt=""
+                                  className="img-fluid"
+                                  width="15px"
+                                />
+                              }
+                            >
+                              Video Solution
+                            </Button>
+                          )}
                         </Box>
                       </Box>
                       {viewSol && (
@@ -1144,7 +1108,7 @@ export default function ViewSolution() {
               {/* Main center end */}
             </>
           )}
-        </Box>
+        </Box>}
       </Box>
     </>
   );

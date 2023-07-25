@@ -35,7 +35,7 @@ function CustomDot(props) {
 }
 
 function YourGraph({ goalData }) {
-    console.log(goalData)
+    //console.log(goalData)
   return (
       <LineChart
         width='100%'

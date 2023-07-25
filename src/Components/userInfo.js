@@ -72,7 +72,7 @@ export default function BasicModal() {
     e.preventDefault();
     const { name, email, uid, mockid } = value;
     navigate(`/terms/${name}/${email}/${uid}/${mockid}`);
-    console.log(value);
+    //console.log(value);
   };
 
   return (

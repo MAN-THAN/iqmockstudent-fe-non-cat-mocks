@@ -21,7 +21,7 @@ import { typographyStyles } from "../styleSheets/StyleNew";
 import { ApexChart } from "../Common-comp/CircleChart";
 import { motion } from "framer-motion";
 import { Rotate90DegreesCcw } from "@mui/icons-material";
-
+import ErrorPage from "../Pages/ErrorPage";
 function AnalysisMain() {
   const navigate = useNavigate();
   const params = useParams();
@@ -93,7 +93,7 @@ function AnalysisMain() {
   } = basicData;
 
 
-  console.log("percentile", percentile)
+  //console.log("percentile", percentile)
   const options = {
     margin: [0, 0, 0, 0],
     filename: "example.pdf",
@@ -121,14 +121,14 @@ function AnalysisMain() {
     setAnchorEl2(event.currentTarget);
   };
   const handleClose = (sub) => {
-    console.log("working");
+    //console.log("working");
     setAnchorEl(null);
     setSelected(sub);
     navigate(`sectionwise/${"quants"}`);
   };
 
   const handleCloseSubTopic = (sub) => {
-    console.log("subtopic working");
+    //console.log("subtopic working");
     setAnchorEl2(null);
     setSelected(sub);
 
@@ -140,7 +140,7 @@ function AnalysisMain() {
     });
     return;
   };
-  console.log(isErr);
+  
   useEffect(() => {
     if (isErr) {
       // showToastMessage();
@@ -178,15 +178,16 @@ function AnalysisMain() {
     },
   ];
 
-  console.log("Basic data", basicData);
+  //console.log("Basic data", basicData);
 
-  console.log("location", location)
+  //console.log("location", location)
 
   return (
     <>
       <ToastContainer />
       {isErr ? (
-        <div>Error occured, Try to reload the page</div>
+        
+        <ErrorPage errorMessage="Something Went Wrong! Please Reload!"/>
       ) : false ? (
         <div
           style={{
@@ -218,7 +219,7 @@ function AnalysisMain() {
               position: "absolute",
               left: "65px",
               padding: "15px",
-              width:"calc(100% - 65px)"
+              width: "calc(100% - 65px)",
             }}
           >
             <MenuDrawer />
@@ -395,7 +396,7 @@ function AnalysisMain() {
                       <div className="graph d-flex align-items-center justify-content-center">
                         <ApexChart
                           show={{ name: true, value: true }}
-                          series={[percentile]}
+                          series={[basicData?.[sectionName]?.percentile]}
                           title={"Percentile"}
                           style={{
                             height: 180,
@@ -453,7 +454,7 @@ function AnalysisMain() {
                               color: "#4149FF",
                             }}
                           >
-                            {percentile}
+                            {basicData?.[sectionName]?.percentile}
                           </Typography>
                         </div>
                       </Stack>
@@ -605,7 +606,7 @@ function AnalysisMain() {
                             title: "QA",
                           },
                         ].map((item) => {
-                          console.log("itemssmm", item);
+                          //console.log("itemssmm", item);
                           const sectionData = basicData[item.name]; // Retrieve the data for the current section
 
                           return (
@@ -673,7 +674,7 @@ function AnalysisMain() {
               {/* Buttons for changing sections */}
               <div className=" d-flex mt-3">
                 <div
-                  style={{ flexBasis: "70%" }}
+                  style={{ flexBasis: "75%" }}
                   className=" d-flex gap-3 ps-2"
                 >
                   <NavLink
@@ -840,7 +841,7 @@ function AnalysisMain() {
                 </div>
 
                 <div
-                  style={{ flexBasis: "30%" }}
+                  style={{ flexBasis: "25%" }}
                   className={
                     location.pathname ===
                     `/analysis/${mockId}/${attemptId}/overall`
@@ -868,12 +869,19 @@ function AnalysisMain() {
                     Time spent on questions:
                   </Box>
                   <span>
+                  <Tooltip
+                      title={
+                        "This will show total time spent by you on correct questions, incorrect questions and skipped questions"
+                      }
+                      arrow
+                    >
                     <img
                       src="/Group17.svg"
                       className="ms-2"
                       width={20}
                       alt=""
                     />
+                    </Tooltip>
                   </span>
                 </div>
               </div>

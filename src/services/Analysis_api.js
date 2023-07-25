@@ -40,11 +40,11 @@ export const fetchLeaderBoard = async (mockId, attemptId, uid) => {
   }
 };
 
-export const fetchOverallAcross = async (uid, attemptId) => {
+export const fetchOverallAcross = async (uid, attemptId,secType) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `api/student/v1/analyse/across/${uid}/${attemptId} `,
+      url: `api/student/v1/analyse/across/${uid}/${attemptId}/${secType} `,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -101,16 +101,18 @@ export const fetchErrorTracker = async (attemptId, uid) => {
 
 // POST ERROR TRACKER
 
-export const postToErrorTracker = async (attemptId, type, payload) => {
+export const postToErrorTracker = async (attemptId, type, payload, uid) => {
    const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/errortracker/${attemptId}/${type}`,
+      url: `/api/student/v1/errortracker/${attemptId}`,
       type: "POST",
       data: payload,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        attemptId : attemptId,
+        uid : uid
       },
     });
     return res;
@@ -145,12 +147,15 @@ export const getMockComparison = async (mockId, attemptId, uid) => {
 
 export const getPrevMockData = async (attemptId) => {
   const token = localStorage.getItem("auth_token");
+  const uid = JSON.parse(localStorage.getItem("userData"))._id
   try {
     const res = request({
       url: `/api/student/v1/analyse/getAttempts/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+        uid:uid,
+        attemptid:attemptId
       },
     });
     return res;
@@ -227,7 +232,7 @@ export const fetchMockStatus = async (mockId, attemptId, uid) => {
   const token = localStorage.getItem("auth_token");
   try {
     const res = request({
-      url: `/api/student/v1/leaderboard/mockstatus/${mockId}/${attemptId}`,
+      url: `/api/student/v1/view/mockstatus/sectional/${mockId}/${attemptId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

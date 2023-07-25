@@ -44,7 +44,7 @@ export default class LineGraph2 extends PureComponent {
 
   render() {
     const { minX, minY } = this.getMinValues();
-    console.log(minX, minY, this.props.percentile);
+    //console.log(minX, minY, this.props.percentile);
 
     return (
       <ResponsiveContainer width="100%" height="100%">

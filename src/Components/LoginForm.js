@@ -20,6 +20,7 @@ import { getPredictCollege } from "../services/Mock_api";
 import { LoadingButton } from "@mui/lab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { encode, decode } from "base-64";
 
 const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [category, setCategory] = useState("");
@@ -28,6 +29,8 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   const [dob, setDob] = useState(null);
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
+
+  //console.log("userDAta", userData);
   const {
     name: name_,
     email: email_,
@@ -39,13 +42,13 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     min12th,
     minWorkExInMon,
     mingrad,
-    graduationStream
+    graduationStream,
   } = userData;
 
-  console.log(program);
+  ////console.log(program);
   // Filling details if present
   useEffect(() => {
-    // console.log(name, gh);
+    // ////console.log(name, gh);
     if (name_ !== undefined) {
       values.name = name_;
     }
@@ -53,7 +56,16 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
       values.email = email_;
     }
     if (phone_ !== undefined) {
-      values.phone_number = phone_;
+      let inputValue = phone_;
+      if (
+        inputValue.length > 10 &&
+        (inputValue.startsWith("+91") || inputValue.startsWith("0"))
+      ) {
+        inputValue = inputValue.slice(
+          inputValue.startsWith("+91") ? 3 : inputValue.startsWith("0") ? 1 : 0
+        );
+      }
+      values.phone_number = Number(inputValue);
     }
     if (gender_ !== undefined) {
       setGender(gender_);
@@ -64,9 +76,6 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     // if (dob_ !== undefined) {
     //   setDob(dob_);
     // }
-    if (min10th !== undefined) {
-      values.class_10th_result = min10th;
-    }
     if (min10th !== undefined) {
       values.class_10th_result = min10th;
     }
@@ -92,12 +101,10 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
   }, [category, gender, program]);
 
   const storedValues = JSON.parse(localStorage.getItem("userData"));
-  const { name, email, phone } = storedValues || {};
+  // const { name, email, phone, class_10th_result } = storedValues || {};
 
   useEffect(() => {
     const selectedDateString = dob?.$d;
-    console.log(selectedDateString);
-    // console.log(selectedDateString)
     values.dob = selectedDateString;
   }, [dob]);
 
@@ -108,22 +115,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     return setLoading(false);
   };
 
-  function phoneValidationTest(message) {
-    return this.test("isValidPhone", message, function (value) {
-      const { path, createError } = this;
-      const stringVal = value?.toString() || "";
-
-      if (stringVal) {
-        if (stringVal.length < 10 || stringVal.length > 11) {
-          return createError({
-            path,
-            message: "Error",
-          });
-        }
-      }
-      return true;
-    });
-  }
+  const letterRegex = /^[1-9]\d*(\.\d{1,2})?$/;
 
   const initialValue = {
     name: "",
@@ -140,29 +132,62 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
     program: undefined,
   };
 
-  const initialValues = {
-    ...initialValue,
-    name: name || initialValue.name,
-    email: email || initialValue.email,
-    phone_number: phone || initialValue.phone_number,
-    // gender: gender || initialValue.gender,
-    // dob: dob || initialValue.dob,
-  };
-  // Define your validation schema
-  Yup.addMethod(Yup.mixed, "phoneValidation", phoneValidationTest);
   const validationSchema = Yup.object({
     name: Yup.string().matches("[A-Za-z]", "Must be text").required("Required"),
     email: Yup.string(),
-    phone_number: Yup.mixed().phoneValidation(""),
+    phone_number: Yup.string()
+      .min(10)
+      .matches(/^[0-9]{1,10}$/, "Must be a number with maximum 10 digits")
+      .required("Required"),
     gender: Yup.string(),
+    class_10th_result: Yup.string()
+      .min(2)
+      .max(5)
+      .matches(letterRegex, "Must be in correct format")
+      .required("Required"),
+    class_12th_result: Yup.string()
+      .min(2)
+      .max(5)
+      .matches(letterRegex, "Must be in correct format")
+      .required("Required"),
+    graduation_marks: Yup.string()
+      .min(2)
+      .max(5)
+      .matches(letterRegex, "Must be in correct format")
+      .required("Required"),
+    work_experience: Yup.string()
+      .matches("^[1-9][0-9]?$|^100$", "Must be in correct format")
+      .required("Required"),
   });
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched, setFieldTouched } = useFormik({
-    initialValues: initialValues,
+  const handlePercentageInputChange = (fieldName, inputValue, handleChange) => {
+    let formattedValue = inputValue.replace(/[^0-9.]/g, "");
+
+    if (formattedValue.length > 2) {
+      const decimalIndex = formattedValue.indexOf(".");
+      if (decimalIndex === -1) {
+        formattedValue =
+          formattedValue.slice(0, 2) + "." + formattedValue.slice(2);
+      } else if (formattedValue.slice(decimalIndex + 1).length > 2) {
+        formattedValue = formattedValue.slice(0, decimalIndex + 3);
+      }
+    }
+
+    handleChange({ target: { name: fieldName, value: formattedValue } });
+  };
+
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    touched,
+    setFieldTouched,
+  } = useFormik({
+    initialValues: initialValue,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      // setUserData(values)
       // api call(If any)
       const obj = {
         name: values.name,
@@ -183,18 +208,19 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
       try {
         const uid = JSON.parse(localStorage.getItem("userData"))?._id;
         const res = await getPredictCollege(uid, obj);
-        console.log(res);
+        ////console.log(res);
         if (res?.status == 200) {
           setLoading(false);
         }
-        console.log(res);
+        ////console.log(res);
         setCollege(res?.data.bschools);
       } catch (err) {
         showToastMessage();
-        console.log(err);
+        ////console.log(err);
       }
     },
   });
+  //console.log(values);
 
   return (
     <React.Fragment>
@@ -245,12 +271,21 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/user.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/user.png"
+                    />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
-              disabled={name_ === undefined ? false : true}
+              disabled={
+                name_ == undefined || name_ == null || name_ == ""
+                  ? false
+                  : true
+              }
               required
             />
             <TextField
@@ -268,12 +303,21 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/email.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/email.png"
+                    />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
-              disabled={email_ === undefined ? false : true}
+              disabled={
+                email_ == undefined || email_ == null || email_ == ""
+                  ? false
+                  : true
+              }
               required
             />
             <TextField
@@ -282,20 +326,36 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="phone_number"
               name="phone_number"
               label="Phone Number"
-              type="tel"
+              type="number"
               value={values.phone_number}
-              onChange={handleChange}
+              onChange={(e) => {
+                let inputValue = e.target.value.slice(0, 10);
+
+                handleChange({
+                  target: { name: "phone_number", value: inputValue },
+                });
+                e.target.value = inputValue;
+              }}
               error={touched.phone_number && Boolean(errors.phone_number)}
+              helperText={
+                touched.phone_number &&
+                Boolean(errors.phone_number) &&
+                "phone number must be 10 digits"
+              }
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/telephone.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/telephone.png"
+                    />
                   </InputAdornment>
                 ),
               }}
               autoComplete="off"
-              disabled={phone_ === undefined ? false : true}
               required
             />
             <FormControl size="small" sx={{ width: "48%" }} required>
@@ -303,7 +363,12 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img alt="no image" width="20px" height="20px" src="/gender-symbols.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/gender-symbols.png"
+                    />
                   </div>
                 )}
                 labelId="gender"
@@ -347,6 +412,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                   label="Date of Birth(optional)"
                   value={dob}
                   onChange={(newVal) => setDob(newVal)}
+                  disableFuture
                   renderInput={(params) => <TextField {...params} />}
                   slotProps={{ textField: { size: "small" } }}
                 />
@@ -358,21 +424,33 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="class_10th_result"
               name="class_10th_result"
               label="Class 10th Result(%)"
-              type="float"
+              type="text"
               value={values.class_10th_result}
-              onChange={handleChange}
-              error={touched.class_10th_result && Boolean(errors.class_10th_result)}
-              // helperText={touched.class_10th_result && errors.class_10th_result}
+              onChange={(e) =>
+                handlePercentageInputChange(
+                  "class_10th_result",
+                  e.target.value,
+                  handleChange
+                )
+              }
+              error={
+                touched.class_10th_result && Boolean(errors.class_10th_result)
+              }
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/school (2).png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/school(2).png"
+                    />
                   </InputAdornment>
                 ),
-                inputProps: { min: 0, max: 100 },
               }}
               autoComplete="off"
+              inputProps={{ maxLength: 5 }}
               required
             />
             <TextField
@@ -381,16 +459,29 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="class_12th_result"
               name="class_12th_result"
               label="Class 12th Result(%)"
-              type="float"
+              type="text"
               value={values.class_12th_result}
-              onChange={handleChange}
-              error={touched.class_12th_result && Boolean(errors.class_12th_result)}
+              onChange={(e) =>
+                handlePercentageInputChange(
+                  "class_12th_result",
+                  e.target.value,
+                  handleChange
+                )
+              }
+              error={
+                touched.class_12th_result && Boolean(errors.class_12th_result)
+              }
               // helperText={touched.class_12th_result && errors.class_12th_result}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/school (2).png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/school(2).png"
+                    />
                   </InputAdornment>
                 ),
                 inputProps: { min: 0, max: 100 },
@@ -404,16 +495,29 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="graduation_marks"
               name="graduation_marks"
               label="Graduation Marks(%)"
-              type="float"
+              type="text"
               value={values.graduation_marks}
-              onChange={handleChange}
-              error={touched.graduation_marks && Boolean(errors.graduation_marks)}
+              onChange={(e) =>
+                handlePercentageInputChange(
+                  "graduation_marks",
+                  e.target.value,
+                  handleChange
+                )
+              }
+              error={
+                touched.graduation_marks && Boolean(errors.graduation_marks)
+              }
               // helperText={touched.graduation_marks && errors.graduation_marks}
               variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/school (1).png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/school(1).png"
+                    />
                   </InputAdornment>
                 ),
                 inputProps: { min: 0, max: 100 },
@@ -450,12 +554,22 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               </MenuItem>
             ))}
           </TextField> */}
-            <FormControl size="small" sx={{ width: "48%" }} disabled={category_ === undefined ? false : true} required>
+            <FormControl
+              size="small"
+              sx={{ width: "48%" }}
+              disabled={category_ === undefined ? false : true}
+              required
+            >
               <InputLabel id="category">Category</InputLabel>
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img alt="no image" width="20px" height="20px" src="/application.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/application.png"
+                    />
                   </div>
                 )}
                 labelId="Category"
@@ -488,7 +602,12 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/salary.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/salary.png"
+                    />
                   </InputAdornment>
                 ),
                 inputProps: { min: 0, max: 100 },
@@ -501,7 +620,7 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               id="work_experience"
               name="work_experience"
               label="Work Experience(Mon)"
-              type="tel"
+              type="text"
               value={values.work_experience}
               onChange={handleChange}
               error={touched.work_experience && Boolean(errors.work_experience)}
@@ -510,7 +629,12 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <img alt="no image" width="20px" height="20px" src="/application.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/application.png"
+                    />
                   </InputAdornment>
                 ),
                 inputProps: { min: 0, max: 40 },
@@ -523,7 +647,12 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
               <Select
                 IconComponent={() => (
                   <div style={{ marginRight: "0.8em" }}>
-                    <img alt="no image" width="20px" height="20px" src="/application.png" />
+                    <img
+                      alt="no image"
+                      width="20px"
+                      height="20px"
+                      src="/application.png"
+                    />
                   </div>
                 )}
                 labelId="Program"
@@ -533,13 +662,20 @@ const LoginForm = ({ setCollege, percentile, setFormData }) => {
                 onChange={(e) => setProgram(e.target.value)}
               >
                 <MenuItem value={"btech"}>B.Tech</MenuItem>
-                <MenuItem value={"bca"}>BCA</MenuItem>
                 <MenuItem value={"bba"}>BBA</MenuItem>
                 <MenuItem value={"Bcom"}>B.Com</MenuItem>
+                <MenuItem value={"others"}>Others</MenuItem>
               </Select>
               {/* <FormHelperText>Disabled</FormHelperText> */}
             </FormControl>
-            <LoadingButton loading={loading} color="primary" variant="contained" width="5em" type="submit" endIcon={<img src="/arrowright.svg" />}>
+            <LoadingButton
+              loading={loading}
+              color="primary"
+              variant="contained"
+              width="5em"
+              type="submit"
+              endIcon={<img src="/arrowright.svg" />}
+            >
               Next
             </LoadingButton>
           </Box>

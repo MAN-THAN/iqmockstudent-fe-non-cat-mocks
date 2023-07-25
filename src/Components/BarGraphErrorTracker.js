@@ -167,7 +167,7 @@ const PieGraph = ({ Data, title, width, legend }) => {
     ...SkippedDetailing,
   ];
 
-  console.log("dataGraph", Data);
+  //console.log("dataGraph", Data);
  
 
  
@@ -177,7 +177,7 @@ const PieGraph = ({ Data, title, width, legend }) => {
     Object.keys(Data).length > 0 &&
     Object.keys(Data)
       .map((e) => {
-        console.log(Data[e],"hj")
+        //console.log(Data[e],"hj")
         const resObject = AllDetails.find((item) => item.value === e);
         return {
           name: e,

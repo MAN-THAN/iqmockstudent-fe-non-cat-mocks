@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# docker-file & other
+
+/Dockerfile
+/buildspec.yml
+/iqmockstudent-fe-sec-dev.conf
+/iqmockstudent-fe-sec-stg.conf
+/iqmockstudent-fe-sec-prod.conf
+/.env
+/src/setupProxy.js

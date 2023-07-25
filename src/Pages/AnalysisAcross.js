@@ -68,12 +68,6 @@ const GraphLegend = [
   { shade: "#FFC107", Value: "Skipped" },
 ];
 
-const Subjects = [
-  { name: "VARC", value: "varc" },
-  { name: "LRDI", value: "lrdi" },
-  { name: "Quants", value: "quants" },
-];
-
 const GraphListDetails = [
   { name: "Overall Precentile", value: "overallMocks" },
   { name: "VARC Percentile", value: "varcMocks" },
@@ -103,7 +97,7 @@ const DataTable = ({ data }) => {
               <TableCell align="left">
                 {row.attempted || row.numberOfAttemptedQuestions}
               </TableCell>
-              <TableCell align="left" sx={{color:"green"}}>
+              <TableCell align="left" sx={{ color: "green" }}>
                 {row.correct || row.numberOfCorrectAttempt}
               </TableCell>
               <TableCell align="left">
@@ -127,16 +121,16 @@ const CardStyle = {
   display: "flex",
   flexDirection: "row-reverse",
   justifyContent: "flex-end",
-  columnGap:10,
+  columnGap: 10,
   alignItems: "center",
-  alignContent:'center',
+  alignContent: "center",
 };
 
 const cardsColor = ["#FFD800", "#006CFF", "#46CB18"];
 
 function AnalysisAcross() {
   const params = useParams();
-  const [type, setType] = useState(null); // this state for the type of section
+  const [type, setType] = useState(localStorage.getItem("sectionType")); // this state for the type of section
   const [mocksList, setMocksList] = useState([]); // This state for setting the filter for left side list
   const [index, setIndex] = useState(0); // state for setting the index
   const [show, setShow] = useState([]); // this state for table data has been showing
@@ -144,10 +138,7 @@ function AnalysisAcross() {
   const [response, setResponse] = useState([]); // main Data that come from api set in this state
   const [topics, setTopics] = useState([]); // for weak strong and moderate card state
   const [topicsType, setTopicsType] = useState(null); //for topic and subtopic filter state
-  const [graph, setGraph] = useState({
-    data: [],
-    type: null,
-  }); //state for setting the line graph
+  const [graph, setGraph] = useState(null); //state for setting the line graph
 
   const {
     menuBarOpen,
@@ -156,19 +147,22 @@ function AnalysisAcross() {
     setLoading,
     isLoading,
     showToastMessage,
+    sectionName,
   } = useAuth();
+
+  //console.log("SectionNAme", sectionName);
 
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
-    if (graph.type) {
-      setGraph({ ...graph, data: response[graph.type] });
-    }
+   
     setShow(mocksList[index]?.data?.[type]);
-  }, [index, type, mocksList, graph.type]);
+  }, [index, type, mocksList, graph]);
 
   useEffect(() => {
     if (response) {
+      setGraph(response.overallMocks);
+      setType(response.sectionName);
       const topicWiseData = response?.[topicsType] || [];
       setMocksList(topicWiseData);
     }
@@ -178,8 +172,8 @@ function AnalysisAcross() {
     const uid = JSON.parse(localStorage.getItem("userData"))?._id;
     const fetchData = async (uid, attemptId) => {
       setLoading(true);
-      const response = await fetchOverallAcross(uid, attemptId);
-      console.log("Analysis across Data", response);
+      const response = await fetchOverallAcross(uid, attemptId, type);
+      //console.log("Analysis across Data", response);
       if (response?.status === 200) {
         setResponse(response.data);
         const topicWiseData = response.data?.[topicsType] || ["topicWise"];
@@ -199,7 +193,7 @@ function AnalysisAcross() {
     if (response.analysismetrics && type !== null) {
       const newTopics = { weak: [], moderate: [], strong: [] };
 
-      response.analysismetrics[0]?.["overall"].forEach((e) => {
+      response.analysismetrics[0]?.[response.sectionName].forEach((e) => {
         if (e.accuracy <= 30) {
           newTopics.weak.push({
             title: "Weak",
@@ -233,9 +227,9 @@ function AnalysisAcross() {
     element.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log("Mock List", mocksList);
-  console.log("show", show);
-  console.log("type", type);
+  //console.log("Mock List", mocksList);
+  //console.log("show", show);
+  //console.log("graph", graph);
 
   return (
     <>
@@ -369,18 +363,6 @@ function AnalysisAcross() {
 
                   {view === "Table" ? (
                     <>
-                      <Stack direction="row" justifyContent={"flex-end"}>
-                        <MultipleSelect
-                          options={GraphListDetails}
-                          defaultValue={topicsType}
-                          setType={(selectedValue) =>
-                            setGraph({
-                              ...graph,
-                              type: selectedValue,
-                            })
-                          }
-                        />
-                      </Stack>
                       <Stack
                         justifyContent={"center"}
                         my={5}
@@ -393,11 +375,17 @@ function AnalysisAcross() {
                           transition={{ duration: 1.0 }}
                           style={{ width: "80vw", height: "20em" }}
                         >
-                          <LineGraph
-                            Data={graph.data}
-                            xKey={"name"}
-                            ykey={"percentile"}
-                          />
+                          {graph && graph.length > 0 ? (
+                            <LineGraph
+                              Data={graph}
+                              xKey={"name"}
+                              ykey={"percentile"}
+                            />
+                          ) : (
+                            <div className="text-center">
+                              Graph Data Not Available
+                            </div>
+                          )}
                         </motion.div>
                       </Stack>
                       <hr />
@@ -435,7 +423,23 @@ function AnalysisAcross() {
 
                       {/* Table */}
                       <Box component="div" id="info" mt={4}>
-                        <DataTable data={show} />
+                        <Box component="div" id="info" mt={4}>
+                          {show && show.length > 0 ? (
+                            <DataTable data={show} />
+                          ) : (
+                            <Card
+                              className="text-center w-100"
+                              sx={{ padding: 2, borderRadius: 3 }}
+                            >
+                              <h6 className="pt-2">
+                                {topicsType &&
+                                  topicsType.charAt(0).toUpperCase() +
+                                    topicsType.slice(1).toLowerCase()}{" "}
+                                data not available
+                              </h6>
+                            </Card>
+                          )}
+                        </Box>
                       </Box>
 
                       {/* Cards of weak , moderate and  strong */}
@@ -495,30 +499,53 @@ function AnalysisAcross() {
                                     }}
                                   >
                                     <CardContent>
-                                      {topics?.[type.toLowerCase()].map(
-                                        (item, ind) => (
-                                          <motion.div
-                                            key={ind}
-                                            initial={{ opacity: 0, scale: 0.5 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ duration: 0.5 }}
-                                          >
-                                            <LogoCard
-                                              cardTitle={item.topic}
-                                              icon={"/Acc.png"}
-                                              style={{
-                                                ...CardStyle,
-                                                fontSize: "15px",
-                                                iconSize: 24,
-                                                width: "17.1em",
-                                                marginBottom: "15px",
-                                                justifyContent: "flex-end",
-                                                columnGap: "10px",
-                                                borderRadius: "15px",
+                                      {topics[type.toLowerCase()].length > 0 ? (
+                                        topics[type.toLowerCase()].map(
+                                          (item, ind) => (
+                                            <motion.div
+                                              key={ind}
+                                              initial={{
+                                                opacity: 0,
+                                                scale: 0.5,
                                               }}
-                                            />
-                                          </motion.div>
+                                              animate={{ opacity: 1, scale: 1 }}
+                                              transition={{ duration: 0.5 }}
+                                            >
+                                              <LogoCard
+                                                cardTitle={item.topic}
+                                                icon={"/Acc.png"}
+                                                style={{
+                                                  ...CardStyle,
+                                                  fontSize: "15px",
+                                                  iconSize: 24,
+                                                  width: "17.1em",
+                                                  marginBottom: "15px",
+                                                  justifyContent: "flex-end",
+                                                  columnGap: "10px",
+                                                  borderRadius: "15px",
+                                                }}
+                                              />
+                                            </motion.div>
+                                          )
                                         )
+                                      ) : (
+                                        <>
+                                          {" "}
+                                          <LogoCard
+                                            cardTitle={"No Topic"}
+                                            // icon={"/Acc.png"}
+                                            style={{
+                                              ...CardStyle,
+                                              fontSize: "15px",
+                                              iconSize: 24,
+                                              width: "17.1em",
+                                              marginBottom: "15px",
+                                              justifyContent: "flex-end",
+                                              columnGap: "10px",
+                                              borderRadius: "15px",
+                                            }}
+                                          />
+                                        </>
                                       )}
                                     </CardContent>
                                   </Card>
@@ -546,7 +573,7 @@ function AnalysisAcross() {
                       >
                         {show &&
                           show.map((item, ind) => {
-                            console.log(show);
+                            //console.log(show);
                             return (
                               <Box key={ind}>
                                 <Typography
@@ -581,39 +608,50 @@ function AnalysisAcross() {
                           })}
                       </motion.div>
 
-                      <Stack
-                        direction="row"
-                        spacing={2}
-                        justifyContent={"center"}
-                        mt={2}
-                      >
-                        {GraphLegend.map((e, ind) => {
-                          return (
-                            <div
-                              className="d-flex gap-1 align-items-center"
-                              key={ind}
-                            >
+                      {show && show.length > 0 ? (
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          justifyContent={"center"}
+                          mt={2}
+                        >
+                          {GraphLegend.map((e, ind) => {
+                            return (
                               <div
-                                style={{
-                                  borderRadius: "40%",
-                                  height: "24px",
-                                  width: "24px",
-                                  background: e.shade,
-                                }}
-                              ></div>
-                              <span
-                                style={{
-                                  fontSize: 13,
-                                  fontFamily: "var(--font-inter)",
-                                  fontWeight: 600,
-                                }}
+                                className="d-flex gap-1 align-items-center"
+                                key={ind}
                               >
-                                {e.Value}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </Stack>
+                                <div
+                                  style={{
+                                    borderRadius: "40%",
+                                    height: "24px",
+                                    width: "24px",
+                                    background: e.shade,
+                                  }}
+                                ></div>
+                                <span
+                                  style={{
+                                    fontSize: 13,
+                                    fontFamily: "var(--font-inter)",
+                                    fontWeight: 600,
+                                  }}
+                                >
+                                  {e.Value}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </Stack>
+                      ) : (
+                        <div className="text-center pt-5">
+                          <h6>
+                            {topicsType &&
+                              topicsType.charAt(0).toUpperCase() +
+                                topicsType.slice(1).toLowerCase()}{" "}
+                            data not Available
+                          </h6>
+                        </div>
+                      )}
                     </>
                   )}
                 </Box>
