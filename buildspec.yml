@@ -2,19 +2,19 @@ version: 0.2
 env:
   parameter-store:
     container_registry: "/iqmock/aws/docker_registry"
-    image_tag: "/iqmockstudent/fe/sec/dev/image_tag"
+    image_tag: "/iqmockstudent/fe/sec/prod/image_tag"
     aws_region: "/iqmock/aws/region"
     access_key: "/iqmock/aws/access-key"
     secret_key: "/iqmock/aws/secret-key"
-    namespace: "/iqmock/dev/namespace"
-    deployment: "/iqmockstudent/fe/sec/dev/deployment"
+    namespace: "/iqmock/prod/namespace"
+    deployment: "/iqmockstudent/fe/sec/prod/deployment"
 phases:
   install:
     run-as: root
     on-failure: ABORT
     commands:
       - echo Entered the install phase...
-      - yum update
+      #- yum update
       - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     finally:
