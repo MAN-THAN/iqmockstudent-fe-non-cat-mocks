@@ -77,6 +77,7 @@ useLayoutEffect(() => {
         setPreviousLocation(null);
       }
     }
+    
 
     // Check the initial screen size
     handleResize();
