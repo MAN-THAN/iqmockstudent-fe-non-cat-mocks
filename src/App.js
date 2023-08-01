@@ -34,11 +34,27 @@ function App() {
   const location = useLocation();
   const [previousLocation, setPreviousLocation] = useState(null);
   const [isUserAuth,setIsUserAuth]= useState(false);
-const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
+  const [authToken,setAuthToken] = useState(null);
   //  create query client
   const queryClient = new QueryClient();
   const isProduction =
-    process.env.REACT_APP_BASE_URL === "https://devsecapi.iqmock.iquanta.in";
+    process.env.REACT_APP_BASE_URL === "https://secapi.iqmock.iquanta.in";
+
+    // Checking user authentication
+console.log(authToken);
+console.log(isUserAuth)
+useEffect(() => {
+  const auth_token = localStorage.getItem("auth_token");
+  setAuthToken(auth_token);
+}, [localStorage.getItem("auth_token")]);
+
+useLayoutEffect(() => {
+  if (authToken) {
+    setIsUserAuth(true);
+  } else {
+    setIsUserAuth(false);
+  }
+}, [authToken]);
     
   useEffect(() => {
     function handleResize() {
@@ -74,17 +90,7 @@ const [authToken,setAuthToken] = useState(localStorage.getItem("auth_token"));
     };
   }, [navigate, previousLocation, location]);
 
-  useEffect(()=>{
-    
-    if(authToken=="undefined"||authToken=="null"||authToken==null||authToken==undefined||authToken=="")
-    {
-        setIsUserAuth(false);
-    }
-    else{
-      setIsUserAuth(true);
-    }
 
-  },[authToken]);
 
   // Rest of the component code...
 

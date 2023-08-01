@@ -804,7 +804,7 @@ function CenterMain() {
                 }}
               >
                 {" "}
-                You are viewing <b>{state.type === "varc" ? "Verbal Ability" : state.type === "lrdi" ? "LRDI" : "Quant"}</b> section
+                You are viewing <b>{sectionName}</b> section
               </Typography>
 
               <SubHeading
