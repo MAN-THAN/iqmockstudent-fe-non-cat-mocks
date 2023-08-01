@@ -4,7 +4,7 @@ import { RingLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import { getVerified } from "../services/Mock_api";
+import { getVerified,validateToken } from "../services/Mock_api";
 import Modal from "@mui/material/Modal";
 import { SubHeading } from "./../styleSheets/Style";
 import { MyButton } from "./../styleSheets/Style";
@@ -62,6 +62,7 @@ const MainUserAuth = () => {
         localStorage.getItem("questionStatus")
       );
       if (storedQuestionStatus) {
+        validateTokenFunc(userData.uid);
         setModal(true);
       } else {
         startVerification(); // ?doubtfu;!!!!!!!
@@ -120,6 +121,24 @@ const MainUserAuth = () => {
     }
   };
 
+  //function for token refresh
+  const validateTokenFunc=async(uid)=>{
+    try{
+      
+        const response =  await validateToken(uid);
+        if(response.status==200){
+          localStorage.setItem("auth_token",response?.data?.accessToken);
+        }
+        
+    }
+    catch(err){
+      showToastMessage(err?.response?.data?.message);
+      console.log(err);
+      setTimeout(() => {
+        window.location.href = "https://www.iquanta.in/cat-mock-test";
+      }, 2000);
+    }
+  }
   // Function for VERIFICATION
   const startVerification = async () => {
     ////console.log("verifying");
