@@ -251,7 +251,19 @@ function CenterMain() {
 
   useEffect(() => {
     showPreviousValue();
-    setCount(0);
+    if(questionStatus){
+      if(questionStatus[selectedQuestionIndex]?.duration)
+      {
+        setCount(Number(questionStatus[selectedQuestionIndex]?.duration));
+      }
+      else{
+       // alert('inside else');
+        setCount(0);
+      }}
+      else{
+        setCount(0);
+      }
+    
   }, [selectedQuestionIndex, questionStatus]);
 
   // Function setting stage "Not Answered" on just changing selectedQuestionIndex
