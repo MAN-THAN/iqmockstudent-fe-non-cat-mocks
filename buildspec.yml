@@ -6,8 +6,8 @@ env:
     aws_region: "/iqmock/aws/region"
     access_key: "/iqmock/aws/access-key"
     secret_key: "/iqmock/aws/secret-key"
-    namespace: "/iqmock/dev/namespace"
-    deployment: "/iqmockadmin/fe/dev/deployment"
+#    namespace: "/iqmock/dev/namespace"
+#    deployment: "/iqmockadmin/fe/dev/deployment"
     codecommit_username: "/iqmock/aws/codecommit/username"
     codecommit_credentials: "/iqmock/aws/codecommit/credentials"
 phases:
@@ -65,10 +65,10 @@ phases:
       - cd
       - pwd
       - cd /root/iqmock-gitops/dev/iqmockstudent-sec
-      - sed -i "s|$container_registry/$image_tag:latest|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
+      - sed -i "s|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
     finally:
       - echo Pushing code to Code Commit Repository
       - git add .
-      - git commit -am "updating iqmockadmin deployment yaml file"
+      - git commit -am "updating iqmockstudent-sec deployment yaml file"
       - git push origin main
       - echo Finished pushing to GIT Repository
