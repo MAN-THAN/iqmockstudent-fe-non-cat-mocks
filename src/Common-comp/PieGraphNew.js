@@ -31,9 +31,9 @@ const renderCustomizedLabel = ({
 const PieGraphNew = ({ color, data }) => {
   const COLORS = [...color];
   const newData = [
-    { name: data.topic, value: data.correct },
-    { name: data.topic, value: data.incorrect },
-    { name: data.topic, value: data.skipped },
+    { name: data.topic, value: data.correct ,index:0},
+    { name: data.topic, value: data.incorrect,index:1 },
+    { name: data.topic, value: data.skipped,index:2 },
   ].filter((data)=>data.value > 0);
 
   // const newData=[data]
@@ -57,7 +57,7 @@ const PieGraphNew = ({ color, data }) => {
           stroke="none"
         >
           {newData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={COLORS[entry.index % COLORS.length]} />
           ))}
         </Pie>
       </PieChart>

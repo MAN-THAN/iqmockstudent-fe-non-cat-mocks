@@ -1041,7 +1041,11 @@ export default function ViewSolution() {
                           ":hover , :focus": {
                             background: "#2a2b2b",
                           },
+                          ":disabled": {
+                            background: "lightgrey !important",
+                          },
                         }}
+                        disabled={index === show.length - 1}
                       >
                         Go to Next Question
                       </ModifyButton>
