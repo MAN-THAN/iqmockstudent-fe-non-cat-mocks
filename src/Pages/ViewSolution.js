@@ -769,7 +769,7 @@ export default function ViewSolution() {
                                 Correct Answer :{" "}
                                 {
                                   <Latex>
-                                    {(show && show[index]?.correctAnswer) || ""}
+                                    {(show && viewSol && show[index]?.correctAnswer) || ""}
                                   </Latex>
                                 }
                               </Typography>
