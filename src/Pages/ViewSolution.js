@@ -58,9 +58,8 @@ export default function ViewSolution() {
   const [sectionName, setSectionName] = useState();
   const [popoverAnchorEl, setPopoverAnchorEl] = React.useState(null);
   const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-  const [isErr,setIsErr]= useState(false);
-  const [errorMsg,setErrorMsg] = useState('');
-  
+  const [isErr, setIsErr] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
@@ -97,10 +96,10 @@ export default function ViewSolution() {
     //   }
     // );
     setIsErr(true);
-    if(msg==undefined){
-    setErrorMsg("Some error occurred! Please reload the page.")}
-    else{
-      setErrorMsg(msg)
+    if (msg == undefined) {
+      setErrorMsg("Some error occurred! Please reload the page.");
+    } else {
+      setErrorMsg(msg);
     }
 
     return (ref.current.style.display = "none");
@@ -162,7 +161,7 @@ export default function ViewSolution() {
           setData(res.data);
           setShow(res.data[res.data.sectionName]); // need to be chANGED later
           setSectionName(res.data.sectionName);
-          setTracker(res.data.errorData?.sections)
+          setTracker(res.data.errorData?.sections);
           // setTrackerVA(res.data.errorData?.varc);
           // setTrackerLR(res.data.errorData?.lrdi);
           // setTrackerQU(res.data.errorData?.quants);
@@ -358,47 +357,49 @@ export default function ViewSolution() {
       <ToastContainer />
       <Box sx={{ width: "100vw", height: "100Vh", p: 2 }}>
         <MenuDrawer />
-        {isErr==true?<ErrorPage errorMessage={errorMsg}/>:
-        <Box component="main" sx={{ ml: "65px", height: "100%" }} ref={ref}>
-          <Backdrop
-            sx={{
-              zIndex: (theme) => theme.zIndex.drawer - 1,
-              color: "#fff",
-            }}
-            open={menuBarOpen}
-            onClick={() => setMenuBarOpen(false)}
-          />
-          <Box component="div" sx={{ height: "10%" }}>
-            <HeaderNew />
-          </Box>
-          {isLoading ? (
-            <div
-              className="d-flex align-items-center flex-column gap-2 justify-content-center"
-              style={{ width: "100%", height: "80%" }}
-            >
-              <div class="loading-container">
-                <div class="loading"></div>
-                <div id="loading-text">Loading...</div>
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Navigation bar  */}
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  height: "10%",
-                  paddingTop: "1em",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                }}
+        {isErr == true ? (
+          <ErrorPage errorMessage={errorMsg} />
+        ) : (
+          <Box component="main" sx={{ ml: "65px", height: "100%" }} ref={ref}>
+            <Backdrop
+              sx={{
+                zIndex: (theme) => theme.zIndex.drawer - 1,
+                color: "#fff",
+              }}
+              open={menuBarOpen}
+              onClick={() => setMenuBarOpen(false)}
+            />
+            <Box component="div" sx={{ height: "10%" }}>
+              <HeaderNew />
+            </Box>
+            {isLoading ? (
+              <div
+                className="d-flex align-items-center flex-column gap-2 justify-content-center"
+                style={{ width: "100%", height: "80%" }}
               >
-                <div>
-                  {/* <MultipleSelect options={Subjects} setType={setSelected} /> */}
-                  {/* <FormControl
+                <div class="loading-container">
+                  <div class="loading"></div>
+                  <div id="loading-text">Loading...</div>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Navigation bar  */}
+                <Box
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    height: "10%",
+                    paddingTop: "1em",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div>
+                    {/* <MultipleSelect options={Subjects} setType={setSelected} /> */}
+                    {/* <FormControl
                     sx={{
                       display: "flex",
                       flexDirection: "row",
@@ -463,325 +464,329 @@ export default function ViewSolution() {
                         ))}
                     </Select>
                   </FormControl> */}
-                </div>
+                  </div>
 
-                <NavigationAvatar
-                  Data={show}
-                  setInd={setIndex}
-                  selectedQuestionIndex={index}
-                  difficulty={show && show[index]?.difficulty}
-                  setViewSoln={setViewSoln}
-                />
-              </Box>
-              {/* Navigation bar end */}
+                  <NavigationAvatar
+                    Data={show}
+                    setInd={setIndex}
+                    selectedQuestionIndex={index}
+                    difficulty={show && show[index]?.difficulty}
+                    setViewSoln={setViewSoln}
+                  />
+                </Box>
+                {/* Navigation bar end */}
 
-              {/* Main center start */}
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  gap: 1,
-                  height: "75vh",
-                  mt: "1em",
-                  pb: 1,
-                }}
-              >
-                {/* LEFT Main start */}
-                <div
-                  className="flex-column gap-3 "
-                  style={{
-                    width: "75%",
+                {/* Main center start */}
+                <Box
+                  component="div"
+                  sx={{
                     display: "flex",
-                    boxShadow: 3,
-                    border: "none",
-                    borderRadius: 5,
-                    height: "100%",
+                    gap: 1,
+                    height: "75vh",
+                    mt: "1em",
+                    pb: 1,
                   }}
                 >
-                  <Box
-                    sx={{
-                      width: "100%",
+                  {/* LEFT Main start */}
+                  <div
+                    className="flex-column gap-3 "
+                    style={{
+                      width: "75%",
                       display: "flex",
                       boxShadow: 3,
                       border: "none",
                       borderRadius: 5,
-                      height: "78%",
+                      height: "100%",
                     }}
-                    component={Paper}
                   >
                     <Box
-                      component="div"
-                      display={
-                        show && show[index]?.isPara === "Yes" ? "block" : "none"
-                      }
                       sx={{
-                        flexBasis: "60%",
-                        textAlign: "justify",
-                        height: "100%",
-                        overflow: "scroll",
-                        p: 3,
+                        width: "100%",
+                        display: "flex",
+                        boxShadow: 3,
+                        border: "none",
+                        borderRadius: 5,
+                        height: "78%",
                       }}
+                      component={Paper}
                     >
-                      <Latex>{(show && show[index]?.paragraph) || ""}</Latex>
-                    </Box>
-                    <Box
-                      component="div"
-                      sx={{
-                        flexBasis:
+                      <Box
+                        component="div"
+                        display={
                           show && show[index]?.isPara === "Yes"
-                            ? "40%"
-                            : "100%",
-                        textAlign: "justify",
-                        height: "100%",
-                        overflow: "scroll",
-                        p: 3,
-                      }}
-                    >
-                      <Typography fontWeight={600} variant="h6">
-                        QUESTION . {index + 1}
-                      </Typography>
-                      <div>
-                        <Typography variant="paragraph">
-                          <Latex>{(show && show[index]?.question) || ""}</Latex>
-                        </Typography>
-                      </div>
-                      <div>
-                        {/* <Typography variant="paragraph fw-bold">
-                  <Latex>{show[index]?.correctAnswer || ""}</Latex>
-                </Typography> */}
-                        {show[index]?.type === 1 ? (
-                          <Box
-                            sx={{ display: "flex", flexDirection: "column" }}
-                          >
-                            {" "}
-                            <FormControlLabel
-                              checked={
-                                show &&
-                                show[index]?.options[0] ===
-                                  show[index]?.correctAnswer
-                                  ? true
-                                  : show[index]?.options[0] ===
-                                    show[index]?.studentAnswer
-                                  ? true
-                                  : false
-                              }
-                              value={0}
-                              control={
-                                <Radio
-                                  color={
-                                    show &&
-                                    show[index]?.options[0] ===
-                                      show[index]?.correctAnswer
-                                      ? "success"
-                                      : show[index]?.options[0] ===
-                                        show[index]?.studentAnswer
-                                      ? "error"
-                                      : "default"
-                                  }
-                                  disableRipple
-                                />
-                              }
-                              label={
-                                <Typography
-                                  color={
-                                    show &&
-                                    show[index]?.options[0] ===
-                                      show[index]?.correctAnswer
-                                      ? "#63B31E"
-                                      : show[index]?.options[0] ===
-                                        show[index]?.studentAnswer
-                                      ? "#E94504"
-                                      : "black"
-                                  }
-                                >
-                                  <Latex>
-                                    {(show && show[index]?.options[0]) || ""}
-                                  </Latex>
-                                </Typography>
-                              }
-                            />
-                            <FormControlLabel
-                              checked={
-                                show &&
-                                show[index]?.options[1] ===
-                                  show[index]?.correctAnswer
-                                  ? true
-                                  : show[index]?.options[1] ===
-                                    show[index]?.studentAnswer
-                                  ? true
-                                  : false
-                              }
-                              value={1}
-                              control={
-                                <Radio
-                                  color={
-                                    show &&
-                                    show[index]?.options[1] ===
-                                      show[index]?.correctAnswer
-                                      ? "success"
-                                      : show[index]?.options[1] ===
-                                        show[index]?.studentAnswer
-                                      ? "error"
-                                      : "default"
-                                  }
-                                  disableRipple
-                                />
-                              }
-                              label={
-                                <Typography
-                                  color={
-                                    show &&
-                                    show[index]?.options[1] ===
-                                      show[index]?.correctAnswer
-                                      ? "#63B31E"
-                                      : show[index]?.options[1] ===
-                                        show[index]?.studentAnswer
-                                      ? "#E94504"
-                                      : "black"
-                                  }
-                                >
-                                  <Latex>
-                                    {(show && show[index]?.options[1]) || ""}
-                                  </Latex>
-                                </Typography>
-                              }
-                            />
-                            <FormControlLabel
-                              checked={
-                                show &&
-                                show[index]?.options[2] ===
-                                  show[index]?.correctAnswer
-                                  ? true
-                                  : show[index]?.options[2] ===
-                                    show[index]?.studentAnswer
-                                  ? true
-                                  : false
-                              }
-                              value={0}
-                              control={
-                                <Radio
-                                  color={
-                                    show &&
-                                    show[index]?.options[2] ===
-                                      show[index]?.correctAnswer
-                                      ? "success"
-                                      : show[index]?.options[2] ===
-                                        show[index]?.studentAnswer
-                                      ? "error"
-                                      : "default"
-                                  }
-                                  disableRipple
-                                />
-                              }
-                              label={
-                                <Typography
-                                  color={
-                                    show &&
-                                    show[index]?.options[2] ===
-                                      show[index]?.correctAnswer
-                                      ? "#63B31E"
-                                      : show[index]?.options[2] ===
-                                        show[index]?.studentAnswer
-                                      ? "#E94504"
-                                      : "black"
-                                  }
-                                >
-                                  <Latex>
-                                    {(show && show[index]?.options[2]) || ""}
-                                  </Latex>
-                                </Typography>
-                              }
-                            />
-                            <FormControlLabel
-                              checked={
-                                show &&
-                                show[index]?.options[3] ===
-                                  show[index]?.correctAnswer
-                                  ? true
-                                  : show[index]?.options[3] ===
-                                    show[index]?.studentAnswer
-                                  ? true
-                                  : false
-                              }
-                              value={0}
-                              control={
-                                <Radio
-                                  color={
-                                    show &&
-                                    show[index]?.options[3] ===
-                                      show[index]?.correctAnswer
-                                      ? "success"
-                                      : show[index]?.options[3] ===
-                                        show[index]?.studentAnswer
-                                      ? "error"
-                                      : "default"
-                                  }
-                                  disableRipple
-                                />
-                              }
-                              label={
-                                <Typography
-                                  color={
-                                    show &&
-                                    show[index]?.options[3] ===
-                                      show[index]?.correctAnswer
-                                      ? "#63B31E"
-                                      : show[index]?.options[3] ===
-                                        show[index]?.studentAnswer
-                                      ? "#E94504"
-                                      : "black"
-                                  }
-                                >
-                                  <Latex>
-                                    
-                                    {(show && show[index]?.options[3]) || ""}
-
-                                  </Latex>
-                                </Typography>
-                              }
-                            />
-                          </Box>
-                        ) : (
-                          <>
-                            {" "}
-                            <Typography color="black" fontWeight={600}>
-                              Your Answer :{" "}
-                              {show &&
-                              show[index]?.studentAnswer ==
-                                (null || undefined || "") ? (
-                                "NA"
-                              ) : (
-                                <Latex>
-                                  {show[index]?.studentAnswer || ""}
-                                </Latex>
-                              )}
-                            </Typography>
-                            <Typography
-                              marginTop={2}
-                              color="green"
-                              fontWeight={600}
-                            >
-                              Correct Answer :{" "}
-                              {
-                                <Latex>
-                                  {(show && show[index]?.correctAnswer) || ""}
-                                </Latex>
-                              }
-                            </Typography>
-                          </>
-                        )}
-                      </div>
+                            ? "block"
+                            : "none"
+                        }
+                        sx={{
+                          flexBasis: "60%",
+                          textAlign: "justify",
+                          height: "100%",
+                          overflow: "scroll",
+                          p: 3,
+                        }}
+                      >
+                        <Latex>{(show && show[index]?.paragraph) || ""}</Latex>
+                      </Box>
                       <Box
                         component="div"
                         sx={{
-                          display: "flex",
-                          justifyContent: "space-around",
-                          flexWrap: "wrap",
-                          rowGap: 2,
-                          marginTop: 2,
+                          flexBasis:
+                            show && show[index]?.isPara === "Yes"
+                              ? "40%"
+                              : "100%",
+                          textAlign: "justify",
+                          height: "100%",
+                          overflow: "scroll",
+                          p: 3,
                         }}
                       >
-                        {/* <LogoButton
+                        <Typography fontWeight={600} variant="h6">
+                          QUESTION . {index + 1}
+                        </Typography>
+                        <div>
+                          <Typography variant="paragraph">
+                            <Latex>
+                              {(show && show[index]?.question) || ""}
+                            </Latex>
+                          </Typography>
+                        </div>
+                        <div>
+                          {/* <Typography variant="paragraph fw-bold">
+                  <Latex>{show[index]?.correctAnswer || ""}</Latex>
+                </Typography> */}
+                          {show[index]?.type === 1 ? (
+                            <Box
+                              sx={{ display: "flex", flexDirection: "column" }}
+                            >
+                              {" "}
+                              <FormControlLabel
+                                checked={
+                                  show && viewSol
+                                    ? show[index]?.options[0] ===
+                                      show[index]?.correctAnswer
+                                      ? true
+                                      : show[index]?.options[0] ===
+                                        show[index]?.studentAnswer
+                                      ? true
+                                      : false
+                                    : false
+                                }
+                                value={0}
+                                control={
+                                  <Radio
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[0] ===
+                                        show[index]?.correctAnswer
+                                        ? "success"
+                                        : show[index]?.options[0] ===
+                                          show[index]?.studentAnswer
+                                        ? "error"
+                                        : "default" : "default"
+                                    }
+                                    disableRipple
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[0] ===
+                                        show[index]?.correctAnswer
+                                        ? "#63B31E"
+                                        : show[index]?.options[0] ===
+                                          show[index]?.studentAnswer
+                                        ? "#E94504"
+                                        : "black" : "black"
+                                    }
+                                  >
+                                    <Latex>
+                                      {(show && show[index]?.options[0]) || ""}
+                                    </Latex>
+                                  </Typography>
+                                }
+                              />
+                              <FormControlLabel
+                                checked={
+                                  show && viewSol ? 
+                                  show[index]?.options[1] ===
+                                    show[index]?.correctAnswer
+                                    ? true
+                                    : show[index]?.options[1] ===
+                                      show[index]?.studentAnswer
+                                    ? true
+                                    : false : false
+                                }
+                                value={1}
+                                control={
+                                  <Radio
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[1] ===
+                                        show[index]?.correctAnswer
+                                        ? "success"
+                                        : show[index]?.options[1] ===
+                                          show[index]?.studentAnswer
+                                        ? "error"
+                                        : "default" : "default"
+                                    }
+                                    disableRipple
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[1] ===
+                                        show[index]?.correctAnswer
+                                        ? "#63B31E"
+                                        : show[index]?.options[1] ===
+                                          show[index]?.studentAnswer
+                                        ? "#E94504"
+                                        : "black" : "black"
+                                    }
+                                  >
+                                    <Latex>
+                                      {(show && show[index]?.options[1]) || ""}
+                                    </Latex>
+                                  </Typography>
+                                }
+                              />
+                              <FormControlLabel
+                                checked={
+                                  show && viewSol ?
+                                  show[index]?.options[2] ===
+                                    show[index]?.correctAnswer
+                                    ? true
+                                    : show[index]?.options[2] ===
+                                      show[index]?.studentAnswer
+                                    ? true
+                                    : false : false
+                                }
+                                value={0}
+                                control={
+                                  <Radio
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[2] ===
+                                        show[index]?.correctAnswer
+                                        ? "success"
+                                        : show[index]?.options[2] ===
+                                          show[index]?.studentAnswer
+                                        ? "error"
+                                        : "default" : "default"
+                                    }
+                                    disableRipple
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[2] ===
+                                        show[index]?.correctAnswer
+                                        ? "#63B31E"
+                                        : show[index]?.options[2] ===
+                                          show[index]?.studentAnswer
+                                        ? "#E94504"
+                                        : "black" : "black"
+                                    }
+                                  >
+                                    <Latex>
+                                      {(show && show[index]?.options[2]) || ""}
+                                    </Latex>
+                                  </Typography>
+                                }
+                              />
+                              <FormControlLabel
+                                checked={
+                                  show && viewSol ?
+                                  show[index]?.options[3] ===
+                                    show[index]?.correctAnswer
+                                    ? true
+                                    : show[index]?.options[3] ===
+                                      show[index]?.studentAnswer
+                                    ? true
+                                    : false : false
+                                }
+                                value={0}
+                                control={
+                                  <Radio
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[3] ===
+                                        show[index]?.correctAnswer
+                                        ? "success"
+                                        : show[index]?.options[3] ===
+                                          show[index]?.studentAnswer
+                                        ? "error"
+                                        : "default" : "default"
+                                    }
+                                    disableRipple
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    color={
+                                      show && viewSol ?
+                                      show[index]?.options[3] ===
+                                        show[index]?.correctAnswer
+                                        ? "#63B31E"
+                                        : show[index]?.options[3] ===
+                                          show[index]?.studentAnswer
+                                        ? "#E94504"
+                                        : "black"
+                                        : "black"
+                                    }
+                                  >
+                                    <Latex>
+                                      {(show && show[index]?.options[3]) || ""}
+                                    </Latex>
+                                  </Typography>
+                                }
+                              />
+                            </Box>
+                          ) : (
+                            <>
+                              {" "}
+                              <Typography color="black" fontWeight={600}>
+                                Your Answer :{" "}
+                                {show &&
+                                show[index]?.studentAnswer ==
+                                  (null || undefined || "") ? (
+                                  "NA"
+                                ) : (
+                                  <Latex>
+                                    {show[index]?.studentAnswer || ""}
+                                  </Latex>
+                                )}
+                              </Typography>
+                              <Typography
+                                marginTop={2}
+                                color="green"
+                                fontWeight={600}
+                              >
+                                Correct Answer :{" "}
+                                {
+                                  <Latex>
+                                    {(show && show[index]?.correctAnswer) || ""}
+                                  </Latex>
+                                }
+                              </Typography>
+                            </>
+                          )}
+                        </div>
+                        <Box
+                          component="div"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            flexWrap: "wrap",
+                            rowGap: 2,
+                            marginTop: 2,
+                          }}
+                        >
+                          {/* <LogoButton
                       }
                     />
                   </Box>
@@ -818,301 +823,304 @@ export default function ViewSolution() {
                     "& $icon": { fontSize: 2 },
                   }}
                 /> */}
-                        <Box onClick={() => setViewSoln(true)}>
-                          {" "}
-                          <LogoButton
-                            name={"  View Solution"}
-                            icon={"/viewSol-icon.png"}
-                            style={{
-                              ...buttonStyle,
-                              "&:hover": { background: "var(--blue-new)" },
-                            }}
-                          />
-                        </Box>
-                        <Box>
-                          {" "}
-                          {show && show[index]?.isVideo === "Yes" && (
-                            <Button
-                              onClick={handleOpenModal}
+                          <Box onClick={() => setViewSoln(true)}>
+                            {" "}
+                            <LogoButton
+                              name={"  View Solution"}
+                              icon={"/viewSol-icon.png"}
                               style={{
                                 ...buttonStyle,
-                                padding: 12,
+                                "&:hover": { background: "var(--blue-new)" },
                               }}
-                              sx={{
-                                background:
-                                  show && show[index]?.isVideo === "No"
-                                    ? "lightgrey !important"
-                                    : "var(--blue-new)",
-                              }}
-                              // disabled={
-                              //   show && show[index]?.isVideo === "No"
-                              //     ? true
-                              //     : false
-                              // }
-                              startIcon={
-                                <img
-                                  src="/playButton.png"
-                                  alt=""
-                                  className="img-fluid"
-                                  width="15px"
-                                />
-                              }
-                            >
-                              Video Solution
-                            </Button>
-                          )}
+                            />
+                          </Box>
+                          <Box>
+                            {" "}
+                            {show && show[index]?.isVideo === "Yes" && (
+                              <Button
+                                onClick={handleOpenModal}
+                                style={{
+                                  ...buttonStyle,
+                                  padding: 12,
+                                }}
+                                sx={{
+                                  background:
+                                    show && show[index]?.isVideo === "No"
+                                      ? "lightgrey !important"
+                                      : "var(--blue-new)",
+                                }}
+                                // disabled={
+                                //   show && show[index]?.isVideo === "No"
+                                //     ? true
+                                //     : false
+                                // }
+                                startIcon={
+                                  <img
+                                    src="/playButton.png"
+                                    alt=""
+                                    className="img-fluid"
+                                    width="15px"
+                                  />
+                                }
+                              >
+                                Video Solution
+                              </Button>
+                            )}
+                          </Box>
                         </Box>
+                        {viewSol && (
+                          <Box ref={bottomRef} marginTop="2em">
+                            <Typography>
+                              <Latex>
+                                {(show && show[index]?.explanations) || ""}
+                              </Latex>
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
-                      {viewSol && (
-                        <Box ref={bottomRef} marginTop="2em">
-                          <Typography>
-                            <Latex>
-                              {(show && show[index]?.explanations) || ""}
-                            </Latex>
-                          </Typography>
-                        </Box>
-                      )}
                     </Box>
-                  </Box>
-                  {/* Lower cards section start */}
+                    {/* Lower cards section start */}
+                    <Box
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        // height: "auto",
+                      }}
+                    >
+                      <TempCompo
+                        studentAttempted={
+                          show && show[index]?.studentsAttempted
+                        }
+                        attemptedCorrect={show && show[index]?.attemptedCorrect}
+                        duration={
+                          show && show.length && "duration" in show[index]
+                            ? show[index].duration
+                            : "NA"
+                        }
+                        avgTimeSpent={show && show[index]?.averageDuration}
+                        topperDuration={show && show[index]?.durationByTopper}
+                      />
+                    </Box>
+                    {/* Lower cards section end */}
+                  </div>
+                  {/* MOdal for video link */}
+                  <div>
+                    {" "}
+                    <Modal
+                      open={open}
+                      onClose={handleCloseModal}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={show && show[index]?.videoLink}
+                        ></iframe>
+                      </Box>
+                    </Modal>
+                  </div>
+                  {/* left Main end */}
+
+                  {/* Right main start */}
+
                   <Box
                     component="div"
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      // height: "auto",
+                      width: "25%",
+                      background: "#F1F4F9",
+                      boxShadow: 3,
+                      textAlign: "justify",
+                      height: "100%",
+                      // overflow: "scroll",
+                      p: 2,
+                      paddingBottom: 0,
+                      borderRadius: 5,
                     }}
                   >
-                    <TempCompo
-                      studentAttempted={show && show[index]?.studentsAttempted}
-                      attemptedCorrect={show && show[index]?.attemptedCorrect}
-                      duration={
-                        show && show.length && "duration" in show[index]
-                          ? show[index].duration
-                          : "NA"
-                      }
-                      avgTimeSpent={show && show[index]?.averageDuration}
-                      topperDuration={show && show[index]?.durationByTopper}
-                    />
-                  </Box>
-                  {/* Lower cards section end */}
-                </div>
-                {/* MOdal for video link */}
-                <div>
-                  {" "}
-                  <Modal
-                    open={open}
-                    onClose={handleCloseModal}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={style}>
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={show && show[index]?.videoLink}
-                      ></iframe>
-                    </Box>
-                  </Modal>
-                </div>
-                {/* left Main end */}
-
-                {/* Right main start */}
-
-                <Box
-                  component="div"
-                  sx={{
-                    width: "25%",
-                    background: "#F1F4F9",
-                    boxShadow: 3,
-                    textAlign: "justify",
-                    height: "100%",
-                    // overflow: "scroll",
-                    p: 2,
-                    paddingBottom: 0,
-                    borderRadius: 5,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <Typography
+                    <Box
                       sx={{
-                        color: "#3B36DB",
-                        fontSize: 16,
-                        fontFamily: "var(--font-inter)",
-                        fontWeight: "900",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
                       }}
                     >
-                      Error Tracker
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#3B36DB",
-                        fontSize: 16,
-                        fontFamily: "var(--font-inter)",
-                        fontWeight: "900",
-                      }}
-                    >
-                      iQ GPT 1.0{" "}
-                      <span>
-                        <img
-                          src="/viewTracker.png"
-                          className="img-fluid mb-1"
-                          alt=""
-                        />
-                      </span>
-                    </Typography>
-                  </Box>
-                  <hr />
-                  <div
-                    className="d-flex flex-column justify-content-between"
-                    style={{ height: "85%" }}
-                  >
-                    <div className="flex-item">
                       <Typography
                         sx={{
-                          textAlign: "center",
-                          fontSize: "17px",
-                          fontWeight: 750,
-                          "& > span": {
-                            fontSize: 19,
-                          },
-                        }}
-                      >
-                        Why did you get it wrong?
-                      </Typography>
-                      <FormControl
-                        sx={{
-                          paddingTop: 1,
+                          color: "#3B36DB",
+                          fontSize: 16,
                           fontFamily: "var(--font-inter)",
-                          fontWeight: 800,
-                          textAlign: "start",
+                          fontWeight: "900",
                         }}
                       >
-                        <FormLabel id="demo-radio-buttons-group-label">
-                          {""}
-                        </FormLabel>
-                        <RadioGroup
-                          onChange={handleErrorForm}
-                          value={errValue}
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          name="radio-buttons-group"
-                        >
-                          {errorOptions &&
-                            errorOptions.map((item, _) => {
-                              return (
-                                <FormControlLabel
-                                  key={item.id}
-                                  value={item.value}
-                                  control={<Radio size="small" />}
-                                  label={item.value}
-                                />
-                              );
-                            })}
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
-
-                    {/* button for redirect to error page */}
-                    <div>
-                      <ModifyButton
-                        variant="outlined"
-                        onClick={() => {
-                          if (index < show.length) {
-                            setIndex((prevIndex) => prevIndex + 1);
-                          }
-                        }}
-                        endIcon={<BsChevronDoubleRight />}
+                        Error Tracker
+                      </Typography>
+                      <Typography
                         sx={{
-                          background: "#2a2b2b",
-                          p: 1,
-                          mb: 1,
-                          width: "100%",
-                          color: "white",
-                          fontWeight: "bold",
-                          borderRadius: "15px",
-                          fontSize: "15px",
-                          ":hover , :focus": {
-                            background: "#2a2b2b",
-                          },
-                          ":disabled": {
-                            background: "lightgrey !important",
-                          },
+                          color: "#3B36DB",
+                          fontSize: 16,
+                          fontFamily: "var(--font-inter)",
+                          fontWeight: "900",
                         }}
-                        disabled={index === show.length - 1}
                       >
-                        Go to Next Question
-                      </ModifyButton>
-
-                      <ModifyButton
-                        className="flex-item"
-                        aria-describedby="mouse-over-popover"
-                        onMouseEnter={handlePopoverOpen}
-                        onMouseLeave={handlePopoverClose}
-                        variant="outlined"
-                        onClick={() =>
-                          navigate(`/errortracker/${mockId}/${attemptId}`)
-                        }
-                        startIcon={
+                        iQ GPT 1.0{" "}
+                        <span>
                           <img
-                            src="/errorTracker.png"
-                            className="img-fluid"
-                            width={18}
+                            src="/viewTracker.png"
+                            className="img-fluid mb-1"
+                            alt=""
                           />
-                        }
-                        sx={{
-                          background: "#2a2b2b",
-                          p: 1,
-                          width: "100%",
-                          color: "white",
-                          fontWeight: "bold",
-                          borderRadius: "15px",
-                          fontSize: "15px",
-                          ":hover , :focus": {
-                            background: "#2a2b2b",
-                          },
-                        }}
-                      >
-                        Error Tracker Report
-                      </ModifyButton>
-                      <Popover
-                        id="mouse-over-popover"
-                        sx={{
-                          pointerEvents: "none",
-                        }}
-                        open={popOpen}
-                        anchorEl={popoverAnchorEl}
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "center",
-                        }}
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "left",
-                        }}
-                        onClose={handlePopoverClose}
-                        disableRestoreFocus
-                      >
-                        <Typography sx={{ p: 1 }}>
-                          Complete Mock Analysis to get the Exact Mock Analysis
-                          Report
+                        </span>
+                      </Typography>
+                    </Box>
+                    <hr />
+                    <div
+                      className="d-flex flex-column justify-content-between"
+                      style={{ height: "85%" }}
+                    >
+                      <div className="flex-item">
+                        <Typography
+                          sx={{
+                            textAlign: "center",
+                            fontSize: "17px",
+                            fontWeight: 750,
+                            "& > span": {
+                              fontSize: 19,
+                            },
+                          }}
+                        >
+                          Why did you get it wrong?
                         </Typography>
-                      </Popover>
+                        <FormControl
+                          sx={{
+                            paddingTop: 1,
+                            fontFamily: "var(--font-inter)",
+                            fontWeight: 800,
+                            textAlign: "start",
+                          }}
+                        >
+                          <FormLabel id="demo-radio-buttons-group-label">
+                            {""}
+                          </FormLabel>
+                          <RadioGroup
+                            onChange={handleErrorForm}
+                            value={errValue}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                          >
+                            {errorOptions &&
+                              errorOptions.map((item, _) => {
+                                return (
+                                  <FormControlLabel
+                                    key={item.id}
+                                    value={item.value}
+                                    control={<Radio size="small" />}
+                                    label={item.value}
+                                  />
+                                );
+                              })}
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+
+                      {/* button for redirect to error page */}
+                      <div>
+                        <ModifyButton
+                          variant="outlined"
+                          onClick={() => {
+                            if (index < show.length) {
+                              setIndex((prevIndex) => prevIndex + 1);
+                            }
+                          }}
+                          endIcon={<BsChevronDoubleRight />}
+                          sx={{
+                            background: "#2a2b2b",
+                            p: 1,
+                            mb: 1,
+                            width: "100%",
+                            color: "white",
+                            fontWeight: "bold",
+                            borderRadius: "15px",
+                            fontSize: "15px",
+                            ":hover , :focus": {
+                              background: "#2a2b2b",
+                            },
+                            ":disabled": {
+                              background: "lightgrey !important",
+                            },
+                          }}
+                          disabled={index === show.length - 1}
+                        >
+                          Go to Next Question
+                        </ModifyButton>
+
+                        <ModifyButton
+                          className="flex-item"
+                          aria-describedby="mouse-over-popover"
+                          onMouseEnter={handlePopoverOpen}
+                          onMouseLeave={handlePopoverClose}
+                          variant="outlined"
+                          onClick={() =>
+                            navigate(`/errortracker/${mockId}/${attemptId}`)
+                          }
+                          startIcon={
+                            <img
+                              src="/errorTracker.png"
+                              className="img-fluid"
+                              width={18}
+                            />
+                          }
+                          sx={{
+                            background: "#2a2b2b",
+                            p: 1,
+                            width: "100%",
+                            color: "white",
+                            fontWeight: "bold",
+                            borderRadius: "15px",
+                            fontSize: "15px",
+                            ":hover , :focus": {
+                              background: "#2a2b2b",
+                            },
+                          }}
+                        >
+                          Error Tracker Report
+                        </ModifyButton>
+                        <Popover
+                          id="mouse-over-popover"
+                          sx={{
+                            pointerEvents: "none",
+                          }}
+                          open={popOpen}
+                          anchorEl={popoverAnchorEl}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "left",
+                          }}
+                          onClose={handlePopoverClose}
+                          disableRestoreFocus
+                        >
+                          <Typography sx={{ p: 1 }}>
+                            Complete Mock Analysis to get the Exact Mock
+                            Analysis Report
+                          </Typography>
+                        </Popover>
+                      </div>
                     </div>
-                  </div>
+                  </Box>
+                  {/* Right main end */}
                 </Box>
-                {/* Right main end */}
-              </Box>
-              {/* Main center end */}
-            </>
-          )}
-        </Box>}
+                {/* Main center end */}
+              </>
+            )}
+          </Box>
+        )}
       </Box>
     </>
   );
