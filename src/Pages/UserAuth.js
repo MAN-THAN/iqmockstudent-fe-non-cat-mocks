@@ -49,7 +49,12 @@ const UserAuth = () => {
             attemptId: response.data.attemptId,
           },
         });
-      } else {
+      } 
+      if(response?.status ==202|| response?.status==201){
+        
+      }
+      
+      else {
         showToastMessage(response?.response?.data?.message);
         return;
       }

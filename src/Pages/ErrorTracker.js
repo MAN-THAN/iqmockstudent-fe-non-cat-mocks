@@ -341,11 +341,31 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <PieGraph
-                      Data={graphData && graphData[0]}
-                      width={"97%"}
-                      legend={false}
-                    />
+                   {show.length > 0 ? (
+                        <PieGraph
+                          Data={graphData && graphData[0]}
+                          width={"97%"}
+                          legend={false}
+                        />
+                      ) : (
+                        <Card
+                          sx={{
+                            height: "20em",
+                            mr: 2,
+                            color: "grey",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            justifyContent: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          <CardContent>
+                            Please fill the data in analysis tab <br></br>to
+                            generate the over the report here...
+                          </CardContent>
+                        </Card>
+                      )}
                   </Box>
                   <Box sx={{ mt: 2 }}>
                     <Typography
@@ -576,7 +596,23 @@ function ErrorTracker() {
                           </Box>
                         );
                       })
-                    : "<h1>No Questions</h1>"}
+                    : <Card
+                    sx={{
+                      height: "20em",
+                      mr: 2,
+                      color: "grey",
+                      display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    <CardContent>
+                      Please fill the data in analysis tab <br></br>to
+                      generate the over the report here...
+                    </CardContent>
+                  </Card>}
                 </Box>
                 {/*Question side box end*/}
               </Box>
