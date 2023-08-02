@@ -7,52 +7,68 @@ env:
     access_key: "/iqmock/aws/access-key"
     secret_key: "/iqmock/aws/secret-key"
     namespace: "/iqmock/dev/namespace"
-    deployment: "/iqmockstudent/fe/sec/dev/deployment"
+    deployment: "/iqmockadmin/fe/dev/deployment"
+    codecommit_username: "/iqmock/aws/codecommit/username"
+    codecommit_credentials: "/iqmock/aws/codecommit/credentials"
 phases:
   install:
     run-as: root
     on-failure: ABORT
     commands:
-      - echo Entered the install phase...
-     # - yum update
-      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      - echo Updating latest updates in linux...
+      - yum update -y
     finally:
-      - docker --version
-      - kubectl version --client
+      - docker --version      
       - aws configure set aws_access_key_id $access_key 
       - aws configure set aws_secret_access_key $secret_key 
       - aws configure set region $aws_region
       - aws configure get region
-      - echo This always runs even if the update or install command fails 
+      - echo AWS Access Key,Secret Key and Region is configured
   pre_build:
     run-as: root
     on-failure: ABORT
     commands:
       - echo Entered the pre_build phase...
       - aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $container_registry
-      - aws eks update-kubeconfig --region $aws_region --name iquanta-eks-01
-      - kubectl get nodes
-    finally:
-      - echo This always runs even if the login command fails
+      - echo ECR Docker Login has successful...
   build:
     run-as: root
     on-failure: ABORT
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - docker build -t $container_registry/$image_tag .
+      - echo $CODEBUILD_BUILD_NUMBER
+      - echo $buildnumber
+      - echo $CODEBUILD_BUILD_SUCCEEDING
+      - docker build -t $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER .
       - docker images
-      - docker push $container_registry/$image_tag
+      - docker push $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
+      - echo $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
     finally:
       - echo Build successfully completed
   post_build:
     run-as: root
     on-failure: ABORT
     commands:
-      - echo Entered the post_build phase...
-      - echo Build completed on `date`
-      - kubectl rollout restart -n $namespace deployment $deployment
+      - echo "Updating GIT Repository"
+      - touch ~/.git-credentials
+      - echo $codecommit_credentials
+      - echo $codecommit_credentials > ~/.git-credentials
+      - git config --global user.email "info@iquanta.in"
+      - echo "$codecommit_username"
+      - git config --global user.name "$codecommit_username"
+      - git config --global credential.helper 'store --file ~/.git-credentials'
+      - echo git crendentials saved successfully...
+      - echo $(($CODEBUILD_BUILD_NUMBER-1))
+      - pwd
+      - git clone -b main https://git-codecommit.ap-south-1.amazonaws.com/v1/repos/iqmock-gitops /root/iqmock-gitops
+      - cd
+      - pwd
+      - cd /root/iqmock-gitops/dev/iqmockadmin
+      - sed -i "s|$container_registry/$image_tag:latest|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
     finally:
-      - echo Kubectl deployment successfully completed...
-      - kubectl get deployments -n $namespace
+      - echo Pushing code to Code Commit Repository
+      - git add .
+      - git commit -am "updating iqmockadmin deployment yaml file"
+      - git push origin main
+      - echo Finished pushing to GIT Repository
