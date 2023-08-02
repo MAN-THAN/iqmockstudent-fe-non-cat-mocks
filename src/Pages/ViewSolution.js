@@ -826,7 +826,7 @@ export default function ViewSolution() {
                           <Box onClick={() => setViewSoln(true)}>
                             {" "}
                             <LogoButton
-                              name={"  View Solution"}
+                              name={"  Answer Key & Solution"}
                               icon={"/viewSol-icon.png"}
                               style={{
                                 ...buttonStyle,
