@@ -37,7 +37,7 @@ const UserAuth = () => {
     ////console.log("creating attemptid");
     try {
       const response = await getAttemptId(state.name, state.email, state.uid, state.mockId, state.setId);
-      //console.log(response);
+      console.log(response);
       if (response?.status === 200) {
         localStorage.setItem("attemptId", response.data.attemptId);
         localStorage.setItem("currMockId", state.mockId);
@@ -49,8 +49,14 @@ const UserAuth = () => {
             attemptId: response.data.attemptId,
           },
         });
-      } else {
-        showToastMessage(response?.response?.data?.message);
+      }else if(response?.status == 201 || response?.status == 202){
+        showToastMessage(response?.data?.message);
+        setTimeout(() => {
+          window.location.href = "https://www.iquanta.in/cat-mock-test";
+        }, 1000);
+      }
+       else {
+        showToastMessage(response?.data?.message);
         return;
       }
     } catch (err) {
