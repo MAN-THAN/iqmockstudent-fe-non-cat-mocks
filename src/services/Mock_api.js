@@ -107,6 +107,21 @@ export const getVerified = async (email, otp, mockId) => {
   }
 };
 
+//api for token validation 
+export const validateToken = async (uid) => {
+  try {
+    const token = localStorage.getItem("auth_token");
+    const res = request({
+      url: `/api/student/v1/verify/validate`,
+      type: "GET",
+      headers: { "Content-Type": "application/json" , Authorization:"Bearer "+ token ,uid:uid},
+    });
+    return res;
+  } catch (err) {
+    //console.log(err);
+    return err;
+  }
+};
 // discard button api(Resume mock)
 
 export const discardMock = async (attemptId, uid) => {

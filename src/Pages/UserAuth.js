@@ -50,10 +50,11 @@ const UserAuth = () => {
           },
         });
       }else if(response?.status == 201 || response?.status == 202){
-        showToastMessage(response?.data?.message);
+        showToastMessage(response?.data?.message||"Please Make a Purchase To Access!");
+        localStorage.clear();
         setTimeout(() => {
           window.location.href = "https://www.iquanta.in/cat-mock-test";
-        }, 1000);
+        }, 4000);
       }
        else {
         showToastMessage(response?.data?.message);

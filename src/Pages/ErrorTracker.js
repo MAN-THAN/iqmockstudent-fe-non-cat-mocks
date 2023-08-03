@@ -238,6 +238,7 @@ function ErrorTracker() {
     //return (ref.current.style.display = "none");
   };
 
+
   return (
     <>
       <ToastContainer />
@@ -341,11 +342,32 @@ function ErrorTracker() {
                       width: "35rem",
                     }}
                   >
-                    <PieGraph
-                      Data={graphData && graphData[0]}
-                      width={"97%"}
-                      legend={false}
-                    />
+                   {graphData?.length > 0 &&Object.values(graphData[0]).some(itm=>itm>0) ? (
+                        <PieGraph
+                          Data={graphData && graphData[0]}
+                          width={"97%"}
+                          legend={false}
+                        />
+                      ) : (
+                        <Card
+                          sx={{
+                            height: "20em",
+                            // mr: 2,
+                            color: "grey",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            mt:2
+                          }}
+                        >
+                          <CardContent>
+                            Please fill the data in analysis tab <br></br>to
+                            generate the over the report here...
+                          </CardContent>
+                        </Card>
+                      )}
                   </Box>
                   <Box sx={{ mt: 2 }}>
                     <Typography
@@ -445,7 +467,7 @@ function ErrorTracker() {
                       </div>
                     </div>
                   </div>
-                  {show
+                  {show.length>0
                     ? show.map((item, index) => {
                         const colorObj = colorDetailing.find(
                           (detail) => item.error === detail.value
@@ -576,7 +598,25 @@ function ErrorTracker() {
                           </Box>
                         );
                       })
-                    : "<h1>No Questions</h1>"}
+                    : <Card
+                    sx={{
+                      height: "20em",
+                      mr: 2,
+                      color: "grey",
+                      display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      mt:3
+                      
+                    }}
+                  >
+                    <CardContent>
+                      Please fill the data in analysis tab <br></br>to
+                      generate the over the report here...
+                    </CardContent>
+                  </Card>}
                 </Box>
                 {/*Question side box end*/}
               </Box>
