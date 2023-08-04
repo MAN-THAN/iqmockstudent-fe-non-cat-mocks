@@ -37,7 +37,7 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - echo $CODEBUILD_BUILD_NUMBER
+      - echo $CODEBUILD_BUILD_NUMBER-1
       - echo $buildnumber
       - echo $CODEBUILD_BUILD_SUCCEEDING
       - docker build -t $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1)) .
