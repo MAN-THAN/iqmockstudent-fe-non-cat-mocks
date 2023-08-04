@@ -40,10 +40,10 @@ phases:
       - echo $CODEBUILD_BUILD_NUMBER
       - echo $buildnumber
       - echo $CODEBUILD_BUILD_SUCCEEDING
-      - docker build -t $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER .
+      - docker build -t $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1)) .
       - docker images
-      - docker push $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
-      - echo $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
+      - docker push $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))
+      - echo $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))
     finally:
       - echo Build successfully completed
   post_build:
@@ -65,7 +65,7 @@ phases:
       - cd
       - pwd
       - cd /root/iqmock-gitops/dev/iqmockstudent
-      - sed -i "s|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER-1|g" deployment.yaml
+      - sed -i "s|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|g" deployment.yaml
     finally:
       - echo Pushing code to Code Commit Repository
       - git add .
