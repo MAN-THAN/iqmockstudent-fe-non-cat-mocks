@@ -40,10 +40,10 @@ phases:
       - echo $CODEBUILD_BUILD_NUMBER-1
       - echo $buildnumber
       - echo $CODEBUILD_BUILD_SUCCEEDING
-      - docker build -t $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1)) .
+      - docker build -t $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER .
       - docker images
-      - docker push $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))
-      - echo $container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))
+      - docker push $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
+      - echo $container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER
     finally:
       - echo Build successfully completed
   post_build:
@@ -65,10 +65,10 @@ phases:
       - cd
       - pwd
       - cd /root/iqmock-gitops/dev/iqmockstudent
-      - sed -i "s|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|g" deployment.yaml
+      - sed -i "s|$container_registry/$image_tag:v1.$(($CODEBUILD_BUILD_NUMBER-1))|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
     finally:
       - echo Pushing code to Code Commit Repository
       - git add .
-      - git commit -am "updating iqmockstudent deployment yaml file"
+      - git commit -am "updating iqmockstudent-sec deployment yaml file"
       - git push origin main
       - echo Finished pushing to GIT Repository
