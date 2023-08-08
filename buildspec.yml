@@ -64,7 +64,7 @@ phases:
       - git clone -b main https://git-codecommit.ap-south-1.amazonaws.com/v1/repos/iqmock-gitops /root/iqmock-gitops
       - cd
       - pwd
-      - cd /root/iqmock-gitops/dev/iqmockstudent
+      - cd /root/iqmock-gitops/dev/iqmockstudent-sec
       - sed -i "s|$container_registry/$image_tag:v1.41|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
     finally:
       - echo Pushing code to Code Commit Repository
