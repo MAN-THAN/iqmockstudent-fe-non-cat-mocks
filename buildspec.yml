@@ -65,7 +65,7 @@ phases:
       - cd
       - pwd
       - cd /root/iqmock-gitops/dev/iqmockstudent
-      - sed -i "s|$container_registry/$image_tag:v1.21|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
+      - sed -i "s|$container_registry/$image_tag:v1.41|$container_registry/$image_tag:v1.$CODEBUILD_BUILD_NUMBER|g" deployment.yaml
     finally:
       - echo Pushing code to Code Commit Repository
       - git add .
