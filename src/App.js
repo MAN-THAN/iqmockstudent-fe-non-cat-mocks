@@ -23,7 +23,6 @@ import OnBoarding from "./Pages/OnBoarding";
 import MainUserAuth from "./Pages/MainUserAuth";
 import MobileTemp from "./Pages/MobileTemp";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import ScoreVsPrecentile from "./Pages/ScoreVsPrecentile";
 import CacheBuster from "react-cache-buster";
 import version from "../package.json";
@@ -33,29 +32,26 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [previousLocation, setPreviousLocation] = useState(null);
-  const [isUserAuth,setIsUserAuth]= useState(false);
-  const [authToken,setAuthToken] = useState(null);
-  //  create query client
-  const queryClient = new QueryClient();
+  const [isUserAuth, setIsUserAuth] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
   const isProduction =
     process.env.REACT_APP_BASE_URL === "https://secapi.iqmock.iquanta.in";
+  // Checking user authentication
+  console.log(authToken);
+  console.log(isUserAuth);
+  useEffect(() => {
+    const auth_token = localStorage.getItem("auth_token");
+    setAuthToken(auth_token);
+  }, [localStorage.getItem("auth_token")]);
 
-    // Checking user authentication
-console.log(authToken);
-console.log(isUserAuth)
-useEffect(() => {
-  const auth_token = localStorage.getItem("auth_token");
-  setAuthToken(auth_token);
-}, [localStorage.getItem("auth_token")]);
+  useLayoutEffect(() => {
+    if (authToken) {
+      setIsUserAuth(true);
+    } else {
+      setIsUserAuth(false);
+    }
+  }, [authToken]);
 
-useLayoutEffect(() => {
-  if (authToken) {
-    setIsUserAuth(true);
-  } else {
-    setIsUserAuth(false);
-  }
-}, [authToken]);
-    
   useEffect(() => {
     function handleResize() {
       const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
@@ -77,7 +73,6 @@ useLayoutEffect(() => {
         setPreviousLocation(null);
       }
     }
-    
 
     // Check the initial screen size
     handleResize();
@@ -91,10 +86,7 @@ useLayoutEffect(() => {
     };
   }, [navigate, previousLocation, location]);
 
-
-
   // Rest of the component code...
-
   return (
     <CacheBuster
       currentVersion={version.version}
@@ -102,21 +94,53 @@ useLayoutEffect(() => {
       isVerboseMode={false} //If true, the library writes verbose logs to console.
       metaFileDirectory={"."} //If public assets are hosted somewhere other than root on your server.
     >
-      <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <Routes>
             <Route
               path="/:email/:otp/:setId/:mockId"
               element={<MainUserAuth />}
             />
-            <Route path="/instructions" element={isUserAuth==true?<Instructions />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
-            <Route path="/terms" element={isUserAuth==true?<Terms />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
-            <Route path="/user_authentication" element={isUserAuth==true?<UserAuth />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
+            <Route
+              path="/instructions"
+              element={
+                isUserAuth == true ? (
+                  <Instructions />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                isUserAuth == true ? (
+                  <Terms />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
+            />
+            <Route
+              path="/user_authentication"
+              element={
+                isUserAuth == true ? (
+                  <UserAuth />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
+            />
             <Route path="/mobileErrorPage" element={<MobileTemp />} />
 
             <Route
               path="/analysis/:mockId/:attemptId"
-              element={isUserAuth==true?<AnalysisMain />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <AnalysisMain />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             >
               <Route path="topicwise" element={<TopicAnalysis />} />
               <Route path="subtopicwise" element={<SubtopicAnalysis />} />
@@ -126,21 +150,54 @@ useLayoutEffect(() => {
             </Route>
             <Route
               path="/leaderboard/:mockId/:attemptId"
-              element={isUserAuth==true?<LeaderBoard />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <LeaderBoard />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
             <Route
               path="/viewsolutions/:mockId/:attemptId"
-              element={isUserAuth==true?<ViewSolution />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <ViewSolution />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
-            <Route path="/main" element={isUserAuth==true?<Protected Comp={Main} />:<ErrorPage errorMessage={"This link is not authorised."}/>} />
+            <Route
+              path="/main"
+              element={
+                isUserAuth == true ? (
+                  <Protected Comp={Main} />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
+            />
 
             <Route
               path="/analysisacross/:mockId/:attemptId"
-              element={isUserAuth==true?<AnalysisAcross />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <AnalysisAcross />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
             <Route
               path="/errortracker/:mockId/:attemptId"
-              element={isUserAuth==true?<ErrorTracker />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <ErrorTracker />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
             {/* <Route
             path="/goaltracker/:mockId/:attemptId"
@@ -148,20 +205,37 @@ useLayoutEffect(() => {
           /> */}
             <Route
               path="/marketplace/:mockId/:attemptId"
-              element={isUserAuth==true?<MarketPlace />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <MarketPlace />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
             <Route
               path="/mockcomparison/:mockId/:attemptId"
-              element={isUserAuth==true?<MockComparison />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <MockComparison />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
-             {/* <Route path="/onboarding" element={<OnBoarding />} />  */}
+            {/* <Route path="/onboarding" element={<OnBoarding />} />  */}
             <Route
               path="/scorevsprecentile/:mockId/:attemptId"
-              element={isUserAuth==true?<ScoreVsPrecentile />:<ErrorPage errorMessage={"This link is not authorised."}/>}
+              element={
+                isUserAuth == true ? (
+                  <ScoreVsPrecentile />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }
             />
           </Routes>
         </ThemeProvider>
-      </QueryClientProvider>
     </CacheBuster>
   );
 }

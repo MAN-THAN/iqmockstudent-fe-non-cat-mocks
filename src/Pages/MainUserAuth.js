@@ -17,6 +17,8 @@ import { Button } from "antd";
 import Box from "@mui/material/Box";
 import { discardMock } from "../services/Mock_api";
 import { Last } from "react-bootstrap/esm/PageItem";
+import { useDispatch } from "react-redux";
+import { addUserData } from "../store/slices/userDataSlice";
 
 const MainUserAuth = () => {
   const navigate = useNavigate();
@@ -241,6 +243,8 @@ const MainUserAuth = () => {
       }
     );
   };
+
+  const dispatch = useDispatch();
 
   return (
     <React.Fragment>
