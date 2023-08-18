@@ -48,42 +48,42 @@ function App() {
     if (authToken) {
       setIsUserAuth(true);
     } else {
-      setIsUserAuth(false);
+      setIsUserAuth(true); //change later
     }
   }, [authToken]);
 
   useEffect(() => {
-    function handleResize() {
-      const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
-      //console.log("Is mobile or tablet:", isMobileOrTablet, previousLocation);
+    // function handleResize() {
+    //   const isMobileOrTablet = window.matchMedia("(max-width:1000px)").matches;
+    //   //console.log("Is mobile or tablet:", isMobileOrTablet, previousLocation);
 
-      if (isMobileOrTablet) {
-        if (!previousLocation) {
-          //console.log("tyagi");
-          setPreviousLocation(location.pathname);
-          navigate("/mobileErrorPage");
-        }
-        // if (previousLocation) {
-        //   navigate("/mobileErrorPage");
-        // }
-      }
-      if (!isMobileOrTablet && previousLocation) {
-        //console.log("mantha");
-        navigate(previousLocation);
-        setPreviousLocation(null);
-      }
-    }
+    //   if (isMobileOrTablet) {
+    //     if (!previousLocation) {
+    //       //console.log("tyagi");
+    //       setPreviousLocation(location.pathname);
+    //       navigate("/mobileErrorPage");
+    //     }
+    //     // if (previousLocation) {
+    //     //   navigate("/mobileErrorPage");
+    //     // }
+    //   }
+    //   if (!isMobileOrTablet && previousLocation) {
+    //     //console.log("mantha");
+    //     navigate(previousLocation);
+    //     setPreviousLocation(null);
+    //   }
+    // }
 
-    // Check the initial screen size
-    handleResize();
+    // // Check the initial screen size
+    // handleResize();
 
-    // Add event listener to handle screen resize
-    window.addEventListener("resize", handleResize);
+    // // Add event listener to handle screen resize
+    // window.addEventListener("resize", handleResize);
 
-    // Cleanup by removing the event listener
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    // // Cleanup by removing the event listener
+    // return () => {
+    //   window.removeEventListener("resize", handleResize);
+    // };
   }, [navigate, previousLocation, location]);
 
   // Rest of the component code...
@@ -223,7 +223,13 @@ function App() {
                 )
               }
             />
-            {/* <Route path="/onboarding" element={<OnBoarding />} />  */}
+            <Route path="/onboarding" element={
+                isUserAuth == true ? (
+                  <OnBoarding />
+                ) : (
+                  <ErrorPage errorMessage={"This link is not authorised."} />
+                )
+              }/> 
             <Route
               path="/scorevsprecentile/:mockId/:attemptId"
               element={

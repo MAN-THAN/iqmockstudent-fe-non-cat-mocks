@@ -4,7 +4,7 @@ import Typography from "antd/es/typography/Typography";
 
 function HeaderNew({ style, logoPath }) {
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { _id, name, photoURL, mbrId } = userData;
+  const { _id , name, photoURL, mbrId } = userData;
 
   return (
     <header className="w-100">

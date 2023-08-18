@@ -152,11 +152,12 @@ const MainUserAuth = () => {
       if (response?.status == 200) {
         localStorage.setItem("auth_token", response?.data?.accessToken);
         localStorage.setItem("userData", JSON.stringify(response?.data?.data));
+        dispatch(addUserData(response?.data.data));
         const arr_length = response?.data?.attemptList?.length;
         //console.log(arr_length);
         if (arr_length == 0) {
           ////console.log("New user");
-          navigate(`/instructions`, {
+          navigate(`/onboarding`, {
             state: {
               mockId: mockId,
               setId: setId,

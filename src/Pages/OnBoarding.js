@@ -16,6 +16,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { getPredictCollege } from "../services/Mock_api";
 import PrettoSlider from "../Components/Slider";
 import JoyRide from "react-joyride";
+import Button from '@mui/material/Button';
+
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
@@ -233,11 +235,11 @@ function OnBoarding() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          paddingTop: 4,
-          paddingLeft: 6,
-          paddingRight: 6,
+          paddingTop: {xs : 2, sm :4, lg : 4},
+          paddingLeft: {xs : 2, sm :6, lg : 6},
+          paddingRight: {xs : 2, sm :6, lg : 6},
           width: "100vw",
-          height: "100vh",
+          height: {xs : "150vh", sm : "150vh", md : "100vh"},
           background: "url(/onboarding_image.png)",
           // overflowX: "hidden",
           // overflowY: "scroll",
@@ -266,16 +268,17 @@ function OnBoarding() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: {xs : "column", sm : "row"},
               width: "100%",
               justifyContent: "space-between",
+              gap : 4
             }}
           >
-            <Box sx={{ width: "40%", position: "relative" }} className="login_form">
+            <Box sx={{ width: {xs : "100%", sm : "100%", md : "40%"}, position: "relative" }} className="login_form">
               <LoginFormNew setCollege={setCollege} percentile={percentile} setFormData={setFormData} />
               {/* <Box sx={{ position: "absolute", top: 40, left: "50%" }} className="login_form"></Box> */}
             </Box>
-            <Box sx={{ width: "58%" }}>
+            <Box sx={{ width: {xs : "100%", sm : "100%", md : "58%"} }}>
               {startMock ? (
                 <Box sx={{ width: "100%" }}>
                   <Box
@@ -461,7 +464,7 @@ function OnBoarding() {
           </Box>
           <Box
             sx={{
-              marginTop: 1.5,
+              marginTop: "7vh",
               width: "100%",
               display: "flex",
               flexDirection: "row",
@@ -492,15 +495,10 @@ function OnBoarding() {
             </Box>
             <Box sx={{ marginTop: 1 }}>
               {/* <Button onClick={handleSubmit}>Start Mock</Button> */}
-              <button onClick={handleSubmit} className="custom-btn btn-12">
-                <span style={{ fontSize: 18, paddingTop: 4 }}>Click!</span>
-                <span style={{ fontSize: 18, paddingTop: 4 }} className="startMock">
-                  Start Mock
-                </span>
-              </button>
+              <Button sx={{width : {xs : "10em", sm : "10em", md : "12em"}, height : "3.5em", fontSize : "14px"}} variant="contained" onClick={handleSubmit}>Start Mock</Button>
             </Box>
           </Box>
-          <Box onClick={handleSlider} sx={{ marginTop: 0, width: "85%" }}>
+          <Box onClick={handleSlider} sx={{ marginTop: {xs : 1, sm : 0}, width: "85%" }}>
             {/* <Slider
               marks={ptle}
               disabled={disabled}
