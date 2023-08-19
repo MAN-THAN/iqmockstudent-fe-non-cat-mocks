@@ -17,19 +17,19 @@ import { getPredictCollege } from "../services/Mock_api";
 import PrettoSlider from "../Components/Slider";
 import JoyRide from "react-joyride";
 import Button from '@mui/material/Button';
+import { useSelector } from "react-redux";
 
 
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
   const [startMock, setStartMock] = useState(false);
-
+  const userData = useSelector((state) => state.userData);
   const navigate = useNavigate();
   const { state } = useLocation();
-  const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-  const mbrId = JSON.parse(localStorage.getItem("userData"))?.uid;
-  const name = JSON.parse(localStorage.getItem("userData"))?.name;
-  const email = JSON.parse(localStorage.getItem("userData"))?.email;
+  const uid = userData?._id;
+  const name = userData?.name;
+  const email = userData?.email;
   const [expandForm, setExpandForm] = useState(true);
   const [expandPtle, setExpandPtle] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -138,7 +138,7 @@ function OnBoarding() {
     //console.log(e.target.value);
     setPercentile(e.target.value);
     try {
-      const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+      const uid = userData?._id;
       const res = await getPredictCollege(uid, {
         ...formData,
         minPercentile: e.target.value,

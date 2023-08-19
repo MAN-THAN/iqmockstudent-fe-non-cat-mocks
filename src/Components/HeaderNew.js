@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Typography from "antd/es/typography/Typography";
+import { useSelector } from "react-redux";
 
 function HeaderNew({ style, logoPath }) {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  const { _id , name, photoURL, mbrId } = userData;
-
+  const data = useSelector((state) => state.userData);
   return (
     <header className="w-100">
       <div className="d-flex flex-row align-items-center justify-content-between">
@@ -23,7 +22,7 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-              {name}
+              {data?.name}
             </Typography>
             <Typography
               style={{
@@ -34,12 +33,12 @@ function HeaderNew({ style, logoPath }) {
                 ...style,
               }}
             >
-              UID : {mbrId}
+              UID : {data?.mbrId}
             </Typography>
           </div>
 
           <div className="d-flex">
-            <img src={photoURL} alt="mdo" width="50" height="50" className="rounded" />
+            <img src={data?.photoURL} alt="mdo" width="50" height="50" className="rounded" />
           </div>
         </div>
       </div>

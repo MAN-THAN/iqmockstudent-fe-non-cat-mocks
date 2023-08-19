@@ -22,9 +22,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { encode, decode } from "base-64";
+import { useSelector } from "react-redux";
 
 function LoginFormNew({ setCollege, percentile, setFormData }) {
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = useSelector((state) => state.userData);
     const {
         name: name_,
         email: email_,
@@ -116,7 +117,7 @@ function LoginFormNew({ setCollege, percentile, setFormData }) {
             setLoading(true);
 
             try {
-                const uid = JSON.parse(localStorage.getItem("userData"))?._id;
+                const uid = userData?._id;
                 const res = await getPredictCollege(uid, obj);
                 //console.log(res);
                 if (res?.status == 200) {
