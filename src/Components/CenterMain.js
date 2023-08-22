@@ -20,6 +20,7 @@ import { fetchQuestions } from "../services/Mock_api";
 import { PuffLoader } from "react-spinners";
 import ImageButton from "./ImageButton";
 import NewTimer from "./TimerNew";
+import { useSelector } from "react-redux";
 
 function CenterMain() {
   const params = useParams();
@@ -36,6 +37,9 @@ function CenterMain() {
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
   //console.log("Question status", questionStatus);
+  // Redux store access
+  const {mockname, sections, isToggleAllowed, isCalculatorAllowed} = useSelector((state) => state.mockData);
+  // console.log(mockData);
 
   // syncing question status with local
   useEffect(() => {
@@ -89,11 +93,9 @@ function CenterMain() {
     let question = localStorage.getItem("lastAttemptedQuestionIndex");
     //console.log("question:", question);
     if (question == "undefined" || question == "null") {
-
       setSelectedQuestionIndex(0);
     }
     else {
-
       setSelectedQuestionIndex(Number(localStorage.getItem("lastAttemptedQuestionIndex")));
     }
 
@@ -378,44 +380,20 @@ function CenterMain() {
         <div className="col-9 " style={{ height: "100%" }}>
           <div className="row ">
             <div className="container">
-              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Section</SubHeading>
+              <SubHeading sx={{ color: "black", textAlign: "start", pl: 1 }}>Sections</SubHeading>
               <div className="d-flex justify-content-between align-items-baseline py-1">
                 <Stack spacing={2} direction="row">
                   {/* Only one button show in section part */}
-                  <BootstrapButton
-                    height="41"
+                 {sections?.map((section) => {
+                  return ( <BootstrapButton
+                    height="36"
                     disabled={state.type === "varc" || state.type === "quants" ? true : false}
                     variant="contained"
                     sx={{ borderRadius: "20px" }}
                   >
-                    {sectionName?.toUpperCase()}
-                  </BootstrapButton>
-
-                  {/* <BootstrapButton
-                    height="41"
-                    sx={{ borderRadius: "20px" }}
-                    disabled={
-                      state.type === "quants" || state.type === "lrdi"
-                        ? true
-                        : false
-                    }
-                    variant="contained"
-                  >
-                    Verbal Ability
-                  </BootstrapButton> */}
-
-                  {/* <BootstrapButton
-                    height="41"
-                    disabled={
-                      state.type === "varc" || state.type === "lrdi"
-                        ? true
-                        : false
-                    }
-                    variant="contained"
-                    sx={{ borderRadius: "20px" }}
-                  >
-                    Quant
-                  </BootstrapButton> */}
+                    {section.name?.toUpperCase()}
+                  </BootstrapButton>)
+                 })}
                 </Stack>
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
@@ -431,11 +409,11 @@ function CenterMain() {
                       />
                     </Tooltip>
                   </span>
-                  <span role="button">
+                  {isCalculatorAllowed ? (  <span role="button">
                     <Tooltip title="Calculator">
                       <Calc />
                     </Tooltip>
-                  </span>
+                  </span>) : (<></>)}
 
                   <div
                     className="timer fw-bold"

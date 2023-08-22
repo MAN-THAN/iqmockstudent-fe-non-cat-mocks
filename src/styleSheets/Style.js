@@ -125,9 +125,9 @@ export const MyButton = styled(Button)(({ height }) => ({
 export const BootstrapButton = styled(LoadingButton)(({ height }) => ({
   boxShadow: "none",
   textTransform: "none",
-  fontSize: "15px",
-  fontWeight: 600,
-  width: "219px",
+  fontSize: "14px",
+  fontWeight: 550,
+  width: "130px",
   height: `${height}px`,
   color: "black",
   borderRadius: "15px",

@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 function OnBoarding() {
   const [percentile, setPercentile] = useState(90);
   const [college, setCollege] = useState(null);
-  const [startMock, setStartMock] = useState(false);
+  const [startMock, setStartMock] = useState(true); //need to change later
   const userData = useSelector((state) => state.userData);
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -99,7 +99,7 @@ function OnBoarding() {
   // //console.log(percentile);
   const handleSubmit = () => {
     if (startMock) {
-      navigate("/user_authentication", {
+      navigate("/instructions", {
         state: {
           name: name,
           email: email,

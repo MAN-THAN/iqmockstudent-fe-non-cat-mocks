@@ -2,14 +2,13 @@ import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styleSheets/header.css";
+import { useSelector } from "react-redux";
 
 function Header() {
-  const userName = JSON.parse(localStorage.getItem("userData"))?.name;
-  const userID = JSON.parse(localStorage.getItem("userData"))?.mbrId;
-  const img_url = JSON.parse(localStorage.getItem("userData"))?.photoURL;
-  const mock_name = localStorage.getItem("mockName");
   
-
+  const {mockname} = useSelector((state) => state.mockData);
+  const {name, mbrId, photoURL } = useSelector((state) => state.userData);
+  
   return (
     <header className="p-0 m-0 text-bg-dark">
       <div className="container-fluid  ">
@@ -19,17 +18,17 @@ function Header() {
           </div>
           <div className="flex-item pt-1 ms-1 ps-5">
             <Typography variant="h4" sx={{ fontSize: "25px" }}>
-              {mock_name ? mock_name : "iCAT 2023"}
+              {mockname ? mockname : "iCAT 2023"}
             </Typography>
           </div>
 
           <div className="d-flex gap-3  justify-self-end">
             <div className="text-end">
-              <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "20px", fontWeight: 400 }}>{userName}</Typography>
-              <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>UID : {userID}</Typography>
+              <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "20px", fontWeight: 400 }}>{name}</Typography>
+              <Typography sx={{ fontFamily: "var(--font-inder)", fontSize: "13px", fontWeight: 400 }}>UID : {mbrId}</Typography>
             </div>
             <div className="">
-              <img src={img_url} alt="mdo" width="50" height="50" className="rounded" />
+              <img src={photoURL} alt="mdo" width="50" height="50" className="rounded" />
             </div>
           </div>
         </div>
