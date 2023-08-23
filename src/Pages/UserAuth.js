@@ -5,8 +5,7 @@ import { RingLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addMockData } from "../store/slices/mockDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserAuth = () => {
   const navigate = useNavigate();
@@ -39,19 +38,6 @@ const UserAuth = () => {
   // Function for creating attempt id
   const createAttemptId = async () => {
     ////console.log("creating attemptid");
-    dispatch(
-      addMockData({
-        mockname: "TISS",
-        sections: [
-          { name: "QUANTS", timing: 30, question: [] },
-          { name: "VARC", timing: 30, question: [] },
-          { name: "LRDI", timing: 30, question: [] },
-          { name: "GK", timing: 30, question: [] },
-        ],
-        isCalculatorAllowed: false,
-        isToggleAllowed: true,
-      })
-    );
     try {
       const response = await getAttemptId(
         state.name,

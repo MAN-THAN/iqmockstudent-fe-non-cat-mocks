@@ -7,8 +7,11 @@ const mockDataSlice = createSlice({
     addMockData(state, action) {
       return {...action.payload};
     },
+    addStudentResponse (state, action){
+      return {...state, studentResponse : action.payload}
+    }
   },
 });
 
 export default mockDataSlice.reducer;
-export const { addMockData } = mockDataSlice.actions;
+export const { addMockData, addStudentResponse } = mockDataSlice.actions;
