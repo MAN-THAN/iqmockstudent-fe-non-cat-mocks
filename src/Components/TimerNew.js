@@ -62,7 +62,7 @@ const NewTimer = ({
 
   //Accessing redux store
 
-  const { isToggleAllowed, studentResponse } = useSelector(
+  const { isToggleAllowed, studentResponse, sections } = useSelector(
     (state) => state.mockData
   );
   useEffect(() => {
@@ -86,14 +86,17 @@ const NewTimer = ({
     window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
     window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
   }, [seconds, minutes, currentSection]);
+  console.log(counterTimeStamp)
 
   const submitSectionFunc = async (subject) => {
     // alert('submitSection');
     ////console.log("working");
     ////console.log(studentAnswersData);
     if (!isToggleAllowed) {
-      setCurrentSectionIndex(currentSectionIndex++);
-      window.localStorage.setItem(COUNTER_KEY_MIN, 30);
+      setCurrentSectionIndex(currentSectionIndex+1);
+      window.localStorage.setItem(COUNTER_KEY_MIN, 2);
+      setCounterTimeStamp(2)
+      restart(expiryTimestamp.getSeconds() + 2*60);
       return;
     }
     setIsLoaded(true);

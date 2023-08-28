@@ -277,7 +277,7 @@ const UserAuth = () => {
           },
         ])
       );
-      window.localStorage.setItem(COUNTER_KEY_MIN, 20)
+      window.localStorage.setItem(COUNTER_KEY_MIN, 2)
       const response = await getAttemptId(
         state.name,
         state.email,
