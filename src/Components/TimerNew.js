@@ -12,17 +12,10 @@ import { Button } from "antd";
 import { Image } from "react-bootstrap";
 import { MyButton } from "./../styleSheets/Style";
 import { encode, decode } from "base-64";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentSectionIndex } from "../store/slices/mockDataSlice";
 
-const NewTimer = ({
-  initMinute,
-  initSeconds,
-  studentAnswersData,
-  mockId,
-  type,
-  setCurrentSectionIndex,
-  currentSectionIndex,
-}) => {
+const NewTimer = ({ expiryTimestamp, mockId }) => {
   const buttonStyle = {
     background: "linear-gradient(91.59deg, #FD4153 18.67%, #F77A5B 98.68%)",
     width: "138px",
@@ -32,18 +25,11 @@ const NewTimer = ({
   const navigate = useNavigate();
   const [state, setState] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentSection, setCurrentSection] = useState(type);
   const [done, setDone] = useState(false);
   const [err, setErr] = useState(false);
   const COUNTER_KEY_SEC = "my-counter-sec";
   const COUNTER_KEY_MIN = "my-counter-min";
-  const [counterTimeStamp, setCounterTimeStamp] = useState(
-    Number(localStorage.getItem(COUNTER_KEY_MIN)) * 60 +
-      Number(localStorage.getItem(COUNTER_KEY_SEC))
-  );
-  const expiryTimestamp = new Date();
-  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + counterTimeStamp);
-
+  const dispatch = useDispatch();
   const {
     seconds,
     minutes,
@@ -56,15 +42,15 @@ const NewTimer = ({
     restart,
   } = useTimer({
     expiryTimestamp,
-    onExpire: () => submitSectionFunc(currentSection),
+    onExpire: () => submitSectionFunc(),
   });
   const attemptID = localStorage.getItem("attemptId");
-
   //Accessing redux store
 
-  const { isToggleAllowed, studentResponse, sections } = useSelector(
+  const { isToggleAllowed, studentResponse, sections, currentSectionIndex } = useSelector(
     (state) => state.mockData
   );
+  const userData = useSelector(() => state.userData);
   useEffect(() => {
     //alert('2!!!!!');
     // //console.log('init::',initMinute,initSeconds);
@@ -83,48 +69,51 @@ const NewTimer = ({
     //     setIsLoaded(false);
     //   }
     // });
-    window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
-    window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
-  }, [seconds, minutes, currentSection]);
-  console.log(counterTimeStamp)
-
-  const submitSectionFunc = async (subject) => {
+    // window.localStorage.setItem(COUNTER_KEY_MIN, minutes);
+    // window.localStorage.setItem(COUNTER_KEY_SEC, seconds);
+  }, [seconds, minutes]);
+  console.log(expiryTimestamp);
+  const submitSectionFunc =  (subject) => {
     // alert('submitSection');
     ////console.log("working");
     ////console.log(studentAnswersData);
     if (!isToggleAllowed) {
-      setCurrentSectionIndex(currentSectionIndex+1);
-      window.localStorage.setItem(COUNTER_KEY_MIN, 2);
-      setCounterTimeStamp(2)
-      restart(expiryTimestamp.getSeconds() + 2*60);
+      setIsLoaded(true);
+      // setCounterTimeStamp(2)
+      // restart(expiryTimestamp.getSeconds() + 2*60);
+      try {
+        const uid = userData?._id;
+        // const response = await submitSection(
+        //   attemptID,
+        //   studentAnswersData,
+        //   uid,
+        //   subject
+        // );
+        ////console.log(response);
+        if (true) {
+          // window.localStorage.removeItem(COUNTER_KEY_MIN);
+          // window.localStorage.removeItem(COUNTER_KEY_SEC);
+          // window.localStorage.removeItem("questionStatus");
+          // window.localStorage.removeItem("lastAttemptedQuestionIndex");
+          // setState(2);
+          // //console.log("Your mock is submitted!!!");
+          // navigate(`/analysis/${mockId}/${attemptID}/overall`);
+          // return true;
+          dispatch(setCurrentSectionIndex(currentSectionIndex+1));
+          // window.localStorage.setItem(COUNTER_KEY_MIN, 2);
+          setIsLoaded(false);
+          // navigate(`/main`);
+          // window.location.reload();
+        }
+      } catch (err) {
+        console.log(err);
+        setState(3);
+        //setErr(true);
+        return false;
+      }
       return;
     }
-    setIsLoaded(true);
-    try {
-      const uid = JSON.parse(localStorage.getItem("userData"))?._id;
-      const response = await submitSection(
-        attemptID,
-        studentAnswersData,
-        uid,
-        subject
-      );
-      ////console.log(response);
-      if (response?.status == 200) {
-        window.localStorage.removeItem(COUNTER_KEY_MIN);
-        window.localStorage.removeItem(COUNTER_KEY_SEC);
-        window.localStorage.removeItem("questionStatus");
-        window.localStorage.removeItem("lastAttemptedQuestionIndex");
-        setState(2);
-        // //console.log("Your mock is submitted!!!");
-        // navigate(`/analysis/${mockId}/${attemptID}/overall`);
-        // return true;
-      }
-    } catch (err) {
-      ////console.log(err);
-      setState(3);
-      //setErr(true);
-      return false;
-    }
+    // setIsLoaded(true);
   };
 
   const style = {
@@ -291,7 +280,7 @@ const NewTimer = ({
                             navigate(
                               `/analysis/${mockId}/${attemptID}/overall`,
                               {
-                                state: { mockType: type },
+                                state: { mockType: "varc" },
                               },
                               3000
                             );

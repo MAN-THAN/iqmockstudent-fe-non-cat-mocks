@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMockData } from "../store/slices/mockDataSlice";
+import { addMockData, setCurrentSectionIndex } from "../store/slices/mockDataSlice";
 import { addStudentResponse } from "../store/slices/mockDataSlice";
 
 const UserAuth = () => {
@@ -277,7 +277,7 @@ const UserAuth = () => {
           },
         ])
       );
-      window.localStorage.setItem(COUNTER_KEY_MIN, 2)
+      dispatch(setCurrentSectionIndex(0));
       const response = await getAttemptId(
         state.name,
         state.email,

@@ -22,7 +22,7 @@ import ImageButton from "./ImageButton";
 import NewTimer from "./TimerNew";
 import { useDispatch, useSelector } from "react-redux";
 import { addMockData } from "../store/slices/mockDataSlice";
-import { addStudentResponse } from "../store/slices/mockDataSlice";
+import { addStudentResponse , setCurrentSectionIndex} from "../store/slices/mockDataSlice";
 import Button from "@mui/material/Button";
 
 function CenterMain() {
@@ -48,9 +48,9 @@ function CenterMain() {
     isToggleAllowed,
     isCalculatorAllowed,
     studentResponse,
+    currentSectionIndex
   } = useSelector((state) => state.mockData);
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  console.log(sections);
+  console.log(currentSectionIndex, "currentSectionIndex");
 
   // syncing question status with redux store
   useEffect(() => {
@@ -160,7 +160,6 @@ function CenterMain() {
   useEffect(() => {
     if (studentResponse) {
       setQuestionStatus(studentResponse[currentSectionIndex].questions);
-      setSectionTime(window.localStorage.getItem(COUNTER_KEY_MIN));
       setSectionName(studentResponse[currentSectionIndex].name);
       setInputVal("");
       setSelectedAnswer(null);
@@ -424,6 +423,8 @@ function CenterMain() {
       document.addEventListener("keydown", disableKeys);
     };
   });
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 60); //value will be changed later
 
   return loading ? (
     <div
@@ -459,7 +460,7 @@ function CenterMain() {
                       <Button
                         key={ind}
                         onClick={() => {
-                          setCurrentSectionIndex(ind);
+                          dispatch(setCurrentSectionIndex(ind));
                         }}
                         variant="contained"
                         disabled={
@@ -530,17 +531,12 @@ function CenterMain() {
                         <div style={{ color: "black", fontSize: "14px" }}>
                           Time Left
                         </div>
-                        {sectionTime && (
-                          <NewTimer
-                            type={sectionName}
-                            mockId={state.mockId}
-                            initMinute={sectionTime}
-                            initSeconds={0}
-                            studentAnswersData={questionStatus}
-                            currentSectionIndex={currentSectionIndex}
-                            setCurrentSectionIndex={setCurrentSectionIndex}
-                          />
-                        )}
+                        {
+                         time ? ( <NewTimer
+                          mockId={state.mockId}
+                          expiryTimestamp={time}
+                        />) : (<></>)
+                        }
                       </>
                     }
                   </div>
